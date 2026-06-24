@@ -964,7 +964,7 @@
         notes: document.getElementById('f-notes').value.trim()
       };
 
-      const res = await fetch('/api/create-payment', {
+      const res = await fetch('https://shirtsociete.netlify.app/api/create-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items: cart, customer })
