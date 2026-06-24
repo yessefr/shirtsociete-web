@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Shirt Société — Timeless, Original, Rare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --black: #0a0905;
+      --gold: #c8a950;
+      --gold-dim: #9a7e3a;
+      --gold-light: #e8c96a;
+      --white: #f5f0e8;
+      --grey: #2a2820;
+      --grey-mid: #4a4640;
+      --text-muted: #888070;
+      --tab-h: 64px;
+      --max-w: 430px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── SCREENS ── */
+    .screen { display: none; flex-direction: column; min-height: calc(100vh - var(--tab-h)); padding-bottom: calc(var(--tab-h) + 16px); }
+    .screen.active { display: flex; }
+
+    /* ── HEADER ── */
+    .site-header {
+      padding: 24px 20px 16px;
+      text-align: center;
+      border-bottom: 1px solid #1e1c17;
+      position: sticky; top: 0; z-index: 100;
+      background: var(--black);
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 900;
+      font-size: 28px;
+      color: var(--gold);
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    /* ── TAB BAR ── */
+    .tab-bar {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: var(--max-w);
+      height: var(--tab-h);
+      background: #0e0c08;
+      border-top: 1px solid #1e1c17;
+      display: flex;
+      z-index: 200;
+    }
+    .tab {
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 4px; cursor: pointer; color: var(--text-muted);
+      font-size: 10px; font-weight: 500; letter-spacing: 0.5px;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .tab.active { color: var(--gold); }
+    .tab svg { width: 22px; height: 22px; stroke-width: 1.5; }
+    .cart-badge {
+      position: absolute; top: 8px; right: calc(50% - 18px);
+      background: var(--gold); color: var(--black);
+      font-size: 9px; font-weight: 700;
+      width: 16px; height: 16px; border-radius: 50%;
+      display: none; align-items: center; justify-content: center;
+    }
+    .cart-badge.visible { display: flex; }
+
+    /* ── HOME ── */
+    .hero {
+      background: linear-gradient(160deg, #1a1710 0%, var(--black) 60%);
+      padding: 40px 24px 48px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(200,169,80,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px; font-weight: 500;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-weight: 900;
+      font-size: 38px; line-height: 1.1;
+      color: var(--white); margin-bottom: 8px;
+    }
+    .hero-title span { color: var(--gold); }
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 16px;
+      color: var(--text-muted); margin-bottom: 28px; line-height: 1.5;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gold); color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.5px;
+      padding: 14px 28px; border-radius: 2px;
+      border: none; cursor: pointer; text-transform: uppercase;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-primary:hover { background: var(--gold-light); }
+
+    .section-label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); font-weight: 500; padding: 24px 20px 12px;
+    }
+
+    /* Horizontal scroll row */
+    .shirt-row {
+      display: flex; gap: 12px;
+      overflow-x: auto; padding: 0 20px 20px;
+      scrollbar-width: none;
+    }
+    .shirt-row::-webkit-scrollbar { display: none; }
+    .shirt-card-sm {
+      flex: 0 0 160px; cursor: pointer;
+      background: var(--grey); border-radius: 2px; overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .shirt-card-sm:active { transform: scale(0.97); }
+    .shirt-card-sm img {
+      width: 100%; height: 160px; object-fit: cover;
+      background: #1e1c17;
+    }
+    .shirt-card-sm-info { padding: 10px 12px; }
+    .shirt-card-sm-title { font-size: 12px; font-weight: 500; line-height: 1.3; margin-bottom: 4px; }
+    .shirt-card-sm-price { font-size: 13px; color: var(--gold); font-weight: 500; }
+
+    /* divider */
+    .divider { height: 1px; background: #1e1c17; margin: 8px 20px; }
+
+    /* ── SHOP ── */
+    .shop-search {
+      padding: 16px 20px 0;
+      position: relative;
+    }
+    .shop-search input {
+      width: 100%; background: var(--grey);
+      border: 1px solid #2e2c27; border-radius: 2px;
+      color: var(--white); font-family: 'DM Sans', sans-serif;
+      font-size: 14px; padding: 12px 16px 12px 40px;
+      outline: none; transition: border-color 0.2s;
+    }
+    .shop-search input:focus { border-color: var(--gold-dim); }
+    .shop-search input::placeholder { color: var(--text-muted); }
+    .shop-search svg {
+      position: absolute; left: 32px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); width: 16px; height: 16px;
+    }
+
+    .filters {
+      display: flex; gap: 8px;
+      padding: 12px 20px; overflow-x: auto; scrollbar-width: none;
+    }
+    .filters::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      flex: 0 0 auto;
+      padding: 7px 16px; border-radius: 2px;
+      border: 1px solid #2e2c27; background: transparent;
+      color: var(--text-muted); font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.5px;
+      cursor: pointer; text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .filter-btn.active {
+      background: var(--gold); color: var(--black); border-color: var(--gold);
+    }
+
+    .shirt-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; padding: 0 20px 20px;
+    }
+    .shirt-card {
+      background: var(--grey); border-radius: 2px; overflow: hidden;
+      cursor: pointer; transition: transform 0.2s;
+    }
+    .shirt-card:active { transform: scale(0.97); }
+    .shirt-card img {
+      width: 100%; aspect-ratio: 1; object-fit: cover;
+      background: #1e1c17;
+    }
+    .shirt-card-body { padding: 10px; }
+    .shirt-card-club { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+    .shirt-card-title { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 8px; }
+    .shirt-card-footer { display: flex; align-items: center; justify-content: space-between; }
+    .shirt-card-price { font-size: 14px; color: var(--gold); font-weight: 500; }
+    .add-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--gold); color: var(--black);
+      border: none; cursor: pointer; font-size: 18px; font-weight: 300;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .add-btn:active { transform: scale(0.9); }
+    .add-btn:hover { background: var(--gold-light); }
+    .sold-badge {
+      font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--text-muted); font-weight: 500;
+    }
+
+    .loading { text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px; }
+    .empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .empty svg { width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.3; }
+    .empty p { font-size: 14px; }
+
+    /* ── DETAIL ── */
+    #screen-detail { padding-bottom: 100px; }
+    .detail-back {
+      display: flex; align-items: center; gap: 8px;
+      padding: 16px 20px; color: var(--gold);
+      font-size: 13px; cursor: pointer; font-weight: 500;
+    }
+    .detail-back svg { width: 18px; height: 18px; }
+    .detail-img {
+      width: 100%; aspect-ratio: 1; object-fit: cover;
+      background: var(--grey);
+    }
+    .detail-body { padding: 20px; }
+    .detail-category {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 8px; font-weight: 500;
+    }
+    .detail-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-weight: 900;
+      font-size: 26px; line-height: 1.2; margin-bottom: 4px;
+    }
+    .detail-club { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+    .detail-price {
+      font-size: 28px; color: var(--gold); font-weight: 500; margin-bottom: 20px;
+    }
+    .detail-specs {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; margin-bottom: 20px;
+    }
+    .spec-item { background: var(--grey); padding: 12px; border-radius: 2px; }
+    .spec-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .spec-value { font-size: 14px; font-weight: 500; }
+    .detail-desc { font-size: 14px; line-height: 1.7; color: #b0a898; margin-bottom: 24px; }
+    .detail-add-btn {
+      width: 100%; padding: 16px;
+      background: var(--gold); color: var(--black);
+      border: none; border-radius: 2px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500; letter-spacing: 1px;
+      text-transform: uppercase; transition: background 0.2s, transform 0.1s;
+    }
+    .detail-add-btn:active { transform: scale(0.98); }
+    .detail-add-btn:hover { background: var(--gold-light); }
+    .detail-add-btn:disabled { background: var(--grey-mid); color: var(--text-muted); cursor: not-allowed; }
+
+    /* ── CART ── */
+    .cart-header { padding: 24px 20px 16px; font-size: 20px; font-weight: 500; }
+    .cart-items { flex: 1; padding: 0 20px; }
+    .cart-item {
+      display: flex; gap: 12px; align-items: center;
+      padding: 16px 0; border-bottom: 1px solid #1e1c17;
+    }
+    .cart-item img {
+      width: 72px; height: 72px; object-fit: cover;
+      border-radius: 2px; background: var(--grey); flex-shrink: 0;
+    }
+    .cart-item-info { flex: 1; }
+    .cart-item-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; line-height: 1.3; }
+    .cart-item-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+    .cart-item-price { font-size: 15px; color: var(--gold); font-weight: 500; }
+    .remove-btn {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; padding: 4px; transition: color 0.2s;
+    }
+    .remove-btn:hover { color: #e05555; }
+    .remove-btn svg { width: 18px; height: 18px; }
+
+    .cart-empty {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+      color: var(--text-muted); padding: 40px;
+    }
+    .cart-empty svg { width: 56px; height: 56px; opacity: 0.2; }
+    .cart-empty p { font-size: 14px; }
+
+    .cart-footer { padding: 20px; border-top: 1px solid #1e1c17; }
+    .cart-shipping-note { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; text-align: center; }
+    .cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .cart-total-label { font-size: 14px; color: var(--text-muted); }
+    .cart-total-amount { font-size: 22px; color: var(--gold); font-weight: 500; }
+    .cart-checkout-btn {
+      width: 100%; padding: 16px;
+      background: var(--gold); color: var(--black);
+      border: none; border-radius: 2px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500; letter-spacing: 1px;
+      text-transform: uppercase; transition: background 0.2s;
+    }
+    .cart-checkout-btn:hover { background: var(--gold-light); }
+
+    /* ── CHECKOUT ── */
+    .checkout-header { padding: 24px 20px 8px; }
+    .checkout-header h2 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
+    .checkout-header p { font-size: 13px; color: var(--text-muted); }
+    .checkout-form { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); font-weight: 500; }
+    .form-group input, .form-group select, .form-group textarea {
+      background: var(--grey); border: 1px solid #2e2c27;
+      color: var(--white); font-family: 'DM Sans', sans-serif;
+      font-size: 14px; padding: 12px; border-radius: 2px; outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold-dim); }
+    .form-group input.error, .form-group select.error { border-color: #e05555; }
+    .form-group select { appearance: none; cursor: pointer; }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group select option { background: var(--grey); }
+    .form-section-label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); font-weight: 500; padding: 8px 0 4px;
+    }
+
+    .checkout-summary {
+      margin: 0 20px 20px;
+      background: var(--grey); border-radius: 2px; padding: 16px;
+    }
+    .checkout-summary-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+    .checkout-summary-item { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; color: #b0a898; }
+    .checkout-summary-item span:last-child { color: var(--white); }
+    .checkout-summary-total { display: flex; justify-content: space-between; font-size: 16px; font-weight: 500; padding-top: 12px; border-top: 1px solid #3a3830; margin-top: 8px; }
+    .checkout-summary-total span:last-child { color: var(--gold); }
+
+    .pay-btn {
+      margin: 0 20px 20px;
+      width: calc(100% - 40px); padding: 18px;
+      background: var(--gold); color: var(--black);
+      border: none; border-radius: 2px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500; letter-spacing: 1px;
+      text-transform: uppercase; transition: background 0.2s, transform 0.1s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .pay-btn:hover { background: var(--gold-light); }
+    .pay-btn:active { transform: scale(0.98); }
+    .pay-btn:disabled { background: var(--grey-mid); color: var(--text-muted); cursor: not-allowed; }
+    .pay-btn svg { width: 18px; height: 18px; }
+
+    .payment-methods {
+      display: flex; gap: 8px; justify-content: center;
+      padding: 0 20px 20px; flex-wrap: wrap;
+    }
+    .payment-method {
+      background: var(--grey); border-radius: 2px;
+      padding: 6px 10px; font-size: 11px; color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── PROFILE ── */
+    .profile-header { padding: 32px 20px 24px; text-align: center; }
+    .profile-avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--grey); border: 2px solid var(--gold-dim);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px; font-size: 28px;
+    }
+    .profile-name { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
+    .profile-email { font-size: 13px; color: var(--text-muted); }
+    .profile-section { padding: 0 20px 20px; }
+    .profile-section-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; padding: 16px 0 12px; }
+    .profile-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; border-bottom: 1px solid #1e1c17;
+      font-size: 14px; cursor: pointer;
+    }
+    .profile-item svg { width: 18px; height: 18px; color: var(--text-muted); }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: calc(var(--tab-h) + 16px); left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--gold); color: var(--black);
+      padding: 12px 20px; border-radius: 2px;
+      font-size: 13px; font-weight: 500;
+      opacity: 0; transition: all 0.3s; z-index: 999;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (min-width: 431px) {
+      html, body { border-left: 1px solid #1e1c17; border-right: 1px solid #1e1c17; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo">Shirt Société</div>
+  <div class="tagline">Timeless · Original · Rare</div>
+</header>
+
+<!-- SCREEN: HOME -->
+<div id="screen-home" class="screen active">
+  <div class="hero">
+    <div class="hero-eyebrow">Est. in passion</div>
+    <h1 class="hero-title">Vintage<br><span>football</span><br>history.</h1>
+    <p class="hero-sub">Curated match worn shirts & rare originals from the golden era of football.</p>
+    <button class="btn-primary" onclick="goTo('shop')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Shop the collection
+    </button>
+  </div>
+
+  <div class="section-label">Featured Pieces</div>
+  <div id="featured-row" class="shirt-row">
+    <div class="loading">Loading...</div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Match Worn</div>
+  <div id="matchworn-row" class="shirt-row">
+    <div class="loading">Loading...</div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">National Teams</div>
+  <div id="national-row" class="shirt-row">
+    <div class="loading">Loading...</div>
+  </div>
+</div>
+
+<!-- SCREEN: SHOP -->
+<div id="screen-shop" class="screen">
+  <div class="shop-search">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="search-input" placeholder="Search club, player, season..." oninput="filterShirts()">
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" onclick="setFilter('match_worn', this)">Match Worn</button>
+    <button class="filter-btn" onclick="setFilter('clubs', this)">Clubs</button>
+    <button class="filter-btn" onclick="setFilter('national', this)">National</button>
+  </div>
+  <div id="shirt-grid" class="shirt-grid">
+    <div class="loading" style="grid-column:1/-1">Loading collection...</div>
+  </div>
+</div>
+
+<!-- SCREEN: DETAIL -->
+<div id="screen-detail" class="screen">
+  <div class="detail-back" onclick="goBack()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back
+  </div>
+  <img id="detail-img" class="detail-img" src="" alt="">
+  <div class="detail-body">
+    <div id="detail-category" class="detail-category"></div>
+    <h2 id="detail-title" class="detail-title"></h2>
+    <div id="detail-club" class="detail-club"></div>
+    <div id="detail-price" class="detail-price"></div>
+    <div class="detail-specs" id="detail-specs"></div>
+    <p id="detail-desc" class="detail-desc"></p>
+    <button id="detail-add-btn" class="detail-add-btn" onclick="addToCartFromDetail()">Add to Cart</button>
+  </div>
+</div>
+
+<!-- SCREEN: CART -->
+<div id="screen-cart" class="screen">
+  <div class="cart-header">Your Cart</div>
+  <div id="cart-content"></div>
+</div>
+
+<!-- SCREEN: CHECKOUT -->
+<div id="screen-checkout" class="screen">
+  <div class="checkout-header">
+    <div class="detail-back" onclick="goTo('cart')" style="padding:0 0 16px">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to cart
+    </div>
+    <h2>Shipping Details</h2>
+    <p>Enter your address to continue to payment</p>
+  </div>
+
+  <form class="checkout-form" id="checkout-form" onsubmit="return false">
+    <div class="form-section-label">Personal Information</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name *</label>
+        <input type="text" id="f-first" placeholder="Jan" required>
+      </div>
+      <div class="form-group">
+        <label>Last Name *</label>
+        <input type="text" id="f-last" placeholder="de Vries" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email *</label>
+      <input type="email" id="f-email" placeholder="jan@email.com" required>
+    </div>
+    <div class="form-group">
+      <label>Phone *</label>
+      <input type="tel" id="f-phone" placeholder="+31 6 12345678" required>
+    </div>
+
+    <div class="form-section-label">Shipping Address</div>
+    <div class="form-row">
+      <div class="form-group" style="grid-column: 1 / -1">
+        <label>Street *</label>
+        <input type="text" id="f-street" placeholder="Damrak" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>House Nr *</label>
+        <input type="text" id="f-housenr" placeholder="1" required>
+      </div>
+      <div class="form-group">
+        <label>Addition</label>
+        <input type="text" id="f-addition" placeholder="A">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Postal Code *</label>
+        <input type="text" id="f-postal" placeholder="1012 LG" required>
+      </div>
+      <div class="form-group">
+        <label>City *</label>
+        <input type="text" id="f-city" placeholder="Amsterdam" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Country *</label>
+      <select id="f-country" required>
+        <option value="">Select country...</option>
+        <option value="NL">Netherlands</option>
+        <option value="BE">Belgium</option>
+        <option value="DE">Germany</option>
+        <option value="FR">France</option>
+        <option value="GB">United Kingdom</option>
+        <option value="ES">Spain</option>
+        <option value="IT">Italy</option>
+        <option value="PT">Portugal</option>
+        <option value="AT">Austria</option>
+        <option value="CH">Switzerland</option>
+        <option value="DK">Denmark</option>
+        <option value="SE">Sweden</option>
+        <option value="NO">Norway</option>
+        <option value="FI">Finland</option>
+        <option value="PL">Poland</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Order Notes</label>
+      <textarea id="f-notes" placeholder="Any special requests or notes..."></textarea>
+    </div>
+  </form>
+
+  <div class="checkout-summary" id="checkout-summary"></div>
+
+  <div class="payment-methods">
+    <div class="payment-method">iDEAL</div>
+    <div class="payment-method">Bancontact</div>
+    <div class="payment-method">Credit Card</div>
+    <div class="payment-method">Apple Pay</div>
+  </div>
+
+  <button class="pay-btn" id="pay-btn" onclick="submitPayment()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+    Pay with Mollie
+  </button>
+</div>
+
+<!-- SCREEN: PROFILE -->
+<div id="screen-profile" class="screen">
+  <div class="profile-header">
+    <div class="profile-avatar">👕</div>
+    <div class="profile-name">Guest</div>
+    <div class="profile-email">Sign in to view your orders</div>
+  </div>
+  <div class="profile-section">
+    <div class="profile-section-title">Account</div>
+    <div class="profile-item">
+      <span>Order History</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="profile-item">
+      <span>Wishlist</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="profile-item">
+      <span>Shipping Address</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </div>
+  <div class="profile-section">
+    <div class="profile-section-title">About</div>
+    <div class="profile-item">
+      <span>Contact Us</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="profile-item">
+      <span>Shipping & Returns</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<nav class="tab-bar">
+  <div class="tab active" onclick="goTo('home')" id="tab-home">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </div>
+  <div class="tab" onclick="goTo('shop')" id="tab-shop">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-8.42H6"/></svg>
+    Shop
+  </div>
+  <div class="tab" onclick="goTo('cart')" id="tab-cart">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    <span class="cart-badge" id="cart-badge">0</span>
+    Cart
+  </div>
+  <div class="tab" onclick="goTo('profile')" id="tab-profile">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Profile
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── CONFIG ── (loaded from config.js)
+  const dbHost = 'https://hzwmjbsfmdkmaoikezoc.supabase.co';
+  const dbToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6d21qYnNmbWRrbWFvaWtlem9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTczNDIsImV4cCI6MjA5MzEzMzM0Mn0.5-ToRrtP3bhkN_qmSMmLM5YXQgE5kWoE0wVpsksqIMs';
+
+  // ── STATE ──
+  let allShirts = [];
+  let cart = JSON.parse(localStorage.getItem('ss_cart') || '[]');
+  let currentFilter = 'all';
+  let currentScreen = 'home';
+  let prevScreen = 'shop';
+  let currentShirt = null;
+
+  // ── NAVIGATION ──
+  function goTo(screen) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('screen-' + screen).classList.add('active');
+    const tab = document.getElementById('tab-' + screen);
+    if (tab) tab.classList.add('active');
+    if (screen !== 'detail') prevScreen = currentScreen;
+    currentScreen = screen;
+    window.scrollTo(0, 0);
+    if (screen === 'cart') renderCart();
+    if (screen === 'checkout') renderCheckoutSummary();
+  }
+
+  function goBack() {
+    goTo(prevScreen);
+  }
+
+  // ── DATA FETCH ──
+  async function fetchShirts() {
+    try {
+      const res = await fetch(`${dbHost}/rest/v1/shirts?select=*&available=eq.true&order=created_at.desc`, {
+        headers: {
+          'apikey': dbToken,
+          'Authorization': `Bearer ${dbToken}`
+        }
+      });
+      if (!res.ok) throw new Error('Failed to fetch');
+      allShirts = await res.json();
+      renderHome();
+      renderShopGrid();
+    } catch (err) {
+      console.error('Fetch error:', err);
+      document.getElementById('shirt-grid').innerHTML = '<div class="empty" style="grid-column:1/-1"><p>Could not load shirts. Please try again.</p></div>';
+    }
+  }
+
+  // ── IMAGE ──
+  function getImg(shirt) {
+    if (shirt.images && shirt.images.length > 0) return shirt.images[0];
+    return `https://via.placeholder.com/400x400/1e1c17/c8a950?text=${encodeURIComponent(shirt.club || 'Shirt')}`;
+  }
+
+  // ── HOME ──
+  function renderHome() {
+    const featured = allShirts.filter(s => s.featured);
+    const matchWorn = allShirts.filter(s => s.category === 'match_worn');
+    const national = allShirts.filter(s => s.category === 'national');
+    renderRow('featured-row', featured.length ? featured : allShirts.slice(0, 4));
+    renderRow('matchworn-row', matchWorn.length ? matchWorn : allShirts.slice(0, 3));
+    renderRow('national-row', national.length ? national : allShirts.slice(0, 3));
+  }
+
+  function renderRow(id, shirts) {
+    const el = document.getElementById(id);
+    if (!shirts.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:20px">Nothing here yet.</div>'; return; }
+    el.innerHTML = shirts.map(s => `
+      <div class="shirt-card-sm" onclick="openDetail('${s.id}')">
+        <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
+        <div class="shirt-card-sm-info">
+          <div class="shirt-card-sm-title">${s.title}</div>
+          <div class="shirt-card-sm-price">€${parseFloat(s.price).toFixed(2)}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── SHOP ──
+  let currentSearch = '';
+
+  function setFilter(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderShopGrid();
+  }
+
+  function filterShirts() {
+    currentSearch = document.getElementById('search-input').value.toLowerCase();
+    renderShopGrid();
+  }
+
+  function renderShopGrid() {
+    let shirts = allShirts;
+    if (currentFilter !== 'all') shirts = shirts.filter(s => s.category === currentFilter);
+    if (currentSearch) {
+      shirts = shirts.filter(s =>
+        (s.title || '').toLowerCase().includes(currentSearch) ||
+        (s.club || '').toLowerCase().includes(currentSearch) ||
+        (s.season || '').toLowerCase().includes(currentSearch) ||
+        (s.description || '').toLowerCase().includes(currentSearch)
+      );
+    }
+    const grid = document.getElementById('shirt-grid');
+    if (!shirts.length) {
+      grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>No shirts found</p></div>';
+      return;
+    }
+    grid.innerHTML = shirts.map(s => {
+      const inCart = cart.some(c => c.id === s.id);
+      return `
+        <div class="shirt-card" onclick="openDetail('${s.id}')">
+          <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
+          <div class="shirt-card-body">
+            <div class="shirt-card-club">${s.club || ''}</div>
+            <div class="shirt-card-title">${s.title}</div>
+            <div class="shirt-card-footer">
+              <div class="shirt-card-price">€${parseFloat(s.price).toFixed(2)}</div>
+              ${inCart
+                ? '<span class="sold-badge">In cart ✓</span>'
+                : `<button class="add-btn" onclick="event.stopPropagation(); quickAdd('${s.id}')">+</button>`
+              }
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ── DETAIL ──
+  function openDetail(id) {
+    const shirt = allShirts.find(s => s.id === id);
+    if (!shirt) return;
+    currentShirt = shirt;
+    document.getElementById('detail-img').src = getImg(shirt);
+    document.getElementById('detail-img').alt = shirt.title;
+    document.getElementById('detail-category').textContent = shirt.category?.replace('_', ' ').toUpperCase() || '';
+    document.getElementById('detail-title').textContent = shirt.title;
+    document.getElementById('detail-club').textContent = shirt.club || '';
+    document.getElementById('detail-price').textContent = `€${parseFloat(shirt.price).toFixed(2)}`;
+    document.getElementById('detail-desc').textContent = shirt.description || '';
+    document.getElementById('detail-specs').innerHTML = [
+      shirt.size ? `<div class="spec-item"><div class="spec-label">Size</div><div class="spec-value">${shirt.size}</div></div>` : '',
+      shirt.season ? `<div class="spec-item"><div class="spec-label">Season</div><div class="spec-value">${shirt.season}</div></div>` : '',
+      shirt.condition ? `<div class="spec-item"><div class="spec-label">Condition</div><div class="spec-value">${shirt.condition}</div></div>` : '',
+      shirt.category ? `<div class="spec-item"><div class="spec-label">Category</div><div class="spec-value">${shirt.category.replace('_',' ')}</div></div>` : '',
+    ].join('');
+    const btn = document.getElementById('detail-add-btn');
+    const inCart = cart.some(c => c.id === shirt.id);
+    btn.textContent = inCart ? 'Added to Cart ✓' : 'Add to Cart';
+    btn.disabled = inCart;
+    goTo('detail');
+  }
+
+  function addToCartFromDetail() {
+    if (!currentShirt) return;
+    addToCart(currentShirt);
+    const btn = document.getElementById('detail-add-btn');
+    btn.textContent = 'Added to Cart ✓';
+    btn.disabled = true;
+  }
+
+  // ── CART ──
+  function addToCart(shirt) {
+    if (cart.some(c => c.id === shirt.id)) { showToast('Already in cart'); return; }
+    cart.push({ id: shirt.id, title: shirt.title, price: shirt.price, image: getImg(shirt), club: shirt.club, size: shirt.size });
+    saveCart();
+    updateCartBadge();
+    showToast('Added to cart');
+    renderShopGrid();
+  }
+
+  function quickAdd(id) {
+    const shirt = allShirts.find(s => s.id === id);
+    if (shirt) addToCart(shirt);
+  }
+
+  function removeFromCart(id) {
+    cart = cart.filter(c => c.id !== id);
+    saveCart();
+    updateCartBadge();
+    renderCart();
+    renderShopGrid();
+  }
+
+  function saveCart() {
+    localStorage.setItem('ss_cart', JSON.stringify(cart));
+  }
+
+  function updateCartBadge() {
+    const badge = document.getElementById('cart-badge');
+    badge.textContent = cart.length;
+    badge.classList.toggle('visible', cart.length > 0);
+  }
+
+  function getCartTotal() {
+    return cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+  }
+
+  function getShipping() {
+    return getCartTotal() >= 100 ? 0 : 7.95;
+  }
+
+  function renderCart() {
+    const el = document.getElementById('cart-content');
+    if (!cart.length) {
+      el.innerHTML = `
+        <div class="cart-empty">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <p>Your cart is empty</p>
+        </div>
+      `;
+      return;
+    }
+    const subtotal = getCartTotal();
+    const shipping = getShipping();
+    const total = subtotal + shipping;
+    el.innerHTML = `
+      <div class="cart-items">
+        ${cart.map(item => `
+          <div class="cart-item">
+            <img src="${item.image}" alt="${item.title}">
+            <div class="cart-item-info">
+              <div class="cart-item-title">${item.title}</div>
+              <div class="cart-item-sub">${item.club || ''} ${item.size ? '· ' + item.size : ''}</div>
+              <div class="cart-item-price">€${parseFloat(item.price).toFixed(2)}</div>
+            </div>
+            <button class="remove-btn" onclick="removeFromCart('${item.id}')">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+        `).join('')}
+      </div>
+      <div class="cart-footer">
+        <div class="cart-shipping-note">${shipping === 0 ? '✓ Free shipping on this order' : `Free shipping on orders over €100`}</div>
+        <div class="cart-total-row">
+          <div>
+            <div class="cart-total-label">Subtotal</div>
+            ${shipping > 0 ? `<div class="cart-total-label" style="font-size:12px">+ €${shipping.toFixed(2)} shipping</div>` : ''}
+          </div>
+          <div class="cart-total-amount">€${total.toFixed(2)}</div>
+        </div>
+        <button class="cart-checkout-btn" onclick="goTo('checkout')">Continue to Checkout →</button>
+      </div>
+    `;
+  }
+
+  // ── CHECKOUT ──
+  function renderCheckoutSummary() {
+    const subtotal = getCartTotal();
+    const shipping = getShipping();
+    const total = subtotal + shipping;
+    document.getElementById('checkout-summary').innerHTML = `
+      <div class="checkout-summary-title">Order Summary</div>
+      ${cart.map(item => `
+        <div class="checkout-summary-item">
+          <span>${item.title}</span>
+          <span>€${parseFloat(item.price).toFixed(2)}</span>
+        </div>
+      `).join('')}
+      <div class="checkout-summary-item">
+        <span>Shipping</span>
+        <span>${shipping === 0 ? 'Free' : '€' + shipping.toFixed(2)}</span>
+      </div>
+      <div class="checkout-summary-total">
+        <span>Total</span>
+        <span>€${total.toFixed(2)}</span>
+      </div>
+    `;
+  }
+
+  async function submitPayment() {
+    const fields = ['f-first','f-last','f-email','f-phone','f-street','f-housenr','f-postal','f-city','f-country'];
+    let valid = true;
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      el.classList.remove('error');
+      if (!el.value.trim()) { el.classList.add('error'); valid = false; }
+    });
+    if (!valid) { showToast('Please fill in all required fields'); return; }
+    if (!cart.length) { showToast('Your cart is empty'); return; }
+
+    const btn = document.getElementById('pay-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Processing...';
+
+    try {
+      const customer = {
+        first_name: document.getElementById('f-first').value.trim(),
+        last_name: document.getElementById('f-last').value.trim(),
+        email: document.getElementById('f-email').value.trim(),
+        phone: document.getElementById('f-phone').value.trim(),
+        street: document.getElementById('f-street').value.trim(),
+        housenr: document.getElementById('f-housenr').value.trim() + (document.getElementById('f-addition').value.trim() ? ' ' + document.getElementById('f-addition').value.trim() : ''),
+        postal: document.getElementById('f-postal').value.trim(),
+        city: document.getElementById('f-city').value.trim(),
+        country: document.getElementById('f-country').value,
+        notes: document.getElementById('f-notes').value.trim()
+      };
+
+      const res = await fetch('/api/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: cart, customer })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Payment failed');
+
+      // Clear cart and redirect to Mollie
+      localStorage.removeItem('ss_cart');
+      cart = [];
+      updateCartBadge();
+      window.location.href = data.checkoutUrl;
+
+    } catch (err) {
+      console.error(err);
+      showToast('Payment error: ' + err.message);
+      btn.disabled = false;
+      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay with Mollie';
+    }
+  }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ── INIT ──
+  updateCartBadge();
+  fetchShirts();
+</script>
+</body>
+</html>
