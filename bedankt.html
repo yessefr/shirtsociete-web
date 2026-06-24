@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Thank You — Shirt Société</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0905;
+      --gold: #c8a950;
+      --gold-dim: #9a7e3a;
+      --gold-light: #e8c96a;
+      --white: #f5f0e8;
+      --grey: #2a2820;
+      --text-muted: #888070;
+      --max-w: 430px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      padding: 24px 20px 16px;
+      text-align: center;
+      border-bottom: 1px solid #1e1c17;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 900;
+      font-size: 28px;
+      color: var(--gold);
+    }
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .checkmark {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(200, 169, 80, 0.1);
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      animation: popIn 0.5s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      70% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .checkmark svg {
+      width: 36px;
+      height: 36px;
+      stroke: var(--gold);
+      stroke-width: 2.5;
+      fill: none;
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: drawCheck 0.6s ease 0.3s forwards;
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 900;
+      font-size: 32px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 17px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .order-box {
+      background: var(--grey);
+      border-radius: 2px;
+      padding: 20px;
+      width: 100%;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+
+    .order-box-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .order-ref {
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+
+    .order-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .steps {
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #1e1c17;
+      text-align: left;
+    }
+
+    .step:last-child {
+      border-bottom: none;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(200, 169, 80, 0.15);
+      border: 1px solid var(--gold-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--gold);
+      font-weight: 500;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-content h3 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .step-content p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      padding: 14px 28px;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn-back:hover { background: var(--gold-light); }
+
+    .footer {
+      padding: 24px;
+      text-align: center;
+      border-top: 1px solid #1e1c17;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    @media (min-width: 431px) {
+      html, body { border-left: 1px solid #1e1c17; border-right: 1px solid #1e1c17; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">Shirt Société</div>
+  <div class="tagline">Timeless · Original · Rare</div>
+</div>
+
+<div class="main">
+  <div class="checkmark">
+    <svg viewBox="0 0 24 24">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  </div>
+
+  <div class="eyebrow">Order Confirmed</div>
+  <h1>Thank you for your order!</h1>
+  <p class="subtitle">Your vintage piece is in good hands. We'll pack it with care and ship it your way.</p>
+
+  <div class="order-box">
+    <div class="order-box-label">Order Reference</div>
+    <div class="order-ref" id="order-ref">—</div>
+    <div class="order-note">Save this number for your records. You'll receive a confirmation email shortly.</div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Payment Received</h3>
+        <p>Your payment has been processed successfully.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>Carefully Packed</h3>
+        <p>We pack every shirt with care — tissue paper, thank you card included.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Shipped Within 1-2 Days</h3>
+        <p>You'll receive a track & trace code by email as soon as your order ships.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>Delivered to Your Door</h3>
+        <p>Sit back and wait for your new favourite shirt to arrive.</p>
+      </div>
+    </div>
+  </div>
+
+  <a href="/" class="btn-back">
+    Continue Shopping
+  </a>
+</div>
+
+<div class="footer">
+  Questions? Email us at <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a>
+</div>
+
+<script>
+  // Haal ordernummer op uit URL parameter
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('ref');
+  if (ref) {
+    document.getElementById('order-ref').textContent = ref;
+    document.title = `Order ${ref} — Shirt Société`;
+  }
+</script>
+
+</body>
+</html>
