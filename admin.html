@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Shirt Société</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0905;
+      --gold: #c8a950;
+      --gold-dim: #9a7e3a;
+      --gold-light: #e8c96a;
+      --white: #f5f0e8;
+      --grey: #1a1815;
+      --grey-mid: #2a2820;
+      --grey-light: #3a3830;
+      --text-muted: #888070;
+      --green: #4caf7d;
+      --red: #e05555;
+      --blue: #5b8dee;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .login-box {
+      background: var(--grey); border: 1px solid var(--grey-light);
+      border-radius: 4px; padding: 40px; width: 100%; max-width: 400px;
+    }
+    .login-logo {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: 28px; color: var(--gold); text-align: center; margin-bottom: 4px;
+    }
+    .login-sub { text-align: center; font-size: 12px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 32px; }
+    .login-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; display: block; }
+    .login-input {
+      width: 100%; background: var(--black); border: 1px solid var(--grey-light);
+      color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px;
+      padding: 12px; border-radius: 2px; outline: none; margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+    .login-input:focus { border-color: var(--gold-dim); }
+    .login-btn {
+      width: 100%; padding: 14px; background: var(--gold); color: var(--black);
+      border: none; border-radius: 2px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+      transition: background 0.2s;
+    }
+    .login-btn:hover { background: var(--gold-light); }
+    .login-error { color: var(--red); font-size: 13px; text-align: center; margin-top: 12px; display: none; }
+
+    /* ── LAYOUT ── */
+    #admin-screen { display: none; min-height: 100vh; }
+    .sidebar {
+      position: fixed; left: 0; top: 0; bottom: 0; width: 220px;
+      background: var(--grey); border-right: 1px solid var(--grey-light);
+      display: flex; flex-direction: column; z-index: 100;
+    }
+    .sidebar-logo {
+      padding: 24px 20px; border-bottom: 1px solid var(--grey-light);
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: 20px; color: var(--gold);
+    }
+    .sidebar-logo span { display: block; font-family: 'DM Sans', sans-serif; font-style: normal; font-size: 10px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px; color: var(--text-muted); cursor: pointer;
+      font-size: 14px; font-weight: 500; transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .nav-item:hover { color: var(--white); background: var(--grey-mid); }
+    .nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(200,169,80,0.05); }
+    .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .sidebar-footer {
+      margin-top: auto; padding: 16px 20px; border-top: 1px solid var(--grey-light);
+    }
+    .logout-btn {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--text-muted); cursor: pointer; font-size: 13px;
+      transition: color 0.2s; background: none; border: none; width: 100%;
+    }
+    .logout-btn:hover { color: var(--red); }
+    .logout-btn svg { width: 16px; height: 16px; }
+
+    .main-content { margin-left: 220px; padding: 32px; min-height: 100vh; }
+
+    /* ── HEADER ── */
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+    .page-title { font-size: 24px; font-weight: 600; }
+    .page-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── STATS ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--grey); border: 1px solid var(--grey-light);
+      border-radius: 4px; padding: 20px;
+    }
+    .stat-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+    .stat-value { font-size: 28px; font-weight: 600; color: var(--white); }
+    .stat-value.gold { color: var(--gold); }
+    .stat-value.green { color: var(--green); }
+    .stat-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    /* ── TABS ── */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .search-box {
+      flex: 1; min-width: 200px; position: relative;
+    }
+    .search-box input {
+      width: 100%; background: var(--grey); border: 1px solid var(--grey-light);
+      color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px;
+      padding: 10px 12px 10px 36px; border-radius: 2px; outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-box input:focus { border-color: var(--gold-dim); }
+    .search-box input::placeholder { color: var(--text-muted); }
+    .search-box svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 16px; height: 16px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 16px; border-radius: 2px; border: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .btn svg { width: 16px; height: 16px; }
+    .btn-primary { background: var(--gold); color: var(--black); }
+    .btn-primary:hover { background: var(--gold-light); }
+    .btn-secondary { background: var(--grey-mid); color: var(--white); border: 1px solid var(--grey-light); }
+    .btn-secondary:hover { background: var(--grey-light); }
+    .btn-danger { background: rgba(224,85,85,0.1); color: var(--red); border: 1px solid rgba(224,85,85,0.3); }
+    .btn-danger:hover { background: rgba(224,85,85,0.2); }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+    .filter-select {
+      background: var(--grey); border: 1px solid var(--grey-light);
+      color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 13px;
+      padding: 10px 12px; border-radius: 2px; outline: none; cursor: pointer;
+    }
+    .filter-select option { background: var(--grey); }
+
+    /* ── TABLE ── */
+    .table-wrap { background: var(--grey); border: 1px solid var(--grey-light); border-radius: 4px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left; padding: 12px 16px;
+      font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--text-muted); border-bottom: 1px solid var(--grey-light);
+      font-weight: 500;
+    }
+    td { padding: 12px 16px; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .shirt-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 2px; background: var(--grey-mid); }
+    .badge {
+      display: inline-block; padding: 3px 8px; border-radius: 2px;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .badge-available { background: rgba(76,175,125,0.15); color: var(--green); }
+    .badge-sold { background: rgba(224,85,85,0.15); color: var(--red); }
+    .badge-paid { background: rgba(76,175,125,0.15); color: var(--green); }
+    .badge-pending { background: rgba(200,169,80,0.15); color: var(--gold); }
+    .badge-shipped { background: rgba(91,141,238,0.15); color: var(--blue); }
+    .badge-delivered { background: rgba(76,175,125,0.2); color: var(--green); }
+    .badge-cancelled { background: rgba(224,85,85,0.15); color: var(--red); }
+    .badge-match_worn { background: rgba(200,169,80,0.15); color: var(--gold); }
+    .badge-clubs { background: rgba(91,141,238,0.15); color: var(--blue); }
+    .badge-national { background: rgba(76,175,125,0.15); color: var(--green); }
+    .action-btns { display: flex; gap: 6px; align-items: center; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      display: none; align-items: center; justify-content: center;
+      z-index: 500; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--grey); border: 1px solid var(--grey-light);
+      border-radius: 4px; width: 100%; max-width: 600px;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--grey-light);
+    }
+    .modal-title { font-size: 18px; font-weight: 600; }
+    .modal-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 24px; line-height: 1; }
+    .modal-close:hover { color: var(--white); }
+    .modal-body { padding: 24px; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--grey-light); display: flex; justify-content: flex-end; gap: 12px; }
+
+    /* ── FORM ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); font-weight: 500; }
+    .form-input, .form-select, .form-textarea {
+      background: var(--black); border: 1px solid var(--grey-light);
+      color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px;
+      padding: 10px 12px; border-radius: 2px; outline: none; transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold-dim); }
+    .form-select { cursor: pointer; appearance: none; }
+    .form-select option { background: var(--grey); }
+    .form-textarea { resize: vertical; min-height: 80px; }
+
+    /* ── ORDER DETAIL ── */
+    .order-detail { background: var(--grey-mid); border-radius: 4px; padding: 16px; margin-top: 16px; }
+    .order-detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--grey-light); font-size: 14px; }
+    .order-detail-row:last-child { border-bottom: none; }
+    .order-detail-label { color: var(--text-muted); }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--grey-mid); border: 1px solid var(--grey-light);
+      color: var(--white); padding: 12px 20px; border-radius: 4px;
+      font-size: 13px; font-weight: 500; opacity: 0;
+      transition: all 0.3s; z-index: 999; transform: translateY(8px);
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.success { border-color: var(--green); color: var(--green); }
+    .toast.error { border-color: var(--red); color: var(--red); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .empty-state svg { width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.3; }
+    .empty-state p { font-size: 14px; }
+
+    .loading-row td { text-align: center; color: var(--text-muted); padding: 40px; }
+
+    /* ── TRACKING ── */
+    .tracking-input {
+      display: flex; gap: 8px; margin-top: 12px;
+    }
+    .tracking-input input {
+      flex: 1; background: var(--black); border: 1px solid var(--grey-light);
+      color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 13px;
+      padding: 8px 12px; border-radius: 2px; outline: none;
+    }
+    .tracking-input input:focus { border-color: var(--gold-dim); }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Shirt Société</div>
+    <div class="login-sub">Admin Dashboard</div>
+    <label class="login-label">Email</label>
+    <input type="email" class="login-input" id="login-email" placeholder="admin@shirtsociete.com">
+    <label class="login-label">Password</label>
+    <input type="password" class="login-input" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="login-error">Invalid credentials. Try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      Shirt Société
+      <span>Admin Panel</span>
+    </div>
+    <nav>
+      <div class="nav-item active" onclick="switchTab('dashboard')" id="nav-dashboard">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="switchTab('shirts')" id="nav-shirts">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>
+        Shirts
+        <span id="shirts-count" style="margin-left:auto;background:var(--grey-light);padding:2px 8px;border-radius:10px;font-size:11px;"></span>
+      </div>
+      <div class="nav-item" onclick="switchTab('orders')" id="nav-orders">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Orders
+        <span id="orders-count" style="margin-left:auto;background:var(--grey-light);padding:2px 8px;border-radius:10px;font-size:11px;"></span>
+      </div>
+      <div class="nav-item" onclick="switchTab('customers')" id="nav-customers">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Customers
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main-content">
+
+    <!-- DASHBOARD TAB -->
+    <div class="tab-content active" id="tab-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-subtitle">Welcome back to Shirt Société</div>
+        </div>
+        <a href="https://shirtsociete.com" target="_blank" class="btn btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          View Shop
+        </a>
+      </div>
+      <div class="stats-grid" id="dashboard-stats">
+        <div class="stat-card"><div class="stat-label">Total Shirts</div><div class="stat-value" id="stat-total">—</div></div>
+        <div class="stat-card"><div class="stat-label">Available</div><div class="stat-value green" id="stat-available">—</div></div>
+        <div class="stat-card"><div class="stat-label">Sold</div><div class="stat-value" id="stat-sold">—</div></div>
+        <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value gold" id="stat-revenue">—</div></div>
+        <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-value" id="stat-orders">—</div></div>
+        <div class="stat-card"><div class="stat-label">Paid Orders</div><div class="stat-value green" id="stat-paid">—</div></div>
+        <div class="stat-card"><div class="stat-label">Pending Orders</div><div class="stat-value gold" id="stat-pending">—</div></div>
+        <div class="stat-card"><div class="stat-label">This Month</div><div class="stat-value gold" id="stat-month">—</div></div>
+      </div>
+      <div style="background:var(--grey);border:1px solid var(--grey-light);border-radius:4px;padding:20px;">
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;letter-spacing:1px;text-transform:uppercase;">Recent Orders</div>
+        <table style="width:100%;border-collapse:collapse;" id="recent-orders-table">
+          <thead><tr>
+            <th>Order</th><th>Customer</th><th>Amount</th><th>Status</th><th>Date</th>
+          </tr></thead>
+          <tbody id="recent-orders-body"><tr class="loading-row"><td colspan="5">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SHIRTS TAB -->
+    <div class="tab-content" id="tab-shirts">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Shirts</div>
+          <div class="page-subtitle">Manage your inventory</div>
+        </div>
+        <button class="btn btn-primary" onclick="openShirtModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Shirt
+        </button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search shirts..." oninput="filterShirtsTable(this.value)" id="shirt-search">
+        </div>
+        <select class="filter-select" onchange="filterShirtsTable()" id="shirt-filter-cat">
+          <option value="">All categories</option>
+          <option value="clubs">Clubs</option>
+          <option value="national">National</option>
+          <option value="match_worn">Match Worn</option>
+        </select>
+        <select class="filter-select" onchange="filterShirtsTable()" id="shirt-filter-status">
+          <option value="">All status</option>
+          <option value="available">Available</option>
+          <option value="sold">Sold</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Photo</th><th>Title</th><th>Club</th><th>Category</th><th>Size</th><th>Price</th><th>Status</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="shirts-tbody"><tr class="loading-row"><td colspan="8">Loading shirts...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ORDERS TAB -->
+    <div class="tab-content" id="tab-orders">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Orders</div>
+          <div class="page-subtitle">All customer orders</div>
+        </div>
+        <button class="btn btn-secondary" onclick="exportOrders()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search orders..." oninput="filterOrdersTable(this.value)">
+        </div>
+        <select class="filter-select" onchange="filterOrdersTable()" id="order-filter-status">
+          <option value="">All status</option>
+          <option value="pending">Pending</option>
+          <option value="paid">Paid</option>
+          <option value="shipped">Shipped</option>
+          <option value="delivered">Delivered</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Order #</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="orders-tbody"><tr class="loading-row"><td colspan="7">Loading orders...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CUSTOMERS TAB -->
+    <div class="tab-content" id="tab-customers">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Customers</div>
+          <div class="page-subtitle">Customer overview</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Total Spent</th><th>Last Order</th>
+          </tr></thead>
+          <tbody id="customers-tbody"><tr class="loading-row"><td colspan="6">Loading customers...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SHIRT MODAL -->
+<div class="modal-overlay" id="shirt-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="shirt-modal-title">Add Shirt</div>
+      <button class="modal-close" onclick="closeShirtModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Title *</label>
+          <input type="text" class="form-input" id="m-title" placeholder="Bayern München — Podolski Match Worn">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Club</label>
+          <input type="text" class="form-input" id="m-club" placeholder="Bayern München">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category *</label>
+          <select class="form-select" id="m-category">
+            <option value="">Select...</option>
+            <option value="clubs">Clubs</option>
+            <option value="national">National</option>
+            <option value="match_worn">Match Worn</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price (€) *</label>
+          <input type="number" class="form-input" id="m-price" placeholder="250">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Size</label>
+          <select class="form-select" id="m-size">
+            <option value="">Select...</option>
+            <option>XS</option><option>S</option><option>M</option>
+            <option>L</option><option>XL</option><option>XXL</option>
+            <option>Player Issue</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Season</label>
+          <input type="text" class="form-input" id="m-season" placeholder="2008-2009">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Condition</label>
+          <select class="form-select" id="m-condition">
+            <option value="">Select...</option>
+            <option>Excellent</option>
+            <option>Very Good</option>
+            <option>Good</option>
+            <option>Fair</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Photo URL (Cloudinary)</label>
+          <input type="text" class="form-input" id="m-image" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Description</label>
+          <textarea class="form-textarea" id="m-description" placeholder="Match worn shirt by..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Available</label>
+          <select class="form-select" id="m-available">
+            <option value="true">Yes</option>
+            <option value="false">No (Sold)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Featured on Homepage</label>
+          <select class="form-select" id="m-featured">
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeShirtModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveShirt()" id="shirt-save-btn">Save Shirt</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER MODAL -->
+<div class="modal-overlay" id="order-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="order-modal-title">Order Details</div>
+      <button class="modal-close" onclick="closeOrderModal()">×</button>
+    </div>
+    <div class="modal-body" id="order-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeOrderModal()">Close</button>
+      <button class="btn btn-primary" onclick="saveOrderChanges()" id="order-save-btn">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── CONFIG ──
+  const SUPABASE = {
+    url: 'https://hzwmjbsfmdkmaoikezoc.supabase.co',
+    key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6d21qYnNmbWRrbWFvaWtlem9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTczNDIsImV4cCI6MjA5MzEzMzM0Mn0.5-ToRrtP3bhkN_qmSMmLM5YXQgE5kWoE0wVpsksqIMs'
+  };
+  const API = 'https://shirtsociete.netlify.app';
+
+  // ── STATE ──
+  let allShirts = [];
+  let allOrders = [];
+  let allCustomers = [];
+  let editingShirtId = null;
+  let editingOrderId = null;
+  let authToken = null;
+
+  // ── SUPABASE AUTH ──
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pass = document.getElementById('login-pass').value;
+    const errEl = document.getElementById('login-error');
+    errEl.style.display = 'none';
+
+    try {
+      const res = await fetch(`${SUPABASE.url}/auth/v1/token?grant_type=password`, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE.key, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pass })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.access_token) throw new Error(data.error_description || 'Login failed');
+
+      authToken = data.access_token;
+      sessionStorage.setItem('ss_admin_token', authToken);
+      showAdmin();
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.style.display = 'block';
+    }
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem('ss_admin_token');
+    authToken = null;
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('admin-screen').style.display = 'none';
+  }
+
+  function showAdmin() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    loadAll();
+  }
+
+  // ── SUPABASE FETCH ──
+  async function sbFetch(table, query = '') {
+    const res = await fetch(`${SUPABASE.url}/rest/v1/${table}${query}`, {
+      headers: { 'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}` }
+    });
+    if (!res.ok) throw new Error(`Failed to fetch ${table}`);
+    return res.json();
+  }
+
+  // ── LOAD ALL DATA ──
+  async function loadAll() {
+    await Promise.all([loadShirts(), loadOrders(), loadCustomers()]);
+    updateDashboard();
+  }
+
+  async function loadShirts() {
+    try {
+      allShirts = await sbFetch('shirts', '?select=*&order=created_at.desc');
+      renderShirts();
+      document.getElementById('shirts-count').textContent = allShirts.length;
+    } catch (err) { showToast('Error loading shirts', 'error'); }
+  }
+
+  async function loadOrders() {
+    try {
+      allOrders = await sbFetch('orders', '?select=*&order=created_at.desc');
+      renderOrders();
+      document.getElementById('orders-count').textContent = allOrders.length;
+    } catch (err) { showToast('Error loading orders', 'error'); }
+  }
+
+  async function loadCustomers() {
+    try {
+      allCustomers = await sbFetch('customers', '?select=*&order=last_order_at.desc');
+      renderCustomers();
+    } catch (err) { showToast('Error loading customers', 'error'); }
+  }
+
+  // ── DASHBOARD ──
+  function updateDashboard() {
+    const total = allShirts.length;
+    const available = allShirts.filter(s => s.available).length;
+    const sold = total - available;
+    const revenue = allOrders.filter(o => o.status === 'paid' || o.status === 'shipped' || o.status === 'delivered').reduce((s, o) => s + parseFloat(o.total), 0);
+    const paid = allOrders.filter(o => o.status === 'paid').length;
+    const pending = allOrders.filter(o => o.status === 'pending').length;
+    const now = new Date();
+    const monthRevenue = allOrders.filter(o => {
+      const d = new Date(o.created_at);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear() && (o.status === 'paid' || o.status === 'shipped' || o.status === 'delivered');
+    }).reduce((s, o) => s + parseFloat(o.total), 0);
+
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-available').textContent = available;
+    document.getElementById('stat-sold').textContent = sold;
+    document.getElementById('stat-revenue').textContent = `€${revenue.toFixed(2)}`;
+    document.getElementById('stat-orders').textContent = allOrders.length;
+    document.getElementById('stat-paid').textContent = paid;
+    document.getElementById('stat-pending').textContent = pending;
+    document.getElementById('stat-month').textContent = `€${monthRevenue.toFixed(2)}`;
+
+    // Recent orders
+    const recent = allOrders.slice(0, 5);
+    document.getElementById('recent-orders-body').innerHTML = recent.length ? recent.map(o => `
+      <tr>
+        <td style="font-weight:500">${o.order_ref}</td>
+        <td>${o.customer_first_name} ${o.customer_last_name}</td>
+        <td style="color:var(--gold)">€${parseFloat(o.total).toFixed(2)}</td>
+        <td><span class="badge badge-${o.status}">${o.status}</span></td>
+        <td style="color:var(--text-muted)">${new Date(o.created_at).toLocaleDateString()}</td>
+      </tr>
+    `).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:20px">No orders yet</td></tr>';
+  }
+
+  // ── SHIRTS ──
+  function renderShirts(filter = '') {
+    const search = document.getElementById('shirt-search')?.value.toLowerCase() || '';
+    const cat = document.getElementById('shirt-filter-cat')?.value || '';
+    const status = document.getElementById('shirt-filter-status')?.value || '';
+    let shirts = allShirts;
+    if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search));
+    if (cat) shirts = shirts.filter(s => s.category === cat);
+    if (status === 'available') shirts = shirts.filter(s => s.available);
+    if (status === 'sold') shirts = shirts.filter(s => !s.available);
+
+    document.getElementById('shirts-tbody').innerHTML = shirts.length ? shirts.map(s => `
+      <tr>
+        <td><img src="${s.images?.[0] || ''}" class="shirt-thumb" onerror="this.style.background='var(--grey-mid)'"></td>
+        <td style="font-weight:500;max-width:200px">${s.title}</td>
+        <td>${s.club || '—'}</td>
+        <td><span class="badge badge-${s.category}">${s.category?.replace('_',' ') || '—'}</span></td>
+        <td>${s.size || '—'}</td>
+        <td style="color:var(--gold)">€${parseFloat(s.price).toFixed(2)}</td>
+        <td><span class="badge ${s.available ? 'badge-available' : 'badge-sold'}">${s.available ? 'Available' : 'Sold'}</span></td>
+        <td>
+          <div class="action-btns">
+            <button class="btn btn-sm btn-secondary" onclick="editShirt('${s.id}')">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteShirt('${s.id}')">Delete</button>
+            ${s.available ? `<button class="btn btn-sm btn-secondary" onclick="markSold('${s.id}')">Mark Sold</button>` : ''}
+          </div>
+        </td>
+      </tr>
+    `).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:40px">No shirts found</td></tr>';
+  }
+
+  function filterShirtsTable() { renderShirts(); }
+
+  function openShirtModal(shirt = null) {
+    editingShirtId = shirt ? shirt.id : null;
+    document.getElementById('shirt-modal-title').textContent = shirt ? 'Edit Shirt' : 'Add Shirt';
+    document.getElementById('m-title').value = shirt?.title || '';
+    document.getElementById('m-club').value = shirt?.club || '';
+    document.getElementById('m-category').value = shirt?.category || '';
+    document.getElementById('m-price').value = shirt?.price || '';
+    document.getElementById('m-size').value = shirt?.size || '';
+    document.getElementById('m-season').value = shirt?.season || '';
+    document.getElementById('m-condition').value = shirt?.condition || '';
+    document.getElementById('m-image').value = shirt?.images?.[0] || '';
+    document.getElementById('m-description').value = shirt?.description || '';
+    document.getElementById('m-available').value = shirt ? String(shirt.available) : 'true';
+    document.getElementById('m-featured').value = shirt ? String(shirt.featured) : 'false';
+    document.getElementById('shirt-modal').classList.add('open');
+  }
+
+  function closeShirtModal() { document.getElementById('shirt-modal').classList.remove('open'); }
+
+  function editShirt(id) {
+    const shirt = allShirts.find(s => s.id === id);
+    if (shirt) openShirtModal(shirt);
+  }
+
+  async function saveShirt() {
+    const title = document.getElementById('m-title').value.trim();
+    const category = document.getElementById('m-category').value;
+    const price = document.getElementById('m-price').value;
+    if (!title || !category || !price) { showToast('Fill in all required fields', 'error'); return; }
+
+    const btn = document.getElementById('shirt-save-btn');
+    btn.disabled = true; btn.textContent = 'Saving...';
+
+    const payload = {
+      title,
+      club: document.getElementById('m-club').value.trim() || null,
+      category,
+      price: parseFloat(price),
+      size: document.getElementById('m-size').value || null,
+      season: document.getElementById('m-season').value.trim() || null,
+      condition: document.getElementById('m-condition').value || null,
+      description: document.getElementById('m-description').value.trim() || null,
+      images: document.getElementById('m-image').value.trim() ? [document.getElementById('m-image').value.trim()] : [],
+      available: document.getElementById('m-available').value === 'true',
+      featured: document.getElementById('m-featured').value === 'true'
+    };
+
+    try {
+      const method = editingShirtId ? 'PATCH' : 'POST';
+      const url = editingShirtId
+        ? `${SUPABASE.url}/rest/v1/shirts?id=eq.${editingShirtId}`
+        : `${SUPABASE.url}/rest/v1/shirts`;
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'apikey': SUPABASE.key,
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error('Failed to save');
+      showToast(editingShirtId ? 'Shirt updated!' : 'Shirt added!', 'success');
+      closeShirtModal();
+      await loadShirts();
+      updateDashboard();
+    } catch (err) {
+      showToast('Error: ' + err.message, 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Save Shirt';
+    }
+  }
+
+  async function deleteShirt(id) {
+    if (!confirm('Are you sure you want to delete this shirt?')) return;
+    try {
+      await fetch(`${SUPABASE.url}/rest/v1/shirts?id=eq.${id}`, {
+        method: 'DELETE',
+        headers: { 'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}` }
+      });
+      showToast('Shirt deleted', 'success');
+      await loadShirts();
+      updateDashboard();
+    } catch (err) { showToast('Error deleting shirt', 'error'); }
+  }
+
+  async function markSold(id) {
+    if (!confirm('Mark this shirt as sold?')) return;
+    try {
+      await fetch(`${SUPABASE.url}/rest/v1/shirts?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { 'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ available: false, sold_at: new Date().toISOString() })
+      });
+      showToast('Marked as sold', 'success');
+      await loadShirts();
+      updateDashboard();
+    } catch (err) { showToast('Error', 'error'); }
+  }
+
+  // ── ORDERS ──
+  function renderOrders() {
+    const search = document.getElementById('orders-tbody') ? '' : '';
+    const statusFilter = document.getElementById('order-filter-status')?.value || '';
+    let orders = allOrders;
+    if (statusFilter) orders = orders.filter(o => o.status === statusFilter);
+
+    document.getElementById('orders-tbody').innerHTML = orders.length ? orders.map(o => `
+      <tr>
+        <td style="font-weight:500">${o.order_ref}</td>
+        <td>${o.customer_first_name} ${o.customer_last_name}<br><span style="font-size:12px;color:var(--text-muted)">${o.customer_email}</span></td>
+        <td>${o.items?.length || 0} item(s)</td>
+        <td style="color:var(--gold)">€${parseFloat(o.total).toFixed(2)}</td>
+        <td><span class="badge badge-${o.status}">${o.status}</span></td>
+        <td style="color:var(--text-muted)">${new Date(o.created_at).toLocaleDateString()}</td>
+        <td>
+          <div class="action-btns">
+            <button class="btn btn-sm btn-secondary" onclick="openOrderModal('${o.id}')">View</button>
+            <button class="btn btn-sm btn-secondary" onclick="copyAddress('${o.id}')">📋 Address</button>
+          </div>
+        </td>
+      </tr>
+    `).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:40px">No orders found</td></tr>';
+  }
+
+  function filterOrdersTable(search = '') {
+    let orders = allOrders;
+    const statusFilter = document.getElementById('order-filter-status')?.value || '';
+    if (search) orders = orders.filter(o =>
+      o.order_ref.toLowerCase().includes(search.toLowerCase()) ||
+      o.customer_email.toLowerCase().includes(search.toLowerCase()) ||
+      `${o.customer_first_name} ${o.customer_last_name}`.toLowerCase().includes(search.toLowerCase())
+    );
+    if (statusFilter) orders = orders.filter(o => o.status === statusFilter);
+    document.getElementById('orders-tbody').innerHTML = orders.map(o => `
+      <tr>
+        <td style="font-weight:500">${o.order_ref}</td>
+        <td>${o.customer_first_name} ${o.customer_last_name}<br><span style="font-size:12px;color:var(--text-muted)">${o.customer_email}</span></td>
+        <td>${o.items?.length || 0} item(s)</td>
+        <td style="color:var(--gold)">€${parseFloat(o.total).toFixed(2)}</td>
+        <td><span class="badge badge-${o.status}">${o.status}</span></td>
+        <td style="color:var(--text-muted)">${new Date(o.created_at).toLocaleDateString()}</td>
+        <td>
+          <div class="action-btns">
+            <button class="btn btn-sm btn-secondary" onclick="openOrderModal('${o.id}')">View</button>
+            <button class="btn btn-sm btn-secondary" onclick="copyAddress('${o.id}')">📋 Address</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function openOrderModal(id) {
+    const o = allOrders.find(x => x.id === id);
+    if (!o) return;
+    editingOrderId = id;
+    document.getElementById('order-modal-title').textContent = `Order ${o.order_ref}`;
+    document.getElementById('order-modal-body').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div>
+          <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Customer</div>
+          <div style="font-weight:500">${o.customer_first_name} ${o.customer_last_name}</div>
+          <div style="color:var(--text-muted);font-size:13px">${o.customer_email}</div>
+          <div style="color:var(--text-muted);font-size:13px">${o.customer_phone || '—'}</div>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Shipping Address</div>
+          <div style="font-size:13px;line-height:1.6">
+            ${o.shipping_street} ${o.shipping_housenr}<br>
+            ${o.shipping_postal} ${o.shipping_city}<br>
+            ${o.shipping_country}
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Items</div>
+      <div style="background:var(--grey-mid);border-radius:4px;padding:12px;margin-bottom:16px">
+        ${(o.items||[]).map(i => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--grey-light);font-size:13px"><span>${i.title}</span><span style="color:var(--gold)">€${parseFloat(i.price).toFixed(2)}</span></div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:8px 0;font-weight:600"><span>Total</span><span style="color:var(--gold)">€${parseFloat(o.total).toFixed(2)}</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-select" id="order-status-select">
+            <option value="pending" ${o.status==='pending'?'selected':''}>Pending</option>
+            <option value="paid" ${o.status==='paid'?'selected':''}>Paid</option>
+            <option value="shipped" ${o.status==='shipped'?'selected':''}>Shipped</option>
+            <option value="delivered" ${o.status==='delivered'?'selected':''}>Delivered</option>
+            <option value="cancelled" ${o.status==='cancelled'?'selected':''}>Cancelled</option>
+            <option value="refunded" ${o.status==='refunded'?'selected':''}>Refunded</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Track & Trace Code</label>
+          <input type="text" class="form-input" id="order-tracking" value="${o.tracking_code || ''}" placeholder="3SABCD12345678">
+        </div>
+      </div>
+      ${o.notes ? `<div style="margin-top:16px;padding:12px;background:var(--grey-mid);border-radius:4px;font-size:13px;color:var(--text-muted)"><strong style="color:var(--white)">Notes:</strong> ${o.notes}</div>` : ''}
+    `;
+    document.getElementById('order-modal').classList.add('open');
+  }
+
+  function closeOrderModal() { document.getElementById('order-modal').classList.remove('open'); }
+
+  async function saveOrderChanges() {
+    const status = document.getElementById('order-status-select').value;
+    const tracking = document.getElementById('order-tracking').value.trim();
+    const btn = document.getElementById('order-save-btn');
+    btn.disabled = true; btn.textContent = 'Saving...';
+
+    try {
+      const updates = { status };
+      if (tracking) updates.tracking_code = tracking;
+      if (status === 'shipped') updates.shipped_at = new Date().toISOString();
+
+      await fetch(`${SUPABASE.url}/rest/v1/orders?id=eq.${editingOrderId}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updates)
+      });
+
+      showToast('Order updated!', 'success');
+      closeOrderModal();
+      await loadOrders();
+      updateDashboard();
+    } catch (err) {
+      showToast('Error saving order', 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Save Changes';
+    }
+  }
+
+  function copyAddress(id) {
+    const o = allOrders.find(x => x.id === id);
+    if (!o) return;
+    const addr = `${o.customer_first_name} ${o.customer_last_name}\n${o.shipping_street} ${o.shipping_housenr}\n${o.shipping_postal} ${o.shipping_city}\n${o.shipping_country}\n\nPhone: ${o.customer_phone || '—'}\nEmail: ${o.customer_email}`;
+    navigator.clipboard.writeText(addr).then(() => showToast('Address copied!', 'success'));
+  }
+
+  function exportOrders() {
+    const headers = ['Order Ref','Status','Total','First Name','Last Name','Email','Phone','Street','House Nr','Postal','City','Country','Items','Date'];
+    const rows = allOrders.map(o => [
+      o.order_ref, o.status, o.total,
+      o.customer_first_name, o.customer_last_name, o.customer_email, o.customer_phone,
+      o.shipping_street, o.shipping_housenr, o.shipping_postal, o.shipping_city, o.shipping_country,
+      (o.items||[]).map(i => i.title).join(' | '),
+      new Date(o.created_at).toLocaleDateString()
+    ]);
+    const csv = [headers, ...rows].map(r => r.map(v => `"${v||''}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = `shirtsociete-orders-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    showToast('CSV exported!', 'success');
+  }
+
+  // ── CUSTOMERS ──
+  function renderCustomers() {
+    document.getElementById('customers-tbody').innerHTML = allCustomers.length ? allCustomers.map(c => `
+      <tr>
+        <td style="font-weight:500">${c.first_name || '—'} ${c.last_name || ''}</td>
+        <td>${c.email}</td>
+        <td>${c.phone || '—'}</td>
+        <td>${allOrders.filter(o => o.customer_email === c.email).length}</td>
+        <td style="color:var(--gold)">€${parseFloat(c.total_spent || 0).toFixed(2)}</td>
+        <td style="color:var(--text-muted)">${c.last_order_at ? new Date(c.last_order_at).toLocaleDateString() : '—'}</td>
+      </tr>
+    `).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:40px">No customers yet</td></tr>';
+  }
+
+  // ── NAV ──
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.getElementById('nav-' + tab).classList.add('active');
+  }
+
+  // ── TOAST ──
+  function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'toast ' + type;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ── INIT ──
+  const saved = sessionStorage.getItem('ss_admin_token');
+  if (saved) { authToken = saved; showAdmin(); }
+</script>
+</body>
+</html>
