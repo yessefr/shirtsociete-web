@@ -21,7 +21,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html, body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+    html, body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
     /* ─── MOBILE: tab bar layout ─── */
     .tab-bar {
@@ -351,9 +351,9 @@
       display: flex; gap: 20px; align-items: center;
       padding: 20px 0; border-bottom: 1px solid #1e1c17;
     }
-    .cart-item img { width: 96px; height: 96px; object-fit: cover; border-radius: 2px; background: var(--grey); flex-shrink: 0; }
+    .cart-item img { width: 72px; height: 72px; object-fit: cover; border-radius: 2px; background: var(--grey); flex-shrink: 0; }
     .cart-item-info { flex: 1; }
-    .cart-item-title { font-size: 16px; font-weight: 500; margin-bottom: 4px; }
+    .cart-item-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; word-break: break-word; }
     .cart-item-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
     .cart-item-price { font-size: 18px; color: var(--gold); font-weight: 500; }
     .remove-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; transition: color 0.2s; }
@@ -375,7 +375,7 @@
     .cart-checkout-btn:hover { background: var(--gold-light); }
 
     /* ─── CHECKOUT ─── */
-    .checkout-wrap { padding: 48px; max-width: 900px; }
+    .checkout-wrap { padding: 48px; max-width: 900px; } @media (max-width: 767px) { .checkout-wrap { padding: 16px; } }
     .checkout-grid { display: grid; grid-template-columns: 1fr 400px; gap: 48px; }
     .checkout-title { font-size: 24px; font-weight: 500; margin-bottom: 8px; }
     .checkout-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
@@ -411,11 +411,11 @@
     .payment-methods { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
     .payment-method { background: #1e1c17; border-radius: 2px; padding: 6px 12px; font-size: 11px; color: var(--text-muted); }
     .pay-btn {
-      width: 100%; padding: 18px; background: var(--gold); color: var(--black);
+      width: 100%; padding: 14px 24px; background: var(--gold); color: var(--black);
       border: none; border-radius: 2px; cursor: pointer;
-      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
-      letter-spacing: 1px; text-transform: uppercase; transition: background 0.2s;
-      display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      letter-spacing: 0.5px; text-transform: uppercase; transition: background 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px;
     }
     .pay-btn:hover { background: var(--gold-light); }
     .pay-btn:disabled { background: #4a4640; color: var(--text-muted); cursor: not-allowed; }
@@ -1201,11 +1201,20 @@
     document.getElementById('d-order-summary').innerHTML = summaryHTML;
   }
 
+  function getField(id) {
+    // Get the visible field (mobile or desktop)
+    const els = document.querySelectorAll('#' + id);
+    for (const el of els) {
+      if (el && el.offsetParent !== null) return el;
+    }
+    return document.getElementById(id);
+  }
+
   async function submitPayment(ctx) {
     const fields = ['f-first','f-last','f-email','f-phone','f-street','f-housenr','f-postal','f-city','f-country'];
     let valid = true;
     fields.forEach(id => {
-      const el = document.getElementById(id);
+      const el = getField(id);
       if (!el) return;
       el.classList.remove('error');
       if (!el.value.trim()) { el.classList.add('error'); valid = false; }
@@ -1219,16 +1228,16 @@
 
     try {
       const customer = {
-        first_name: document.getElementById('f-first').value.trim(),
-        last_name: document.getElementById('f-last').value.trim(),
-        email: document.getElementById('f-email').value.trim(),
-        phone: document.getElementById('f-phone').value.trim(),
-        street: document.getElementById('f-street').value.trim(),
-        housenr: document.getElementById('f-housenr').value.trim() + (document.getElementById('f-addition').value.trim() ? ' '+document.getElementById('f-addition').value.trim() : ''),
-        postal: document.getElementById('f-postal').value.trim(),
-        city: document.getElementById('f-city').value.trim(),
-        country: document.getElementById('f-country').value,
-        notes: document.getElementById('f-notes').value.trim()
+        first_name: getField('f-first').value.trim(),
+        last_name: getField('f-last').value.trim(),
+        email: getField('f-email').value.trim(),
+        phone: getField('f-phone').value.trim(),
+        street: getField('f-street').value.trim(),
+        housenr: getField('f-housenr').value.trim() + (getField('f-addition').value.trim() ? ' '+getField('f-addition').value.trim() : ''),
+        postal: getField('f-postal').value.trim(),
+        city: getField('f-city').value.trim(),
+        country: getField('f-country').value,
+        notes: getField('f-notes').value.trim()
       };
 
       const res = await fetch('https://shirtsociete.netlify.app/api/create-payment', {
