@@ -411,12 +411,15 @@
     .payment-methods { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
     .payment-method { background: #1e1c17; border-radius: 2px; padding: 6px 12px; font-size: 11px; color: var(--text-muted); }
     .pay-btn {
-      width: 100%; padding: 14px 24px; background: var(--gold); color: var(--black);
+      width: 100%; max-width: 100%; padding: 14px 24px;
+      background: var(--gold); color: var(--black);
       border: none; border-radius: 2px; cursor: pointer;
       font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
       letter-spacing: 0.5px; text-transform: uppercase; transition: background 0.2s;
       display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px;
+      line-height: 1;
     }
+    .pay-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
     .pay-btn:hover { background: var(--gold-light); }
     .pay-btn:disabled { background: #4a4640; color: var(--text-muted); cursor: not-allowed; }
 
