@@ -420,9 +420,172 @@
     @media (min-width: 431px) {
       html, body { border-left: 1px solid #1e1c17; border-right: 1px solid #1e1c17; }
     }
+  
+    /* ══════════════════════════════
+       DESKTOP LAYOUT (min-width: 768px)
+       ══════════════════════════════ */
+    @media (min-width: 768px) {
+      html, body {
+        max-width: 100%;
+        display: flex;
+        flex-direction: row;
+      }
+
+      /* Sidebar nav */
+      .tab-bar { display: none; }
+
+      .desktop-sidebar {
+        display: flex !important;
+        flex-direction: column;
+        width: 240px;
+        min-height: 100vh;
+        background: #0e0c08;
+        border-right: 1px solid #1e1c17;
+        position: fixed;
+        left: 0; top: 0; bottom: 0;
+        z-index: 200;
+      }
+
+      .desktop-sidebar-logo {
+        padding: 28px 24px 20px;
+        border-bottom: 1px solid #1e1c17;
+      }
+
+      .desktop-sidebar-logo .logo { font-size: 22px; }
+      .desktop-sidebar-logo .tagline { font-size: 10px; margin-top: 4px; }
+
+      .desktop-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 24px;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        border-left: 3px solid transparent;
+        transition: all 0.2s;
+      }
+      .desktop-nav-item:hover { color: var(--white); background: rgba(255,255,255,0.03); }
+      .desktop-nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(200,169,80,0.05); }
+      .desktop-nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+      .desktop-sidebar-footer {
+        margin-top: auto;
+        padding: 20px 24px;
+        border-top: 1px solid #1e1c17;
+        font-size: 12px;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+      .desktop-sidebar-footer a { color: var(--gold); text-decoration: none; }
+
+      /* Main content shift */
+      .site-header { display: none; }
+
+      .screen {
+        margin-left: 240px;
+        width: calc(100% - 240px);
+        min-height: 100vh;
+        padding-bottom: 40px;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 60px 48px 72px;
+        min-height: 380px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .hero-title { font-size: 56px; }
+      .hero-sub { font-size: 18px; max-width: 480px; }
+
+      /* Home rows — bigger cards */
+      .shirt-card-sm { flex: 0 0 200px; }
+      .shirt-card-sm img { height: 200px; }
+      .section-label { padding: 32px 48px 16px; font-size: 11px; }
+      .shirt-row { padding: 0 48px 24px; gap: 16px; }
+      .divider { margin: 8px 48px; }
+
+      /* Shop */
+      .shop-search { padding: 24px 48px 0; }
+      .filters { padding: 12px 48px; }
+
+      /* 3-column grid */
+      .shirt-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        padding: 0 48px 40px;
+      }
+
+      /* Detail */
+      #screen-detail { padding-bottom: 40px; }
+      .detail-back { padding: 24px 48px; }
+      .detail-img { max-height: 500px; object-fit: contain; background: #111; }
+      .detail-body { padding: 32px 48px; max-width: 680px; }
+      .detail-title { font-size: 34px; }
+      .detail-price { font-size: 36px; }
+
+      /* Cart */
+      .cart-header { padding: 32px 48px 20px; font-size: 26px; }
+      .cart-items { padding: 0 48px; }
+      .cart-footer { padding: 24px 48px; max-width: 480px; }
+
+      /* Checkout */
+      .checkout-header { padding: 32px 48px 16px; }
+      .checkout-form { padding: 16px 48px; max-width: 680px; }
+      .checkout-summary { margin: 0 48px 24px; max-width: 680px; }
+      .pay-btn { margin: 0 48px 24px; width: auto; min-width: 320px; }
+      .payment-methods { justify-content: flex-start; padding: 0 48px 24px; }
+
+      /* Profile */
+      .profile-header { padding: 48px 48px 32px; text-align: left; display: flex; align-items: center; gap: 24px; }
+      .profile-avatar { margin: 0; }
+      .profile-section { padding: 0 48px 24px; max-width: 600px; }
+
+      /* Toast */
+      .toast { bottom: 32px; right: 32px; left: auto; transform: translateY(8px); }
+      .toast.show { transform: translateY(0); }
+    }
+
   </style>
 </head>
 <body>
+
+<!-- DESKTOP SIDEBAR (hidden on mobile) -->
+<div class="desktop-sidebar" id="desktop-sidebar" style="display:none;">
+  <div class="desktop-sidebar-logo">
+    <div class="logo">Shirt Société</div>
+    <div class="tagline">Timeless · Original · Rare</div>
+  </div>
+  <nav style="padding-top: 8px;">
+    <div class="desktop-nav-item active" onclick="goTo('home')" id="dnav-home">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </div>
+    <div class="desktop-nav-item" onclick="goTo('shop')" id="dnav-shop">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-8.42H6"/></svg>
+      Shop
+    </div>
+    <div class="desktop-nav-item" onclick="goTo('cart')" id="dnav-cart">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Cart
+      <span id="dcart-badge" style="margin-left:auto;background:var(--gold);color:var(--black);font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;"></span>
+    </div>
+    <div class="desktop-nav-item" onclick="goTo('profile')" id="dnav-profile">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </div>
+  </nav>
+  <div class="desktop-sidebar-footer">
+    <div style="margin-bottom:8px;color:var(--white);font-size:13px;font-weight:500;">Shirt Société</div>
+    <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a><br>
+    <span style="margin-top:4px;display:block;">© 2026 Shirt Société</span>
+  </div>
+</div>
+
 
 <!-- HEADER -->
 <header class="site-header">
@@ -678,9 +841,12 @@
   function goTo(screen) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.desktop-nav-item').forEach(t => t.classList.remove('active'));
     document.getElementById('screen-' + screen).classList.add('active');
     const tab = document.getElementById('tab-' + screen);
     if (tab) tab.classList.add('active');
+    const dnav = document.getElementById('dnav-' + screen);
+    if (dnav) dnav.classList.add('active');
     if (screen !== 'detail') prevScreen = currentScreen;
     currentScreen = screen;
     window.scrollTo(0, 0);
@@ -722,9 +888,12 @@
     const featured = allShirts.filter(s => s.featured);
     const matchWorn = allShirts.filter(s => s.category === 'match_worn');
     const national = allShirts.filter(s => s.category === 'national');
+    // Featured: only show featured shirts, or top 4 if none
     renderRow('featured-row', featured.length ? featured : allShirts.slice(0, 4));
-    renderRow('matchworn-row', matchWorn.length ? matchWorn : allShirts.slice(0, 3));
-    renderRow('national-row', national.length ? national : allShirts.slice(0, 3));
+    // Match Worn: only match_worn category
+    renderRow('matchworn-row', matchWorn);
+    // National: only national category
+    renderRow('national-row', national);
   }
 
   function renderRow(id, shirts) {
@@ -857,6 +1026,12 @@
     const badge = document.getElementById('cart-badge');
     badge.textContent = cart.length;
     badge.classList.toggle('visible', cart.length > 0);
+    // Desktop badge
+    const dbadge = document.getElementById('dcart-badge');
+    if (dbadge) {
+      dbadge.textContent = cart.length;
+      dbadge.style.display = cart.length > 0 ? 'flex' : 'none';
+    }
   }
 
   function getCartTotal() {
@@ -998,6 +1173,18 @@
   // ── INIT ──
   updateCartBadge();
   fetchShirts();
+
+  // Show desktop sidebar on wide screens
+  function checkDesktop() {
+    const sidebar = document.getElementById('desktop-sidebar');
+    if (window.innerWidth >= 768) {
+      sidebar.style.display = 'flex';
+    } else {
+      sidebar.style.display = 'none';
+    }
+  }
+  checkDesktop();
+  window.addEventListener('resize', checkDesktop);
 </script>
 </body>
 </html>
