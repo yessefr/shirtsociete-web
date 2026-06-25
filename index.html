@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shirt Société — Timeless, Original, Rare</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
   <style>
     :root {
       --black: #0a0905;
@@ -18,69 +17,24 @@
       --grey: #2a2820;
       --grey-mid: #4a4640;
       --text-muted: #888070;
-      --tab-h: 64px;
-      --max-w: 430px;
+      --sidebar-w: 240px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
 
-    html, body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      max-width: var(--max-w);
-      margin: 0 auto;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* ── SCREENS ── */
-    .screen { display: none; flex-direction: column; min-height: calc(100vh - var(--tab-h)); padding-bottom: calc(var(--tab-h) + 16px); }
-    .screen.active { display: flex; }
-
-    /* ── HEADER ── */
-    .site-header {
-      padding: 24px 20px 16px;
-      text-align: center;
-      border-bottom: 1px solid #1e1c17;
-      position: sticky; top: 0; z-index: 100;
-      background: var(--black);
-    }
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-weight: 900;
-      font-size: 28px;
-      color: var(--gold);
-      letter-spacing: -0.5px;
-      line-height: 1;
-    }
-    .tagline {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 12px;
-      color: var(--text-muted);
-      letter-spacing: 2px;
-      margin-top: 4px;
-      text-transform: uppercase;
-    }
-
-    /* ── TAB BAR ── */
+    /* ─── MOBILE: tab bar layout ─── */
     .tab-bar {
-      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 100%; max-width: var(--max-w);
-      height: var(--tab-h);
-      background: #0e0c08;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      height: 64px; background: #0e0c08;
       border-top: 1px solid #1e1c17;
-      display: flex;
-      z-index: 200;
+      display: flex; z-index: 200;
     }
     .tab {
       flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 4px; cursor: pointer; color: var(--text-muted);
       font-size: 10px; font-weight: 500; letter-spacing: 0.5px;
-      transition: color 0.2s;
-      position: relative;
+      transition: color 0.2s; position: relative;
     }
     .tab.active { color: var(--gold); }
     .tab svg { width: 22px; height: 22px; stroke-width: 1.5; }
@@ -93,248 +47,345 @@
     }
     .cart-badge.visible { display: flex; }
 
-    /* ── HOME ── */
-    .hero {
-      background: linear-gradient(160deg, #1a1710 0%, var(--black) 60%);
-      padding: 40px 24px 48px;
-      position: relative; overflow: hidden;
+    /* Mobile header */
+    .mobile-header {
+      display: flex; padding: 16px 20px; text-align: center;
+      border-bottom: 1px solid #1e1c17;
+      position: sticky; top: 0; z-index: 100; background: #0a0905;
+      justify-content: center; align-items: center;
     }
-    .hero::before {
-      content: '';
-      position: absolute; top: -40px; right: -40px;
-      width: 200px; height: 200px;
-      background: radial-gradient(circle, rgba(200,169,80,0.08) 0%, transparent 70%);
-      pointer-events: none;
+    .mobile-logo { cursor: pointer; }
+    .mobile-logo img { height: 48px; object-fit: contain; mix-blend-mode: luminosity; }
+
+    /* Mobile screens */
+    .screen { display: none; flex-direction: column; min-height: calc(100vh - 64px); padding-bottom: 80px; }
+    .screen.active { display: flex; }
+
+    /* ─── DESKTOP LAYOUT ─── */
+    @media (min-width: 768px) {
+      .tab-bar { display: none; }
+      .mobile-header { display: none; }
+      .screen { display: none !important; }
+      .desktop-layout { display: flex !important; }
+    }
+
+    .desktop-layout {
+      display: none;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      position: fixed; top: 0; left: 0; bottom: 0;
+      background: #0a0905; border-right: 1px solid #1e1c17;
+      display: flex; flex-direction: column; z-index: 100; overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 28px 24px 20px; border-bottom: 1px solid #1e1c17;
+      cursor: pointer; transition: opacity 0.2s;
+      background: #0a0905;
+    }
+    .sidebar-logo:hover { opacity: 0.85; }
+    .sidebar-logo img { width: 100%; max-height: 120px; object-fit: contain; mix-blend-mode: luminosity; filter: brightness(1.1); }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 24px; color: var(--text-muted); cursor: pointer;
+      font-size: 14px; font-weight: 500; transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.03); }
+    .nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(200,169,80,0.05); }
+    .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .nav-section-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: #3a3830; padding: 20px 24px 8px; font-weight: 500;
+    }
+    .sidebar-footer {
+      margin-top: auto; padding: 20px 24px; border-top: 1px solid #1e1c17;
+      font-size: 12px; color: var(--text-muted); line-height: 1.6;
+    }
+    .sidebar-footer a { color: var(--gold); text-decoration: none; }
+
+    /* Main content area */
+    .desktop-main {
+      margin-left: var(--sidebar-w); flex: 1; min-height: 100vh;
+    }
+
+    /* Desktop screens */
+    .dscreen { display: none; }
+    .dscreen.active { display: block; }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative; overflow: hidden;
+      min-height: 480px; display: flex; align-items: flex-end;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782385547/ChatGPT_Image_12_feb_2026_12_01_18_j490fq.png');
+      background-size: cover; background-position: center;
+      filter: brightness(0.4);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 48px; width: 100%;
     }
     .hero-eyebrow {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 12px; font-weight: 500;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px; font-weight: 500;
     }
     .hero-title {
       font-family: 'Playfair Display', serif;
       font-style: italic; font-weight: 900;
-      font-size: 38px; line-height: 1.1;
-      color: var(--white); margin-bottom: 8px;
+      font-size: clamp(36px, 5vw, 64px); line-height: 1.1;
+      color: var(--white); margin-bottom: 12px;
     }
     .hero-title span { color: var(--gold); }
     .hero-sub {
       font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-size: 16px;
-      color: var(--text-muted); margin-bottom: 28px; line-height: 1.5;
+      font-style: italic; font-size: 20px;
+      color: rgba(245,240,232,0.7); margin-bottom: 32px; line-height: 1.5;
+      max-width: 500px;
     }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--gold); color: var(--black);
       font-family: 'DM Sans', sans-serif;
-      font-size: 13px; font-weight: 500; letter-spacing: 0.5px;
-      padding: 14px 28px; border-radius: 2px;
+      font-size: 13px; font-weight: 500; letter-spacing: 1px;
+      padding: 14px 32px; border-radius: 2px;
       border: none; cursor: pointer; text-transform: uppercase;
       transition: background 0.2s, transform 0.1s;
     }
-    .btn-primary:active { transform: scale(0.97); }
     .btn-primary:hover { background: var(--gold-light); }
+    .btn-primary:active { transform: scale(0.98); }
 
-    .section-label {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--gold); font-weight: 500; padding: 24px 20px 12px;
+    /* ─── SECTION ─── */
+    .section { padding: 48px; }
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
     }
+    .section-label {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); font-weight: 500;
+    }
+    .section-link {
+      font-size: 13px; color: var(--text-muted); cursor: pointer;
+      transition: color 0.2s; text-decoration: none;
+    }
+    .section-link:hover { color: var(--gold); }
 
-    /* Horizontal scroll row */
+    /* Horizontal scroll (mobile + desktop home) */
     .shirt-row {
-      display: flex; gap: 12px;
-      overflow-x: auto; padding: 0 20px 20px;
+      display: flex; gap: 16px; overflow-x: auto; padding-bottom: 8px;
       scrollbar-width: none;
     }
     .shirt-row::-webkit-scrollbar { display: none; }
     .shirt-card-sm {
-      flex: 0 0 160px; cursor: pointer;
+      flex: 0 0 220px; cursor: pointer;
       background: var(--grey); border-radius: 2px; overflow: hidden;
-      transition: transform 0.2s;
+      transition: transform 0.2s; position: relative;
     }
-    .shirt-card-sm:active { transform: scale(0.97); }
-    .shirt-card-sm img {
-      width: 100%; height: 160px; object-fit: cover;
-      background: #1e1c17;
+    .shirt-card-sm:hover { transform: translateY(-4px); }
+    .shirt-card-sm .img-hover {
+      position: absolute; top: 0; left: 0; width: 100%; height: 280px;
+      object-fit: contain; background: #1a1815; padding: 8px;
+      opacity: 0; transition: opacity 0.3s;
     }
-    .shirt-card-sm-info { padding: 10px 12px; }
-    .shirt-card-sm-title { font-size: 12px; font-weight: 500; line-height: 1.3; margin-bottom: 4px; }
-    .shirt-card-sm-price { font-size: 13px; color: var(--gold); font-weight: 500; }
+    .shirt-card-sm:hover .img-hover { opacity: 1; }
+    .shirt-card-sm .img-main { transition: opacity 0.3s; }
+    .shirt-card-sm:hover .img-main { opacity: 0; }
+    .shirt-card-sm img { width: 100%; height: 280px; object-fit: contain; background: #1a1815; padding: 8px; }
+    .shirt-card-sm-info { padding: 12px 14px; }
+    .shirt-card-sm-club { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+    .shirt-card-sm-title { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 6px; }
+    .shirt-card-sm-price { font-size: 15px; color: var(--gold); font-weight: 500; }
 
-    /* divider */
-    .divider { height: 1px; background: #1e1c17; margin: 8px 20px; }
+    /* Divider */
+    .divider { height: 1px; background: #1e1c17; margin: 0 48px; }
 
-    /* ── SHOP ── */
-    .shop-search {
-      padding: 16px 20px 0;
-      position: relative;
+    /* ─── SHOP GRID ─── */
+    .shop-header { padding: 32px 48px 0; }
+    .shop-toolbar {
+      display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+      padding: 16px 48px; border-bottom: 1px solid #1e1c17;
     }
-    .shop-search input {
-      width: 100%; background: var(--grey);
-      border: 1px solid #2e2c27; border-radius: 2px;
+    .search-wrap { flex: 1; min-width: 200px; position: relative; }
+    .search-wrap input {
+      width: 100%; background: var(--grey); border: 1px solid #2e2c27;
       color: var(--white); font-family: 'DM Sans', sans-serif;
-      font-size: 14px; padding: 12px 16px 12px 40px;
-      outline: none; transition: border-color 0.2s;
+      font-size: 14px; padding: 10px 16px 10px 38px; border-radius: 2px; outline: none;
+      transition: border-color 0.2s;
     }
-    .shop-search input:focus { border-color: var(--gold-dim); }
-    .shop-search input::placeholder { color: var(--text-muted); }
-    .shop-search svg {
-      position: absolute; left: 32px; top: 50%; transform: translateY(-50%);
-      color: var(--text-muted); width: 16px; height: 16px;
-    }
-
-    .filters {
-      display: flex; gap: 8px;
-      padding: 12px 20px; overflow-x: auto; scrollbar-width: none;
-    }
-    .filters::-webkit-scrollbar { display: none; }
+    .search-wrap input:focus { border-color: var(--gold-dim); }
+    .search-wrap input::placeholder { color: var(--text-muted); }
+    .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 16px; height: 16px; }
     .filter-btn {
-      flex: 0 0 auto;
-      padding: 7px 16px; border-radius: 2px;
+      padding: 8px 18px; border-radius: 2px;
       border: 1px solid #2e2c27; background: transparent;
       color: var(--text-muted); font-family: 'DM Sans', sans-serif;
       font-size: 12px; font-weight: 500; letter-spacing: 0.5px;
-      cursor: pointer; text-transform: uppercase;
-      transition: all 0.2s;
+      cursor: pointer; text-transform: uppercase; transition: all 0.2s;
     }
-    .filter-btn.active {
-      background: var(--gold); color: var(--black); border-color: var(--gold);
-    }
+    .filter-btn.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
 
     .shirt-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 12px; padding: 0 20px 20px;
+      display: grid; padding: 24px 48px 48px;
+      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
     }
     .shirt-card {
       background: var(--grey); border-radius: 2px; overflow: hidden;
-      cursor: pointer; transition: transform 0.2s;
+      cursor: pointer; transition: transform 0.2s; position: relative;
     }
-    .shirt-card:active { transform: scale(0.97); }
-    .shirt-card img {
-      width: 100%; aspect-ratio: 1; object-fit: cover;
-      background: #1e1c17;
+    .shirt-card:hover { transform: translateY(-4px); }
+    .shirt-card .img-hover {
+      position: absolute; top: 0; left: 0; width: 100%;
+      aspect-ratio: 3/4; object-fit: contain; background: #1a1815; padding: 8px;
+      opacity: 0; transition: opacity 0.3s;
     }
-    .shirt-card-body { padding: 10px; }
+    .shirt-card:hover .img-hover { opacity: 1; }
+    .shirt-card .img-main { transition: opacity 0.3s; }
+    .shirt-card:hover .img-main { opacity: 0; }
+    .shirt-card img { width: 100%; aspect-ratio: 3/4; object-fit: contain; background: #1a1815; padding: 8px; }
+    .shirt-card-body { padding: 14px; }
     .shirt-card-club { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
-    .shirt-card-title { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 8px; }
+    .shirt-card-title { font-size: 14px; font-weight: 500; line-height: 1.3; margin-bottom: 10px; }
     .shirt-card-footer { display: flex; align-items: center; justify-content: space-between; }
-    .shirt-card-price { font-size: 14px; color: var(--gold); font-weight: 500; }
+    .shirt-card-price { font-size: 16px; color: var(--gold); font-weight: 500; }
     .add-btn {
-      width: 28px; height: 28px; border-radius: 50%;
+      width: 32px; height: 32px; border-radius: 50%;
       background: var(--gold); color: var(--black);
-      border: none; cursor: pointer; font-size: 18px; font-weight: 300;
+      border: none; cursor: pointer; font-size: 20px; font-weight: 300;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.2s, transform 0.1s;
     }
-    .add-btn:active { transform: scale(0.9); }
     .add-btn:hover { background: var(--gold-light); }
-    .sold-badge {
-      font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
-      color: var(--text-muted); font-weight: 500;
-    }
+    .add-btn:active { transform: scale(0.9); }
+    .sold-badge { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); font-weight: 500; }
 
     .loading { text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px; }
-    .empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
-    .empty svg { width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.3; }
-    .empty p { font-size: 14px; }
 
-    /* ── DETAIL ── */
-    #screen-detail { padding-bottom: 100px; }
+    /* ─── DETAIL ─── */
     .detail-back {
       display: flex; align-items: center; gap: 8px;
-      padding: 16px 20px; color: var(--gold);
+      padding: 24px 48px 0; color: var(--gold);
       font-size: 13px; cursor: pointer; font-weight: 500;
+      width: fit-content;
     }
     .detail-back svg { width: 18px; height: 18px; }
-    .detail-img {
-      width: 100%; aspect-ratio: 1; object-fit: cover;
-      background: var(--grey);
+    .detail-back:hover { opacity: 0.8; }
+
+    .detail-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 48px; padding: 32px 48px 48px;
     }
-    .detail-body { padding: 20px; }
+
+    /* Gallery */
+    .gallery-main {
+      position: relative;
+    }
+    .gallery-main img {
+      width: 100%; aspect-ratio: 3/4; object-fit: contain;
+      border-radius: 2px; background: #1a1815;
+      margin-bottom: 12px; padding: 16px;
+    }
+    .gallery-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(10,9,5,0.7); border: 1px solid #2e2c27;
+      color: var(--gold); width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s; z-index: 10;
+    }
+    .gallery-arrow:hover { background: var(--gold); color: var(--black); }
+    .gallery-arrow svg { width: 18px; height: 18px; }
+    .gallery-arrow.prev { left: 12px; }
+    .gallery-arrow.next { right: 12px; }
+    .gallery-thumbs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .gallery-thumb {
+      width: 72px; height: 72px; object-fit: cover;
+      border-radius: 2px; cursor: pointer; opacity: 0.6;
+      transition: opacity 0.2s; border: 2px solid transparent;
+    }
+    .gallery-thumb.active { opacity: 1; border-color: var(--gold); }
+    .gallery-thumb:hover { opacity: 1; }
+
+    /* Detail info */
     .detail-category {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
       color: var(--gold); margin-bottom: 8px; font-weight: 500;
     }
     .detail-title {
       font-family: 'Playfair Display', serif;
       font-style: italic; font-weight: 900;
-      font-size: 26px; line-height: 1.2; margin-bottom: 4px;
+      font-size: 36px; line-height: 1.2; margin-bottom: 6px;
     }
-    .detail-club { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
-    .detail-price {
-      font-size: 28px; color: var(--gold); font-weight: 500; margin-bottom: 20px;
-    }
+    .detail-club { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+    .detail-price { font-size: 36px; color: var(--gold); font-weight: 500; margin-bottom: 24px; }
     .detail-specs {
       display: grid; grid-template-columns: 1fr 1fr;
-      gap: 12px; margin-bottom: 20px;
+      gap: 12px; margin-bottom: 24px;
     }
-    .spec-item { background: var(--grey); padding: 12px; border-radius: 2px; }
+    .spec-item { background: var(--grey); padding: 14px; border-radius: 2px; }
     .spec-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
-    .spec-value { font-size: 14px; font-weight: 500; }
-    .detail-desc { font-size: 14px; line-height: 1.7; color: #b0a898; margin-bottom: 24px; }
+    .spec-value { font-size: 15px; font-weight: 500; }
+    .detail-desc { font-size: 15px; line-height: 1.8; color: #b0a898; margin-bottom: 28px; }
     .detail-add-btn {
-      width: 100%; padding: 16px;
+      width: 100%; padding: 18px;
       background: var(--gold); color: var(--black);
       border: none; border-radius: 2px; cursor: pointer;
       font-family: 'DM Sans', sans-serif;
       font-size: 14px; font-weight: 500; letter-spacing: 1px;
       text-transform: uppercase; transition: background 0.2s, transform 0.1s;
     }
-    .detail-add-btn:active { transform: scale(0.98); }
     .detail-add-btn:hover { background: var(--gold-light); }
-    .detail-add-btn:disabled { background: var(--grey-mid); color: var(--text-muted); cursor: not-allowed; }
+    .detail-add-btn:active { transform: scale(0.98); }
+    .detail-add-btn:disabled { background: var(--grey-mid, #4a4640); color: var(--text-muted); cursor: not-allowed; }
 
-    /* ── CART ── */
-    .cart-header { padding: 24px 20px 16px; font-size: 20px; font-weight: 500; }
-    .cart-items { flex: 1; padding: 0 20px; }
+    /* ─── CART ─── */
+    .cart-wrap { padding: 48px; max-width: 800px; }
+    .cart-title { font-size: 28px; font-weight: 500; margin-bottom: 32px; }
     .cart-item {
-      display: flex; gap: 12px; align-items: center;
-      padding: 16px 0; border-bottom: 1px solid #1e1c17;
+      display: flex; gap: 20px; align-items: center;
+      padding: 20px 0; border-bottom: 1px solid #1e1c17;
     }
-    .cart-item img {
-      width: 72px; height: 72px; object-fit: cover;
-      border-radius: 2px; background: var(--grey); flex-shrink: 0;
-    }
+    .cart-item img { width: 96px; height: 96px; object-fit: cover; border-radius: 2px; background: var(--grey); flex-shrink: 0; }
     .cart-item-info { flex: 1; }
-    .cart-item-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; line-height: 1.3; }
-    .cart-item-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-    .cart-item-price { font-size: 15px; color: var(--gold); font-weight: 500; }
-    .remove-btn {
-      background: none; border: none; color: var(--text-muted);
-      cursor: pointer; padding: 4px; transition: color 0.2s;
-    }
+    .cart-item-title { font-size: 16px; font-weight: 500; margin-bottom: 4px; }
+    .cart-item-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+    .cart-item-price { font-size: 18px; color: var(--gold); font-weight: 500; }
+    .remove-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; transition: color 0.2s; }
     .remove-btn:hover { color: #e05555; }
-    .remove-btn svg { width: 18px; height: 18px; }
-
-    .cart-empty {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 16px;
-      color: var(--text-muted); padding: 40px;
-    }
-    .cart-empty svg { width: 56px; height: 56px; opacity: 0.2; }
-    .cart-empty p { font-size: 14px; }
-
-    .cart-footer { padding: 20px; border-top: 1px solid #1e1c17; }
-    .cart-shipping-note { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; text-align: center; }
-    .cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .cart-total-label { font-size: 14px; color: var(--text-muted); }
-    .cart-total-amount { font-size: 22px; color: var(--gold); font-weight: 500; }
+    .remove-btn svg { width: 20px; height: 20px; }
+    .cart-empty { text-align: center; padding: 80px 20px; color: var(--text-muted); }
+    .cart-empty svg { width: 64px; height: 64px; opacity: 0.2; margin-bottom: 16px; }
+    .cart-footer { padding-top: 24px; }
+    .cart-shipping-note { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+    .cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .cart-total-label { font-size: 16px; color: var(--text-muted); }
+    .cart-total-amount { font-size: 28px; color: var(--gold); font-weight: 500; }
     .cart-checkout-btn {
-      width: 100%; padding: 16px;
-      background: var(--gold); color: var(--black);
+      padding: 18px 48px; background: var(--gold); color: var(--black);
       border: none; border-radius: 2px; cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px; font-weight: 500; letter-spacing: 1px;
-      text-transform: uppercase; transition: background 0.2s;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+      letter-spacing: 1px; text-transform: uppercase; transition: background 0.2s;
     }
     .cart-checkout-btn:hover { background: var(--gold-light); }
 
-    /* ── CHECKOUT ── */
-    .checkout-header { padding: 24px 20px 8px; }
-    .checkout-header h2 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
-    .checkout-header p { font-size: 13px; color: var(--text-muted); }
-    .checkout-form { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    /* ─── CHECKOUT ─── */
+    .checkout-wrap { padding: 48px; max-width: 900px; }
+    .checkout-grid { display: grid; grid-template-columns: 1fr 400px; gap: 48px; }
+    .checkout-title { font-size: 24px; font-weight: 500; margin-bottom: 8px; }
+    .checkout-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
+    .form-section-label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); font-weight: 500; padding: 20px 0 12px; border-top: 1px solid #1e1c17; margin-top: 8px;
+    }
+    .form-section-label:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
     .form-group label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); font-weight: 500; }
     .form-group input, .form-group select, .form-group textarea {
       background: var(--grey); border: 1px solid #2e2c27;
@@ -345,785 +396,826 @@
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold-dim); }
     .form-group input.error, .form-group select.error { border-color: #e05555; }
     .form-group select { appearance: none; cursor: pointer; }
-    .form-group textarea { resize: vertical; min-height: 80px; }
     .form-group select option { background: var(--grey); }
-    .form-section-label {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--gold); font-weight: 500; padding: 8px 0 4px;
-    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
 
-    .checkout-summary {
-      margin: 0 20px 20px;
-      background: var(--grey); border-radius: 2px; padding: 16px;
+    .order-summary {
+      background: var(--grey); border-radius: 2px; padding: 24px;
+      position: sticky; top: 24px;
     }
-    .checkout-summary-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
-    .checkout-summary-item { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; color: #b0a898; }
-    .checkout-summary-item span:last-child { color: var(--white); }
-    .checkout-summary-total { display: flex; justify-content: space-between; font-size: 16px; font-weight: 500; padding-top: 12px; border-top: 1px solid #3a3830; margin-top: 8px; }
-    .checkout-summary-total span:last-child { color: var(--gold); }
-
+    .order-summary-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+    .summary-item { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px; color: #b0a898; }
+    .summary-item span:last-child { color: var(--white); }
+    .summary-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: 500; padding-top: 16px; border-top: 1px solid #3a3830; margin-top: 8px; }
+    .summary-total span:last-child { color: var(--gold); }
+    .payment-methods { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+    .payment-method { background: #1e1c17; border-radius: 2px; padding: 6px 12px; font-size: 11px; color: var(--text-muted); }
     .pay-btn {
-      margin: 0 20px 20px;
-      width: calc(100% - 40px); padding: 18px;
-      background: var(--gold); color: var(--black);
+      width: 100%; padding: 18px; background: var(--gold); color: var(--black);
       border: none; border-radius: 2px; cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px; font-weight: 500; letter-spacing: 1px;
-      text-transform: uppercase; transition: background 0.2s, transform 0.1s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+      letter-spacing: 1px; text-transform: uppercase; transition: background 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px;
     }
     .pay-btn:hover { background: var(--gold-light); }
-    .pay-btn:active { transform: scale(0.98); }
-    .pay-btn:disabled { background: var(--grey-mid); color: var(--text-muted); cursor: not-allowed; }
-    .pay-btn svg { width: 18px; height: 18px; }
+    .pay-btn:disabled { background: #4a4640; color: var(--text-muted); cursor: not-allowed; }
 
-    .payment-methods {
-      display: flex; gap: 8px; justify-content: center;
-      padding: 0 20px 20px; flex-wrap: wrap;
-    }
-    .payment-method {
-      background: var(--grey); border-radius: 2px;
-      padding: 6px 10px; font-size: 11px; color: var(--text-muted);
-      letter-spacing: 0.5px;
-    }
-
-    /* ── PROFILE ── */
-    .profile-header { padding: 32px 20px 24px; text-align: center; }
-    .profile-avatar {
-      width: 72px; height: 72px; border-radius: 50%;
-      background: var(--grey); border: 2px solid var(--gold-dim);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 16px; font-size: 28px;
-    }
-    .profile-name { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
-    .profile-email { font-size: 13px; color: var(--text-muted); }
-    .profile-section { padding: 0 20px 20px; }
-    .profile-section-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; padding: 16px 0 12px; }
-    .profile-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 0; border-bottom: 1px solid #1e1c17;
-      font-size: 14px; cursor: pointer;
-    }
+    /* ─── PROFILE ─── */
+    .profile-wrap { padding: 48px; max-width: 600px; }
+    .profile-header { margin-bottom: 32px; }
+    .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--grey); border: 2px solid var(--gold-dim); display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 16px; }
+    .profile-name { font-size: 24px; font-weight: 500; margin-bottom: 4px; }
+    .profile-email { font-size: 14px; color: var(--text-muted); }
+    .profile-section-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; padding: 24px 0 12px; border-top: 1px solid #1e1c17; margin-top: 8px; }
+    .profile-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #1e1c17; font-size: 15px; cursor: pointer; }
     .profile-item svg { width: 18px; height: 18px; color: var(--text-muted); }
 
-    /* ── TOAST ── */
+    /* ─── MOBILE STYLES (override) ─── */
+    @media (max-width: 767px) {
+      .desktop-layout { display: none !important; }
+      .mobile-header { display: flex; }
+      .screen { display: none; }
+      .screen.active { display: flex; }
+
+      /* Mobile hero */
+      .m-hero { background: linear-gradient(160deg, #1a1710 0%, var(--black) 60%); padding: 32px 20px 40px; position: relative; overflow: hidden; }
+      .m-hero-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
+      .m-hero-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 36px; line-height: 1.1; color: var(--white); margin-bottom: 8px; }
+      .m-hero-title span { color: var(--gold); }
+      .m-hero-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+      .m-section-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; padding: 24px 20px 12px; }
+      .m-shirt-row { display: flex; gap: 12px; overflow-x: auto; padding: 0 20px 16px; scrollbar-width: none; }
+      .m-shirt-row::-webkit-scrollbar { display: none; }
+      .m-shirt-card-sm { flex: 0 0 160px; cursor: pointer; background: var(--grey); border-radius: 2px; overflow: hidden; }
+      .m-shirt-card-sm img { width: 100%; height: 200px; object-fit: cover; background: #1e1c17; }
+      .m-shirt-card-sm-info { padding: 10px 12px; }
+      .m-shirt-card-sm-title { font-size: 12px; font-weight: 500; line-height: 1.3; margin-bottom: 4px; }
+      .m-shirt-card-sm-price { font-size: 13px; color: var(--gold); font-weight: 500; }
+      .m-divider { height: 1px; background: #1e1c17; margin: 4px 20px; }
+      .m-shop-search { padding: 16px 20px 0; position: relative; }
+      .m-shop-search input { width: 100%; background: var(--grey); border: 1px solid #2e2c27; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 16px 12px 40px; border-radius: 2px; outline: none; }
+      .m-shop-search input::placeholder { color: var(--text-muted); }
+      .m-shop-search svg { position: absolute; left: 32px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 16px; height: 16px; }
+      .m-filters { display: flex; gap: 8px; padding: 12px 20px; overflow-x: auto; scrollbar-width: none; }
+      .m-filters::-webkit-scrollbar { display: none; }
+      .m-filter-btn { flex: 0 0 auto; padding: 7px 16px; border-radius: 2px; border: 1px solid #2e2c27; background: transparent; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
+      .m-filter-btn.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
+      .m-shirt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px 20px; }
+      .m-shirt-card { background: var(--grey); border-radius: 2px; overflow: hidden; cursor: pointer; }
+      .m-shirt-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #1e1c17; }
+      .m-shirt-card-body { padding: 10px; }
+      .m-shirt-card-club { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+      .m-shirt-card-title { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 8px; }
+      .m-shirt-card-footer { display: flex; align-items: center; justify-content: space-between; }
+      .m-shirt-card-price { font-size: 14px; color: var(--gold); font-weight: 500; }
+      .m-add-btn { width: 28px; height: 28px; border-radius: 50%; background: var(--gold); color: var(--black); border: none; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+    }
+
+    /* ─── TOAST ─── */
     .toast {
-      position: fixed; bottom: calc(var(--tab-h) + 16px); left: 50%; transform: translateX(-50%) translateY(20px);
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
       background: var(--gold); color: var(--black);
-      padding: 12px 20px; border-radius: 2px;
+      padding: 12px 24px; border-radius: 2px;
       font-size: 13px; font-weight: 500;
-      opacity: 0; transition: all 0.3s; z-index: 999;
-      white-space: nowrap;
+      opacity: 0; transition: all 0.3s; z-index: 999; white-space: nowrap;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    @media (min-width: 431px) {
-      html, body { border-left: 1px solid #1e1c17; border-right: 1px solid #1e1c17; }
-    }
-  
-    /* ══════════════════════════════
-       DESKTOP LAYOUT (min-width: 768px)
-       ══════════════════════════════ */
     @media (min-width: 768px) {
-      html, body {
-        max-width: 100%;
-        display: flex;
-        flex-direction: row;
-      }
-
-      /* Sidebar nav */
-      .tab-bar { display: none; }
-
-      .desktop-sidebar {
-        display: flex !important;
-        flex-direction: column;
-        width: 240px;
-        min-height: 100vh;
-        background: #0e0c08;
-        border-right: 1px solid #1e1c17;
-        position: fixed;
-        left: 0; top: 0; bottom: 0;
-        z-index: 200;
-      }
-
-      .desktop-sidebar-logo {
-        padding: 28px 24px 20px;
-        border-bottom: 1px solid #1e1c17;
-      }
-
-      .desktop-sidebar-logo .logo { font-size: 22px; }
-      .desktop-sidebar-logo .tagline { font-size: 10px; margin-top: 4px; }
-
-      .desktop-nav-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px 24px;
-        color: var(--text-muted);
-        cursor: pointer;
-        font-size: 13px;
-        font-weight: 500;
-        letter-spacing: 0.3px;
-        border-left: 3px solid transparent;
-        transition: all 0.2s;
-      }
-      .desktop-nav-item:hover { color: var(--white); background: rgba(255,255,255,0.03); }
-      .desktop-nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(200,169,80,0.05); }
-      .desktop-nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
-
-      .desktop-sidebar-footer {
-        margin-top: auto;
-        padding: 20px 24px;
-        border-top: 1px solid #1e1c17;
-        font-size: 12px;
-        color: var(--text-muted);
-        line-height: 1.6;
-      }
-      .desktop-sidebar-footer a { color: var(--gold); text-decoration: none; }
-
-      /* Main content shift */
-      .site-header { display: none; }
-
-      .screen {
-        margin-left: 240px;
-        width: calc(100% - 240px);
-        min-height: 100vh;
-        padding-bottom: 40px;
-      }
-
-      /* Hero */
-      .hero {
-        padding: 60px 48px 72px;
-        min-height: 380px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      .hero-title { font-size: 56px; }
-      .hero-sub { font-size: 18px; max-width: 480px; }
-
-      /* Home rows — bigger cards */
-      .shirt-card-sm { flex: 0 0 200px; }
-      .shirt-card-sm img { height: 200px; }
-      .section-label { padding: 32px 48px 16px; font-size: 11px; }
-      .shirt-row { padding: 0 48px 24px; gap: 16px; }
-      .divider { margin: 8px 48px; }
-
-      /* Shop */
-      .shop-search { padding: 24px 48px 0; }
-      .filters { padding: 12px 48px; }
-
-      /* 3-column grid */
-      .shirt-grid {
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 20px;
-        padding: 0 48px 40px;
-      }
-
-      /* Detail */
-      #screen-detail { padding-bottom: 40px; }
-      .detail-back { padding: 24px 48px; }
-      .detail-img { max-height: 500px; object-fit: contain; background: #111; }
-      .detail-body { padding: 32px 48px; max-width: 680px; }
-      .detail-title { font-size: 34px; }
-      .detail-price { font-size: 36px; }
-
-      /* Cart */
-      .cart-header { padding: 32px 48px 20px; font-size: 26px; }
-      .cart-items { padding: 0 48px; }
-      .cart-footer { padding: 24px 48px; max-width: 480px; }
-
-      /* Checkout */
-      .checkout-header { padding: 32px 48px 16px; }
-      .checkout-form { padding: 16px 48px; max-width: 680px; }
-      .checkout-summary { margin: 0 48px 24px; max-width: 680px; }
-      .pay-btn { margin: 0 48px 24px; width: auto; min-width: 320px; }
-      .payment-methods { justify-content: flex-start; padding: 0 48px 24px; }
-
-      /* Profile */
-      .profile-header { padding: 48px 48px 32px; text-align: left; display: flex; align-items: center; gap: 24px; }
-      .profile-avatar { margin: 0; }
-      .profile-section { padding: 0 48px 24px; max-width: 600px; }
-
-      /* Toast */
-      .toast { bottom: 32px; right: 32px; left: auto; transform: translateY(8px); }
+      .toast { bottom: 24px; left: auto; right: 24px; transform: translateY(20px); }
       .toast.show { transform: translateY(0); }
     }
-
   </style>
 </head>
 <body>
 
-<!-- DESKTOP SIDEBAR (hidden on mobile) -->
-<div class="desktop-sidebar" id="desktop-sidebar" style="display:none;">
-  <div class="desktop-sidebar-logo">
-    <div class="logo">Shirt Société</div>
-    <div class="tagline">Timeless · Original · Rare</div>
+<!-- ══════════════════════════════════════════
+     MOBILE LAYOUT
+══════════════════════════════════════════ -->
+<header class="mobile-header">
+  <div class="mobile-logo" onclick="mGoTo('home')">
+    <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782385546/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_mtzibb.png" alt="Shirt Société">
   </div>
-  <nav style="padding-top: 8px;">
-    <div class="desktop-nav-item active" onclick="goTo('home')" id="dnav-home">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Home
-    </div>
-    <div class="desktop-nav-item" onclick="goTo('shop')" id="dnav-shop">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-8.42H6"/></svg>
-      Shop
-    </div>
-    <div class="desktop-nav-item" onclick="goTo('cart')" id="dnav-cart">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-      Cart
-      <span id="dcart-badge" style="margin-left:auto;background:var(--gold);color:var(--black);font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;"></span>
-    </div>
-    <div class="desktop-nav-item" onclick="goTo('profile')" id="dnav-profile">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      Profile
-    </div>
-  </nav>
-  <div class="desktop-sidebar-footer">
-    <div style="margin-bottom:8px;color:var(--white);font-size:13px;font-weight:500;">Shirt Société</div>
-    <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a><br>
-    <span style="margin-top:4px;display:block;">© 2026 Shirt Société</span>
-  </div>
-</div>
-
-
-<!-- HEADER -->
-<header class="site-header">
-  <div class="logo">Shirt Société</div>
-  <div class="tagline">Timeless · Original · Rare</div>
 </header>
 
-<!-- SCREEN: HOME -->
+<!-- MOBILE HOME -->
 <div id="screen-home" class="screen active">
-  <div class="hero">
-    <div class="hero-eyebrow">Est. in passion</div>
-    <h1 class="hero-title">Vintage<br><span>football</span><br>history.</h1>
-    <p class="hero-sub">Curated match worn shirts & rare originals from the golden era of football.</p>
-    <button class="btn-primary" onclick="goTo('shop')">
+  <div class="m-hero">
+    <div class="m-hero-eyebrow">Est. in passion</div>
+    <h1 class="m-hero-title">Vintage<br><span>football</span><br>history.</h1>
+    <p class="m-hero-sub">Curated match worn shirts & rare originals.</p>
+    <button class="btn-primary" onclick="mGoTo('shop')">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
       Shop the collection
     </button>
   </div>
-
-  <div class="section-label">Featured Pieces</div>
-  <div id="featured-row" class="shirt-row">
-    <div class="loading">Loading...</div>
-  </div>
-
-  <div class="divider"></div>
-  <div class="section-label">Match Worn</div>
-  <div id="matchworn-row" class="shirt-row">
-    <div class="loading">Loading...</div>
-  </div>
-
-  <div class="divider"></div>
-  <div class="section-label">National Teams</div>
-  <div id="national-row" class="shirt-row">
-    <div class="loading">Loading...</div>
-  </div>
+  <div class="m-section-label">Featured Pieces</div>
+  <div id="m-featured-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
+  <div class="m-divider"></div>
+  <div class="m-section-label">Match Worn</div>
+  <div id="m-matchworn-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
+  <div class="m-divider"></div>
+  <div class="m-section-label">National Teams</div>
+  <div id="m-national-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
+  <div class="m-divider"></div>
+  <div class="m-section-label">Clubs</div>
+  <div id="m-clubs-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
 </div>
 
-<!-- SCREEN: SHOP -->
+<!-- MOBILE SHOP -->
 <div id="screen-shop" class="screen">
-  <div class="shop-search">
+  <div class="m-shop-search">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="search-input" placeholder="Search club, player, season..." oninput="filterShirts()">
+    <input type="text" id="m-search-input" placeholder="Search club, player, season..." oninput="mFilterShirts()">
   </div>
-  <div class="filters">
-    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-    <button class="filter-btn" onclick="setFilter('match_worn', this)">Match Worn</button>
-    <button class="filter-btn" onclick="setFilter('clubs', this)">Clubs</button>
-    <button class="filter-btn" onclick="setFilter('national', this)">National</button>
+  <div class="m-filters">
+    <button class="m-filter-btn active" onclick="mSetFilter('all',this)">All</button>
+    <button class="m-filter-btn" onclick="mSetFilter('match_worn',this)">Match Worn</button>
+    <button class="m-filter-btn" onclick="mSetFilter('clubs',this)">Clubs</button>
+    <button class="m-filter-btn" onclick="mSetFilter('national',this)">National</button>
   </div>
-  <div id="shirt-grid" class="shirt-grid">
-    <div class="loading" style="grid-column:1/-1">Loading collection...</div>
-  </div>
+  <div id="m-shirt-grid" class="m-shirt-grid"><div class="loading" style="grid-column:1/-1">Loading...</div></div>
 </div>
 
-<!-- SCREEN: DETAIL -->
-<div id="screen-detail" class="screen">
-  <div class="detail-back" onclick="goBack()">
+<!-- MOBILE DETAIL -->
+<div id="screen-detail" class="screen" style="padding-bottom:100px">
+  <div class="detail-back" style="padding:16px 20px 0" onclick="mGoBack()">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
     Back
   </div>
-  <img id="detail-img" class="detail-img" src="" alt="">
-  <div class="detail-body">
-    <div id="detail-category" class="detail-category"></div>
-    <h2 id="detail-title" class="detail-title"></h2>
-    <div id="detail-club" class="detail-club"></div>
-    <div id="detail-price" class="detail-price"></div>
-    <div class="detail-specs" id="detail-specs"></div>
-    <p id="detail-desc" class="detail-desc"></p>
-    <button id="detail-add-btn" class="detail-add-btn" onclick="addToCartFromDetail()">Add to Cart</button>
+  <div id="m-detail-gallery" style="padding:12px 20px 0">
+    <div style="position:relative">
+      <button class="gallery-arrow prev" onclick="galleryNav('m',-1)" style="left:8px">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <img id="m-detail-main-img" src="" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;border-radius:2px;background:#1a1815;padding:12px">
+      <button class="gallery-arrow next" onclick="galleryNav('m',1)" style="right:8px">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
+    </div>
+    <div id="m-detail-thumbs" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"></div>
+  </div>
+  <div style="padding:20px">
+    <div id="m-detail-category" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500"></div>
+    <h2 id="m-detail-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;line-height:1.2;margin-bottom:4px"></h2>
+    <div id="m-detail-club" style="font-size:13px;color:var(--text-muted);margin-bottom:16px"></div>
+    <div id="m-detail-price" style="font-size:28px;color:var(--gold);font-weight:500;margin-bottom:20px"></div>
+    <div id="m-detail-specs" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px"></div>
+    <p id="m-detail-desc" style="font-size:14px;line-height:1.7;color:#b0a898;margin-bottom:24px"></p>
+    <button id="m-detail-add-btn" style="width:100%;padding:16px;background:var(--gold);color:var(--black);border:none;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:1px;text-transform:uppercase" onclick="addToCartFromDetail()">Add to Cart</button>
   </div>
 </div>
 
-<!-- SCREEN: CART -->
+<!-- MOBILE CART -->
 <div id="screen-cart" class="screen">
-  <div class="cart-header">Your Cart</div>
-  <div id="cart-content"></div>
+  <div style="padding:24px 20px 16px;font-size:20px;font-weight:500">Your Cart</div>
+  <div id="m-cart-content"></div>
 </div>
 
-<!-- SCREEN: CHECKOUT -->
+<!-- MOBILE CHECKOUT -->
 <div id="screen-checkout" class="screen">
-  <div class="checkout-header">
-    <div class="detail-back" onclick="goTo('cart')" style="padding:0 0 16px">
+  <div style="padding:20px">
+    <div class="detail-back" style="padding:0 0 16px" onclick="mGoTo('cart')">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
       Back to cart
     </div>
-    <h2>Shipping Details</h2>
-    <p>Enter your address to continue to payment</p>
+    <div style="font-size:20px;font-weight:500;margin-bottom:4px">Shipping Details</div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Enter your address to continue</div>
+    <div id="m-checkout-form"></div>
+    <div id="m-checkout-summary" style="background:var(--grey);border-radius:2px;padding:16px;margin:16px 0"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <span class="payment-method">iDEAL</span>
+      <span class="payment-method">Bancontact</span>
+      <span class="payment-method">Credit Card</span>
+      <span class="payment-method">Apple Pay</span>
+    </div>
+    <button class="pay-btn" id="m-pay-btn" onclick="submitPayment('m')">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Pay with Mollie
+    </button>
   </div>
-
-  <form class="checkout-form" id="checkout-form" onsubmit="return false">
-    <div class="form-section-label">Personal Information</div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>First Name *</label>
-        <input type="text" id="f-first" placeholder="Jan" required>
-      </div>
-      <div class="form-group">
-        <label>Last Name *</label>
-        <input type="text" id="f-last" placeholder="de Vries" required>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Email *</label>
-      <input type="email" id="f-email" placeholder="jan@email.com" required>
-    </div>
-    <div class="form-group">
-      <label>Phone *</label>
-      <input type="tel" id="f-phone" placeholder="+31 6 12345678" required>
-    </div>
-
-    <div class="form-section-label">Shipping Address</div>
-    <div class="form-row">
-      <div class="form-group" style="grid-column: 1 / -1">
-        <label>Street *</label>
-        <input type="text" id="f-street" placeholder="Damrak" required>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>House Nr *</label>
-        <input type="text" id="f-housenr" placeholder="1" required>
-      </div>
-      <div class="form-group">
-        <label>Addition</label>
-        <input type="text" id="f-addition" placeholder="A">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Postal Code *</label>
-        <input type="text" id="f-postal" placeholder="1012 LG" required>
-      </div>
-      <div class="form-group">
-        <label>City *</label>
-        <input type="text" id="f-city" placeholder="Amsterdam" required>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Country *</label>
-      <select id="f-country" required>
-        <option value="">Select country...</option>
-        <option value="NL">Netherlands</option>
-        <option value="BE">Belgium</option>
-        <option value="DE">Germany</option>
-        <option value="FR">France</option>
-        <option value="GB">United Kingdom</option>
-        <option value="ES">Spain</option>
-        <option value="IT">Italy</option>
-        <option value="PT">Portugal</option>
-        <option value="AT">Austria</option>
-        <option value="CH">Switzerland</option>
-        <option value="DK">Denmark</option>
-        <option value="SE">Sweden</option>
-        <option value="NO">Norway</option>
-        <option value="FI">Finland</option>
-        <option value="PL">Poland</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Order Notes</label>
-      <textarea id="f-notes" placeholder="Any special requests or notes..."></textarea>
-    </div>
-  </form>
-
-  <div class="checkout-summary" id="checkout-summary"></div>
-
-  <div class="payment-methods">
-    <div class="payment-method">iDEAL</div>
-    <div class="payment-method">Bancontact</div>
-    <div class="payment-method">Credit Card</div>
-    <div class="payment-method">Apple Pay</div>
-  </div>
-
-  <button class="pay-btn" id="pay-btn" onclick="submitPayment()">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-    Pay with Mollie
-  </button>
 </div>
 
-<!-- SCREEN: PROFILE -->
+<!-- MOBILE PROFILE -->
 <div id="screen-profile" class="screen">
-  <div class="profile-header">
-    <div class="profile-avatar">👕</div>
-    <div class="profile-name">Guest</div>
-    <div class="profile-email">Sign in to view your orders</div>
+  <div style="padding:32px 20px 24px;text-align:center">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--grey);border:2px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px">👕</div>
+    <div style="font-size:20px;font-weight:500;margin-bottom:4px">Guest</div>
+    <div style="font-size:13px;color:var(--text-muted)">Sign in to view your orders</div>
   </div>
-  <div class="profile-section">
-    <div class="profile-section-title">Account</div>
-    <div class="profile-item">
-      <span>Order History</span>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-    </div>
-    <div class="profile-item">
-      <span>Wishlist</span>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-    </div>
-    <div class="profile-item">
-      <span>Shipping Address</span>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-    </div>
-  </div>
-  <div class="profile-section">
-    <div class="profile-section-title">About</div>
-    <div class="profile-item">
-      <span>Contact Us</span>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-    </div>
-    <div class="profile-item">
-      <span>Shipping & Returns</span>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-    </div>
+  <div style="padding:0 20px">
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px">Account</div>
+    <div class="profile-item"><span>Order History</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+    <div class="profile-item"><span>Wishlist</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px;border-top:1px solid #1e1c17;margin-top:8px">Contact</div>
+    <div class="profile-item"><span>info@shirtsociete.com</span></div>
   </div>
 </div>
 
-<!-- TAB BAR -->
+<!-- MOBILE TAB BAR -->
 <nav class="tab-bar">
-  <div class="tab active" onclick="goTo('home')" id="tab-home">
+  <div class="tab active" onclick="mGoTo('home')" id="m-tab-home">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     Home
   </div>
-  <div class="tab" onclick="goTo('shop')" id="tab-shop">
+  <div class="tab" onclick="mGoTo('shop')" id="m-tab-shop">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-8.42H6"/></svg>
     Shop
   </div>
-  <div class="tab" onclick="goTo('cart')" id="tab-cart">
+  <div class="tab" onclick="mGoTo('cart')" id="m-tab-cart">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
     <span class="cart-badge" id="cart-badge">0</span>
     Cart
   </div>
-  <div class="tab" onclick="goTo('profile')" id="tab-profile">
+  <div class="tab" onclick="mGoTo('profile')" id="m-tab-profile">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     Profile
   </div>
 </nav>
 
+<!-- ══════════════════════════════════════════
+     DESKTOP LAYOUT
+══════════════════════════════════════════ -->
+<div class="desktop-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo" onclick="dGoTo('home')">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782385547/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Presentatie_1_twdszv.jpg" alt="Shirt Société">
+    </div>
+    <nav style="margin-top:8px">
+      <div class="nav-section-label">Navigation</div>
+      <div class="nav-item active" onclick="dGoTo('home')" id="d-nav-home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </div>
+      <div class="nav-item" onclick="dGoTo('shop')" id="d-nav-shop">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-8.42H6"/></svg>
+        Shop
+        <span id="d-shirt-count" style="margin-left:auto;background:#1e1c17;padding:2px 8px;border-radius:10px;font-size:11px;color:var(--text-muted)"></span>
+      </div>
+      <div class="nav-item" onclick="dGoTo('cart')" id="d-nav-cart">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Cart
+        <span id="d-cart-count" style="margin-left:auto;background:var(--gold);color:var(--black);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
+      </div>
+      <div class="nav-section-label" style="margin-top:8px">Categories</div>
+      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('match_worn')" id="d-nav-mw">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>
+        Match Worn
+      </div>
+      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('clubs')" id="d-nav-clubs">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        Clubs
+      </div>
+      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('national')" id="d-nav-national">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        National Teams
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div style="margin-bottom:8px;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase">Contact</div>
+      <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a>
+      <div style="margin-top:12px;font-size:11px">© 2026 Shirt Société</div>
+    </div>
+  </aside>
+
+  <!-- Desktop Main -->
+  <main class="desktop-main">
+
+    <!-- HOME -->
+    <div class="dscreen active" id="d-screen-home">
+      <div class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">Est. in passion</div>
+          <h1 class="hero-title">Vintage<br><span>football</span><br>history.</h1>
+          <p class="hero-sub">Curated match worn shirts & rare originals from the golden era of football.</p>
+          <button class="btn-primary" onclick="dGoTo('shop')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            Shop the collection
+          </button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-label">Featured Pieces</div>
+          <span class="section-link" onclick="dGoTo('shop')">View all →</span>
+        </div>
+        <div id="d-featured-row" class="shirt-row"><div class="loading">Loading...</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-label">Match Worn</div>
+          <span class="section-link" onclick="dGoTo('shop');dSetFilter('match_worn')">View all →</span>
+        </div>
+        <div id="d-matchworn-row" class="shirt-row"><div class="loading">Loading...</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-label">National Teams</div>
+          <span class="section-link" onclick="dGoTo('shop');dSetFilter('national')">View all →</span>
+        </div>
+        <div id="d-national-row" class="shirt-row"><div class="loading">Loading...</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-label">Clubs</div>
+          <span class="section-link" onclick="dGoTo('shop');dSetFilter('clubs')">View all →</span>
+        </div>
+        <div id="d-clubs-row" class="shirt-row"><div class="loading">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- SHOP -->
+    <div class="dscreen" id="d-screen-shop">
+      <div class="shop-header">
+        <h2 style="font-size:28px;font-weight:500;margin-bottom:4px">The Collection</h2>
+        <p style="font-size:14px;color:var(--text-muted)">Timeless, Original, Rare</p>
+      </div>
+      <div class="shop-toolbar">
+        <div class="search-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="d-search-input" placeholder="Search club, player, season..." oninput="dFilterShirts()">
+        </div>
+        <button class="filter-btn active" onclick="dSetFilter('all',this)" id="d-filter-all">All</button>
+        <button class="filter-btn" onclick="dSetFilter('match_worn',this)" id="d-filter-mw">Match Worn</button>
+        <button class="filter-btn" onclick="dSetFilter('clubs',this)" id="d-filter-clubs">Clubs</button>
+        <button class="filter-btn" onclick="dSetFilter('national',this)" id="d-filter-national">National</button>
+      </div>
+      <div id="d-shirt-grid" class="shirt-grid"><div class="loading" style="grid-column:1/-1">Loading collection...</div></div>
+    </div>
+
+    <!-- DETAIL -->
+    <div class="dscreen" id="d-screen-detail">
+      <div class="detail-back" onclick="dGoBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </div>
+      <div class="detail-layout">
+        <div>
+          <div class="gallery-main">
+            <button class="gallery-arrow prev" onclick="galleryNav('d',-1)">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <img id="d-detail-main-img" src="" alt="">
+            <button class="gallery-arrow next" onclick="galleryNav('d',1)">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
+            </button>
+          </div>
+          <div class="gallery-thumbs" id="d-detail-thumbs"></div>
+        </div>
+        <div>
+          <div id="d-detail-category" class="detail-category"></div>
+          <h2 id="d-detail-title" class="detail-title"></h2>
+          <div id="d-detail-club" class="detail-club"></div>
+          <div id="d-detail-price" class="detail-price"></div>
+          <div id="d-detail-specs" class="detail-specs"></div>
+          <p id="d-detail-desc" class="detail-desc"></p>
+          <button id="d-detail-add-btn" class="detail-add-btn" onclick="addToCartFromDetail()">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CART -->
+    <div class="dscreen" id="d-screen-cart">
+      <div class="cart-wrap">
+        <div class="cart-title">Your Cart</div>
+        <div id="d-cart-content"></div>
+      </div>
+    </div>
+
+    <!-- CHECKOUT -->
+    <div class="dscreen" id="d-screen-checkout">
+      <div class="checkout-wrap">
+        <div class="checkout-grid">
+          <div>
+            <div class="checkout-title">Shipping Details</div>
+            <div class="checkout-sub">Enter your address to continue to payment</div>
+            <div id="d-checkout-form"></div>
+          </div>
+          <div>
+            <div class="order-summary" id="d-order-summary"></div>
+            <div class="payment-methods" style="margin-top:16px">
+              <span class="payment-method">iDEAL</span>
+              <span class="payment-method">Bancontact</span>
+              <span class="payment-method">Credit Card</span>
+              <span class="payment-method">Apple Pay</span>
+            </div>
+            <button class="pay-btn" id="d-pay-btn" onclick="submitPayment('d')">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              Pay with Mollie
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="dscreen" id="d-screen-profile">
+      <div class="profile-wrap">
+        <div class="profile-header">
+          <div class="profile-avatar">👕</div>
+          <div class="profile-name">Guest</div>
+          <div class="profile-email">Sign in to view your orders</div>
+        </div>
+        <div class="profile-section-title">Contact</div>
+        <div class="profile-item"><span>info@shirtsociete.com</span></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-  // ── CONFIG ── (loaded from config.js)
+  // ── CONFIG ──
   const dbHost = 'https://hzwmjbsfmdkmaoikezoc.supabase.co';
   const dbToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6d21qYnNmbWRrbWFvaWtlem9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTczNDIsImV4cCI6MjA5MzEzMzM0Mn0.5-ToRrtP3bhkN_qmSMmLM5YXQgE5kWoE0wVpsksqIMs';
 
   // ── STATE ──
   let allShirts = [];
   let cart = JSON.parse(localStorage.getItem('ss_cart') || '[]');
-  let currentFilter = 'all';
-  let currentScreen = 'home';
-  let prevScreen = 'shop';
   let currentShirt = null;
+  let currentImages = [];
+  let currentImgIndex = 0;
+  let mCurrentFilter = 'all';
+  let dCurrentFilter = 'all';
+  let mPrevScreen = 'home';
+  let dPrevScreen = 'home';
 
-  // ── NAVIGATION ──
-  function goTo(screen) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.desktop-nav-item').forEach(t => t.classList.remove('active'));
-    document.getElementById('screen-' + screen).classList.add('active');
-    const tab = document.getElementById('tab-' + screen);
-    if (tab) tab.classList.add('active');
-    const dnav = document.getElementById('dnav-' + screen);
-    if (dnav) dnav.classList.add('active');
-    if (screen !== 'detail') prevScreen = currentScreen;
-    currentScreen = screen;
-    window.scrollTo(0, 0);
-    if (screen === 'cart') renderCart();
-    if (screen === 'checkout') renderCheckoutSummary();
-  }
-
-  function goBack() {
-    goTo(prevScreen);
-  }
-
-  // ── DATA FETCH ──
+  // ── FETCH ──
   async function fetchShirts() {
     try {
       const res = await fetch(`${dbHost}/rest/v1/shirts?select=*&available=eq.true&order=created_at.desc`, {
-        headers: {
-          'apikey': dbToken,
-          'Authorization': `Bearer ${dbToken}`
-        }
+        headers: { 'apikey': dbToken, 'Authorization': `Bearer ${dbToken}` }
       });
-      if (!res.ok) throw new Error('Failed to fetch');
       allShirts = await res.json();
-      renderHome();
-      renderShopGrid();
+      renderAll();
     } catch (err) {
       console.error('Fetch error:', err);
-      document.getElementById('shirt-grid').innerHTML = '<div class="empty" style="grid-column:1/-1"><p>Could not load shirts. Please try again.</p></div>';
     }
   }
 
-  // ── IMAGE ──
   function getImg(shirt) {
     if (shirt.images && shirt.images.length > 0) return shirt.images[0];
-    return `https://via.placeholder.com/400x400/1e1c17/c8a950?text=${encodeURIComponent(shirt.club || 'Shirt')}`;
+    return `https://via.placeholder.com/400x400/1e1c17/c8a950?text=${encodeURIComponent(shirt.club||'Shirt')}`;
   }
 
-  // ── HOME ──
-  function renderHome() {
+  function renderAll() {
+    renderMobileHome();
+    renderMobileGrid();
+    renderDesktopHome();
+    renderDesktopGrid();
+    document.getElementById('d-shirt-count').textContent = allShirts.length;
+  }
+
+  // ── MOBILE HOME ──
+  function renderMobileHome() {
     const featured = allShirts.filter(s => s.featured);
     const matchWorn = allShirts.filter(s => s.category === 'match_worn');
     const national = allShirts.filter(s => s.category === 'national');
-    // Featured: only show featured shirts, or top 4 if none
-    renderRow('featured-row', featured.length ? featured : allShirts.slice(0, 4));
-    // Match Worn: only match_worn category
-    renderRow('matchworn-row', matchWorn);
-    // National: only national category
-    renderRow('national-row', national);
+    const clubs = allShirts.filter(s => s.category === 'clubs');
+    renderMobileRow('m-featured-row', featured.length ? featured : allShirts.slice(0,4));
+    renderMobileRow('m-matchworn-row', matchWorn);
+    renderMobileRow('m-national-row', national);
+    renderMobileRow('m-clubs-row', clubs);
   }
 
-  function renderRow(id, shirts) {
+  function renderMobileRow(id, shirts) {
     const el = document.getElementById(id);
     if (!shirts.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:20px">Nothing here yet.</div>'; return; }
     el.innerHTML = shirts.map(s => `
-      <div class="shirt-card-sm" onclick="openDetail('${s.id}')">
+      <div class="m-shirt-card-sm" onclick="openDetail('${s.id}','m')">
         <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
-        <div class="shirt-card-sm-info">
-          <div class="shirt-card-sm-title">${s.title}</div>
-          <div class="shirt-card-sm-price">€${parseFloat(s.price).toFixed(2)}</div>
+        <div class="m-shirt-card-sm-info">
+          <div class="m-shirt-card-sm-title">${s.title}</div>
+          <div class="m-shirt-card-sm-price">€${parseFloat(s.price).toFixed(2)}</div>
         </div>
       </div>
     `).join('');
   }
 
-  // ── SHOP ──
-  let currentSearch = '';
-
-  function setFilter(filter, btn) {
-    currentFilter = filter;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderShopGrid();
+  // ── MOBILE SHOP ──
+  function mSetFilter(filter, btn) {
+    mCurrentFilter = filter;
+    document.querySelectorAll('.m-filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderMobileGrid();
   }
 
-  function filterShirts() {
-    currentSearch = document.getElementById('search-input').value.toLowerCase();
-    renderShopGrid();
-  }
+  function mFilterShirts() { renderMobileGrid(); }
 
-  function renderShopGrid() {
+  function renderMobileGrid() {
+    const search = document.getElementById('m-search-input')?.value.toLowerCase() || '';
     let shirts = allShirts;
-    if (currentFilter !== 'all') shirts = shirts.filter(s => s.category === currentFilter);
-    if (currentSearch) {
-      shirts = shirts.filter(s =>
-        (s.title || '').toLowerCase().includes(currentSearch) ||
-        (s.club || '').toLowerCase().includes(currentSearch) ||
-        (s.season || '').toLowerCase().includes(currentSearch) ||
-        (s.description || '').toLowerCase().includes(currentSearch)
-      );
-    }
-    const grid = document.getElementById('shirt-grid');
-    if (!shirts.length) {
-      grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>No shirts found</p></div>';
-      return;
-    }
+    if (mCurrentFilter !== 'all') shirts = shirts.filter(s => s.category === mCurrentFilter);
+    if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search) || (s.season||'').toLowerCase().includes(search));
+    const grid = document.getElementById('m-shirt-grid');
+    if (!shirts.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No shirts found</div>'; return; }
     grid.innerHTML = shirts.map(s => {
       const inCart = cart.some(c => c.id === s.id);
       return `
-        <div class="shirt-card" onclick="openDetail('${s.id}')">
+        <div class="m-shirt-card" onclick="openDetail('${s.id}','m')">
           <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
+          <div class="m-shirt-card-body">
+            <div class="m-shirt-card-club">${s.club||''}</div>
+            <div class="m-shirt-card-title">${s.title}</div>
+            <div class="m-shirt-card-footer">
+              <div class="m-shirt-card-price">€${parseFloat(s.price).toFixed(2)}</div>
+              ${inCart ? '<span style="font-size:10px;color:var(--text-muted)">In cart ✓</span>' : `<button class="m-add-btn" onclick="event.stopPropagation();quickAdd('${s.id}')">+</button>`}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── DESKTOP HOME ──
+  function renderDesktopHome() {
+    const featured = allShirts.filter(s => s.featured);
+    const matchWorn = allShirts.filter(s => s.category === 'match_worn');
+    const national = allShirts.filter(s => s.category === 'national');
+    const clubs = allShirts.filter(s => s.category === 'clubs');
+    renderDesktopRow('d-featured-row', featured.length ? featured : allShirts.slice(0,6));
+    renderDesktopRow('d-matchworn-row', matchWorn);
+    renderDesktopRow('d-national-row', national);
+    renderDesktopRow('d-clubs-row', clubs);
+  }
+
+  function renderDesktopRow(id, shirts) {
+    const el = document.getElementById(id);
+    if (!shirts.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:20px">Nothing here yet.</div>'; return; }
+    el.innerHTML = shirts.map(s => {
+      const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
+      return `
+      <div class="shirt-card-sm" onclick="openDetail('${s.id}','d')">
+        <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
+        ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
+        <div class="shirt-card-sm-info">
+          <div class="shirt-card-sm-club">${s.club||''}</div>
+          <div class="shirt-card-sm-title">${s.title}</div>
+          <div class="shirt-card-sm-price">€${parseFloat(s.price).toFixed(2)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── DESKTOP SHOP ──
+  function dSetFilter(filter, btn) {
+    dCurrentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) { btn.classList.add('active'); }
+    else {
+      const map = {all:'d-filter-all',match_worn:'d-filter-mw',clubs:'d-filter-clubs',national:'d-filter-national'};
+      document.getElementById(map[filter])?.classList.add('active');
+    }
+    renderDesktopGrid();
+  }
+
+  function dFilterShirts() { renderDesktopGrid(); }
+
+  function renderDesktopGrid() {
+    const search = document.getElementById('d-search-input')?.value.toLowerCase() || '';
+    let shirts = allShirts;
+    if (dCurrentFilter !== 'all') shirts = shirts.filter(s => s.category === dCurrentFilter);
+    if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search) || (s.season||'').toLowerCase().includes(search));
+    const grid = document.getElementById('d-shirt-grid');
+    if (!shirts.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">No shirts found</div>'; return; }
+    grid.innerHTML = shirts.map(s => {
+      const inCart = cart.some(c => c.id === s.id);
+      const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
+      return `
+        <div class="shirt-card" onclick="openDetail('${s.id}','d')">
+          <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
+          ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
           <div class="shirt-card-body">
-            <div class="shirt-card-club">${s.club || ''}</div>
+            <div class="shirt-card-club">${s.club||''}</div>
             <div class="shirt-card-title">${s.title}</div>
             <div class="shirt-card-footer">
               <div class="shirt-card-price">€${parseFloat(s.price).toFixed(2)}</div>
-              ${inCart
-                ? '<span class="sold-badge">In cart ✓</span>'
-                : `<button class="add-btn" onclick="event.stopPropagation(); quickAdd('${s.id}')">+</button>`
-              }
+              ${inCart ? '<span class="sold-badge">In cart ✓</span>' : `<button class="add-btn" onclick="event.stopPropagation();quickAdd('${s.id}')">+</button>`}
             </div>
           </div>
-        </div>
-      `;
+        </div>`;
     }).join('');
   }
 
   // ── DETAIL ──
-  function openDetail(id) {
+  function openDetail(id, ctx) {
     const shirt = allShirts.find(s => s.id === id);
     if (!shirt) return;
     currentShirt = shirt;
-    document.getElementById('detail-img').src = getImg(shirt);
-    document.getElementById('detail-img').alt = shirt.title;
-    document.getElementById('detail-category').textContent = shirt.category?.replace('_', ' ').toUpperCase() || '';
-    document.getElementById('detail-title').textContent = shirt.title;
-    document.getElementById('detail-club').textContent = shirt.club || '';
-    document.getElementById('detail-price').textContent = `€${parseFloat(shirt.price).toFixed(2)}`;
-    document.getElementById('detail-desc').textContent = shirt.description || '';
-    document.getElementById('detail-specs').innerHTML = [
+    const images = shirt.images && shirt.images.length ? shirt.images : [getImg(shirt)];
+
+    if (ctx === 'm') {
+      currentImages = images;
+      currentImgIndex = 0;
+      mPrevScreen = document.querySelector('.screen.active')?.id?.replace('screen-','') || 'shop';
+      document.getElementById('m-detail-main-img').src = images[0];
+      document.getElementById('m-detail-category').textContent = (shirt.category||'').replace('_',' ').toUpperCase();
+      document.getElementById('m-detail-title').textContent = shirt.title;
+      document.getElementById('m-detail-club').textContent = shirt.club||'';
+      document.getElementById('m-detail-price').textContent = `€${parseFloat(shirt.price).toFixed(2)}`;
+      document.getElementById('m-detail-desc').textContent = shirt.description||'';
+      document.getElementById('m-detail-specs').innerHTML = buildSpecs(shirt);
+      document.getElementById('m-detail-thumbs').innerHTML = images.length > 1 ? images.map((img,i) => `<img src="${img}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','m-detail-main-img')" loading="lazy">`).join('') : '';
+      const btn = document.getElementById('m-detail-add-btn');
+      const inCart = cart.some(c => c.id === shirt.id);
+      btn.textContent = inCart ? 'Added to Cart ✓' : 'Add to Cart';
+      btn.disabled = inCart;
+      mGoTo('detail');
+    } else {
+      currentImages = images;
+      currentImgIndex = 0;
+      dPrevScreen = document.querySelector('.dscreen.active')?.id?.replace('d-screen-','') || 'shop';
+      document.getElementById('d-detail-main-img').src = images[0];
+      document.getElementById('d-detail-category').textContent = (shirt.category||'').replace('_',' ').toUpperCase();
+      document.getElementById('d-detail-title').textContent = shirt.title;
+      document.getElementById('d-detail-club').textContent = shirt.club||'';
+      document.getElementById('d-detail-price').textContent = `€${parseFloat(shirt.price).toFixed(2)}`;
+      document.getElementById('d-detail-desc').textContent = shirt.description||'';
+      document.getElementById('d-detail-specs').innerHTML = buildSpecs(shirt);
+      document.getElementById('d-detail-thumbs').innerHTML = images.map((img,i) => `<img src="${img}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','d-detail-main-img')" loading="lazy">`).join('');
+      const btn = document.getElementById('d-detail-add-btn');
+      const inCart = cart.some(c => c.id === shirt.id);
+      btn.textContent = inCart ? 'Added to Cart ✓' : 'Add to Cart';
+      btn.disabled = inCart;
+      dGoTo('detail');
+    }
+  }
+
+  function buildSpecs(shirt) {
+    return [
       shirt.size ? `<div class="spec-item"><div class="spec-label">Size</div><div class="spec-value">${shirt.size}</div></div>` : '',
       shirt.season ? `<div class="spec-item"><div class="spec-label">Season</div><div class="spec-value">${shirt.season}</div></div>` : '',
       shirt.condition ? `<div class="spec-item"><div class="spec-label">Condition</div><div class="spec-value">${shirt.condition}</div></div>` : '',
       shirt.category ? `<div class="spec-item"><div class="spec-label">Category</div><div class="spec-value">${shirt.category.replace('_',' ')}</div></div>` : '',
     ].join('');
-    const btn = document.getElementById('detail-add-btn');
-    const inCart = cart.some(c => c.id === shirt.id);
-    btn.textContent = inCart ? 'Added to Cart ✓' : 'Add to Cart';
-    btn.disabled = inCart;
-    goTo('detail');
+  }
+
+  function galleryNav(ctx, dir) {
+    if (!currentImages.length) return;
+    currentImgIndex = (currentImgIndex + dir + currentImages.length) % currentImages.length;
+    const src = currentImages[currentImgIndex];
+    const mainId = ctx === 'm' ? 'm-detail-main-img' : 'd-detail-main-img';
+    document.getElementById(mainId).src = src;
+    // Update active thumb
+    const thumbsId = ctx === 'm' ? 'm-detail-thumbs' : 'd-detail-thumbs';
+    document.getElementById(thumbsId).querySelectorAll('.gallery-thumb').forEach((t,i) => {
+      t.classList.toggle('active', i === currentImgIndex);
+    });
+  }
+
+  function switchImg(el, src, mainId) {
+    document.getElementById(mainId).src = src;
+    currentImgIndex = currentImages.indexOf(src);
+    el.closest('.gallery-thumbs, #m-detail-thumbs, #d-detail-thumbs').querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
   }
 
   function addToCartFromDetail() {
     if (!currentShirt) return;
     addToCart(currentShirt);
-    const btn = document.getElementById('detail-add-btn');
-    btn.textContent = 'Added to Cart ✓';
-    btn.disabled = true;
+    document.querySelectorAll('#m-detail-add-btn, #d-detail-add-btn').forEach(btn => {
+      btn.textContent = 'Added to Cart ✓'; btn.disabled = true;
+    });
   }
 
   // ── CART ──
   function addToCart(shirt) {
     if (cart.some(c => c.id === shirt.id)) { showToast('Already in cart'); return; }
     cart.push({ id: shirt.id, title: shirt.title, price: shirt.price, image: getImg(shirt), club: shirt.club, size: shirt.size });
-    saveCart();
-    updateCartBadge();
-    showToast('Added to cart');
-    renderShopGrid();
+    saveCart(); updateCartBadge(); showToast('Added to cart ✓');
+    renderMobileGrid(); renderDesktopGrid();
   }
 
-  function quickAdd(id) {
-    const shirt = allShirts.find(s => s.id === id);
-    if (shirt) addToCart(shirt);
-  }
+  function quickAdd(id) { const s = allShirts.find(x => x.id === id); if (s) addToCart(s); }
 
   function removeFromCart(id) {
     cart = cart.filter(c => c.id !== id);
-    saveCart();
-    updateCartBadge();
-    renderCart();
-    renderShopGrid();
+    saveCart(); updateCartBadge();
+    renderMobileCart(); renderDesktopCart();
+    renderMobileGrid(); renderDesktopGrid();
   }
 
-  function saveCart() {
-    localStorage.setItem('ss_cart', JSON.stringify(cart));
-  }
+  function saveCart() { localStorage.setItem('ss_cart', JSON.stringify(cart)); }
 
   function updateCartBadge() {
-    const badge = document.getElementById('cart-badge');
-    badge.textContent = cart.length;
-    badge.classList.toggle('visible', cart.length > 0);
-    // Desktop badge
-    const dbadge = document.getElementById('dcart-badge');
-    if (dbadge) {
-      dbadge.textContent = cart.length;
-      dbadge.style.display = cart.length > 0 ? 'flex' : 'none';
-    }
+    const count = cart.length;
+    document.getElementById('cart-badge').textContent = count;
+    document.getElementById('cart-badge').classList.toggle('visible', count > 0);
+    const dc = document.getElementById('d-cart-count');
+    dc.textContent = count; dc.style.display = count > 0 ? 'inline' : 'none';
   }
 
-  function getCartTotal() {
-    return cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
-  }
+  function getCartTotal() { return cart.reduce((s, i) => s + parseFloat(i.price), 0); }
+  function getShipping() { return getCartTotal() >= 100 ? 0 : 7.95; }
 
-  function getShipping() {
-    return getCartTotal() >= 100 ? 0 : 7.95;
-  }
-
-  function renderCart() {
-    const el = document.getElementById('cart-content');
-    if (!cart.length) {
-      el.innerHTML = `
-        <div class="cart-empty">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-          <p>Your cart is empty</p>
-        </div>
-      `;
-      return;
-    }
-    const subtotal = getCartTotal();
-    const shipping = getShipping();
-    const total = subtotal + shipping;
-    el.innerHTML = `
-      <div class="cart-items">
-        ${cart.map(item => `
-          <div class="cart-item">
-            <img src="${item.image}" alt="${item.title}">
-            <div class="cart-item-info">
-              <div class="cart-item-title">${item.title}</div>
-              <div class="cart-item-sub">${item.club || ''} ${item.size ? '· ' + item.size : ''}</div>
-              <div class="cart-item-price">€${parseFloat(item.price).toFixed(2)}</div>
-            </div>
-            <button class="remove-btn" onclick="removeFromCart('${item.id}')">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-            </button>
+  function buildCartHTML(prefix) {
+    if (!cart.length) return `<div class="cart-empty"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><p>Your cart is empty</p></div>`;
+    const sub = getCartTotal(), ship = getShipping(), total = sub + ship;
+    return `
+      ${cart.map(item => `
+        <div class="cart-item">
+          <img src="${item.image}" alt="${item.title}">
+          <div class="cart-item-info">
+            <div class="cart-item-title">${item.title}</div>
+            <div class="cart-item-sub">${item.club||''} ${item.size ? '· '+item.size : ''}</div>
+            <div class="cart-item-price">€${parseFloat(item.price).toFixed(2)}</div>
           </div>
-        `).join('')}
-      </div>
+          <button class="remove-btn" onclick="removeFromCart('${item.id}')">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          </button>
+        </div>
+      `).join('')}
       <div class="cart-footer">
-        <div class="cart-shipping-note">${shipping === 0 ? '✓ Free shipping on this order' : `Free shipping on orders over €100`}</div>
+        <div class="cart-shipping-note">${ship === 0 ? '✓ Free shipping on this order' : 'Free shipping on orders over €100'}</div>
         <div class="cart-total-row">
           <div>
-            <div class="cart-total-label">Subtotal</div>
-            ${shipping > 0 ? `<div class="cart-total-label" style="font-size:12px">+ €${shipping.toFixed(2)} shipping</div>` : ''}
+            <div class="cart-total-label">Total ${ship > 0 ? '(incl. €'+ship.toFixed(2)+' shipping)' : ''}</div>
           </div>
           <div class="cart-total-amount">€${total.toFixed(2)}</div>
         </div>
-        <button class="cart-checkout-btn" onclick="goTo('checkout')">Continue to Checkout →</button>
-      </div>
-    `;
+        <button class="cart-checkout-btn" onclick="${prefix}GoTo('checkout');buildCheckoutForms()">Continue to Checkout →</button>
+      </div>`;
   }
+
+  function renderMobileCart() { document.getElementById('m-cart-content').innerHTML = buildCartHTML('m'); }
+  function renderDesktopCart() { document.getElementById('d-cart-content').innerHTML = buildCartHTML('d'); }
 
   // ── CHECKOUT ──
-  function renderCheckoutSummary() {
-    const subtotal = getCartTotal();
-    const shipping = getShipping();
-    const total = subtotal + shipping;
-    document.getElementById('checkout-summary').innerHTML = `
-      <div class="checkout-summary-title">Order Summary</div>
-      ${cart.map(item => `
-        <div class="checkout-summary-item">
-          <span>${item.title}</span>
-          <span>€${parseFloat(item.price).toFixed(2)}</span>
-        </div>
-      `).join('')}
-      <div class="checkout-summary-item">
-        <span>Shipping</span>
-        <span>${shipping === 0 ? 'Free' : '€' + shipping.toFixed(2)}</span>
-      </div>
-      <div class="checkout-summary-total">
-        <span>Total</span>
-        <span>€${total.toFixed(2)}</span>
-      </div>
-    `;
+  const checkoutFormHTML = `
+    <div class="form-section-label">Personal Information</div>
+    <div class="form-row">
+      <div class="form-group"><label>First Name *</label><input type="text" id="f-first" placeholder="Jan" required></div>
+      <div class="form-group"><label>Last Name *</label><input type="text" id="f-last" placeholder="de Vries" required></div>
+    </div>
+    <div class="form-group"><label>Email *</label><input type="email" id="f-email" placeholder="jan@email.com" required></div>
+    <div class="form-group"><label>Phone *</label><input type="tel" id="f-phone" placeholder="+31 6 12345678" required></div>
+    <div class="form-section-label">Shipping Address</div>
+    <div class="form-row">
+      <div class="form-group" style="grid-column:1/-1"><label>Street *</label><input type="text" id="f-street" placeholder="Damrak" required></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>House Nr *</label><input type="text" id="f-housenr" placeholder="1" required></div>
+      <div class="form-group"><label>Addition</label><input type="text" id="f-addition" placeholder="A"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Postal Code *</label><input type="text" id="f-postal" placeholder="1012 LG" required></div>
+      <div class="form-group"><label>City *</label><input type="text" id="f-city" placeholder="Amsterdam" required></div>
+    </div>
+    <div class="form-group">
+      <label>Country *</label>
+      <select id="f-country" required>
+        <option value="">Select country...</option>
+        <option value="NL">Netherlands</option><option value="BE">Belgium</option>
+        <option value="DE">Germany</option><option value="FR">France</option>
+        <option value="GB">United Kingdom</option><option value="ES">Spain</option>
+        <option value="IT">Italy</option><option value="PT">Portugal</option>
+        <option value="AT">Austria</option><option value="CH">Switzerland</option>
+        <option value="DK">Denmark</option><option value="SE">Sweden</option>
+        <option value="NO">Norway</option><option value="FI">Finland</option>
+        <option value="PL">Poland</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Order Notes</label><textarea id="f-notes" placeholder="Any special requests..."></textarea></div>
+  `;
+
+  function buildCheckoutForms() {
+    const sub = getCartTotal(), ship = getShipping(), total = sub + ship;
+    const summaryHTML = `
+      <div class="order-summary-title">Order Summary</div>
+      ${cart.map(i => `<div class="summary-item"><span>${i.title}</span><span>€${parseFloat(i.price).toFixed(2)}</span></div>`).join('')}
+      <div class="summary-item"><span>Shipping</span><span>${ship === 0 ? 'Free' : '€'+ship.toFixed(2)}</span></div>
+      <div class="summary-total"><span>Total</span><span>€${total.toFixed(2)}</span></div>`;
+    document.getElementById('m-checkout-form').innerHTML = checkoutFormHTML;
+    document.getElementById('m-checkout-summary').innerHTML = summaryHTML;
+    document.getElementById('d-checkout-form').innerHTML = checkoutFormHTML;
+    document.getElementById('d-order-summary').innerHTML = summaryHTML;
   }
 
-  async function submitPayment() {
+  async function submitPayment(ctx) {
     const fields = ['f-first','f-last','f-email','f-phone','f-street','f-housenr','f-postal','f-city','f-country'];
     let valid = true;
     fields.forEach(id => {
       const el = document.getElementById(id);
+      if (!el) return;
       el.classList.remove('error');
       if (!el.value.trim()) { el.classList.add('error'); valid = false; }
     });
     if (!valid) { showToast('Please fill in all required fields'); return; }
     if (!cart.length) { showToast('Your cart is empty'); return; }
 
-    const btn = document.getElementById('pay-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Processing...';
+    const btnId = ctx === 'm' ? 'm-pay-btn' : 'd-pay-btn';
+    const btn = document.getElementById(btnId);
+    btn.disabled = true; btn.innerHTML = 'Processing...';
 
     try {
       const customer = {
@@ -1132,7 +1224,7 @@
         email: document.getElementById('f-email').value.trim(),
         phone: document.getElementById('f-phone').value.trim(),
         street: document.getElementById('f-street').value.trim(),
-        housenr: document.getElementById('f-housenr').value.trim() + (document.getElementById('f-addition').value.trim() ? ' ' + document.getElementById('f-addition').value.trim() : ''),
+        housenr: document.getElementById('f-housenr').value.trim() + (document.getElementById('f-addition').value.trim() ? ' '+document.getElementById('f-addition').value.trim() : ''),
         postal: document.getElementById('f-postal').value.trim(),
         city: document.getElementById('f-city').value.trim(),
         country: document.getElementById('f-country').value,
@@ -1144,47 +1236,54 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items: cart, customer })
       });
-
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Payment failed');
-
-      // Clear cart and redirect to Mollie
       localStorage.removeItem('ss_cart');
-      cart = [];
-      updateCartBadge();
+      cart = []; updateCartBadge();
       window.location.href = data.checkoutUrl;
-
     } catch (err) {
-      console.error(err);
       showToast('Payment error: ' + err.message);
       btn.disabled = false;
       btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay with Mollie';
     }
   }
 
+  // ── MOBILE NAV ──
+  function mGoTo(screen) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('screen-'+screen).classList.add('active');
+    const tab = document.getElementById('m-tab-'+screen);
+    if (tab) tab.classList.add('active');
+    window.scrollTo(0,0);
+    if (screen === 'cart') renderMobileCart();
+    if (screen === 'checkout') buildCheckoutForms();
+  }
+  function mGoBack() { mGoTo(mPrevScreen); }
+
+  // ── DESKTOP NAV ──
+  function dGoTo(screen) {
+    document.querySelectorAll('.dscreen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('d-screen-'+screen).classList.add('active');
+    const nav = document.getElementById('d-nav-'+screen);
+    if (nav) nav.classList.add('active');
+    window.scrollTo(0,0);
+    if (screen === 'cart') renderDesktopCart();
+    if (screen === 'checkout') buildCheckoutForms();
+  }
+  function dGoBack() { dGoTo(dPrevScreen); }
+
   // ── TOAST ──
   function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
+    t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
   // ── INIT ──
   updateCartBadge();
   fetchShirts();
-
-  // Show desktop sidebar on wide screens
-  function checkDesktop() {
-    const sidebar = document.getElementById('desktop-sidebar');
-    if (window.innerWidth >= 768) {
-      sidebar.style.display = 'flex';
-    } else {
-      sidebar.style.display = 'none';
-    }
-  }
-  checkDesktop();
-  window.addEventListener('resize', checkDesktop);
 </script>
 </body>
 </html>
