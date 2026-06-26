@@ -536,6 +536,28 @@
     <button class="m-filter-btn" onclick="mSetFilter('clubs',this)">Clubs</button>
     <button class="m-filter-btn" onclick="mSetFilter('national',this)">National</button>
   </div>
+  <div style="display:flex;gap:8px;padding:0 20px 12px;overflow-x:auto;scrollbar-width:none">
+    <select id="m-filter-size" onchange="mFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
+      <option value="">All Sizes</option>
+      <option>XS</option><option>S</option><option>M</option>
+      <option>L</option><option>XL</option><option>XXL</option>
+    </select>
+    <select id="m-filter-price" onchange="mFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
+      <option value="">All Prices</option>
+      <option value="0-100">Under €100</option>
+      <option value="100-200">€100–€200</option>
+      <option value="200-350">€200–€350</option>
+      <option value="350-999">€350+</option>
+    </select>
+    <select id="m-sort" onchange="mFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
+      <option value="newest">Newest</option>
+      <option value="oldest">Oldest</option>
+      <option value="price-asc">Price ↑</option>
+      <option value="price-desc">Price ↓</option>
+      <option value="year-asc">Year ↑</option>
+      <option value="year-desc">Year ↓</option>
+    </select>
+  </div>
   <div id="m-shirt-grid" class="m-shirt-grid"><div class="loading" style="grid-column:1/-1">Loading...</div></div>
 </div>
 
@@ -600,15 +622,26 @@
 
 <!-- MOBILE PROFILE -->
 <div id="screen-profile" class="screen">
-  <div style="padding:32px 20px 24px;text-align:center">
-    <div style="width:72px;height:72px;border-radius:50%;background:var(--grey);border:2px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px">👕</div>
-    <div style="font-size:20px;font-weight:500;margin-bottom:4px">Guest</div>
-    <div style="font-size:13px;color:var(--text-muted)">Sign in to view your orders</div>
-  </div>
-  <div style="padding:0 20px">
-    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px">Account</div>
-    <div class="profile-item"><span>Order History</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
-    <div class="profile-item"><span>Wishlist</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+  <div style="padding:24px 20px 0">
+    <div style="font-size:22px;font-weight:500;margin-bottom:4px">Shirt Société</div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Timeless, Original, Rare</div>
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding-bottom:12px">Explore</div>
+    <div class="profile-item" onclick="mGoTo('about')">
+      <span>About Us</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="profile-item" onclick="mGoTo('shop')">
+      <span>Shop the Collection</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px;border-top:1px solid #1e1c17;margin-top:8px">Follow Us</div>
+    <a href="https://www.instagram.com/shirtsociete/" target="_blank" class="profile-item" style="text-decoration:none;color:var(--white)">
+      <span style="display:flex;align-items:center;gap:10px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        @shirtsociete
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px;border-top:1px solid #1e1c17;margin-top:8px">Contact</div>
     <div class="profile-item"><span>info@shirtsociete.com</span></div>
   </div>
@@ -631,7 +664,7 @@
   </div>
   <div class="tab" onclick="mGoTo('profile')" id="m-tab-profile">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    Profile
+    More
   </div>
 </nav>
 
@@ -660,23 +693,31 @@
         Cart
         <span id="d-cart-count" style="margin-left:auto;background:var(--gold);color:var(--black);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
       </div>
+      <div class="nav-item" onclick="dGoTo('about')" id="d-nav-about">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        Our Story
+      </div>
       <div class="nav-section-label" style="margin-top:8px">Categories</div>
       <div class="nav-item" onclick="dGoTo('shop');dSetFilter('match_worn')" id="d-nav-mw">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         Match Worn
       </div>
       <div class="nav-item" onclick="dGoTo('shop');dSetFilter('clubs')" id="d-nav-clubs">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         Clubs
       </div>
       <div class="nav-item" onclick="dGoTo('shop');dSetFilter('national')" id="d-nav-national">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
         National Teams
       </div>
     </nav>
     <div class="sidebar-footer">
       <div style="margin-bottom:8px;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase">Contact</div>
       <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a>
+      <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:flex;align-items:center;gap:6px;color:var(--gold);text-decoration:none;margin-top:8px;font-size:12px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        @shirtsociete
+      </a>
       <div style="margin-top:12px;font-size:11px">© 2026 Shirt Société</div>
     </div>
   </aside>
@@ -692,10 +733,15 @@
           <div class="hero-eyebrow">Est. in passion</div>
           <h1 class="hero-title">Vintage<br><span>football</span><br>history.</h1>
           <p class="hero-sub">Curated match worn shirts & rare originals from the golden era of football.</p>
-          <button class="btn-primary" onclick="dGoTo('shop')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-            Shop the collection
-          </button>
+          <div style="display:flex;gap:16px;flex-wrap:wrap">
+            <button class="btn-primary" onclick="dGoTo('shop')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+              Shop the collection
+            </button>
+            <button onclick="dGoTo('about')" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(200,169,80,0.5);color:var(--gold);padding:14px 28px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;transition:all 0.2s">
+              Our Story
+            </button>
+          </div>
         </div>
       </div>
 
@@ -733,6 +779,29 @@
         </div>
         <div id="d-clubs-row" class="shirt-row"><div class="loading">Loading...</div></div>
       </div>
+
+      <!-- Instagram Strip -->
+      <div style="border-top:1px solid #1e1c17;padding:64px;background:#0d0b08;display:flex;align-items:center;justify-content:space-between;gap:40px">
+        <div>
+          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500">Follow the Journey</div>
+          <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;margin-bottom:12px">@shirtsociete</h2>
+          <p style="font-size:14px;color:var(--text-muted);margin-bottom:24px;max-width:400px">From the stands of Vintage Fußballbörse in Cologne, Düsseldorf and Hamburg — to next stop Frankfurt on July 4th. Follow the journey behind Shirt Société and be the first to see new arrivals, rare pieces and event coverage.</p>
+          <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);padding:14px 28px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Follow on Instagram
+          </a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:420px;flex-shrink:0">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_3_tn57da.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="">
+          <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="width:100%;aspect-ratio:1;background:var(--grey);border-radius:2px;display:flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid #2a2820">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
 
     <!-- SHOP -->
@@ -750,6 +819,31 @@
         <button class="filter-btn" onclick="dSetFilter('match_worn',this)" id="d-filter-mw">Match Worn</button>
         <button class="filter-btn" onclick="dSetFilter('clubs',this)" id="d-filter-clubs">Clubs</button>
         <button class="filter-btn" onclick="dSetFilter('national',this)" id="d-filter-national">National</button>
+      </div>
+      <div style="display:flex;gap:12px;padding:0 48px 16px;flex-wrap:wrap;align-items:center;border-bottom:1px solid #1e1c17">
+        <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);font-weight:500">Filter:</div>
+        <select id="d-filter-size" onchange="dFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
+          <option value="">All Sizes</option>
+          <option>XS</option><option>S</option><option>M</option>
+          <option>L</option><option>XL</option><option>XXL</option>
+          <option>Player Issue</option>
+        </select>
+        <select id="d-filter-price" onchange="dFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
+          <option value="">All Prices</option>
+          <option value="0-100">Under €100</option>
+          <option value="100-200">€100 – €200</option>
+          <option value="200-350">€200 – €350</option>
+          <option value="350-999">€350+</option>
+        </select>
+        <select id="d-sort" onchange="dFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="year-asc">Year: Old to New</option>
+          <option value="year-desc">Year: New to Old</option>
+        </select>
+        <button onclick="resetFilters()" style="background:none;border:none;color:var(--text-muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 0;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">✕ Reset</button>
       </div>
       <div id="d-shirt-grid" class="shirt-grid"><div class="loading" style="grid-column:1/-1">Loading collection...</div></div>
     </div>
@@ -832,7 +926,137 @@
       </div>
     </div>
 
+    <!-- ABOUT -->
+    <div class="dscreen" id="d-screen-about">
+      <!-- Hero -->
+      <div style="position:relative;height:420px;overflow:hidden">
+        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="Shirt Société" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.35)">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;padding:64px">
+          <div>
+            <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500">Our Story</div>
+            <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:56px;line-height:1.1;color:var(--white);margin-bottom:16px">Where Football<br><span style="color:var(--gold)">History</span> Lives On</h1>
+            <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:rgba(245,240,232,0.7);max-width:500px">Curated match worn shirts & rare originals, sourced across Europe by a true football collector.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story section -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:100%">
+        <div style="padding:64px;border-right:1px solid #1e1c17">
+          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:500">Who We Are</div>
+          <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:36px;line-height:1.2;margin-bottom:20px">A Collector's Eye,<br>A Curator's Touch</h2>
+          <p style="font-size:15px;line-height:1.9;color:#b0a898;margin-bottom:16px">Shirt Société was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for serious collectors across Europe.</p>
+          <p style="font-size:15px;line-height:1.9;color:#b0a898;margin-bottom:16px">From vintage clubs to match worn pieces worn by legends, every shirt in our collection has been hand-picked for its authenticity, rarity and history. We don't just sell shirts. We preserve football heritage.</p>
+          <p style="font-size:15px;line-height:1.9;color:#b0a898;margin-bottom:32px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Cologne, Düsseldorf and Hamburg, Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next up: Frankfurt, July 4th 2026.</p>
+          <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);padding:14px 28px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Follow on Instagram
+          </a>
+        </div>
+        <div style="padding:64px;background:#0d0b08">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px">
+            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
+              <div style="font-size:36px;font-weight:600;color:var(--gold)">1,400+</div>
+              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Followers</div>
+            </div>
+            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
+              <div style="font-size:36px;font-weight:600;color:var(--gold)">3</div>
+              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Cities</div>
+            </div>
+            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
+              <div style="font-size:36px;font-weight:600;color:var(--gold)">5+</div>
+              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Events</div>
+            </div>
+            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
+              <div style="font-size:36px;font-weight:600;color:var(--gold)">🇪🇺</div>
+              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Europe</div>
+            </div>
+            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820;grid-column:1/-1">
+              <div style="font-size:14px;color:var(--text-muted)">📍 Based in <span style="color:var(--white);font-weight:500">The Netherlands</span>, active across Germany</div>
+            </div>
+          </div>
+          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500">Our Mission</div>
+          <p style="font-size:15px;line-height:1.9;color:#b0a898;font-style:italic;border-left:2px solid var(--gold);padding-left:20px">"Every shirt tells a story. Our mission is to connect passionate collectors with authentic pieces of football history, and to ensure that these rare shirts are preserved and cherished by people who truly appreciate them."</p>
+        </div>
+      </div>
+
+      <!-- Fair photos -->
+      <div style="padding:64px;border-top:1px solid #1e1c17">
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500">On the Road</div>
+        <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;margin-bottom:32px">At the Fairs</h2>
+        <!-- Big feature image top -->
+        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" style="width:100%;height:400px;object-fit:cover;border-radius:2px;margin-bottom:16px;display:block" alt="Shirt Société at the fair">
+        <!-- 4 equal grid below -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="Fair">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="Fair">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="Fair">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_3_tn57da.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="Fair">
+        </div>
+        <!-- Cities strip -->
+        <div style="margin-top:20px;padding:20px;background:#0d0b08;border-radius:2px;border:1px solid #1e1c17;display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap">
+          <div style="text-align:center"><div style="font-size:18px;font-weight:600;color:var(--gold)">Cologne</div><div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px">2025</div></div>
+          <div style="color:#2a2820;font-size:20px">·</div>
+          <div style="text-align:center"><div style="font-size:18px;font-weight:600;color:var(--gold)">Düsseldorf</div><div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px">2026</div></div>
+          <div style="color:#2a2820;font-size:20px">·</div>
+          <div style="text-align:center"><div style="font-size:18px;font-weight:600;color:var(--gold)">Hamburg</div><div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px">2026</div></div>
+          <div style="color:#2a2820;font-size:20px">·</div>
+          <div style="text-align:center"><div style="font-size:18px;font-weight:600;color:var(--gold)">Frankfurt</div><div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px">July 4 · 2026</div></div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div style="padding:64px;background:#0d0b08;border-top:1px solid #1e1c17;text-align:center">
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:40px;margin-bottom:12px">Authenticity. Heritage. <span style="color:var(--gold)">Football History.</span></div>
+        <p style="font-size:15px;color:var(--text-muted);margin-bottom:32px">Find your next piece of football history in our collection.</p>
+        <button class="btn-primary" onclick="dGoTo('shop')" style="margin-right:16px">Shop the Collection</button>
+        <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--gold);color:var(--gold);padding:14px 28px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Follow on Instagram
+        </a>
+      </div>
+    </div>
+
   </main>
+</div>
+
+<!-- MOBILE ABOUT -->
+<div id="screen-about" class="screen" style="padding-bottom:80px">
+  <div style="padding:24px 20px">
+    <div class="detail-back" style="padding:0 0 20px" onclick="mGoTo('profile')">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Back
+    </div>
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500">Our Story</div>
+    <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:28px;line-height:1.2;margin-bottom:16px">Where Football<br>History Lives On</h2>
+    <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="Shirt Société at the fair" style="width:100%;border-radius:2px;margin-bottom:20px;object-fit:cover;height:220px">
+    <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:16px">Shirt Société was founded by Yesse Fredriks out of a deep passion for football and the history behind the shirts that made the game. What started as a personal collection grew into a curated platform for collectors across Europe.</p>
+    <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:24px">Every shirt in our collection tells a story — from match worn pieces worn by legends to rare vintage originals from the golden era of European football.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
+      <div style="background:var(--grey);padding:16px;border-radius:2px;text-align:center">
+        <div style="font-size:24px;font-weight:600;color:var(--gold)">100+</div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px">Shirts Sold</div>
+      </div>
+      <div style="background:var(--grey);padding:16px;border-radius:2px;text-align:center">
+        <div style="font-size:24px;font-weight:600;color:var(--gold)">1,400+</div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px">Followers</div>
+      </div>
+      <div style="background:var(--grey);padding:16px;border-radius:2px;text-align:center">
+        <div style="font-size:24px;font-weight:600;color:var(--gold)">5+</div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px">Events</div>
+      </div>
+      <div style="background:var(--grey);padding:16px;border-radius:2px;text-align:center">
+        <div style="font-size:24px;font-weight:600;color:var(--gold)">🇪🇺</div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px">Europe-wide</div>
+      </div>
+    </div>
+    <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" alt="Shirt Société stand" style="width:100%;border-radius:2px;margin-bottom:20px;object-fit:cover;height:220px">
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500">Follow the Journey</div>
+    <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:var(--grey);border:1px solid #2e2c27;border-radius:2px;padding:14px;color:var(--gold);text-decoration:none;font-size:14px;font-weight:500">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      @shirtsociete on Instagram
+    </a>
+  </div>
 </div>
 
 <!-- TOAST -->
@@ -918,9 +1142,22 @@
 
   function renderMobileGrid() {
     const search = document.getElementById('m-search-input')?.value.toLowerCase() || '';
-    let shirts = allShirts;
+    const sizeFilter = document.getElementById('m-filter-size')?.value || '';
+    const priceFilter = document.getElementById('m-filter-price')?.value || '';
+    const sort = document.getElementById('m-sort')?.value || 'newest';
+    let shirts = [...allShirts];
     if (mCurrentFilter !== 'all') shirts = shirts.filter(s => s.category === mCurrentFilter);
     if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search) || (s.season||'').toLowerCase().includes(search));
+    if (sizeFilter) shirts = shirts.filter(s => s.size === sizeFilter);
+    if (priceFilter) {
+      const [min, max] = priceFilter.split('-').map(Number);
+      shirts = shirts.filter(s => parseFloat(s.price) >= min && parseFloat(s.price) <= max);
+    }
+    if (sort === 'price-asc') shirts.sort((a,b) => parseFloat(a.price) - parseFloat(b.price));
+    else if (sort === 'price-desc') shirts.sort((a,b) => parseFloat(b.price) - parseFloat(a.price));
+    else if (sort === 'year-asc') shirts.sort((a,b) => parseInt(a.season||0) - parseInt(b.season||0));
+    else if (sort === 'year-desc') shirts.sort((a,b) => parseInt(b.season||0) - parseInt(a.season||0));
+    else if (sort === 'oldest') shirts.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
     const grid = document.getElementById('m-shirt-grid');
     if (!shirts.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No shirts found</div>'; return; }
     grid.innerHTML = shirts.map(s => {
@@ -983,12 +1220,35 @@
   }
 
   function dFilterShirts() { renderDesktopGrid(); }
+  function resetFilters() {
+    document.getElementById('d-filter-size').value = '';
+    document.getElementById('d-filter-price').value = '';
+    document.getElementById('d-sort').value = 'newest';
+    document.getElementById('d-search-input').value = '';
+    dCurrentFilter = 'all';
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('d-filter-all').classList.add('active');
+    renderDesktopGrid();
+  }
 
   function renderDesktopGrid() {
     const search = document.getElementById('d-search-input')?.value.toLowerCase() || '';
-    let shirts = allShirts;
+    const sizeFilter = document.getElementById('d-filter-size')?.value || '';
+    const priceFilter = document.getElementById('d-filter-price')?.value || '';
+    const sort = document.getElementById('d-sort')?.value || 'newest';
+    let shirts = [...allShirts];
     if (dCurrentFilter !== 'all') shirts = shirts.filter(s => s.category === dCurrentFilter);
     if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search) || (s.season||'').toLowerCase().includes(search));
+    if (sizeFilter) shirts = shirts.filter(s => s.size === sizeFilter);
+    if (priceFilter) {
+      const [min, max] = priceFilter.split('-').map(Number);
+      shirts = shirts.filter(s => parseFloat(s.price) >= min && parseFloat(s.price) <= max);
+    }
+    if (sort === 'price-asc') shirts.sort((a,b) => parseFloat(a.price) - parseFloat(b.price));
+    else if (sort === 'price-desc') shirts.sort((a,b) => parseFloat(b.price) - parseFloat(a.price));
+    else if (sort === 'year-asc') shirts.sort((a,b) => parseInt(a.season||0) - parseInt(b.season||0));
+    else if (sort === 'year-desc') shirts.sort((a,b) => parseInt(b.season||0) - parseInt(a.season||0));
+    else if (sort === 'oldest') shirts.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
     const grid = document.getElementById('d-shirt-grid');
     if (!shirts.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">No shirts found</div>'; return; }
     grid.innerHTML = shirts.map(s => {
@@ -1267,6 +1527,8 @@
     document.getElementById('screen-'+screen).classList.add('active');
     const tab = document.getElementById('m-tab-'+screen);
     if (tab) tab.classList.add('active');
+    // highlight profile tab when on about
+    if (screen === 'about') document.getElementById('m-tab-profile').classList.add('active');
     window.scrollTo(0,0);
     if (screen === 'cart') renderMobileCart();
     if (screen === 'checkout') buildCheckoutForms();
