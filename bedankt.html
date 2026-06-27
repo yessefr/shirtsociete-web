@@ -25,11 +25,30 @@
       background: var(--black);
       color: var(--white);
       font-family: 'DM Sans', sans-serif;
-      max-width: var(--max-w);
-      margin: 0 auto;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+    }
+    .main {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    @media (min-width: 768px) {
+      .page-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 80px);
+        padding: 48px;
+      }
+      .main {
+        width: 100%;
+        max-width: 560px;
+        background: #0e0c08;
+        border: 1px solid #1e1c17;
+        border-radius: 4px;
+        padding: 48px;
+      }
     }
 
     .header {
@@ -248,7 +267,7 @@
   <div class="tagline">Timeless · Original · Rare</div>
 </div>
 
-<div class="main">
+<div class="page-wrap"><div class="main">
   <div class="checkmark">
     <svg viewBox="0 0 24 24">
       <polyline points="20 6 9 17 4 12"/>
@@ -283,7 +302,7 @@
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <h3>Shipped Within 1-2 Days</h3>
+        <h3>Shipped</h3>
         <p>You'll receive a track & trace code by email as soon as your order ships.</p>
       </div>
     </div>
@@ -299,7 +318,7 @@
   <a href="/" class="btn-back">
     Continue Shopping
   </a>
-</div>
+</div></div>
 
 <div class="footer">
   Questions? Email us at <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a>
