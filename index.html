@@ -83,17 +83,17 @@
       display: flex; flex-direction: column; z-index: 100; overflow-y: auto;
     }
     .sidebar-logo {
-      padding: 28px 24px 20px; border-bottom: 1px solid #1e1c17;
+      padding: 20px 20px 16px; border-bottom: 1px solid #1e1c17;
       cursor: pointer; transition: opacity 0.2s;
       background: #0a0905;
     }
     .sidebar-logo:hover { opacity: 0.85; }
-    .sidebar-logo img { width: 100%; max-height: 120px; object-fit: contain; }
+    .sidebar-logo img { width: 100%; max-height: 90px; object-fit: contain; }
 
     .nav-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px 24px; color: var(--text-muted); cursor: pointer;
-      font-size: 14px; font-weight: 500; transition: all 0.2s;
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 20px; color: var(--text-muted); cursor: pointer;
+      font-size: 13px; font-weight: 500; transition: all 0.2s;
       border-left: 3px solid transparent;
     }
     .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.03); }
@@ -101,11 +101,11 @@
     .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
     .nav-section-label {
       font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      color: #3a3830; padding: 20px 24px 8px; font-weight: 500;
+      color: #3a3830; padding: 14px 20px 6px; font-weight: 500;
     }
     .sidebar-footer {
-      margin-top: auto; padding: 20px 24px; border-top: 1px solid #1e1c17;
-      font-size: 12px; color: var(--text-muted); line-height: 1.6;
+      margin-top: auto; padding: 14px 20px; border-top: 1px solid #1e1c17;
+      font-size: 11px; color: var(--text-muted); line-height: 1.5;
     }
     .sidebar-footer a { color: var(--gold); text-decoration: none; }
 
@@ -1032,14 +1032,14 @@
       <div style="padding:64px;border-top:1px solid #1e1c17">
         <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500">On the Road</div>
         <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;margin-bottom:32px">At the Fairs</h2>
-        <!-- Photo collage - 3 photos, bigger -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto;gap:12px;margin-bottom:48px">
+        <!-- Photo collage - 3 equal photos -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px">
           <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg"
-            style="width:100%;height:360px;object-fit:cover;border-radius:3px;grid-row:1/3" alt="Shirt Société at the fair">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg"
-            style="width:100%;height:172px;object-fit:cover;border-radius:3px" alt="Düsseldorf">
+            style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px" alt="Shirt Société at the fair">
           <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg"
-            style="width:100%;height:172px;object-fit:cover;border-radius:3px" alt="Fair">
+            style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px" alt="Fair">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg"
+            style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px" alt="Düsseldorf">
         </div>
 
         <!-- Horizontal Timeline -->
