@@ -32,8 +32,8 @@
     }
     .tab {
       flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 4px; cursor: pointer; color: var(--text-muted);
-      font-size: 10px; font-weight: 500; letter-spacing: 0.5px;
+      gap: 3px; cursor: pointer; color: var(--text-muted);
+      font-size: 9px; font-weight: 500; letter-spacing: 0.3px;
       transition: color 0.2s; position: relative;
     }
     .tab.active { color: var(--gold); }
@@ -662,6 +662,11 @@
     <span class="cart-badge" id="cart-badge">0</span>
     Cart
   </div>
+  <div class="tab" onclick="mGoTo('wishlist')" id="m-tab-wishlist">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    <span class="cart-badge" id="wishlist-badge" style="right:calc(50% - 20px)">0</span>
+    Saved
+  </div>
   <div class="tab" onclick="mGoTo('profile')" id="m-tab-profile">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     More
@@ -692,6 +697,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         Cart
         <span id="d-cart-count" style="margin-left:auto;background:var(--gold);color:var(--black);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
+      </div>
+      <div class="nav-item" onclick="dGoTo('wishlist')" id="d-nav-wishlist">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        Saved
+        <span id="d-wishlist-count" style="margin-left:auto;background:var(--grey-light,#3a3830);color:var(--text-muted);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
       </div>
       <div class="nav-item" onclick="dGoTo('about')" id="d-nav-about">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
@@ -913,6 +923,15 @@
       </div>
     </div>
 
+    <!-- WISHLIST -->
+    <div class="dscreen" id="d-screen-wishlist">
+      <div style="padding:48px;max-width:900px">
+        <h2 style="font-size:28px;font-weight:500;margin-bottom:4px">Saved Shirts</h2>
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:32px">Shirts you've liked. Sold items are marked automatically.</p>
+        <div id="d-wishlist-content"></div>
+      </div>
+    </div>
+
     <!-- PROFILE -->
     <div class="dscreen" id="d-screen-profile">
       <div class="profile-wrap">
@@ -1059,6 +1078,12 @@
   </div>
 </div>
 
+<!-- MOBILE WISHLIST -->
+<div id="screen-wishlist" class="screen" style="padding-bottom:80px">
+  <div style="padding:24px 20px 16px;font-size:20px;font-weight:500">My Wishlist</div>
+  <div id="m-wishlist-content" style="padding:0 20px"></div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -1070,6 +1095,7 @@
   // ── STATE ──
   let allShirts = [];
   let cart = JSON.parse(localStorage.getItem('ss_cart') || '[]');
+  let wishlist = JSON.parse(localStorage.getItem('ss_wishlist') || '[]');
   let currentShirt = null;
   let currentImages = [];
   let currentImgIndex = 0;
@@ -1101,6 +1127,7 @@
     renderMobileGrid();
     renderDesktopHome();
     renderDesktopGrid();
+    renderWishlist();
     document.getElementById('d-shirt-count').textContent = allShirts.length;
   }
 
@@ -1162,9 +1189,13 @@
     if (!shirts.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No shirts found</div>'; return; }
     grid.innerHTML = shirts.map(s => {
       const inCart = cart.some(c => c.id === s.id);
+      const isLiked = wishlist.includes(s.id);
       return `
-        <div class="m-shirt-card" onclick="openDetail('${s.id}','m')">
+        <div class="m-shirt-card" onclick="openDetail('${s.id}','m')" style="position:relative">
           <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
+          <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:6px;right:6px;width:28px;height:28px">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </button>
           <div class="m-shirt-card-body">
             <div class="m-shirt-card-club">${s.club||''}</div>
             <div class="m-shirt-card-title">${s.title}</div>
@@ -1254,10 +1285,14 @@
     grid.innerHTML = shirts.map(s => {
       const inCart = cart.some(c => c.id === s.id);
       const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
+      const isLiked = wishlist.includes(s.id);
       return `
         <div class="shirt-card" onclick="openDetail('${s.id}','d')">
           <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
           ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
+          <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" title="${isLiked ? 'Remove from saved' : 'Save shirt'}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </button>
           <div class="shirt-card-body">
             <div class="shirt-card-club">${s.club||''}</div>
             <div class="shirt-card-title">${s.title}</div>
@@ -1379,7 +1414,48 @@
   }
 
   function getCartTotal() { return cart.reduce((s, i) => s + parseFloat(i.price), 0); }
-  function getShipping() { return getCartTotal() >= 100 ? 0 : 7.95; }
+
+  const SHIPPING_RATES = {
+    NL: { rate: 5.95,  free_at: 150 },
+    BE: { rate: 8.95,  free_at: 150 },
+    DE: { rate: 9.95,  free_at: 150 },
+    LU: { rate: 9.95,  free_at: 150 },
+    FR: { rate: 12.95, free_at: 150 },
+    AT: { rate: 12.95, free_at: 150 },
+    DK: { rate: 12.95, free_at: 150 },
+    SE: { rate: 13.95, free_at: 150 },
+    FI: { rate: 13.95, free_at: 150 },
+    PL: { rate: 11.95, free_at: 150 },
+    ES: { rate: 13.95, free_at: 150 },
+    PT: { rate: 13.95, free_at: 150 },
+    IT: { rate: 12.95, free_at: 150 },
+    GB: { rate: 16.95, free_at: null, customs: true },
+    CH: { rate: 14.95, free_at: null, customs: true },
+    NO: { rate: 14.95, free_at: null, customs: true },
+  };
+
+  function getSelectedCountry() {
+    const el = document.getElementById('f-country');
+    return el ? el.value : '';
+  }
+
+  function getShippingForCountry(country, subtotal) {
+    const config = SHIPPING_RATES[country] || { rate: 14.95, free_at: null };
+    const isFree = config.free_at !== null && subtotal >= config.free_at;
+    return {
+      cost: isFree ? 0 : config.rate,
+      isFree,
+      freeAt: config.free_at,
+      hasCustoms: config.customs || false
+    };
+  }
+
+  function getShipping() {
+    const country = getSelectedCountry();
+    const subtotal = getCartTotal();
+    if (!country) return 7.95; // default before country selected
+    return getShippingForCountry(country, subtotal).cost;
+  }
 
   function buildCartHTML(prefix) {
     if (!cart.length) return `<div class="cart-empty"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><p>Your cart is empty</p></div>`;
@@ -1399,7 +1475,7 @@
         </div>
       `).join('')}
       <div class="cart-footer">
-        <div class="cart-shipping-note">${ship === 0 ? '✓ Free shipping on this order' : 'Free shipping on orders over €100'}</div>
+        <div class="cart-shipping-note">Free shipping on EU orders over €150 · Select country at checkout for exact shipping cost</div>
         <div class="cart-total-row">
           <div>
             <div class="cart-total-label">Total ${ship > 0 ? '(incl. €'+ship.toFixed(2)+' shipping)' : ''}</div>
@@ -1527,8 +1603,8 @@
     document.getElementById('screen-'+screen).classList.add('active');
     const tab = document.getElementById('m-tab-'+screen);
     if (tab) tab.classList.add('active');
-    // highlight profile tab when on about
     if (screen === 'about') document.getElementById('m-tab-profile').classList.add('active');
+    if (screen === 'wishlist') { document.getElementById('m-tab-wishlist').classList.add('active'); renderWishlist(); }
     window.scrollTo(0,0);
     if (screen === 'cart') renderMobileCart();
     if (screen === 'checkout') buildCheckoutForms();
@@ -1545,6 +1621,7 @@
     window.scrollTo(0,0);
     if (screen === 'cart') renderDesktopCart();
     if (screen === 'checkout') buildCheckoutForms();
+    if (screen === 'wishlist') renderWishlist();
   }
   function dGoBack() { dGoTo(dPrevScreen); }
 
@@ -1555,8 +1632,88 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
+  // ── WISHLIST ──
+  function toggleLike(id) {
+    if (wishlist.includes(id)) {
+      wishlist = wishlist.filter(x => x !== id);
+      showToast('Removed from saved');
+    } else {
+      wishlist.push(id);
+      showToast('Saved ♥');
+    }
+    localStorage.setItem('ss_wishlist', JSON.stringify(wishlist));
+    updateWishlistBadge();
+    renderMobileGrid();
+    renderDesktopGrid();
+    renderWishlist();
+  }
+
+  function updateWishlistBadge() {
+    const count = wishlist.length;
+    const mb = document.getElementById('wishlist-badge');
+    const db = document.getElementById('d-wishlist-count');
+    if (mb) { mb.textContent = count; mb.classList.toggle('visible', count > 0); }
+    if (db) { db.textContent = count; db.style.display = count > 0 ? 'inline' : 'none'; }
+  }
+
+  function renderWishlist() {
+    const likedShirts = allShirts.filter(s => wishlist.includes(s.id));
+    const soldLiked = wishlist.filter(id => !allShirts.find(s => s.id === id));
+
+    const buildWishlistHTML = () => {
+      if (!wishlist.length) return `
+        <div class="wishlist-empty">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          <p>No saved shirts yet.<br>Tap the ♥ on any shirt to save it.</p>
+        </div>`;
+
+      let html = '';
+
+      if (likedShirts.length) {
+        html += likedShirts.map(s => `
+          <div style="display:flex;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid #1e1c17;cursor:pointer" onclick="openDetail('${s.id}','d')">
+            <img src="${getImg(s)}" style="width:80px;height:80px;object-fit:cover;border-radius:2px;background:var(--grey);flex-shrink:0">
+            <div style="flex:1">
+              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">${s.club||''}</div>
+              <div style="font-size:15px;font-weight:500;margin-bottom:4px">${s.title}</div>
+              <div style="font-size:16px;color:var(--gold);font-weight:500">€${parseFloat(s.price).toFixed(2)}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+              <button onclick="event.stopPropagation();toggleLike('${s.id}')" style="background:none;border:1px solid #2e2c27;border-radius:2px;color:var(--text-muted);font-size:12px;padding:6px 10px;cursor:pointer">Remove</button>
+              ${!cart.some(c => c.id === s.id) ? `<button onclick="event.stopPropagation();quickAdd('${s.id}')" style="background:var(--gold);border:none;border-radius:2px;color:var(--black);font-size:12px;padding:6px 10px;cursor:pointer;font-weight:500">Add to Cart</button>` : '<span style="font-size:11px;color:var(--text-muted)">In cart ✓</span>'}
+            </div>
+          </div>`).join('');
+      }
+
+      if (soldLiked.length) {
+        html += `<div style="margin-top:24px;padding:16px;background:rgba(224,85,85,0.05);border:1px solid rgba(224,85,85,0.2);border-radius:2px">
+          <div style="font-size:12px;color:#e05555;margin-bottom:8px;font-weight:500">⚠️ ${soldLiked.length} saved shirt${soldLiked.length > 1 ? 's have' : ' has'} been sold</div>
+          <div style="font-size:12px;color:var(--text-muted)">These pieces are no longer available. <span style="color:var(--gold);cursor:pointer" onclick="clearSoldFromWishlist()">Remove sold items</span></div>
+        </div>`;
+      }
+
+      return html;
+    };
+
+    const html = buildWishlistHTML();
+    const mEl = document.getElementById('m-wishlist-content');
+    const dEl = document.getElementById('d-wishlist-content');
+    if (mEl) mEl.innerHTML = html;
+    if (dEl) dEl.innerHTML = html;
+  }
+
+  function clearSoldFromWishlist() {
+    const availableIds = allShirts.map(s => s.id);
+    wishlist = wishlist.filter(id => availableIds.includes(id));
+    localStorage.setItem('ss_wishlist', JSON.stringify(wishlist));
+    updateWishlistBadge();
+    renderWishlist();
+    showToast('Sold items removed');
+  }
+
   // ── INIT ──
   updateCartBadge();
+  updateWishlistBadge();
   fetchShirts();
 </script>
 </body>
