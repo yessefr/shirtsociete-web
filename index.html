@@ -185,20 +185,20 @@
     }
     .shirt-row::-webkit-scrollbar { display: none; }
     .shirt-card-sm {
-      flex: 0 0 220px; cursor: pointer;
+      flex: 0 0 260px; cursor: pointer;
       background: var(--grey); border-radius: 2px; overflow: hidden;
       transition: transform 0.2s; position: relative;
     }
     .shirt-card-sm:hover { transform: translateY(-4px); }
     .shirt-card-sm .img-hover {
-      position: absolute; top: 0; left: 0; width: 100%; height: 280px;
+      position: absolute; top: 0; left: 0; width: 100%; height: 320px;
       object-fit: contain; background: #1a1815; padding: 8px;
       opacity: 0; transition: opacity 0.3s;
     }
     .shirt-card-sm:hover .img-hover { opacity: 1; }
     .shirt-card-sm .img-main { transition: opacity 0.3s; }
     .shirt-card-sm:hover .img-main { opacity: 0; }
-    .shirt-card-sm img { width: 100%; height: 280px; object-fit: contain; background: #1a1815; padding: 8px; }
+    .shirt-card-sm img { width: 100%; height: 320px; object-fit: contain; background: #1a1815; padding: 8px; }
     .shirt-card-sm-info { padding: 12px 14px; }
     .shirt-card-sm-club { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
     .shirt-card-sm-title { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 6px; }
@@ -980,7 +980,7 @@
               <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Followers</div>
             </div>
             <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
-              <div style="font-size:36px;font-weight:600;color:var(--gold)">2021</div>
+              <div style="font-size:36px;font-weight:600;color:var(--gold)">2025</div>
               <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Founded</div>
             </div>
             <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
@@ -992,7 +992,7 @@
               <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Worldwide shipping</div>
             </div>
             <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820;grid-column:1/-1">
-              <div style="font-size:14px;color:var(--text-muted)">📍 Based in <span style="color:var(--white);font-weight:500">The Netherlands</span>, active across Germany</div>
+              <div style="font-size:14px;color:var(--text-muted)">📍 Based in <span style="color:var(--white);font-weight:500">the Netherlands</span>, active across Europe</div>
             </div>
           </div>
           <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500">Our Mission</div>
@@ -1004,69 +1004,82 @@
       <div style="padding:64px;border-top:1px solid #1e1c17">
         <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500">On the Road</div>
         <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;margin-bottom:32px">At the Fairs</h2>
-        <!-- Photo grid - 5 photos in tight grid -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:48px">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:2px" alt="Cologne">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:2px" alt="Düsseldorf">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:2px" alt="Hamburg">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:2px" alt="Fair">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_3_tn57da.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:2px;grid-column:2/4" alt="Fair">
+        <!-- Photo collage - 3 photos, fully visible -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:56px">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg"
+            style="width:100%;aspect-ratio:3/4;object-fit:contain;background:#111009;border-radius:3px;border:1px solid #1e1c17" alt="Shirt Société at the fair">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg"
+            style="width:100%;aspect-ratio:3/4;object-fit:contain;background:#111009;border-radius:3px;border:1px solid #1e1c17" alt="Düsseldorf">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg"
+            style="width:100%;aspect-ratio:3/4;object-fit:contain;background:#111009;border-radius:3px;border:1px solid #1e1c17" alt="Fair">
         </div>
 
-        <!-- Timeline -->
-        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;font-weight:500">Event Timeline</div>
-        <div style="position:relative;padding-left:32px">
-          <!-- Vertical line -->
-          <div style="position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--gold),rgba(200,169,80,0.1))"></div>
+        <!-- Horizontal Timeline -->
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:32px;font-weight:500">Event Timeline</div>
+        <div style="overflow-x:auto;padding-bottom:8px">
+          <div style="min-width:900px">
+            <!-- Horizontal line -->
+            <div style="position:relative;height:4px;background:linear-gradient(to right,#4caf7d,#4caf7d,#4caf7d,var(--gold),rgba(74,70,64,0.4));border-radius:2px;margin:32px 0 0;margin-left:60px;margin-right:40px"></div>
 
-          <!-- Hamburg - done -->
-          <div style="position:relative;margin-bottom:28px">
-            <div style="position:absolute;left:-28px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--gold);border:2px solid var(--black)"></div>
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
-              <span style="font-size:13px;font-weight:600;color:var(--white)">Vintage Fußballbörse — Hamburg</span>
-              <span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;padding:2px 8px;border-radius:10px;letter-spacing:0.5px">DONE</span>
-            </div>
-            <div style="font-size:13px;color:var(--text-muted)">04.02.2026</div>
-          </div>
+            <!-- Events row -->
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:0">
 
-          <!-- Cologne - done -->
-          <div style="position:relative;margin-bottom:28px">
-            <div style="position:absolute;left:-28px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--gold);border:2px solid var(--black)"></div>
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
-              <span style="font-size:13px;font-weight:600;color:var(--white)">Vintage Fußballbörse — Cologne</span>
-              <span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;padding:2px 8px;border-radius:10px;letter-spacing:0.5px">DONE</span>
-            </div>
-            <div style="font-size:13px;color:var(--text-muted)">31.05.2026</div>
-          </div>
+              <!-- Hamburg -->
+              <div style="padding:0 8px;text-align:center">
+                <div style="width:20px;height:20px;border-radius:50%;background:#4caf7d;border:3px solid var(--black);box-shadow:0 0 0 2px #4caf7d;margin:0 auto;margin-top:-12px;position:relative;z-index:2"></div>
+                <div style="margin-top:16px;background:#1a1715;border:1px solid #2a2820;border-top:2px solid #4caf7d;border-radius:3px;padding:16px 12px">
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Feb 2026 🇩🇪</div>
+                  <div style="font-size:20px;font-weight:800;color:#4caf7d;margin-bottom:2px">Hamburg</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
+                  <span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;padding:2px 8px;border-radius:10px;font-weight:600">✓ DONE</span>
+                </div>
+              </div>
 
-          <!-- Düsseldorf - done -->
-          <div style="position:relative;margin-bottom:28px">
-            <div style="position:absolute;left:-28px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--gold);border:2px solid var(--black)"></div>
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
-              <span style="font-size:13px;font-weight:600;color:var(--white)">Pop-up — Düsseldorf</span>
-              <span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;padding:2px 8px;border-radius:10px;letter-spacing:0.5px">DONE</span>
-            </div>
-            <div style="font-size:13px;color:var(--text-muted)">13.06.2026</div>
-          </div>
+              <!-- Cologne -->
+              <div style="padding:0 8px;text-align:center">
+                <div style="width:20px;height:20px;border-radius:50%;background:#4caf7d;border:3px solid var(--black);box-shadow:0 0 0 2px #4caf7d;margin:0 auto;margin-top:-12px;position:relative;z-index:2"></div>
+                <div style="margin-top:16px;background:#1a1715;border:1px solid #2a2820;border-top:2px solid #4caf7d;border-radius:3px;padding:16px 12px">
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">May 2026 🇩🇪</div>
+                  <div style="font-size:20px;font-weight:800;color:#4caf7d;margin-bottom:2px">Cologne</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
+                  <span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;padding:2px 8px;border-radius:10px;font-weight:600">✓ DONE</span>
+                </div>
+              </div>
 
-          <!-- Frankfurt - upcoming -->
-          <div style="position:relative;margin-bottom:28px">
-            <div style="position:absolute;left:-28px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--black);border:2px solid var(--gold);box-shadow:0 0 0 3px rgba(200,169,80,0.2)"></div>
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
-              <span style="font-size:14px;font-weight:700;color:var(--gold)">Vintage Fußballbörse — Frankfurt</span>
-              <span style="font-size:10px;background:rgba(200,169,80,0.15);color:var(--gold);padding:2px 8px;border-radius:10px;letter-spacing:0.5px;font-weight:600">NEXT UP</span>
-            </div>
-            <div style="font-size:13px;color:var(--text-muted)">04.07.2026</div>
-          </div>
+              <!-- Düsseldorf -->
+              <div style="padding:0 8px;text-align:center">
+                <div style="width:20px;height:20px;border-radius:50%;background:#4caf7d;border:3px solid var(--black);box-shadow:0 0 0 2px #4caf7d;margin:0 auto;margin-top:-12px;position:relative;z-index:2"></div>
+                <div style="margin-top:16px;background:#1a1715;border:1px solid #2a2820;border-top:2px solid #4caf7d;border-radius:3px;padding:16px 12px">
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Jun 2026 🇩🇪</div>
+                  <div style="font-size:20px;font-weight:800;color:#4caf7d;margin-bottom:2px">Düsseldorf</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Pop-up event</div>
+                  <span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;padding:2px 8px;border-radius:10px;font-weight:600">✓ DONE</span>
+                </div>
+              </div>
 
-          <!-- Leipzig - upcoming -->
-          <div style="position:relative">
-            <div style="position:absolute;left:-28px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--black);border:2px solid #4a4640"></div>
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
-              <span style="font-size:13px;font-weight:600;color:var(--white)">Vintage Fußballbörse — Leipzig</span>
-              <span style="font-size:10px;background:rgba(74,70,64,0.5);color:var(--text-muted);padding:2px 8px;border-radius:10px;letter-spacing:0.5px">COMING SOON</span>
+              <!-- Frankfurt - NEXT UP -->
+              <div style="padding:0 8px;text-align:center">
+                <div style="width:24px;height:24px;border-radius:50%;background:var(--black);border:3px solid var(--gold);box-shadow:0 0 0 4px rgba(200,169,80,0.25),0 0 16px rgba(200,169,80,0.4);margin:0 auto;margin-top:-14px;position:relative;z-index:2"></div>
+                <div style="margin-top:14px;background:rgba(200,169,80,0.05);border:1px solid rgba(200,169,80,0.35);border-top:2px solid var(--gold);border-radius:3px;padding:16px 12px;position:relative;overflow:hidden">
+                  <div style="font-size:11px;color:rgba(200,169,80,0.7);margin-bottom:4px">Jul 2026 🇩🇪</div>
+                  <div style="font-size:22px;font-weight:900;color:var(--gold);margin-bottom:2px">Frankfurt</div>
+                  <div style="font-size:11px;color:rgba(200,169,80,0.6);margin-bottom:10px">Vintage Fußballbörse</div>
+                  <span style="font-size:10px;background:rgba(200,169,80,0.2);color:var(--gold);padding:2px 10px;border-radius:10px;font-weight:700;border:1px solid rgba(200,169,80,0.4)">⚡ NEXT UP</span>
+                </div>
+              </div>
+
+              <!-- Leipzig -->
+              <div style="padding:0 8px;text-align:center">
+                <div style="width:18px;height:18px;border-radius:50%;background:var(--black);border:2px solid #3a3830;margin:0 auto;margin-top:-11px;position:relative;z-index:2"></div>
+                <div style="margin-top:17px;background:#111009;border:1px solid #2a2820;border-top:2px solid #3a3830;border-radius:3px;padding:16px 12px;opacity:0.6">
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Oct 2026 🇩🇪</div>
+                  <div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:2px">Leipzig</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
+                  <span style="font-size:10px;background:rgba(74,70,64,0.5);color:var(--text-muted);padding:2px 8px;border-radius:10px">COMING SOON</span>
+                </div>
+              </div>
+
             </div>
-            <div style="font-size:13px;color:var(--text-muted)">04.10.2026</div>
           </div>
         </div>
 
@@ -1194,15 +1207,24 @@
   function renderMobileRow(id, shirts) {
     const el = document.getElementById(id);
     if (!shirts.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:20px">Nothing here yet.</div>'; return; }
-    el.innerHTML = shirts.map(s => `
-      <div class="m-shirt-card-sm" onclick="openDetail('${s.id}','m')">
+    el.innerHTML = shirts.map(s => {
+      const isLiked = wishlist.includes(s.id);
+      return `
+      <div class="m-shirt-card-sm" onclick="openDetail('${s.id}','m')" style="position:relative">
         <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
+        <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')"
+          style="top:auto;bottom:52px;right:6px;width:26px;height:26px">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+            fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+          </svg>
+        </button>
         <div class="m-shirt-card-sm-info">
           <div class="m-shirt-card-sm-title">${s.title}</div>
           <div class="m-shirt-card-sm-price">€${parseFloat(s.price).toFixed(2)}</div>
         </div>
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
   }
 
   // ── MOBILE SHOP ──
