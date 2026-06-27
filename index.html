@@ -710,15 +710,38 @@
       </div>
       <div class="nav-section-label" style="margin-top:8px">Categories</div>
       <div class="nav-item" onclick="dGoTo('shop');dSetFilter('match_worn')" id="d-nav-mw">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+          <!-- Footballer kicking ball -->
+          <circle cx="17.5" cy="4.5" r="1.8"/>
+          <!-- Body -->
+          <path d="M14.5 7.5 L11 10.5 L9 14 L11 14.5 L12.5 11.5 L15 9.5 Z" opacity="0.9"/>
+          <!-- Kicking leg -->
+          <path d="M11 10.5 L8 13 L6.5 15.5 L8.5 16 L10 14 L12 11.5 Z" opacity="0.9"/>
+          <!-- Ball -->
+          <circle cx="5.5" cy="16.5" r="2.2"/>
+          <!-- Standing leg -->
+          <path d="M15 9.5 L16 13 L14.5 16 L13 16.5 L13.5 19 L15.5 19 L16 16.5 L17.5 13 L16.5 9 Z" opacity="0.9"/>
+          <!-- Arm -->
+          <path d="M14.5 7.5 L17 9 L18 8 L16 7 Z" opacity="0.9"/>
+        </svg>
         Match Worn
       </div>
       <div class="nav-item" onclick="dGoTo('shop');dSetFilter('clubs')" id="d-nav-clubs">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 2L4 5v6c0 5.5 3.5 9.7 8 11 4.5-1.3 8-5.5 8-11V5L12 2z" stroke-linejoin="round"/>
+          <path d="M12 7l1.2 2.5H16l-2.2 1.6.8 2.6L12 12.2 9.4 13.7l.8-2.6L8 9.5h2.8L12 7z" fill="currentColor" stroke="none"/>
+        </svg>
         Clubs
       </div>
       <div class="nav-item" onclick="dGoTo('shop');dSetFilter('national')" id="d-nav-national">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <!-- Flagpole -->
+          <line x1="4" y1="2" x2="4" y2="22" stroke-linecap="round"/>
+          <!-- Flag with wave -->
+          <path d="M4 4 Q10 3 14 5 Q18 7 20 5 Q18 9 14 9 Q10 9 4 10 Z" fill="currentColor" stroke="none" opacity="0.85"/>
+          <!-- Second smaller flag stripe -->
+          <path d="M4 7 Q9 6 13 7.5 Q17 9 19 7.5" stroke-width="1" opacity="0.4"/>
+        </svg>
         National Teams
       </div>
     </nav>
@@ -738,6 +761,47 @@
 
     <!-- HOME -->
     <div class="dscreen active" id="d-screen-home">
+
+      <!-- Frankfurt Countdown Banner - TOP OF PAGE -->
+      <div style="background:linear-gradient(135deg,rgba(200,169,80,0.12),rgba(200,169,80,0.04));border-bottom:1px solid rgba(200,169,80,0.25);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:20px">
+          <div style="position:relative;flex-shrink:0">
+            <div style="width:14px;height:14px;border-radius:50%;background:var(--gold);animation:pulseGlow 1.5s ease-in-out infinite"></div>
+            <div style="position:absolute;inset:-4px;border-radius:50%;background:rgba(200,169,80,0.3);animation:pulseRing 1.5s ease-in-out infinite"></div>
+          </div>
+          <div>
+            <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;font-weight:600">Next Event</div>
+            <div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:2px">Vintage Fußballbörse — Frankfurt 🇩🇪</div>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <span style="font-size:13px;color:var(--text-muted)">4 July 2026 · 10:00–17:00</span>
+              <a href="https://www.instagram.com/vintagefussballboerse/" target="_blank" style="font-size:12px;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:4px;opacity:0.8;transition:opacity 0.2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                @vintagefussballboerse
+              </a>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px">
+          <div style="display:flex;align-items:center;gap:16px">
+            <div style="text-align:center;min-width:52px">
+              <div id="home-countdown-days" style="font-size:36px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-1px">--</div>
+              <div style="font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:3px">Days</div>
+            </div>
+            <div style="font-size:28px;color:rgba(200,169,80,0.25);font-weight:300;margin-bottom:12px">:</div>
+            <div style="text-align:center;min-width:52px">
+              <div id="home-countdown-hours" style="font-size:36px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-1px">--</div>
+              <div style="font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:3px">Hours</div>
+            </div>
+            <div style="font-size:28px;color:rgba(200,169,80,0.25);font-weight:300;margin-bottom:12px">:</div>
+            <div style="text-align:center;min-width:52px">
+              <div id="home-countdown-mins" style="font-size:36px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-1px">--</div>
+              <div style="font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:3px">Mins</div>
+            </div>
+          </div>
+          <button onclick="dGoTo('about')" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:12px 24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;transition:background 0.2s" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">More info →</button>
+        </div>
+      </div>
+
       <div class="hero">
         <div class="hero-bg"></div>
         <div class="hero-content">
@@ -789,35 +853,6 @@
           <span class="section-link" onclick="dGoTo('shop');dSetFilter('clubs')">View all →</span>
         </div>
         <div id="d-clubs-row" class="shirt-row"><div class="loading">Loading...</div></div>
-      </div>
-
-      <!-- Frankfurt Countdown Banner -->
-      <div style="border-top:1px solid rgba(200,169,80,0.2);background:rgba(200,169,80,0.04);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
-        <div style="display:flex;align-items:center;gap:16px">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(200,169,80,0.6);animation:pulse 2s infinite"></div>
-          <div>
-            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:2px">Next Event</div>
-            <div style="font-size:16px;font-weight:700;color:var(--white)">Vintage Fußballbörse — Frankfurt 🇩🇪</div>
-            <div style="font-size:12px;color:var(--text-muted)">4 July 2026 · 10:00–17:00</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:24px">
-          <div style="text-align:center">
-            <div id="home-countdown-days" style="font-size:28px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
-            <div style="font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Days</div>
-          </div>
-          <div style="font-size:24px;color:rgba(200,169,80,0.3);font-weight:300">:</div>
-          <div style="text-align:center">
-            <div id="home-countdown-hours" style="font-size:28px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
-            <div style="font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Hours</div>
-          </div>
-          <div style="font-size:24px;color:rgba(200,169,80,0.3);font-weight:300">:</div>
-          <div style="text-align:center">
-            <div id="home-countdown-mins" style="font-size:28px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
-            <div style="font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Mins</div>
-          </div>
-          <button onclick="dGoTo('about')" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap">More info →</button>
-        </div>
       </div>
 
       <!-- Instagram Strip -->
@@ -989,46 +1024,6 @@
         </div>
       </div>
 
-      <!-- Story section -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:100%">
-        <div style="padding:64px;border-right:1px solid #1e1c17">
-          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:500">Who We Are</div>
-          <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:36px;line-height:1.2;margin-bottom:20px">A Collector's Eye,<br>A Curator's Touch</h2>
-          <p style="font-size:15px;line-height:1.9;color:#b0a898;margin-bottom:16px">Shirt Société was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for collectors around the globe.</p>
-          <p style="font-size:15px;line-height:1.9;color:#b0a898;margin-bottom:16px">From vintage clubs to match worn pieces worn by legends, every shirt in our collection has been hand-picked for its authenticity, rarity and history. We don't just sell shirts. We preserve football heritage.</p>
-          <p style="font-size:15px;line-height:1.9;color:#b0a898;margin-bottom:32px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Cologne (31.05.2026), Düsseldorf (13.06.2026) and Hamburg (04.02.2026), Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next stop: Frankfurt, July 4th 2026.</p>
-          <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);padding:14px 28px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-            Follow on Instagram
-          </a>
-        </div>
-        <div style="padding:64px;background:#0d0b08">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px">
-            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
-              <div style="font-size:36px;font-weight:600;color:var(--gold)">1,400+</div>
-              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Followers</div>
-            </div>
-            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
-              <div style="font-size:36px;font-weight:600;color:var(--gold)">2025</div>
-              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Founded</div>
-            </div>
-            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
-              <div style="font-size:36px;font-weight:600;color:var(--gold)">4+</div>
-              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Events</div>
-            </div>
-            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
-              <div style="font-size:36px;font-weight:600;color:var(--gold)">🌍</div>
-              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Worldwide shipping</div>
-            </div>
-            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820;grid-column:1/-1">
-              <div style="font-size:14px;color:var(--text-muted)">📍 Based in <span style="color:var(--white);font-weight:500">the Netherlands</span>, active across Europe</div>
-            </div>
-          </div>
-          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500">Our Mission</div>
-          <p style="font-size:15px;line-height:1.9;color:#b0a898;font-style:italic;border-left:2px solid var(--gold);padding-left:20px">"Every shirt tells a story. Our mission is to connect passionate collectors with authentic pieces of football history, and to ensure that these rare shirts are preserved and cherished by people who truly appreciate them."</p>
-        </div>
-      </div>
-
       <!-- Fair photos -->
       <div style="padding:64px;border-top:1px solid #1e1c17">
         <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500">On the Road</div>
@@ -1122,6 +1117,47 @@
           </div>
         </div>
 
+      </div>
+
+
+      <!-- Story section -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:100%">
+        <div style="padding:64px;border-right:1px solid #1e1c17">
+          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:500">Who We Are</div>
+          <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:36px;line-height:1.2;margin-bottom:20px">A Collector's Eye,<br>A Curator's Touch</h2>
+          <p style="font-size:15px;line-height:1.9;color:#b0a898;margin-bottom:16px">Shirt Société was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for collectors around the globe.</p>
+          <p style="font-size:15px;line-height:1.9;color:#b0a898;margin-bottom:16px">From vintage clubs to match worn pieces worn by legends, every shirt in our collection has been hand-picked for its authenticity, rarity and history. We don't just sell shirts. We preserve football heritage.</p>
+          <p style="font-size:15px;line-height:1.9;color:#b0a898;margin-bottom:32px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Cologne (31.05.2026), Düsseldorf (13.06.2026) and Hamburg (04.02.2026), Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next stop: Frankfurt, July 4th 2026.</p>
+          <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);padding:14px 28px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Follow on Instagram
+          </a>
+        </div>
+        <div style="padding:64px;background:#0d0b08">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px">
+            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
+              <div style="font-size:36px;font-weight:600;color:var(--gold)">1,400+</div>
+              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Followers</div>
+            </div>
+            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
+              <div style="font-size:36px;font-weight:600;color:var(--gold)">2025</div>
+              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Founded</div>
+            </div>
+            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
+              <div style="font-size:36px;font-weight:600;color:var(--gold)">4+</div>
+              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Events</div>
+            </div>
+            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820">
+              <div style="font-size:36px;font-weight:600;color:var(--gold)">🌍</div>
+              <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Worldwide shipping</div>
+            </div>
+            <div style="background:#1a1715;padding:24px;border-radius:2px;border:1px solid #2a2820;grid-column:1/-1">
+              <div style="font-size:14px;color:var(--text-muted)">📍 Based in <span style="color:var(--white);font-weight:500">the Netherlands</span>, active across Europe</div>
+            </div>
+          </div>
+          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500">Our Mission</div>
+          <p style="font-size:15px;line-height:1.9;color:#b0a898;font-style:italic;border-left:2px solid var(--gold);padding-left:20px">"Every shirt tells a story. Our mission is to connect passionate collectors with authentic pieces of football history, and to ensure that these rare shirts are preserved and cherished by people who truly appreciate them."</p>
+        </div>
       </div>
 
       <!-- CTA -->
