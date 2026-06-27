@@ -791,6 +791,35 @@
         <div id="d-clubs-row" class="shirt-row"><div class="loading">Loading...</div></div>
       </div>
 
+      <!-- Frankfurt Countdown Banner -->
+      <div style="border-top:1px solid rgba(200,169,80,0.2);background:rgba(200,169,80,0.04);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(200,169,80,0.6);animation:pulse 2s infinite"></div>
+          <div>
+            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:2px">Next Event</div>
+            <div style="font-size:16px;font-weight:700;color:var(--white)">Vintage Fußballbörse — Frankfurt 🇩🇪</div>
+            <div style="font-size:12px;color:var(--text-muted)">4 July 2026 · 10:00–17:00</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:24px">
+          <div style="text-align:center">
+            <div id="home-countdown-days" style="font-size:28px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+            <div style="font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Days</div>
+          </div>
+          <div style="font-size:24px;color:rgba(200,169,80,0.3);font-weight:300">:</div>
+          <div style="text-align:center">
+            <div id="home-countdown-hours" style="font-size:28px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+            <div style="font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Hours</div>
+          </div>
+          <div style="font-size:24px;color:rgba(200,169,80,0.3);font-weight:300">:</div>
+          <div style="text-align:center">
+            <div id="home-countdown-mins" style="font-size:28px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+            <div style="font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Mins</div>
+          </div>
+          <button onclick="dGoTo('about')" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap">More info →</button>
+        </div>
+      </div>
+
       <!-- Instagram Strip -->
       <div style="border-top:1px solid #1e1c17;padding:64px;background:#0d0b08;display:flex;align-items:center;justify-content:space-between;gap:40px">
         <div>
@@ -1015,67 +1044,77 @@
         </div>
 
         <!-- Horizontal Timeline -->
-        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:32px;font-weight:500">Event Timeline</div>
+        <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:24px">
+          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500">Event Timeline</div>
+          <div style="font-size:12px;color:var(--text-muted)">2026</div>
+        </div>
+
+        <!-- Month labels -->
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-bottom:8px;padding:0 4px">
+          <div style="text-align:center;font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase">February</div>
+          <div style="text-align:center;font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase">May</div>
+          <div style="text-align:center;font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase">June</div>
+          <div style="text-align:center;font-size:11px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;font-weight:600">July</div>
+          <div style="text-align:center;font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase">October</div>
+        </div>
+
         <div style="overflow-x:auto;padding-bottom:8px">
-          <div style="min-width:900px">
+          <div style="min-width:800px">
             <!-- Horizontal line -->
-            <div style="position:relative;height:4px;background:linear-gradient(to right,#4caf7d,#4caf7d,#4caf7d,var(--gold),rgba(74,70,64,0.4));border-radius:2px;margin:32px 0 0;margin-left:60px;margin-right:40px"></div>
+            <div style="height:3px;background:linear-gradient(to right,#4caf7d 60%,var(--gold) 75%,rgba(74,70,64,0.3) 100%);border-radius:2px;margin:0 12px 0"></div>
 
             <!-- Events row -->
-            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:0">
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:0;padding:0 4px">
 
               <!-- Hamburg -->
-              <div style="padding:0 8px;text-align:center">
-                <div style="width:20px;height:20px;border-radius:50%;background:#4caf7d;border:3px solid var(--black);box-shadow:0 0 0 2px #4caf7d;margin:0 auto;margin-top:-12px;position:relative;z-index:2"></div>
-                <div style="margin-top:16px;background:#1a1715;border:1px solid #2a2820;border-top:2px solid #4caf7d;border-radius:3px;padding:16px 12px">
-                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Feb 2026 🇩🇪</div>
-                  <div style="font-size:20px;font-weight:800;color:#4caf7d;margin-bottom:2px">Hamburg</div>
-                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
-                  <span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;padding:2px 8px;border-radius:10px;font-weight:600">✓ DONE</span>
+              <div style="text-align:center">
+                <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
+                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:14px 10px">
+                  <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px">04.02 · 🇩🇪</div>
+                  <div style="font-size:18px;font-weight:800;color:#4caf7d;margin-bottom:3px">Hamburg</div>
+                  <div style="font-size:10px;color:var(--text-muted)">Vintage Fußballbörse</div>
                 </div>
               </div>
 
               <!-- Cologne -->
-              <div style="padding:0 8px;text-align:center">
-                <div style="width:20px;height:20px;border-radius:50%;background:#4caf7d;border:3px solid var(--black);box-shadow:0 0 0 2px #4caf7d;margin:0 auto;margin-top:-12px;position:relative;z-index:2"></div>
-                <div style="margin-top:16px;background:#1a1715;border:1px solid #2a2820;border-top:2px solid #4caf7d;border-radius:3px;padding:16px 12px">
-                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">May 2026 🇩🇪</div>
-                  <div style="font-size:20px;font-weight:800;color:#4caf7d;margin-bottom:2px">Cologne</div>
-                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
-                  <span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;padding:2px 8px;border-radius:10px;font-weight:600">✓ DONE</span>
+              <div style="text-align:center">
+                <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
+                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:14px 10px">
+                  <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px">31.05 · 🇩🇪</div>
+                  <div style="font-size:18px;font-weight:800;color:#4caf7d;margin-bottom:3px">Cologne</div>
+                  <div style="font-size:10px;color:var(--text-muted)">Vintage Fußballbörse</div>
                 </div>
               </div>
 
               <!-- Düsseldorf -->
-              <div style="padding:0 8px;text-align:center">
-                <div style="width:20px;height:20px;border-radius:50%;background:#4caf7d;border:3px solid var(--black);box-shadow:0 0 0 2px #4caf7d;margin:0 auto;margin-top:-12px;position:relative;z-index:2"></div>
-                <div style="margin-top:16px;background:#1a1715;border:1px solid #2a2820;border-top:2px solid #4caf7d;border-radius:3px;padding:16px 12px">
-                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Jun 2026 🇩🇪</div>
-                  <div style="font-size:20px;font-weight:800;color:#4caf7d;margin-bottom:2px">Düsseldorf</div>
-                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Pop-up event</div>
-                  <span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;padding:2px 8px;border-radius:10px;font-weight:600">✓ DONE</span>
+              <div style="text-align:center">
+                <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
+                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:14px 10px">
+                  <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px">13.06 · 🇩🇪</div>
+                  <div style="font-size:18px;font-weight:800;color:#4caf7d;margin-bottom:3px">Düsseldorf</div>
+                  <div style="font-size:10px;color:var(--text-muted)">Pop-up event</div>
                 </div>
               </div>
 
-              <!-- Frankfurt - NEXT UP -->
-              <div style="padding:0 8px;text-align:center">
-                <div style="width:24px;height:24px;border-radius:50%;background:var(--black);border:3px solid var(--gold);box-shadow:0 0 0 4px rgba(200,169,80,0.25),0 0 16px rgba(200,169,80,0.4);margin:0 auto;margin-top:-14px;position:relative;z-index:2"></div>
-                <div style="margin-top:14px;background:rgba(200,169,80,0.05);border:1px solid rgba(200,169,80,0.35);border-top:2px solid var(--gold);border-radius:3px;padding:16px 12px;position:relative;overflow:hidden">
-                  <div style="font-size:11px;color:rgba(200,169,80,0.7);margin-bottom:4px">Jul 2026 🇩🇪</div>
-                  <div style="font-size:22px;font-weight:900;color:var(--gold);margin-bottom:2px">Frankfurt</div>
-                  <div style="font-size:11px;color:rgba(200,169,80,0.6);margin-bottom:10px">Vintage Fußballbörse</div>
-                  <span style="font-size:10px;background:rgba(200,169,80,0.2);color:var(--gold);padding:2px 10px;border-radius:10px;font-weight:700;border:1px solid rgba(200,169,80,0.4)">⚡ NEXT UP</span>
+              <!-- Frankfurt -->
+              <div style="text-align:center">
+                <div style="width:18px;height:18px;border-radius:50%;background:var(--black);border:3px solid var(--gold);box-shadow:0 0 8px rgba(200,169,80,0.4);margin:0 auto;margin-top:-10px;position:relative;z-index:2"></div>
+                <div style="margin-top:10px;background:rgba(200,169,80,0.05);border:1px solid rgba(200,169,80,0.3);border-radius:3px;padding:14px 10px">
+                  <div style="font-size:10px;color:rgba(200,169,80,0.7);margin-bottom:6px">04.07 · 🇩🇪</div>
+                  <div style="font-size:20px;font-weight:900;color:var(--gold);margin-bottom:3px">Frankfurt</div>
+                  <div style="font-size:10px;color:rgba(200,169,80,0.6);margin-bottom:10px">Vintage Fußballbörse</div>
+                  <div id="frankfurt-countdown" style="font-size:13px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;letter-spacing:0.5px"></div>
+                  <div style="font-size:9px;color:rgba(200,169,80,0.5);margin-top:2px">10:00 – 17:00</div>
                 </div>
               </div>
 
               <!-- Leipzig -->
-              <div style="padding:0 8px;text-align:center">
-                <div style="width:18px;height:18px;border-radius:50%;background:var(--black);border:2px solid #3a3830;margin:0 auto;margin-top:-11px;position:relative;z-index:2"></div>
-                <div style="margin-top:17px;background:#111009;border:1px solid #2a2820;border-top:2px solid #3a3830;border-radius:3px;padding:16px 12px;opacity:0.6">
-                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Oct 2026 🇩🇪</div>
-                  <div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:2px">Leipzig</div>
-                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
-                  <span style="font-size:10px;background:rgba(74,70,64,0.5);color:var(--text-muted);padding:2px 8px;border-radius:10px">COMING SOON</span>
+              <div style="text-align:center">
+                <div style="width:12px;height:12px;border-radius:50%;background:var(--black);border:2px solid #3a3830;margin:0 auto;margin-top:-7px;position:relative;z-index:2"></div>
+                <div style="margin-top:13px;background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:14px 10px;opacity:0.55">
+                  <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px">04.10 · 🇩🇪</div>
+                  <div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:3px">Leipzig</div>
+                  <div style="font-size:10px;color:var(--text-muted)">Vintage Fußballbörse</div>
                 </div>
               </div>
 
@@ -1784,6 +1823,52 @@
     renderWishlist();
     showToast('Sold items removed');
   }
+
+  // ── COUNTDOWN ──
+  function updateCountdown() {
+    // Frankfurt fair: 4 July 2026, 10:00 local time (CET = UTC+2)
+    const target = new Date('2026-07-04T10:00:00+02:00');
+    const now = new Date();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      // Fair is happening or done
+      const endTarget = new Date('2026-07-04T17:00:00+02:00');
+      if (now < endTarget) {
+        // Fair is live now!
+        ['home-countdown-days','home-countdown-hours','home-countdown-mins'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.parentElement.style.display = 'none';
+        });
+        const banner = document.getElementById('home-countdown-days')?.closest('div[style*="Next Event"]');
+        const liveEl = document.getElementById('frankfurt-countdown');
+        if (liveEl) liveEl.innerHTML = '<span style="color:#4caf7d">LIVE NOW</span>';
+      }
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const pad = n => String(n).padStart(2, '0');
+
+    // Home banner
+    const dEl = document.getElementById('home-countdown-days');
+    const hEl = document.getElementById('home-countdown-hours');
+    const mEl = document.getElementById('home-countdown-mins');
+    if (dEl) dEl.textContent = pad(days);
+    if (hEl) hEl.textContent = pad(hours);
+    if (mEl) mEl.textContent = pad(mins);
+
+    // About page timeline countdown
+    const fc = document.getElementById('frankfurt-countdown');
+    if (fc) fc.innerHTML = `${pad(days)}d ${pad(hours)}h ${pad(mins)}m`;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 60000); // update every minute
 
   // ── INIT ──
   updateCartBadge();
