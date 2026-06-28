@@ -3,17 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog — Shirt Société | Vintage Football Shirt Stories</title>
-  <meta name="description" content="Stories, guides and insights from the world of vintage and match worn football shirts. Written by Shirt Société.">
+  <title>Blog — Shirt Societe | Vintage Football Shirt Stories</title>
+  <meta name="description" content="Stories, guides and insights from the world of vintage and match worn football shirts. Written by Shirt Societe.">
+  <meta name="keywords" content="match worn shirt, vintage football shirts, football shirt collecting, Vintage Fussballborse, match issued shirt">
+  <link rel="canonical" href="https://shirtsociete.com/blog.html">
+  <meta property="og:title" content="Blog — Shirt Societe">
+  <meta property="og:description" content="Stories and guides from the world of vintage football shirts.">
+  <meta property="og:url" content="https://shirtsociete.com/blog.html">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,900&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FKJWGECXN"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3FKJWGECXN');</script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-3FKJWGECXN");</script>
   <style>
-    :root { --black:#0a0905;--gold:#c8a950;--white:#f5f0e8;--grey:#1a1815;--grey-mid:#2a2820;--text-muted:#888070;--sidebar-w:240px; }
+    :root{--black:#0a0905;--gold:#c8a950;--white:#f5f0e8;--grey:#1a1815;--grey-mid:#2a2820;--text-muted:#888070;--sidebar-w:240px;}
     *{box-sizing:border-box;margin:0;padding:0;}
-    html,body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;}
+    html,body{background:var(--black);color:var(--white);font-family:"DM Sans",sans-serif;min-height:100vh;}
     .layout{display:flex;min-height:100vh;}
     .sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:0;left:0;bottom:0;background:#0e0c08;border-right:1px solid #1e1c17;display:flex;flex-direction:column;z-index:100;overflow-y:auto;scrollbar-width:none;}
     .sidebar::-webkit-scrollbar{display:none;}
@@ -26,41 +31,36 @@
     .nav-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#3a3830;padding:14px 20px 6px;font-weight:500;}
     .sidebar-footer{margin-top:auto;padding:14px 20px;border-top:1px solid #1e1c17;font-size:11px;color:var(--text-muted);}
     .main{margin-left:var(--sidebar-w);flex:1;}
-    /* BLOG LIST */
     .blog-header{padding:64px 64px 48px;border-bottom:1px solid #1e1c17;}
     .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500;}
-    .blog-h1{font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:48px;line-height:1.1;margin-bottom:12px;}
-    .blog-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--text-muted);max-width:600px;}
+    .blog-h1{font-family:"Playfair Display",serif;font-style:italic;font-weight:900;font-size:48px;line-height:1.1;margin-bottom:12px;}
+    .blog-sub{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:var(--text-muted);max-width:600px;}
     .posts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;}
     .post-card{cursor:pointer;padding:40px;border-bottom:1px solid #1e1c17;border-right:1px solid #1e1c17;transition:background 0.2s;}
     .post-card:hover{background:rgba(255,255,255,0.02);}
     .post-card:nth-child(even){border-right:none;}
     .post-img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:2px;margin-bottom:20px;}
-    .post-img-ph{width:100%;aspect-ratio:16/9;background:var(--grey);border-radius:2px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;opacity:0.3;}
     .post-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500;}
-    .post-title{font-family:'Playfair Display',serif;font-weight:700;font-size:22px;line-height:1.3;margin-bottom:10px;}
+    .post-title{font-family:"Playfair Display",serif;font-weight:700;font-size:22px;line-height:1.3;margin-bottom:10px;}
     .post-excerpt{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:14px;}
     .post-meta{font-size:12px;color:#4a4640;}
-    .read-more{font-size:12px;color:var(--gold);font-weight:500;margin-top:12px;display:inline-flex;align-items:center;gap:4px;}
-    /* POST DETAIL */
+    .read-more{font-size:12px;color:var(--gold);font-weight:500;margin-top:12px;}
     #post-detail{display:none;}
     #post-detail.active{display:block;}
-    .post-back{display:flex;align-items:center;gap:8px;color:var(--gold);cursor:pointer;font-size:13px;font-weight:500;margin-bottom:32px;background:none;border:none;width:fit-content;}
+    .post-back{display:flex;align-items:center;gap:8px;color:var(--gold);cursor:pointer;font-size:13px;font-weight:500;margin-bottom:32px;background:none;border:none;}
     .post-back:hover{opacity:0.8;}
     .detail-wrap{max-width:720px;padding:64px;margin:0 auto;}
-    .detail-title{font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:40px;line-height:1.2;margin-bottom:12px;}
+    .detail-title{font-family:"Playfair Display",serif;font-style:italic;font-weight:900;font-size:40px;line-height:1.2;margin-bottom:12px;}
     .detail-meta{font-size:13px;color:var(--text-muted);margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid #1e1c17;}
     .detail-img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:2px;margin-bottom:36px;}
     .post-body{font-size:16px;line-height:1.9;color:#c8c0b0;}
-    .post-body h2{font-family:'Playfair Display',serif;font-weight:700;font-size:26px;color:var(--white);margin:36px 0 14px;}
-    .post-body h3{font-size:18px;font-weight:600;color:var(--white);margin:24px 0 10px;}
+    .post-body h2{font-family:"Playfair Display",serif;font-weight:700;font-size:26px;color:var(--white);margin:36px 0 14px;}
     .post-body p{margin-bottom:16px;}
-    .post-body ul,.post-body ol{margin:0 0 16px 24px;}
+    .post-body ul{margin:0 0 16px 24px;}
     .post-body li{margin-bottom:8px;}
     .post-body strong{color:var(--white);font-weight:600;}
     .post-body em{font-style:italic;color:var(--gold);}
     .post-body blockquote{border-left:3px solid var(--gold);padding:4px 0 4px 20px;margin:28px 0;font-style:italic;color:var(--text-muted);font-size:18px;}
-    /* MOBILE */
     @media(max-width:767px){
       .sidebar{display:none;}
       .main{margin-left:0;}
@@ -71,48 +71,54 @@
       .post-card{padding:24px 20px;border-right:none;}
       .detail-wrap{padding:24px 20px;}
       .detail-title{font-size:26px;}
-      .mob-header{display:flex;padding:14px 20px;background:#0e0c08;border-bottom:1px solid #1e1c17;align-items:center;justify-content:space-between;}
-      .mob-header img{height:36px;}
-      .mob-header a{color:var(--gold);font-size:13px;text-decoration:none;}
+      .mob-header{display:flex!important;}
     }
-    @media(min-width:768px){.mob-header{display:none;}}
+    .mob-header{display:none;padding:14px 20px;background:#0e0c08;border-bottom:1px solid #1e1c17;align-items:center;justify-content:space-between;}
+    .mob-header img{height:36px;}
+    .mob-header a{color:var(--gold);font-size:13px;text-decoration:none;}
   </style>
 </head>
 <body>
+
 <div class="mob-header">
-  <a href="/"><img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png" alt="Shirt Société"></a>
-  <a href="/">← Back to shop</a>
+  <a href="/"><img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png" alt="Shirt Societe"></a>
+  <a href="/">Back to shop</a>
 </div>
+
 <div class="layout">
   <aside class="sidebar">
-    <div class="sidebar-logo" onclick="window.location='/'">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png" alt="Shirt Société">
+    <div class="sidebar-logo" onclick="window.location.href='/'">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png" alt="Shirt Societe">
     </div>
     <nav>
       <div class="nav-label">Navigation</div>
       <a class="nav-item" href="/">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
       </a>
       <a class="nav-item" href="/#shop">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Shop
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Shop
       </a>
       <a class="nav-item active" href="/blog.html">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Blog
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        Blog
       </a>
       <a class="nav-item" href="/#about">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Our Story
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        Our Story
       </a>
     </nav>
     <div class="sidebar-footer">
       <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:flex;align-items:center;gap:6px;color:var(--gold);text-decoration:none;margin-bottom:8px;font-size:12px">
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>@shirtsociete
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        @shirtsociete
       </a>
-      <div>© 2026 Shirt Société</div>
+      <div>2026 Shirt Societe</div>
     </div>
   </aside>
 
   <main class="main">
-    <!-- LIST -->
     <div id="blog-list">
       <div class="blog-header">
         <div class="eyebrow">The Journal</div>
@@ -121,8 +127,6 @@
       </div>
       <div class="posts-grid" id="posts-grid"></div>
     </div>
-
-    <!-- DETAIL -->
     <div id="post-detail">
       <div class="detail-wrap">
         <button class="post-back" onclick="showList()">
@@ -136,171 +140,97 @@
 </div>
 
 <script>
-const POSTS = [
+var POSTS = [
   {
-    id: 'what-is-match-worn',
-    tag: 'Guide',
-    title: 'What Is a Match Worn Football Shirt?',
-    excerpt: 'The term gets used everywhere in the collector world. But what does it actually mean, and how do you tell the difference from a match issued shirt?',
-    date: 'June 2026',
-    readTime: '5 min read',
-    image: 'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg',
-    body: `
-      <h2>Match Worn vs Match Issued</h2>
-      <p>In the world of vintage football shirt collecting, few terms cause more confusion than <strong>match worn</strong> and <strong>match issued</strong>. They sound similar, but the difference is significant — both in terms of rarity and value.</p>
-      <p>A <em>match worn</em> shirt was physically worn by a player during an official match. These shirts often show signs of use — sweat stains, number printing wear, fabric stretching — and that is precisely what makes them special. They were part of football history.</p>
-      <p>A <em>match issued</em> shirt was prepared and assigned to a player but never actually worn in the match. Perhaps the player was substituted before using it, or wore a different shirt on the day. Match issued shirts are still rare and desirable, but they typically command a lower price.</p>
-      <h2>How to Verify a Match Worn Shirt</h2>
-      <p>Verification is the most important part of collecting match worn shirts. Here is what serious collectors look for:</p>
-      <ul>
-        <li><strong>Player number printing</strong> — original heat-pressed or embroidered numbers, not reprints</li>
-        <li><strong>Size and cut</strong> — player shirts are often cut differently (longer, wider) than retail versions</li>
-        <li><strong>Signs of wear</strong> — authentic match worn shirts show subtle signs of use that are difficult to fake convincingly</li>
-        <li><strong>Provenance</strong> — the best shirts come with documentation: photos, certificates of authenticity, or a known shirt swap history</li>
-      </ul>
-      <h2>Why Collectors Value Them</h2>
-      <p>There is something deeply personal about owning a shirt that was worn in a real match. Unlike a replica or a player edition from a store, a match worn shirt has a direct physical connection to the game and the player. It was there on a Champions League night, a World Cup qualifier, a title-deciding final.</p>
-      <p>At Shirt Société, every match worn shirt in our collection comes with full transparency about its provenance. We only sell what we can verify.</p>
-      <blockquote>Every shirt tells a story. Our job is to make sure that story is true.</blockquote>
-      <h2>What Do They Cost?</h2>
-      <p>Match worn shirts range enormously depending on the player, the match and the era. Entry-level pieces from lesser-known players can start from €100. Shirts from iconic players or historic matches can reach several thousand euros. At Shirt Société, we focus on pieces with genuine historical significance at pricing serious collectors can realistically afford.</p>
-    `
+    id: "match-worn-guide",
+    tag: "Guide",
+    title: "What Is a Match Worn Football Shirt?",
+    excerpt: "The term gets used everywhere in the collector world. But what does it actually mean, and how do you tell the difference from a match issued shirt?",
+    date: "June 2026",
+    readTime: "5 min read",
+    image: "https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg",
+    body: "<h2>Match Worn vs Match Issued</h2><p>In the world of vintage football shirt collecting, few terms cause more confusion than <strong>match worn</strong> and <strong>match issued</strong>. The difference is significant in terms of rarity and value.</p><p>A <em>match worn</em> shirt was physically worn by a player during an official match. These shirts often show signs of use and that is precisely what makes them special. They were part of football history.</p><p>A <em>match issued</em> shirt was prepared and assigned to a player but never actually worn in the match. Match issued shirts are still rare and desirable, but they typically command a lower price.</p><h2>How to Verify a Match Worn Shirt</h2><ul><li><strong>Player number printing</strong> — original heat-pressed or embroidered numbers, not reprints</li><li><strong>Size and cut</strong> — player shirts are often cut differently than retail versions</li><li><strong>Signs of wear</strong> — authentic match worn shirts show subtle signs of use</li><li><strong>Provenance</strong> — the best shirts come with documentation or a known shirt swap history</li></ul><h2>Why Collectors Value Them</h2><p>There is something deeply personal about owning a shirt that was worn in a real match. At Shirt Societe, every match worn shirt comes with full transparency about its provenance. We only sell what we can verify.</p><blockquote>Every shirt tells a story. Our job is to make sure that story is true.</blockquote><h2>What Do They Cost?</h2><p>Match worn shirts range enormously depending on the player, the match and the era. Entry-level pieces can start from around 100 euros. Shirts from iconic players or historic matches can reach several thousand euros. At Shirt Societe, we focus on pieces with genuine historical significance at pricing serious collectors can realistically afford.</p>"
   },
   {
-    id: 'vintage-fussballborse-guide',
-    tag: 'Events',
-    title: "Vintage Fußballbörse: Europe's Best Football Fair",
-    excerpt: "What is Vintage Fußballbörse, why do 1,000+ collectors travel from across Europe to attend, and what can you expect at the fair?",
-    date: 'June 2026',
-    readTime: '4 min read',
-    image: 'https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg',
-    body: `
-      <h2>Germany's Leading Vintage Football Fair</h2>
-      <p>If you collect vintage football shirts anywhere in Europe, you have almost certainly heard of <strong>Vintage Fußballbörse</strong>. Founded and organised by Sebastian, the fair has grown into one of the most respected events on the European football memorabilia calendar.</p>
-      <p>Held multiple times per year across major German cities, each edition draws <strong>over 1,000 collectors</strong> from Germany, the Netherlands, Belgium, the UK and beyond.</p>
-      <h2>What to Expect at the Fair</h2>
-      <p>Walking into a Vintage Fußballbörse is unlike any other collecting experience. Part market, part museum, part social club. You will find:</p>
-      <ul>
-        <li>Dozens of exhibitors ranging from private collectors to established dealers</li>
-        <li>Shirts from every era — 1970s originals, 1980s and 90s classics, 2000s rarities</li>
-        <li>Match worn and match issued pieces with proper provenance</li>
-        <li>Prices ranging from affordable vintage finds to premium collector pieces</li>
-        <li>Passionate conversations with people who share your obsession</li>
-      </ul>
-      <h2>Shirt Société at the Fairs</h2>
-      <p>Shirt Société has been a regular exhibitor at Vintage Fußballbörse since 2025, attending fairs in Hamburg, Cologne and Düsseldorf. We will be at <strong>Frankfurt on July 4th, 2026</strong> — come and say hello.</p>
-      <blockquote>If you are coming to Frankfurt on July 4th, come find our stand. We would love to meet fellow collectors.</blockquote>
-      <p>Follow the fair on Instagram at <strong>@vintagefussball</strong> for updates on upcoming events and exhibitors.</p>
-    `
+    id: "vintage-fussballborse",
+    tag: "Events",
+    title: "Vintage Fussballborse: Europe's Best Football Fair",
+    excerpt: "What is Vintage Fussballborse, why do 1,000 plus collectors travel from across Europe to attend, and what can you expect at the fair?",
+    date: "June 2026",
+    readTime: "4 min read",
+    image: "https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg",
+    body: "<h2>Germany's Leading Vintage Football Fair</h2><p>If you collect vintage football shirts anywhere in Europe, you have almost certainly heard of <strong>Vintage Fussballborse</strong>. Founded and organised by Sebastian, the fair has grown into one of the most respected events on the European football memorabilia calendar.</p><p>Held multiple times per year across major German cities, each edition draws <strong>over 1,000 collectors</strong> from Germany, the Netherlands, Belgium, the UK and beyond.</p><h2>What to Expect at the Fair</h2><ul><li>Dozens of exhibitors from private collectors to established dealers</li><li>Shirts from every era: 1970s originals, 1980s and 1990s classics, 2000s rarities</li><li>Match worn and match issued pieces with proper provenance</li><li>Prices from affordable vintage finds to premium collector pieces</li><li>Passionate conversations with people who share your passion</li></ul><h2>Shirt Societe at the Fairs</h2><p>Shirt Societe has been a regular exhibitor since 2025, attending fairs in Hamburg, Cologne and Dusseldorf. We will be at <strong>Frankfurt on July 4th, 2026</strong>. Come and say hello.</p><blockquote>If you are coming to Frankfurt on July 4th, come find our stand. We would love to meet fellow collectors.</blockquote><p>Follow the fair on Instagram at <strong>@vintagefussball</strong> for updates on upcoming events.</p>"
   },
   {
-    id: 'how-to-start-collecting',
-    tag: 'Guide',
-    title: 'How to Start Collecting Vintage Football Shirts',
-    excerpt: 'Thinking about getting into vintage shirt collecting? Here is everything you need to know to start smart and build a collection you are proud of.',
-    date: 'June 2026',
-    readTime: '6 min read',
-    image: 'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647509/WhatsApp_Image_2026-06-28_at_13.50.26_oxxvhy.jpg',
-    body: `
-      <h2>Why Vintage Football Shirts?</h2>
-      <p>Vintage football shirts sit at a unique intersection of sport, fashion, art and history. They are wearable pieces of football heritage — and unlike many collectibles, they have a function beyond display. A 1994 AC Milan shirt is not just an artifact. It is something you can actually wear.</p>
-      <p>The market has grown significantly over the past decade, but prices have not yet reached the levels of, say, vintage sneakers — meaning there is still genuine value to be found by knowledgeable buyers.</p>
-      <h2>Start Smart</h2>
-      <p>The most common mistake new collectors make is buying too broadly, too quickly. Some principles that will help:</p>
-      <ul>
-        <li><strong>Collect what you love</strong> — focus on clubs, nations or eras you genuinely care about</li>
-        <li><strong>Learn before you spend</strong> — spend time on forums, Reddit's r/footballjerseys, and Instagram first</li>
-        <li><strong>Condition matters</strong> — a shirt in excellent condition is almost always worth more than a damaged one</li>
-        <li><strong>Authenticity first</strong> — fakes are everywhere. Learn to spot them in your area of focus before spending significantly</li>
-      </ul>
-      <h2>Where to Find Shirts</h2>
-      <ul>
-        <li><strong>Vintage fairs</strong> like Vintage Fußballbörse — inspect in person, talk to sellers</li>
-        <li><strong>Curated shops</strong> like Shirt Société — curation and authenticity verification done for you</li>
-        <li><strong>Vinted and eBay</strong> — higher risk, but occasional great finds</li>
-        <li><strong>Instagram</strong> — the most active community for buying, selling and trading</li>
-      </ul>
-      <h2>Build a Collection with a Theme</h2>
-      <p>Collections built around a clear theme tend to appreciate most in both monetary and personal value. Some ideas: all shirts from a specific club across decades, national team shirts from a World Cup year, shirts worn by a single player throughout their career, or everything from a specific era such as 1990 to 1998.</p>
-      <p>At Shirt Société we are always happy to help collectors find specific pieces or build in a particular direction. Send us a message on Instagram or by email.</p>
-    `
+    id: "how-to-collect",
+    tag: "Guide",
+    title: "How to Start Collecting Vintage Football Shirts",
+    excerpt: "Thinking about getting into vintage shirt collecting? Everything you need to know to start smart and build a collection you are proud of.",
+    date: "June 2026",
+    readTime: "6 min read",
+    image: "https://res.cloudinary.com/dinpfdojh/image/upload/v1782647509/WhatsApp_Image_2026-06-28_at_13.50.26_oxxvhy.jpg",
+    body: "<h2>Why Vintage Football Shirts?</h2><p>Vintage football shirts sit at a unique intersection of sport, fashion, art and history. They are wearable pieces of football heritage. A 1994 AC Milan shirt is not just an artifact. It is something you can actually wear.</p><p>The market has grown significantly over the past decade but prices have not yet reached the levels of vintage sneakers, meaning there is still genuine value to be found by knowledgeable buyers.</p><h2>Start Smart</h2><ul><li><strong>Collect what you love</strong> — focus on clubs, nations or eras you genuinely care about</li><li><strong>Learn before you spend</strong> — spend time on forums and Instagram first</li><li><strong>Condition matters</strong> — a shirt in excellent condition is almost always worth more</li><li><strong>Authenticity first</strong> — fakes are everywhere. Learn to spot them before spending significantly</li></ul><h2>Where to Find Shirts</h2><ul><li><strong>Vintage fairs</strong> like Vintage Fussballborse — inspect in person</li><li><strong>Curated shops</strong> like Shirt Societe — curation and authenticity done for you</li><li><strong>Vinted and eBay</strong> — higher risk, occasional great finds</li><li><strong>Instagram</strong> — the most active community for buying, selling and trading</li></ul><h2>Build a Collection with a Theme</h2><p>Collections built around a clear theme tend to appreciate most in value. Ideas: all shirts from a specific club across decades, national team shirts from a World Cup year, or shirts from a specific era such as 1990 to 1998.</p>"
   },
   {
-    id: 'frankfurt-preview-2026',
-    tag: 'Events',
-    title: "Coming to Frankfurt — What We're Bringing",
-    excerpt: "Vintage Fußballbörse Frankfurt is on July 4th, 2026. Here is a preview of what Shirt Société will have at our stand.",
-    date: 'June 2026',
-    readTime: '3 min read',
-    image: 'https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg',
-    body: `
-      <h2>Frankfurt · 4 July 2026 · 10:00–17:00</h2>
-      <p>Vintage Fußballbörse Frankfurt takes place on <strong>Saturday, July 4th 2026</strong>. It is one of the most anticipated editions of the year — Frankfurt draws a large, knowledgeable crowd and is always one of the highlights of the collector calendar.</p>
-      <p>Shirt Société will be there with a carefully selected range of shirts across different categories and price points.</p>
-      <h2>What We're Bringing</h2>
-      <ul>
-        <li><strong>Match worn shirts</strong> — verified pieces with proper provenance, priced fairly</li>
-        <li><strong>1990s club classics</strong> — the era that defined European football aesthetics</li>
-        <li><strong>German club shirts</strong> — always in strong demand at German fairs</li>
-        <li><strong>National team pieces</strong> — including rare finds from major tournaments</li>
-        <li><strong>Affordable vintage finds</strong> — great shirts for collectors at every level</li>
-      </ul>
-      <h2>Come and Say Hello</h2>
-      <p>One of the things we love most about Vintage Fußballbörse is the conversations. Whether you are looking for something specific, want advice on building your collection, or simply want to talk football and shirts — find us at our stand.</p>
-      <p>Follow <strong>@shirtsociete</strong> on Instagram for live updates from the fair on the day.</p>
-      <blockquote>Frankfurt. July 4th. 10:00–17:00. We will see you there.</blockquote>
-    `
+    id: "frankfurt-2026",
+    tag: "Events",
+    title: "Coming to Frankfurt: What We Are Bringing",
+    excerpt: "Vintage Fussballborse Frankfurt is on July 4th, 2026. A preview of what Shirt Societe will have at our stand and why you should come.",
+    date: "June 2026",
+    readTime: "3 min read",
+    image: "https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg",
+    body: "<h2>Frankfurt, 4 July 2026, 10:00 to 17:00</h2><p>Vintage Fussballborse Frankfurt takes place on <strong>Saturday, July 4th 2026</strong>. It is one of the most anticipated editions of the year. Frankfurt draws a large, knowledgeable crowd and is always one of the highlights of the collector calendar.</p><h2>What We Are Bringing</h2><ul><li><strong>Match worn shirts</strong> — verified pieces with proper provenance</li><li><strong>1990s club classics</strong> — the era that defined European football aesthetics</li><li><strong>German club shirts</strong> — always in strong demand at German fairs</li><li><strong>National team pieces</strong> — including rare finds from major tournaments</li><li><strong>Affordable vintage finds</strong> — great shirts for collectors at every level</li></ul><h2>Come and Say Hello</h2><p>One of the things we love most about Vintage Fussballborse is the conversations. Whether you are looking for something specific, want advice on building your collection, or simply want to talk football and shirts, find us at our stand.</p><p>Follow <strong>@shirtsociete</strong> on Instagram for live updates from the fair on the day.</p><blockquote>Frankfurt. July 4th. 10:00 to 17:00. We will see you there.</blockquote>"
   }
 ];
 
 function renderPosts() {
-  document.getElementById('posts-grid').innerHTML = POSTS.map(p => `
-    <div class="post-card" onclick="showPost('${p.id}')">
-      ${p.image
-        ? `<img src="${p.image}" class="post-img" alt="${p.title}" loading="lazy">`
-        : `<div class="post-img-ph"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="40" height="40"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>`
-      }
-      <div class="post-tag">${p.tag}</div>
-      <div class="post-title">${p.title}</div>
-      <div class="post-excerpt">${p.excerpt}</div>
-      <div class="post-meta">${p.date} · ${p.readTime}</div>
-      <div class="read-more">Read more →</div>
-    </div>
-  `).join('');
+  var grid = document.getElementById("posts-grid");
+  grid.innerHTML = POSTS.map(function(p) {
+    return "<div class=\"post-card\" onclick=\"showPost('" + p.id + "')\">" +
+      (p.image ? "<img src=\"" + p.image + "\" class=\"post-img\" alt=\"" + p.title + "\" loading=\"lazy\">" : "") +
+      "<div class=\"post-tag\">" + p.tag + "</div>" +
+      "<div class=\"post-title\">" + p.title + "</div>" +
+      "<div class=\"post-excerpt\">" + p.excerpt + "</div>" +
+      "<div class=\"post-meta\">" + p.date + " &middot; " + p.readTime + "</div>" +
+      "<div class=\"read-more\">Read more &rarr;</div>" +
+    "</div>";
+  }).join("");
 }
 
 function showPost(id) {
-  const post = POSTS.find(p => p.id === id);
+  var post = null;
+  for (var i = 0; i < POSTS.length; i++) {
+    if (POSTS[i].id === id) { post = POSTS[i]; break; }
+  }
   if (!post) return;
-  document.getElementById('blog-list').style.display = 'none';
-  document.getElementById('post-detail').classList.add('active');
-  document.getElementById('post-content').innerHTML = `
-    <div class="eyebrow">${post.tag}</div>
-    <h1 class="detail-title">${post.title}</h1>
-    <div class="detail-meta">${post.date} · Shirt Société · ${post.readTime}</div>
-    ${post.image ? `<img src="${post.image}" class="detail-img" alt="${post.title}">` : ''}
-    <div class="post-body">${post.body}</div>
-  `;
+  document.getElementById("blog-list").style.display = "none";
+  document.getElementById("post-detail").classList.add("active");
+  document.getElementById("post-content").innerHTML =
+    "<div class=\"eyebrow\">" + post.tag + "</div>" +
+    "<h1 class=\"detail-title\">" + post.title + "</h1>" +
+    "<div class=\"detail-meta\">" + post.date + " &middot; Shirt Societe &middot; " + post.readTime + "</div>" +
+    (post.image ? "<img src=\"" + post.image + "\" class=\"detail-img\" alt=\"" + post.title + "\">" : "") +
+    "<div class=\"post-body\">" + post.body + "</div>";
   window.scrollTo(0, 0);
-  history.pushState({ post: id }, '', `/blog.html#${id}`);
-  if (typeof gtag !== 'undefined') gtag('event', 'view_item', { item_id: id, item_name: post.title });
+  if (history.pushState) history.pushState({post: id}, "", "/blog.html#" + id);
+  if (typeof gtag !== "undefined") gtag("event", "view_item", {item_id: id, item_name: post.title});
 }
 
 function showList() {
-  document.getElementById('blog-list').style.display = 'block';
-  document.getElementById('post-detail').classList.remove('active');
+  document.getElementById("blog-list").style.display = "block";
+  document.getElementById("post-detail").classList.remove("active");
   window.scrollTo(0, 0);
-  history.pushState({}, '', '/blog.html');
+  if (history.pushState) history.pushState({}, "", "/blog.html");
 }
 
-window.addEventListener('popstate', e => {
-  if (e.state?.post) showPost(e.state.post);
+window.addEventListener("popstate", function(e) {
+  if (e.state && e.state.post) showPost(e.state.post);
   else showList();
 });
 
-const hash = window.location.hash.replace('#', '');
-if (hash) showPost(hash);
-renderPosts();
+var hash = window.location.hash.replace("#", "");
+if (hash) { showPost(hash); } else { renderPosts(); }
+if (!hash) renderPosts();
 </script>
 </body>
 </html>
