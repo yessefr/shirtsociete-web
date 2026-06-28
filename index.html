@@ -1088,33 +1088,6 @@
             style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px" alt="Düsseldorf">
         </div>
 
-        <!-- Frankfurt Preview Video -->
-        <div style="margin-bottom:48px">
-          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500">Frankfurt Preview</div>
-          <div style="position:relative;border-radius:4px;overflow:hidden;background:#111009;border:1px solid #1e1c17">
-            <video
-              src="https://res.cloudinary.com/dinpfdojh/video/upload/v1782645498/WhatsApp_Video_2026-06-27_at_22.49.44_gdwc6l.mp4"
-              controls
-              playsinline
-              preload="metadata"
-              style="width:100%;display:block;max-height:520px;object-fit:contain;background:#0a0905"
-              poster="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg">
-            </video>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap;gap:8px">
-            <div>
-              <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:3px">A preview of what's coming to Frankfurt</div>
-              <div style="font-size:13px;color:var(--text-muted)">A selection of the shirts Shirt Société will be bringing to Vintage Fußballbörse Frankfurt · 4 July 2026</div>
-            </div>
-            <a href="https://www.instagram.com/shirtsociete/" target="_blank"
-              style="display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid rgba(200,169,80,0.3);color:var(--gold);padding:8px 16px;border-radius:2px;text-decoration:none;font-size:12px;font-weight:500;letter-spacing:0.5px;white-space:nowrap;transition:all 0.2s"
-              onmouseover="this.style.background='rgba(200,169,80,0.08)'" onmouseout="this.style.background='transparent'">
-              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              Follow @shirtsociete
-            </a>
-          </div>
-        </div>
-
         <!-- Horizontal Timeline -->
         <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:16px">
           <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500">Event Timeline</div>
@@ -1187,12 +1160,17 @@
               <!-- Frankfurt -->
               <div style="text-align:center">
                 <div style="width:18px;height:18px;border-radius:50%;background:var(--black);border:3px solid var(--gold);box-shadow:0 0 8px rgba(200,169,80,0.4);margin:0 auto;margin-top:-10px;position:relative;z-index:2"></div>
-                <div style="margin-top:10px;background:rgba(200,169,80,0.05);border:1px solid rgba(200,169,80,0.3);border-radius:3px;padding:24px 16px">
+                <div style="margin-top:10px;background:rgba(200,169,80,0.05);border:1px solid rgba(200,169,80,0.3);border-radius:3px;padding:24px 16px;cursor:pointer"
+                  onclick="toggleFrankfurtVideo(this)">
                   <div style="font-size:12px;color:rgba(200,169,80,0.7);margin-bottom:8px;letter-spacing:0.5px">04.07 · 🇩🇪</div>
                   <div style="font-size:30px;font-weight:900;color:var(--gold);margin-bottom:6px">Frankfurt</div>
                   <div style="font-size:13px;color:rgba(200,169,80,0.6);margin-bottom:10px">Vintage Fußballbörse</div>
                   <div id="frankfurt-countdown" style="font-size:13px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;letter-spacing:0.5px"></div>
                   <div style="font-size:9px;color:rgba(200,169,80,0.5);margin-top:2px">10:00 – 17:00</div>
+                  <div style="font-size:11px;color:rgba(200,169,80,0.5);margin-top:10px;display:flex;align-items:center;justify-content:center;gap:4px">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="rgba(200,169,80,0.5)" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Preview
+                  </div>
                 </div>
               </div>
 
@@ -1250,6 +1228,26 @@
           </div>
           <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500">Our Mission</div>
           <p style="font-size:16px;line-height:1.9;color:#b0a898;font-style:italic;border-left:2px solid var(--gold);padding-left:20px">"Every shirt tells a story. Our mission is to connect passionate collectors with authentic pieces of football history, and to ensure that these rare shirts are preserved and cherished by people who truly appreciate them."</p>
+        </div>
+      </div>
+
+      <!-- Frankfurt Video Modal -->
+      <div id="frankfurt-video-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:1000;align-items:center;justify-content:center;padding:20px" onclick="closeFrankfurtVideo(event)">
+        <div style="position:relative;width:100%;max-width:360px;display:flex;flex-direction:column;align-items:center" onclick="event.stopPropagation()">
+          <!-- Close button -->
+          <button onclick="closeFrankfurtVideo()" style="position:absolute;top:-48px;right:0;background:none;border:none;color:rgba(255,255,255,0.6);font-size:28px;cursor:pointer;line-height:1;padding:8px">×</button>
+          <!-- Label -->
+          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500">Frankfurt Preview</div>
+          <!-- Vertical video - 9:16 -->
+          <video
+            id="frankfurt-video"
+            src="https://res.cloudinary.com/dinpfdojh/video/upload/v1782645498/WhatsApp_Video_2026-06-27_at_22.49.44_gdwc6l.mp4"
+            controls
+            playsinline
+            preload="none"
+            style="width:100%;max-width:360px;aspect-ratio:9/16;object-fit:cover;border-radius:8px;background:#0a0905;display:block">
+          </video>
+          <div style="margin-top:12px;font-size:13px;color:var(--text-muted);text-align:center">Shirts coming to Frankfurt · 4 July 2026</div>
         </div>
       </div>
 
@@ -1953,6 +1951,35 @@
     renderWishlist();
     showToast('Sold items removed');
   }
+
+  // ── FRANKFURT VIDEO ──
+  function toggleFrankfurtVideo() {
+    const overlay = document.getElementById('frankfurt-video-overlay');
+    const video = document.getElementById('frankfurt-video');
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    video.play();
+  }
+
+  function closeFrankfurtVideo(e) {
+    if (e && e.target !== document.getElementById('frankfurt-video-overlay')) return;
+    const overlay = document.getElementById('frankfurt-video-overlay');
+    const video = document.getElementById('frankfurt-video');
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+    video.pause();
+    video.currentTime = 0;
+  }
+
+  // Close with Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const overlay = document.getElementById('frankfurt-video-overlay');
+      if (overlay && overlay.style.display === 'flex') {
+        closeFrankfurtVideo({ target: overlay });
+      }
+    }
+  });
 
   // ── COUNTDOWN ──
   function updateCountdown() {
