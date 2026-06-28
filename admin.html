@@ -748,23 +748,46 @@
     };
 
     try {
-      const method = editingShirtId ? 'PATCH' : 'POST';
-      const url = editingShirtId
-        ? `${SUPABASE.url}/rest/v1/shirts?id=eq.${editingShirtId}`
-        : `${SUPABASE.url}/rest/v1/shirts`;
+      // Use Netlify function to bypass RLS (server-side uses service role key)
+      const apiBase = 'https://shirtsociete.netlify.app/api';
+      let res;
+      if (editingShirtId) {
+        res = await fetch(`${apiBase}/admin-shirts?id=${editingShirtId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        res = await fetch(`${apiBase}/admin-shirts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+          body: JSON.stringify(payload)
+        });
+      }
 
-      const res = await fetch(url, {
-        method,
-        headers: {
-          'apikey': SUPABASE.key,
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=representation'
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (!res.ok) throw new Error('Failed to save');
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error('Save error:', res.status, errText);
+        // Fallback: try direct Supabase write
+        const method2 = editingShirtId ? 'PATCH' : 'POST';
+        const url2 = editingShirtId
+          ? `${SUPABASE.url}/rest/v1/shirts?id=eq.${editingShirtId}`
+          : `${SUPABASE.url}/rest/v1/shirts`;
+        const res2 = await fetch(url2, {
+          method: method2,
+          headers: {
+            'apikey': SUPABASE.key,
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify(payload)
+        });
+        if (!res2.ok) {
+          const err2 = await res2.text();
+          throw new Error(`Save failed: ${err2}`);
+        }
+      }
       showToast(editingShirtId ? 'Shirt updated!' : 'Shirt added!', 'success');
       closeShirtModal();
       await loadShirts();
@@ -792,11 +815,12 @@
   async function markSold(id) {
     if (!confirm('Mark this shirt as sold?')) return;
     try {
-      await fetch(`${SUPABASE.url}/rest/v1/shirts?id=eq.${id}`, {
+      const msr = await fetch(`${SUPABASE.url}/rest/v1/shirts?id=eq.${id}`, {
         method: 'PATCH',
-        headers: { 'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/json' },
+        headers: { 'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
         body: JSON.stringify({ available: false, sold_at: new Date().toISOString() })
       });
+      if (!msr.ok) { const e = await msr.text(); throw new Error(e); }
       showToast('Marked as sold', 'success');
       await loadShirts();
       updateDashboard();
