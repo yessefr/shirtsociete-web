@@ -754,7 +754,7 @@
     Cart
   </div>
   <div class="tab" onclick="mGoTo('wishlist')" id="m-tab-wishlist">
-    <svg id="wishlist-tab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="transition:all 0.3s;width:20px;height:20px"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    <svg id="wishlist-tab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" style="opacity:0.3;transition:all 0.3s"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
     <span class="cart-badge" id="wishlist-badge" style="right:calc(50% - 20px)">0</span>
     Saved
   </div>
@@ -794,6 +794,10 @@
         Saved
         <span id="d-wishlist-count" style="margin-left:auto;background:var(--grey-light,#3a3830);color:var(--text-muted);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
       </div>
+      <a class="nav-item" href="/blog.html" style="text-decoration:none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Blog
+      </a>
       <div class="nav-item" onclick="dGoTo('about')" id="d-nav-about">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
         Our Story
@@ -1983,20 +1987,17 @@
     const icon = document.getElementById('wishlist-tab-icon');
     if (mb) { mb.textContent = count; mb.classList.toggle('visible', count > 0); }
     if (db) { db.textContent = count; db.style.display = count > 0 ? 'inline' : 'none'; }
-    // Heart icon: small when empty, full size when liked
     if (icon) {
       if (count > 0) {
-        icon.style.width = '22px';
-        icon.style.height = '22px';
+        icon.setAttribute('width', '22'); icon.setAttribute('height', '22');
         icon.style.opacity = '1';
-        icon.style.fill = 'var(--gold)';
-        icon.style.stroke = 'var(--gold)';
+        icon.setAttribute('fill', 'var(--gold)');
+        icon.setAttribute('stroke', 'var(--gold)');
       } else {
-        icon.style.width = '14px';
-        icon.style.height = '14px';
-        icon.style.opacity = '0.35';
-        icon.style.fill = 'none';
-        icon.style.stroke = 'currentColor';
+        icon.setAttribute('width', '13'); icon.setAttribute('height', '13');
+        icon.style.opacity = '0.3';
+        icon.setAttribute('fill', 'none');
+        icon.setAttribute('stroke', 'currentColor');
       }
     }
   }
