@@ -754,7 +754,7 @@
     Cart
   </div>
   <div class="tab" onclick="mGoTo('wishlist')" id="m-tab-wishlist">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    <svg id="wishlist-tab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="transition:all 0.3s;width:20px;height:20px"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
     <span class="cart-badge" id="wishlist-badge" style="right:calc(50% - 20px)">0</span>
     Saved
   </div>
@@ -1980,8 +1980,25 @@
     const count = wishlist.length;
     const mb = document.getElementById('wishlist-badge');
     const db = document.getElementById('d-wishlist-count');
+    const icon = document.getElementById('wishlist-tab-icon');
     if (mb) { mb.textContent = count; mb.classList.toggle('visible', count > 0); }
     if (db) { db.textContent = count; db.style.display = count > 0 ? 'inline' : 'none'; }
+    // Heart icon: small when empty, full size when liked
+    if (icon) {
+      if (count > 0) {
+        icon.style.width = '22px';
+        icon.style.height = '22px';
+        icon.style.opacity = '1';
+        icon.style.fill = 'var(--gold)';
+        icon.style.stroke = 'var(--gold)';
+      } else {
+        icon.style.width = '14px';
+        icon.style.height = '14px';
+        icon.style.opacity = '0.35';
+        icon.style.fill = 'none';
+        icon.style.stroke = 'currentColor';
+      }
+    }
   }
 
   function renderWishlist() {
