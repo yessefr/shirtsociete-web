@@ -557,6 +557,38 @@
 
 <!-- MOBILE HOME -->
 <div id="screen-home" class="screen active">
+  <!-- Frankfurt countdown banner mobile -->
+  <div style="background:linear-gradient(135deg,rgba(200,169,80,0.1),rgba(200,169,80,0.03));border-bottom:1px solid rgba(200,169,80,0.2);padding:14px 20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+        <div style="position:relative;flex-shrink:0;width:10px;height:10px">
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--gold);animation:pulseGlow 1.5s ease-in-out infinite;position:absolute"></div>
+          <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(200,169,80,0.3);animation:pulseRing 1.5s ease-in-out infinite"></div>
+        </div>
+        <div style="min-width:0">
+          <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600">Next Event</div>
+          <div style="font-size:13px;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">VFB Frankfurt 🇩🇪 · 4 Jul</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+        <div style="text-align:center">
+          <div id="m-home-days" style="font-size:20px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">d</div>
+        </div>
+        <div style="color:rgba(200,169,80,0.3);font-size:16px;padding-bottom:8px">:</div>
+        <div style="text-align:center">
+          <div id="m-home-hours" style="font-size:20px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">h</div>
+        </div>
+        <div style="color:rgba(200,169,80,0.3);font-size:16px;padding-bottom:8px">:</div>
+        <div style="text-align:center">
+          <div id="m-home-mins" style="font-size:20px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">m</div>
+        </div>
+        <button onclick="mGoTo('about')" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0">Info →</button>
+      </div>
+    </div>
+  </div>
   <div class="m-hero">
     <div class="m-hero-eyebrow">Est. in passion</div>
     <h1 class="m-hero-title">Vintage<br><span>football</span><br>history.</h1>
@@ -685,6 +717,10 @@
       <span>Shop the Collection</span>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </div>
+    <a class="profile-item" href="/blog.html" style="text-decoration:none;color:var(--white)">
+      <span>Blog</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
     <div class="profile-item" onclick="mGoTo('about')">
       <span>Our Story</span>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
@@ -2181,9 +2217,16 @@
     // About page timeline countdown
     const fc = document.getElementById('frankfurt-countdown');
     if (fc) fc.innerHTML = `${pad(days)}d ${pad(hours)}h ${pad(mins)}m`;
-    // Mobile countdown
+    // Mobile countdown on about page
     const mfc = document.getElementById('m-frankfurt-countdown');
     if (mfc) mfc.innerHTML = `${pad(days)}d ${pad(hours)}h ${pad(mins)}m · 10:00–17:00`;
+    // Mobile home banner countdown
+    const mhd = document.getElementById('m-home-days');
+    const mhh = document.getElementById('m-home-hours');
+    const mhm = document.getElementById('m-home-mins');
+    if (mhd) mhd.textContent = pad(days);
+    if (mhh) mhh.textContent = pad(hours);
+    if (mhm) mhm.textContent = pad(mins);
   }
 
   updateCountdown();
