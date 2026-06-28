@@ -1130,30 +1130,48 @@
               <!-- Hamburg -->
               <div style="text-align:center">
                 <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px">
+                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px;cursor:pointer;transition:border-color 0.2s"
+                  onmouseover="this.style.borderColor='#4caf7d'" onmouseout="this.style.borderColor='#252320'"
+                  onclick="openEventGallery('hamburg')">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">04.02 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Hamburg</div>
-                  <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
+                  <div style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
+                  <div style="font-size:11px;color:#4caf7d;display:flex;align-items:center;justify-content:center;gap:4px;opacity:0.8">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    View impressions
+                  </div>
                 </div>
               </div>
 
               <!-- Cologne -->
               <div style="text-align:center">
                 <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px">
+                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px;cursor:pointer;transition:border-color 0.2s"
+                  onmouseover="this.style.borderColor='#4caf7d'" onmouseout="this.style.borderColor='#252320'"
+                  onclick="openEventGallery('cologne')">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">31.05 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Cologne</div>
-                  <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
+                  <div style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
+                  <div style="font-size:11px;color:#4caf7d;display:flex;align-items:center;justify-content:center;gap:4px;opacity:0.8">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    View impressions
+                  </div>
                 </div>
               </div>
 
               <!-- Düsseldorf -->
               <div style="text-align:center">
                 <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px">
+                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px;cursor:pointer;transition:border-color 0.2s"
+                  onmouseover="this.style.borderColor='#4caf7d'" onmouseout="this.style.borderColor='#252320'"
+                  onclick="openEventGallery('dusseldorf')">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">13.06 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Düsseldorf</div>
-                  <div style="font-size:13px;color:var(--text-muted)">Pop-up event</div>
+                  <div style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Pop-up event</div>
+                  <div style="font-size:11px;color:#4caf7d;display:flex;align-items:center;justify-content:center;gap:4px;opacity:0.8">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    View impressions
+                  </div>
                 </div>
               </div>
 
@@ -1228,6 +1246,31 @@
           </div>
           <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500">Our Mission</div>
           <p style="font-size:16px;line-height:1.9;color:#b0a898;font-style:italic;border-left:2px solid var(--gold);padding-left:20px">"Every shirt tells a story. Our mission is to connect passionate collectors with authentic pieces of football history, and to ensure that these rare shirts are preserved and cherished by people who truly appreciate them."</p>
+        </div>
+      </div>
+
+      <!-- Event Gallery Modal -->
+      <div id="event-gallery-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:1000;align-items:flex-start;justify-content:center;padding:0;overflow-y:auto" onclick="closeEventGallery(event)">
+        <div style="position:relative;width:100%;max-width:800px;margin:0 auto;padding:60px 24px 40px" onclick="event.stopPropagation()">
+          <!-- Close -->
+          <button onclick="closeEventGallery()" style="position:fixed;top:16px;right:24px;background:rgba(255,255,255,0.1);border:none;color:var(--white);font-size:20px;cursor:pointer;line-height:1;padding:8px 12px;border-radius:2px;z-index:1001">✕</button>
+          <!-- Header -->
+          <div id="gallery-header" style="margin-bottom:24px;text-align:center">
+            <div id="gallery-city" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:40px;color:#4caf7d;margin-bottom:4px"></div>
+            <div id="gallery-subtitle" style="font-size:13px;color:var(--text-muted)"></div>
+          </div>
+          <!-- Navigation arrows + current photo -->
+          <div style="position:relative;margin-bottom:16px">
+            <img id="gallery-main-img" src="" alt="" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:#111009;display:block">
+            <!-- Prev -->
+            <button onclick="galleryPrev()" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:var(--white);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">‹</button>
+            <!-- Next -->
+            <button onclick="galleryNext()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:var(--white);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">›</button>
+            <!-- Counter -->
+            <div id="gallery-counter" style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.6);color:var(--white);font-size:12px;padding:4px 10px;border-radius:10px"></div>
+          </div>
+          <!-- Thumbnails -->
+          <div id="gallery-thumbs" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"></div>
         </div>
       </div>
 
@@ -1951,6 +1994,114 @@
     renderWishlist();
     showToast('Sold items removed');
   }
+
+  // ── EVENT GALLERIES ──
+  const EVENT_GALLERIES = {
+    hamburg: {
+      city: 'Hamburg',
+      subtitle: 'Vintage Fußballbörse · 04.02.2026',
+      photos: [
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_1_iqseqd.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647124/WhatsApp_Image_2026-06-28_at_13.44.37_1_r6nfpr.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647124/WhatsApp_Image_2026-06-28_at_13.39.49_u27m3z.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647124/WhatsApp_Image_2026-06-28_at_13.44.37_kv6cpq.jpg'
+      ]
+    },
+    cologne: {
+      city: 'Cologne',
+      subtitle: 'Vintage Fußballbörse · 31.05.2026',
+      photos: [
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647328/WhatsApp_Image_2026-06-28_at_13.47.00_zlnflm.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647328/WhatsApp_Image_2026-06-28_at_13.47.52_a26qao.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647327/WhatsApp_Image_2026-06-28_at_13.47.00_1_pwqczi.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647327/WhatsApp_Image_2026-06-28_at_13.47.00_2_vgob7t.jpg'
+      ]
+    },
+    dusseldorf: {
+      city: 'Düsseldorf',
+      subtitle: 'Pop-up event · 13.06.2026',
+      photos: [
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647509/WhatsApp_Image_2026-06-28_at_13.50.26_oxxvhy.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647509/WhatsApp_Image_2026-06-28_at_13.50.27_2_pquwe2.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647509/WhatsApp_Image_2026-06-28_at_13.50.27_tx8ato.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647508/WhatsApp_Image_2026-06-28_at_13.50.27_1_dwktmf.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782647507/WhatsApp_Image_2026-06-28_at_13.50.27_3_h2emko.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg'
+      ]
+    }
+  };
+
+  let currentGalleryPhotos = [];
+  let currentGalleryIndex = 0;
+
+  function openEventGallery(event) {
+    const data = EVENT_GALLERIES[event];
+    if (!data) return;
+    currentGalleryPhotos = data.photos;
+    currentGalleryIndex = 0;
+    document.getElementById('gallery-city').textContent = data.city;
+    document.getElementById('gallery-subtitle').textContent = data.subtitle;
+    updateGalleryPhoto();
+    // Build thumbnails
+    const thumbs = document.getElementById('gallery-thumbs');
+    thumbs.innerHTML = data.photos.map((url, i) => `
+      <img src="${url}" onclick="setGalleryPhoto(${i})"
+        style="width:72px;height:72px;object-fit:cover;border-radius:2px;cursor:pointer;opacity:${i===0?1:0.5};transition:opacity 0.2s;border:${i===0?'2px solid #4caf7d':'2px solid transparent'}"
+        id="gallery-thumb-${i}">
+    `).join('');
+    // Show overlay
+    const overlay = document.getElementById('event-gallery-overlay');
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeEventGallery(e) {
+    if (e && e.target !== document.getElementById('event-gallery-overlay')) return;
+    document.getElementById('event-gallery-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function updateGalleryPhoto() {
+    const img = document.getElementById('gallery-main-img');
+    img.src = currentGalleryPhotos[currentGalleryIndex];
+    document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${currentGalleryPhotos.length}`;
+    // Update thumbs
+    currentGalleryPhotos.forEach((_, i) => {
+      const t = document.getElementById(`gallery-thumb-${i}`);
+      if (t) {
+        t.style.opacity = i === currentGalleryIndex ? '1' : '0.5';
+        t.style.border = i === currentGalleryIndex ? '2px solid #4caf7d' : '2px solid transparent';
+      }
+    });
+  }
+
+  function setGalleryPhoto(i) {
+    currentGalleryIndex = i;
+    updateGalleryPhoto();
+  }
+
+  function galleryPrev() {
+    currentGalleryIndex = (currentGalleryIndex - 1 + currentGalleryPhotos.length) % currentGalleryPhotos.length;
+    updateGalleryPhoto();
+  }
+
+  function galleryNext() {
+    currentGalleryIndex = (currentGalleryIndex + 1) % currentGalleryPhotos.length;
+    updateGalleryPhoto();
+  }
+
+  // Keyboard navigation for gallery
+  document.addEventListener('keydown', function(e) {
+    const overlay = document.getElementById('event-gallery-overlay');
+    if (overlay && overlay.style.display === 'flex') {
+      if (e.key === 'ArrowLeft') galleryPrev();
+      if (e.key === 'ArrowRight') galleryNext();
+    }
+  });
 
   // ── FRANKFURT VIDEO ──
   function toggleFrankfurtVideo() {
