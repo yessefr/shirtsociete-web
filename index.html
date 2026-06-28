@@ -673,12 +673,12 @@
     <div style="font-size:22px;font-weight:500;margin-bottom:4px">Shirt Société</div>
     <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Timeless, Original, Rare</div>
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding-bottom:12px">Explore</div>
-    <div class="profile-item" onclick="mGoTo('about')">
-      <span>About Us</span>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-    </div>
     <div class="profile-item" onclick="mGoTo('shop')">
       <span>Shop the Collection</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="profile-item" onclick="mGoTo('about')">
+      <span>Our Story</span>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </div>
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px;border-top:1px solid #1e1c17;margin-top:8px">Follow Us</div>
@@ -2173,6 +2173,9 @@
     // About page timeline countdown
     const fc = document.getElementById('frankfurt-countdown');
     if (fc) fc.innerHTML = `${pad(days)}d ${pad(hours)}h ${pad(mins)}m`;
+    // Mobile countdown
+    const mfc = document.getElementById('m-frankfurt-countdown');
+    if (mfc) mfc.innerHTML = `${pad(days)}d ${pad(hours)}h ${pad(mins)}m · 10:00–17:00`;
   }
 
   updateCountdown();
