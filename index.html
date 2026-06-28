@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FKJWGECXN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3FKJWGECXN');
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shirt Société — Vintage Football Shirts | Match Worn | Timeless, Original, Rare</title>
   <meta name="description" content="Shirt Société — curated vintage and match worn football shirts from the golden era. Rare originals sourced across Europe. Based in the Netherlands, active at Vintage Fußballbörse fairs in Germany.">
@@ -2226,6 +2234,56 @@
       else mGoTo(screen);
     }
   }
+
+  // ── ANALYTICS TRACKING ──
+  function trackEvent(action, params = {}) {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', action, params);
+    }
+  }
+
+  // Track page views when navigating
+  const _dGoToOrig = dGoTo;
+  dGoTo = function(screen) {
+    _dGoToOrig(screen);
+    trackEvent('page_view', { page_title: screen, page_location: window.location.href });
+  };
+
+  // Track add to cart
+  const _addToCartOrig = addToCart;
+  addToCart = function(shirt) {
+    _addToCartOrig(shirt);
+    trackEvent('add_to_cart', {
+      currency: 'EUR',
+      value: parseFloat(shirt.price),
+      items: [{ item_id: shirt.id, item_name: shirt.title, price: parseFloat(shirt.price) }]
+    });
+  };
+
+  // Track checkout start
+  const _buildCheckoutOrig = buildCheckoutForms;
+  buildCheckoutForms = function() {
+    _buildCheckoutOrig();
+    trackEvent('begin_checkout', {
+      currency: 'EUR',
+      value: getCartTotal(),
+      items: cart.map(i => ({ item_id: i.id, item_name: i.title, price: parseFloat(i.price) }))
+    });
+  };
+
+  // Track shirt detail views
+  const _openDetailOrig = openDetail;
+  openDetail = function(id, ctx) {
+    _openDetailOrig(id, ctx);
+    const shirt = allShirts.find(s => s.id === id);
+    if (shirt) {
+      trackEvent('view_item', {
+        currency: 'EUR',
+        value: parseFloat(shirt.price),
+        items: [{ item_id: shirt.id, item_name: shirt.title, item_category: shirt.category, price: parseFloat(shirt.price) }]
+      });
+    }
+  };
 
   // ── INIT ──
   updateCartBadge();
