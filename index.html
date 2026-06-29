@@ -918,6 +918,38 @@
         </div>
       </div>
 
+      <!-- Drop countdown banner -->
+      <div id="drop-banner" style="display:none;background:linear-gradient(135deg,rgba(200,169,80,0.08),rgba(200,169,80,0.02));border-bottom:1px solid rgba(200,169,80,0.15);padding:20px 48px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;font-weight:600">Coming Sunday 6 July · 12:00</div>
+            <div style="font-size:18px;font-weight:700;color:var(--white)">New Shirt Drop — Fresh from Frankfurt</div>
+            <div style="font-size:13px;color:var(--text-muted);margin-top:2px">Shirts picked up at the fair, going live online at noon.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:3px;padding:10px 14px;min-width:52px">
+              <div id="drop-days" style="font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px">Days</div>
+            </div>
+            <div style="color:rgba(200,169,80,0.3);font-size:20px;padding-bottom:12px">:</div>
+            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:3px;padding:10px 14px;min-width:52px">
+              <div id="drop-hours" style="font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px">Hours</div>
+            </div>
+            <div style="color:rgba(200,169,80,0.3);font-size:20px;padding-bottom:12px">:</div>
+            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:3px;padding:10px 14px;min-width:52px">
+              <div id="drop-mins" style="font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px">Mins</div>
+            </div>
+            <div style="color:rgba(200,169,80,0.3);font-size:20px;padding-bottom:12px">:</div>
+            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:3px;padding:10px 14px;min-width:52px">
+              <div id="drop-secs" style="font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px">Secs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="section">
         <div class="section-header">
           <div class="section-label">Featured Pieces</div>
@@ -1409,6 +1441,16 @@
   // ── CONFIG ──
   const dbHost = 'https://hzwmjbsfmdkmaoikezoc.supabase.co';
   const dbToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6d21qYnNmbWRrbWFvaWtlem9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTczNDIsImV4cCI6MjA5MzEzMzM0Mn0.5-ToRrtP3bhkN_qmSMmLM5YXQgE5kWoE0wVpsksqIMs';
+
+  // ── FAIR DAY REDIRECT ──
+  (function() {
+    var now = new Date();
+    var fairStart = new Date("2026-07-04T08:00:00+02:00");
+    var fairEnd = new Date("2026-07-04T23:59:00+02:00");
+    if (now >= fairStart && now <= fairEnd) {
+      window.location.href = "/beurs.html";
+    }
+  })();
 
   // ── STATE ──
   let allShirts = [];
@@ -2248,7 +2290,47 @@
   }
 
   updateCountdown();
-  setInterval(updateCountdown, 60000); // update every minute
+  setInterval(updateCountdown, 60000);
+
+  // ── DROP COUNTDOWN ──
+  function updateDropCountdown() {
+    var dropTarget = new Date("2026-07-06T12:00:00+02:00");
+    var fairStart = new Date("2026-07-04T08:00:00+02:00");
+    var now = new Date();
+
+    // Only show drop banner after fair starts (July 4) until drop goes live (July 6 12:00)
+    if (now < fairStart || now >= dropTarget) {
+      var banner = document.getElementById("drop-banner");
+      var mBanner = document.getElementById("m-drop-banner");
+      if (banner) banner.style.display = "none";
+      if (mBanner) mBanner.style.display = "none";
+      return;
+    }
+
+    var banner = document.getElementById("drop-banner");
+    var mBanner = document.getElementById("m-drop-banner");
+    if (banner) banner.style.display = "block";
+    if (mBanner) mBanner.style.display = "block";
+
+    var diff = dropTarget - now;
+    var days = Math.floor(diff / 86400000);
+    var hours = Math.floor((diff % 86400000) / 3600000);
+    var mins = Math.floor((diff % 3600000) / 60000);
+    var secs = Math.floor((diff % 60000) / 1000);
+    function pad(n) { return n < 10 ? "0" + n : "" + n; }
+
+    ["drop-days","drop-hours","drop-mins","drop-secs"].forEach(function(id, i) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = pad([days, hours, mins, secs][i]);
+    });
+    ["m-drop-days","m-drop-hours","m-drop-mins","m-drop-secs"].forEach(function(id, i) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = pad([days, hours, mins, secs][i]);
+    });
+  }
+
+  updateDropCountdown();
+  setInterval(updateDropCountdown, 1000);
 
   // ── URL ROUTING ──
   function updateURL(screen, id) {
