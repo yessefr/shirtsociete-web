@@ -919,36 +919,7 @@
       </div>
 
       <!-- Drop countdown banner -->
-      <div id="drop-banner" style="display:none;background:linear-gradient(135deg,rgba(200,169,80,0.08),rgba(200,169,80,0.02));border-bottom:1px solid rgba(200,169,80,0.15);padding:20px 48px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
-          <div>
-            <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;font-weight:600">Coming Sunday 6 July · 12:00</div>
-            <div style="font-size:18px;font-weight:700;color:var(--white)">New Shirt Drop — Fresh from Frankfurt</div>
-            <div style="font-size:13px;color:var(--text-muted);margin-top:2px">New pieces going live online Monday at 12:00.</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
-            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:3px;padding:10px 14px;min-width:52px">
-              <div id="drop-days" style="font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
-              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px">Days</div>
-            </div>
-            <div style="color:rgba(200,169,80,0.3);font-size:20px;padding-bottom:12px">:</div>
-            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:3px;padding:10px 14px;min-width:52px">
-              <div id="drop-hours" style="font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
-              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px">Hours</div>
-            </div>
-            <div style="color:rgba(200,169,80,0.3);font-size:20px;padding-bottom:12px">:</div>
-            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:3px;padding:10px 14px;min-width:52px">
-              <div id="drop-mins" style="font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
-              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px">Mins</div>
-            </div>
-            <div style="color:rgba(200,169,80,0.3);font-size:20px;padding-bottom:12px">:</div>
-            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:3px;padding:10px 14px;min-width:52px">
-              <div id="drop-secs" style="font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
-              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px">Secs</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
       <div class="section">
         <div class="section-header">
@@ -956,6 +927,62 @@
           <span class="section-link" onclick="dGoTo('shop')">View all →</span>
         </div>
         <div id="d-featured-row" class="shirt-row"><div class="loading">Loading...</div></div>
+      </div>
+
+
+      <!-- Drop banner with email signup -->
+      <div id="drop-banner" style="background:linear-gradient(135deg,rgba(200,169,80,0.07),rgba(200,169,80,0.02));border-top:2px solid rgba(200,169,80,0.35);border-bottom:1px solid rgba(200,169,80,0.15);padding:28px 48px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:20px">
+            <div style="position:relative;flex-shrink:0;width:18px;height:18px">
+              <div style="width:18px;height:18px;border-radius:50%;background:#4caf7d;position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
+              <div style="position:absolute;inset:-5px;border-radius:50%;background:rgba(76,175,125,0.25);animation:pulseRing 1.5s ease-in-out infinite"></div>
+            </div>
+            <div>
+              <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:600">Upcoming Drop</div>
+              <div style="font-size:22px;font-weight:900;color:var(--white);margin-bottom:4px;letter-spacing:-0.5px">New Shirt Drop</div>
+              <div style="font-size:13px;color:rgba(200,169,80,0.75)">Monday 6 July 2026 &nbsp;&middot;&nbsp; 12:00</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="text-align:center;background:rgba(0,0,0,0.4);border:1px solid rgba(200,169,80,0.25);border-radius:4px;padding:14px 18px;min-width:68px">
+              <div id="drop-days" style="font-size:36px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-1px">--</div>
+              <div style="font-size:9px;color:rgba(200,169,80,0.5);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Days</div>
+            </div>
+            <div style="font-size:28px;color:rgba(200,169,80,0.25);font-weight:200;padding-bottom:14px">:</div>
+            <div style="text-align:center;background:rgba(0,0,0,0.4);border:1px solid rgba(200,169,80,0.25);border-radius:4px;padding:14px 18px;min-width:68px">
+              <div id="drop-hours" style="font-size:36px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-1px">--</div>
+              <div style="font-size:9px;color:rgba(200,169,80,0.5);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Hours</div>
+            </div>
+            <div style="font-size:28px;color:rgba(200,169,80,0.25);font-weight:200;padding-bottom:14px">:</div>
+            <div style="text-align:center;background:rgba(0,0,0,0.4);border:1px solid rgba(200,169,80,0.25);border-radius:4px;padding:14px 18px;min-width:68px">
+              <div id="drop-mins" style="font-size:36px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-1px">--</div>
+              <div style="font-size:9px;color:rgba(200,169,80,0.5);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Mins</div>
+            </div>
+          </div>
+        </div>
+        <!-- Email + Instagram signup -->
+        <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(200,169,80,0.12);display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div style="font-size:13px;color:rgba(200,169,80,0.75);font-weight:500">Get notified when the drop goes live:</div>
+          <div style="display:flex;gap:8px;flex:1;min-width:260px">
+            <input type="email" id="drop-email-input" placeholder="your@email.com"
+              style="flex:1;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.25);border-radius:2px;padding:10px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;min-width:0"
+              onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(200,169,80,0.25)'">
+            <button onclick="submitDropEmail()" id="drop-email-btn"
+              style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:10px 18px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity 0.2s"
+              onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+              Notify Me
+            </button>
+          </div>
+          <div style="font-size:12px;color:rgba(200,169,80,0.4)">or</div>
+          <a href="https://www.instagram.com/shirtsociete/" target="_blank"
+            style="display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid rgba(200,169,80,0.3);color:var(--gold);padding:10px 16px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;white-space:nowrap;transition:all 0.2s"
+            onmouseover="this.style.background='rgba(200,169,80,0.06)'" onmouseout="this.style.background='transparent'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Follow @shirtsociete
+          </a>
+          <div id="drop-email-confirm" style="display:none;font-size:13px;color:var(--gold);font-weight:500">✓ You're on the list!</div>
+        </div>
       </div>
 
       <div class="divider"></div>
@@ -2295,11 +2322,10 @@
   // ── DROP COUNTDOWN ──
   function updateDropCountdown() {
     var dropTarget = new Date("2026-07-06T12:00:00+02:00");
-    var fairStart = new Date("2026-07-04T08:00:00+02:00");
     var now = new Date();
 
-    // Only show drop banner after fair starts (July 4) until drop goes live (July 6 12:00)
-    if (now < fairStart || now >= dropTarget) {
+    // Hide after drop goes live
+    if (now >= dropTarget) {
       var banner = document.getElementById("drop-banner");
       var mBanner = document.getElementById("m-drop-banner");
       if (banner) banner.style.display = "none";
@@ -2307,6 +2333,7 @@
       return;
     }
 
+    // Show banner
     var banner = document.getElementById("drop-banner");
     var mBanner = document.getElementById("m-drop-banner");
     if (banner) banner.style.display = "block";
@@ -2319,14 +2346,18 @@
     var secs = Math.floor((diff % 60000) / 1000);
     function pad(n) { return n < 10 ? "0" + n : "" + n; }
 
-    ["drop-days","drop-hours","drop-mins","drop-secs"].forEach(function(id, i) {
-      var el = document.getElementById(id);
-      if (el) el.textContent = pad([days, hours, mins, secs][i]);
-    });
-    ["m-drop-days","m-drop-hours","m-drop-mins","m-drop-secs"].forEach(function(id, i) {
-      var el = document.getElementById(id);
-      if (el) el.textContent = pad([days, hours, mins, secs][i]);
-    });
+    var dEl = document.getElementById("drop-days");
+    var hEl = document.getElementById("drop-hours");
+    var mEl = document.getElementById("drop-mins");
+    if (dEl) dEl.textContent = pad(days);
+    if (hEl) hEl.textContent = pad(hours);
+    if (mEl) mEl.textContent = pad(mins);
+    var mdEl = document.getElementById("m-drop-days");
+    var mhEl = document.getElementById("m-drop-hours");
+    var mmEl = document.getElementById("m-drop-mins");
+    if (mdEl) mdEl.textContent = pad(days);
+    if (mhEl) mhEl.textContent = pad(hours);
+    if (mmEl) mmEl.textContent = pad(mins);
   }
 
   updateDropCountdown();
@@ -2427,6 +2458,29 @@
       });
     }
   };
+
+  // ── DROP EMAIL SIGNUP ──
+  async function submitDropEmail() {
+    const input = document.getElementById('drop-email-input');
+    const btn = document.getElementById('drop-email-btn');
+    const confirm = document.getElementById('drop-email-confirm');
+    if (!input || !input.value.trim() || !input.value.includes('@')) {
+      input.style.borderColor = '#e05555';
+      setTimeout(() => input.style.borderColor = 'rgba(76,175,125,0.3)', 2000);
+      return;
+    }
+    btn.disabled = true; btn.textContent = '...';
+    try {
+      await fetch('https://shirtsociete.netlify.app/api/drop-signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: input.value.trim(), drop: 'Frankfurt July 6 2026' })
+      });
+    } catch(e) { console.log('signup error', e); }
+    input.style.display = 'none';
+    btn.style.display = 'none';
+    confirm.style.display = 'block';
+  }
 
   // ── INIT ──
   updateCartBadge();
