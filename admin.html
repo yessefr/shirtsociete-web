@@ -711,13 +711,22 @@
     document.getElementById('m-season').value = shirt?.season || '';
     document.getElementById('m-condition').value = shirt?.condition || '';
     document.getElementById('m-image').value = shirt?.images?.[0] || '';
+    document.getElementById('m-image2').value = shirt?.images?.[1] || '';
+    document.getElementById('m-image3').value = shirt?.images?.[2] || '';
+    document.getElementById('m-existing-images').value = JSON.stringify(shirt?.images || []);
     document.getElementById('m-description').value = shirt?.description || '';
     document.getElementById('m-available').value = shirt ? String(shirt.available) : 'true';
     document.getElementById('m-featured').value = shirt ? String(shirt.featured) : 'false';
     document.getElementById('shirt-modal').classList.add('open');
   }
 
-  function closeShirtModal() { document.getElementById('shirt-modal').classList.remove('open'); }
+  function closeShirtModal() {
+    document.getElementById('shirt-modal').classList.remove('open');
+    document.getElementById('m-image').value = '';
+    document.getElementById('m-image2').value = '';
+    document.getElementById('m-image3').value = '';
+    document.getElementById('m-existing-images').value = '[]';
+  }
 
   function editShirt(id) {
     const shirt = allShirts.find(s => s.id === id);
@@ -742,7 +751,15 @@
       season: document.getElementById('m-season').value.trim() || null,
       condition: document.getElementById('m-condition').value || null,
       description: document.getElementById('m-description').value.trim() || null,
-      images: document.getElementById('m-image').value.trim() ? [document.getElementById('m-image').value.trim()] : [],
+      images: (function() {
+        var img1 = document.getElementById('m-image').value.trim();
+        var img2 = document.getElementById('m-image2').value.trim();
+        var img3 = document.getElementById('m-image3').value.trim();
+        var imgs = [img1, img2, img3].filter(function(u) { return u; });
+        if (imgs.length > 0) return imgs;
+        // Preserve existing images if no new ones entered
+        try { return JSON.parse(document.getElementById('m-existing-images').value || '[]'); } catch(e) { return []; }
+      })(),
       available: document.getElementById('m-available').value === 'true',
       featured: document.getElementById('m-featured').value === 'true'
     };
