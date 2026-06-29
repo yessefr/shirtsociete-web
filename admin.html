@@ -296,6 +296,10 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
         Customers
       </div>
+      <div class="nav-item" id="nav-dropsignups" onclick="switchTab('dropsignups')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Drop Signups
+      </div>
     </nav>
     <div class="sidebar-footer">
       <button class="logout-btn" onclick="doLogout()">
@@ -491,9 +495,18 @@
           </select>
         </div>
         <div class="form-group full">
-          <label class="form-label">Photo URL (Cloudinary)</label>
+          <label class="form-label">Image 1 — Main photo (Cloudinary URL)</label>
           <input type="text" class="form-input" id="m-image" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
         </div>
+        <div class="form-group full">
+          <label class="form-label">Image 2 — Hover photo (Cloudinary URL)</label>
+          <input type="text" class="form-input" id="m-image2" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Image 3 — Extra photo (Cloudinary URL)</label>
+          <input type="text" class="form-input" id="m-image3" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
+        <input type="hidden" id="m-existing-images" value="[]">
         <div class="form-group full">
           <label class="form-label">Description</label>
           <textarea class="form-textarea" id="m-description" placeholder="Match worn shirt by..."></textarea>
@@ -710,10 +723,14 @@
     document.getElementById('m-size').value = shirt?.size || '';
     document.getElementById('m-season').value = shirt?.season || '';
     document.getElementById('m-condition').value = shirt?.condition || '';
-    document.getElementById('m-image').value = shirt?.images?.[0] || '';
-    document.getElementById('m-image2').value = shirt?.images?.[1] || '';
-    document.getElementById('m-image3').value = shirt?.images?.[2] || '';
-    document.getElementById('m-existing-images').value = JSON.stringify(shirt?.images || []);
+    const imgEl = document.getElementById('m-image');
+    const img2El = document.getElementById('m-image2');
+    const img3El = document.getElementById('m-image3');
+    const existEl = document.getElementById('m-existing-images');
+    if (imgEl) imgEl.value = shirt?.images?.[0] || '';
+    if (img2El) img2El.value = shirt?.images?.[1] || '';
+    if (img3El) img3El.value = shirt?.images?.[2] || '';
+    if (existEl) existEl.value = JSON.stringify(shirt?.images || []);
     document.getElementById('m-description').value = shirt?.description || '';
     document.getElementById('m-available').value = shirt ? String(shirt.available) : 'true';
     document.getElementById('m-featured').value = shirt ? String(shirt.featured) : 'false';
@@ -722,10 +739,12 @@
 
   function closeShirtModal() {
     document.getElementById('shirt-modal').classList.remove('open');
-    document.getElementById('m-image').value = '';
-    document.getElementById('m-image2').value = '';
-    document.getElementById('m-image3').value = '';
-    document.getElementById('m-existing-images').value = '[]';
+    ['m-image','m-image2','m-image3'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    var ex = document.getElementById('m-existing-images');
+    if (ex) ex.value = '[]';
   }
 
   function editShirt(id) {
@@ -752,13 +771,12 @@
       condition: document.getElementById('m-condition').value || null,
       description: document.getElementById('m-description').value.trim() || null,
       images: (function() {
-        var img1 = document.getElementById('m-image').value.trim();
-        var img2 = document.getElementById('m-image2').value.trim();
-        var img3 = document.getElementById('m-image3').value.trim();
-        var imgs = [img1, img2, img3].filter(function(u) { return u; });
+        var img1 = (document.getElementById('m-image') || {}).value || '';
+        var img2 = (document.getElementById('m-image2') || {}).value || '';
+        var img3 = (document.getElementById('m-image3') || {}).value || '';
+        var imgs = [img1.trim(), img2.trim(), img3.trim()].filter(function(u) { return u; });
         if (imgs.length > 0) return imgs;
-        // Preserve existing images if no new ones entered
-        try { return JSON.parse(document.getElementById('m-existing-images').value || '[]'); } catch(e) { return []; }
+        try { return JSON.parse((document.getElementById('m-existing-images') || {}).value || '[]'); } catch(e) { return []; }
       })(),
       available: document.getElementById('m-available').value === 'true',
       featured: document.getElementById('m-featured').value === 'true'
@@ -1021,7 +1039,9 @@
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('tab-' + tab).classList.add('active');
-    document.getElementById('nav-' + tab).classList.add('active');
+    const navEl = document.getElementById('nav-' + tab);
+    if (navEl) navEl.classList.add('active');
+    if (tab === 'dropsignups') loadDropSignups();
   }
 
   // ── TOAST ──
@@ -1032,9 +1052,83 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
+  // ── DROP SIGNUPS ──
+  async function loadDropSignups() {
+    const el = document.getElementById('drop-signups-list');
+    try {
+      const res = await fetch(`${SUPABASE.url}/rest/v1/drop_signups?select=*&order=created_at.desc`, {
+        headers: { 'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}` }
+      });
+      const signups = await res.json();
+      if (!Array.isArray(signups) || !signups.length) {
+        el.innerHTML = '<div style="color:#888070;padding:32px 0;text-align:center">No signups yet.</div>';
+        return;
+      }
+      el.innerHTML = `
+        <div style="margin-bottom:16px;font-size:13px;color:#888070">${signups.length} signup${signups.length !== 1 ? 's' : ''}</div>
+        <table class="data-table">
+          <thead><tr><th>Email</th><th>Drop</th><th>Date</th></tr></thead>
+          <tbody>${signups.map(s => `
+            <tr>
+              <td>${s.email}</td>
+              <td style="color:#888070">${s.drop || ''}</td>
+              <td style="color:#888070">${new Date(s.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>`;
+    } catch(e) {
+      el.innerHTML = '<div style="color:#e05555;padding:20px">Could not load signups. Make sure the drop_signups table exists in Supabase.</div>';
+    }
+  }
+
+  async function sendDropLiveEmail() {
+    if (!confirm('Send the drop live email to ALL signups? Only press this on 6 July when shirts are live.')) return;
+    const btn = document.getElementById('send-drop-btn');
+    btn.disabled = true; btn.textContent = 'Sending...';
+    try {
+      const res = await fetch('https://shirtsociete.netlify.app/api/drop-notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+        body: JSON.stringify({ secret: 'ss-drop-2026' })
+      });
+      const data = await res.json();
+      showToast(`Sent to ${data.sent || 0} subscribers`, 'success');
+    } catch(e) {
+      showToast('Error sending emails', 'error');
+    }
+    btn.disabled = false; btn.textContent = 'Send Drop Live Email';
+  }
+
   // ── INIT ──
   const saved = sessionStorage.getItem('ss_admin_token');
   if (saved) { authToken = saved; showAdmin(); }
 </script>
 </body>
-</html>
+</html>  <!-- DROP SIGNUPS TAB -->
+  <div class="tab-content" id="tab-dropsignups" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+      <h2 style="font-size:20px;font-weight:600">Drop Signups</h2>
+      <button class="btn btn-primary" onclick="sendDropEmail()" id="send-drop-btn">Send Drop Live Email</button>
+    </div>
+    <div style="background:#1a1715;border:1px solid #2a2820;border-radius:2px;margin-bottom:16px;padding:16px;font-size:13px;color:#888070">
+      <strong style="color:var(--gold)">Drop Live Email</strong> — sends to all signups that the shirts are now online. Only send when drop is actually live on 6 July 12:00.
+    </div>
+    <div id="drop-signups-list"><div class="loading">Loading...</div></div>
+  </div>
+
+
+
+  <!-- DROP SIGNUPS TAB -->
+  <div class="tab-content" id="tab-dropsignups">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Drop Signups</div>
+        <div class="page-subtitle">People who signed up to be notified when the drop goes live</div>
+      </div>
+      <button class="btn btn-primary" onclick="sendDropLiveEmail()" id="send-drop-btn">Send Drop Live Email</button>
+    </div>
+    <div style="background:rgba(200,169,80,0.06);border:1px solid rgba(200,169,80,0.2);border-radius:2px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#888070">
+      <strong style="color:var(--gold)">Drop Live Email</strong> — only press this on 6 July when the shirts are actually live in the shop.
+    </div>
+    <div id="drop-signups-list"><div class="loading-state"><div class="loading-spinner"></div><p>Loading...</p></div></div>
+  </div>
