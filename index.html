@@ -754,7 +754,7 @@
     Cart
   </div>
   <div class="tab" onclick="mGoTo('wishlist')" id="m-tab-wishlist">
-    <svg id="wishlist-tab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" style="opacity:0.3;transition:all 0.3s"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    <svg id="wishlist-tab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:12px;height:12px;opacity:0.2;transition:all 0.3s"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
     <span class="cart-badge" id="wishlist-badge" style="right:calc(50% - 20px)">0</span>
     Saved
   </div>
@@ -1537,9 +1537,9 @@
       <div class="m-shirt-card-sm" onclick="openDetail('${s.id}','m')" style="position:relative">
         <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
         <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')"
-          style="top:auto;bottom:52px;right:6px;width:26px;height:26px">
+          style="top:6px;right:6px;width:28px;height:28px;z-index:3">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-            fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2">
+            fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2.5">
             <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
           </svg>
         </button>
@@ -1587,8 +1587,8 @@
       return `
         <div class="m-shirt-card" onclick="openDetail('${s.id}','m')" style="position:relative">
           <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
-          <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:auto;bottom:6px;right:6px;width:26px;height:26px">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:6px;right:6px;width:28px;height:28px;z-index:3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
           </button>
           <div class="m-shirt-card-body">
             <div class="m-shirt-card-club">${s.club||''}</div>
@@ -1624,8 +1624,8 @@
       <div class="shirt-card-sm" onclick="openDetail('${s.id}','d')">
         <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
         ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
-        <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="bottom:148px;top:auto;right:8px">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:8px;right:8px;z-index:3">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
         </button>
         <div class="shirt-card-sm-info">
           <div class="shirt-card-sm-club">${s.club||''}</div>
@@ -1688,8 +1688,8 @@
         <div class="shirt-card" onclick="openDetail('${s.id}','d')">
           <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
           ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
-          <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" title="${isLiked ? 'Remove from saved' : 'Save shirt'}" style="top:auto;bottom:8px;right:8px;width:28px;height:28px">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" title="Save shirt" style="top:auto;bottom:8px;right:8px;width:30px;height:30px;z-index:3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
           </button>
           <div class="shirt-card-body">
             <div class="shirt-card-club">${s.club||''}</div>
@@ -2055,15 +2055,13 @@
     if (db) { db.textContent = count; db.style.display = count > 0 ? 'inline' : 'none'; }
     if (icon) {
       if (count > 0) {
-        icon.setAttribute('width', '22'); icon.setAttribute('height', '22');
+        icon.style.width = '22px'; icon.style.height = '22px';
         icon.style.opacity = '1';
-        icon.setAttribute('fill', 'var(--gold)');
-        icon.setAttribute('stroke', 'var(--gold)');
+        icon.style.color = 'var(--gold)';
       } else {
-        icon.setAttribute('width', '13'); icon.setAttribute('height', '13');
-        icon.style.opacity = '0.3';
-        icon.setAttribute('fill', 'none');
-        icon.setAttribute('stroke', 'currentColor');
+        icon.style.width = '12px'; icon.style.height = '12px';
+        icon.style.opacity = '0.2';
+        icon.style.color = 'currentColor';
       }
     }
   }
@@ -2075,8 +2073,7 @@
     const buildWishlistHTML = () => {
       if (!wishlist.length) return `
         <div class="wishlist-empty">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-          <p>No saved shirts yet.<br>Tap the ♥ on any shirt to save it.</p>
+          <p>No saved shirts yet. Tap the ♥ on any shirt to save it.</p>
         </div>`;
 
       let html = '';
