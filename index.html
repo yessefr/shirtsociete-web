@@ -1498,6 +1498,7 @@
       });
       allShirts = await res.json();
       renderAll();
+      setTimeout(initScrollAnimations, 100);
     } catch (err) {
       console.error('Fetch error:', err);
     }
@@ -1622,8 +1623,9 @@
     el.innerHTML = shirts.map((s, idx) => {
       const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
       const isLiked = wishlist.includes(s.id);
+      const rowDelay = 'delay-' + ((idx % 4) + 1);
       return `
-      <div class="shirt-card-sm anim-ready fade-up delay-${(idx % 4) + 1}" onclick="openDetail('${s.id}','d')">
+      <div class="shirt-card-sm anim-ready fade-up ${rowDelay}" onclick="openDetail('${s.id}','d')">
         <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
         ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
         <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:8px;right:8px;z-index:3">
@@ -1686,7 +1688,7 @@
       const inCart = cart.some(c => c.id === s.id);
       const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
       const isLiked = wishlist.includes(s.id);
-      const delay = idx < 6 ? `delay-${(idx % 5) + 1}` : '';
+      const delay = idx < 6 ? 'delay-' + ((idx % 5) + 1) : '';
       return `
         <div class="shirt-card anim-ready scale-up ${delay}" onclick="openDetail('${s.id}','d')">
           <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
@@ -2511,12 +2513,7 @@
     document.querySelectorAll('.anim-ready').forEach(el => observer.observe(el));
   }
 
-  // Re-run after shirts load
-  const _renderAll = renderAll;
-  function renderAll() {
-    _renderAll();
-    setTimeout(initScrollAnimations, 50);
-  }
+  // initScrollAnimations is called after shirts load via setTimeout in fetchShirts
 
   // ── INIT ──
   updateCartBadge();
