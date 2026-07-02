@@ -5,599 +5,589 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shirt Société | Vintage Football Shirts | Timeless, Original, Rare</title>
 <link rel="icon" href="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --black: #0a0905;
-  --gold: #c8a950;
-  --white: #f5f0e8;
-  --muted: rgba(245,240,232,0.4);
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0b09;
+  --parchment:#f0ebe0;
+  --gold:#b8953a;
+  --gold-light:#d4aa50;
+  --gold-dim:rgba(184,149,58,.25);
+  --warm-white:#f7f3ec;
+  --stone:#2a2620;
+  --mist:rgba(240,235,224,.08);
 }
-html { scroll-behavior: auto; }
-body {
-  background: var(--black);
-  color: var(--white);
-  font-family: 'DM Sans', sans-serif;
-  overflow-x: hidden;
-  cursor: none;
+html{scroll-behavior:auto;font-size:16px}
+body{
+  background:var(--ink);
+  color:var(--parchment);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+/* Grain */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  opacity:.032;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px;
+  pointer-events:none;z-index:9990;
 }
 
-/* ── CUSTOM CURSOR ── */
-#cursor {
-  position: fixed;
-  width: 10px; height: 10px;
-  background: var(--gold);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%,-50%);
-  transition: width .3s, height .3s, background .3s;
-  mix-blend-mode: difference;
-}
-#cursor-ring {
-  position: fixed;
-  width: 36px; height: 36px;
-  border: 1px solid rgba(200,169,80,0.5);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%,-50%);
-  transition: width .5s cubic-bezier(0.16,1,.3,1), height .5s cubic-bezier(0.16,1,.3,1);
-}
-body:has(a:hover) #cursor, body:has(button:hover) #cursor {
-  width: 20px; height: 20px;
-}
-body:has(a:hover) #cursor-ring, body:has(button:hover) #cursor-ring {
-  width: 56px; height: 56px;
-}
+/* ── CURSOR ── */
+#cur{position:fixed;width:6px;height:6px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+#cur-r{position:fixed;width:30px;height:30px;border:1px solid rgba(184,149,58,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%)}
+.hovering #cur{width:16px;height:16px}
+.hovering #cur-r{width:52px;height:52px}
 
 /* ── NAV ── */
-#nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 28px 6vw;
-  z-index: 100;
-  mix-blend-mode: normal;
+#nav{
+  position:fixed;top:0;left:0;right:0;
+  padding:32px 6vw;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:200;
+  mix-blend-mode:normal;
 }
-.nav-logo img {
-  height: 38px; object-fit: contain;
-  opacity: 0; transform: translateY(-10px);
+#nav-logo img{height:36px;object-fit:contain;filter:brightness(1.1)}
+.nav-r{display:flex;align-items:center;gap:36px}
+.nav-r a{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(240,235,224,.4);text-decoration:none;transition:color .2s}
+.nav-r a:hover{color:var(--parchment)}
+.nav-enter{
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--gold-dim);
+  padding:9px 20px;border-radius:1px;transition:all .2s;
 }
-.nav-links {
-  display: flex; gap: 32px; align-items: center;
-  opacity: 0;
+.nav-enter:hover{background:rgba(184,149,58,.08)!important;color:var(--gold)!important}
+
+/* ── INTRO CURTAIN ── */
+#curtain{
+  position:fixed;inset:0;background:var(--ink);
+  z-index:9997;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
 }
-.nav-links a {
-  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--muted); text-decoration: none;
-  transition: color .2s;
+#curtain-logo{opacity:0}
+#curtain-logo img{height:56px;filter:brightness(1.1)}
+
+/* ── SECTION BASE ── */
+.scene{position:relative;width:100%;overflow:hidden}
+.scene-full{height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center}
+
+/* ── S1: HERO ── */
+#s1{background:var(--ink)}
+#s1-bg{
+  position:absolute;inset:0;
+  background-image:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782385547/ChatGPT_Image_12_feb_2026_12_01_18_j490fq.png');
+  background-size:cover;background-position:center top;
+  opacity:0;transform:scale(1.08);
+  will-change:transform,opacity;
 }
-.nav-links a:hover { color: var(--white); }
-.nav-shop {
-  color: var(--gold) !important;
-  border: 1px solid rgba(200,169,80,0.3);
-  padding: 7px 18px; border-radius: 2px;
+#s1-bg::after{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(12,11,9,.15) 0%,rgba(12,11,9,.5) 55%,rgba(12,11,9,1) 100%),
+    linear-gradient(90deg,rgba(12,11,9,.6) 0%,rgba(12,11,9,0) 60%);
+}
+.s1-inner{position:relative;z-index:2;text-align:center;padding:0 4vw}
+.s1-pre{
+  font-size:10px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:28px;opacity:0;
+}
+.s1-h{
+  font-family:'Cormorant',serif;font-style:italic;font-weight:300;
+  font-size:clamp(60px,11vw,148px);line-height:.88;
+  color:var(--warm-white);opacity:0;
+  letter-spacing:-2px;
+}
+.s1-h em{
+  font-style:normal;font-weight:500;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(184,149,58,.5);
+}
+.s1-rule{
+  width:48px;height:1px;background:var(--gold-dim);
+  margin:32px auto;opacity:0;transform:scaleX(0);transform-origin:left;
+}
+.s1-sub{
+  font-size:clamp(13px,1.3vw,16px);font-weight:300;
+  color:rgba(240,235,224,.45);line-height:1.85;
+  max-width:380px;margin:0 auto;opacity:0;
+}
+.s1-scroll{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  z-index:2;opacity:0;
+}
+.s1-scroll-label{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:rgba(184,149,58,.3)}
+.s1-scroll-track{width:1px;height:56px;background:rgba(184,149,58,.15);position:relative;overflow:hidden}
+.s1-scroll-fill{position:absolute;top:-100%;left:0;right:0;height:100%;background:var(--gold);animation:scrollFill 1.8s ease-in-out infinite .8s}
+@keyframes scrollFill{0%{top:-100%}50%{top:0}100%{top:100%}}
+
+/* ── S2: WARDROBE PANELS ── */
+#pin-wardrobe{position:relative;height:600vh}
+#s2{
+  background:var(--ink);
+  position:sticky;top:0;height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+/* Ambient light that shifts */
+#s2-light{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 40% 70% at 50% 50%, rgba(184,149,58,.04) 0%, transparent 70%);
+  opacity:0;
+}
+/* Horizontal rule top and bottom */
+.wardrobe-rule-t,.wardrobe-rule-b{
+  position:absolute;left:6vw;right:6vw;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-dim) 20%,var(--gold-dim) 80%,transparent);
+  z-index:4;opacity:0;
+}
+.wardrobe-rule-t{top:80px}
+.wardrobe-rule-b{bottom:80px}
+/* Section label */
+.wardrobe-section-label{
+  position:absolute;top:94px;left:6vw;
+  font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(184,149,58,.35);z-index:5;opacity:0;
+}
+/* Shirt number */
+#wardrobe-count{
+  position:absolute;top:90px;right:6vw;
+  font-family:'Cormorant',serif;font-weight:300;font-size:72px;
+  color:rgba(184,149,58,.06);line-height:1;
+  z-index:3;letter-spacing:-4px;
+  user-select:none;
+}
+/* Main shirt spotlight */
+.wardrobe-stage{
+  position:relative;z-index:4;
+  display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;
+}
+/* Each shirt card — absolutely positioned, hidden by default */
+.w-card{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%) translateY(60px);
+  opacity:0;pointer-events:none;
+  display:flex;align-items:center;
+  gap:min(6vw,80px);
+}
+.w-card.active{pointer-events:auto}
+/* Shirt image container */
+.w-img-wrap{
+  position:relative;flex-shrink:0;
+  width:clamp(200px,22vw,320px);
+  aspect-ratio:3/4;
+}
+.w-img-frame{
+  position:absolute;inset:-10px;
+  border:1px solid var(--gold-dim);
+  border-radius:1px;
+  pointer-events:none;z-index:2;
+}
+/* Corner ticks */
+.w-img-frame::before,.w-img-frame::after{
+  content:'';position:absolute;
+  width:12px;height:12px;
+  border-color:var(--gold);border-style:solid;border-width:0;
+}
+.w-img-frame::before{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.w-img-frame::after{bottom:-1px;right:-1px;border-bottom-width:1px;border-right-width:1px}
+.w-img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  display:block;border-radius:1px;
+  filter:saturate(.75) brightness(.92);
+  transition:filter .6s;
+}
+.w-card.active .w-img{filter:saturate(.9) brightness(1)}
+/* Text side */
+.w-info{max-width:320px}
+.w-info-num{
+  font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;
+  display:flex;align-items:center;gap:12px;
+}
+.w-info-num::before{content:'';display:block;width:24px;height:1px;background:var(--gold)}
+.w-info-h{
+  font-family:'Cormorant',serif;font-style:italic;font-weight:300;
+  font-size:clamp(36px,4.5vw,64px);line-height:.92;
+  color:var(--warm-white);margin-bottom:20px;
+  letter-spacing:-1px;
+}
+.w-info-body{
+  font-size:clamp(13px,1.1vw,15px);font-weight:300;
+  color:rgba(240,235,224,.4);line-height:1.85;
+  max-width:260px;margin-bottom:28px;
+}
+.w-info-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--gold-dim);
+  padding:8px 16px;border-radius:1px;
+}
+/* Progress bar right */
+#wardrobe-prog{
+  position:absolute;right:5vw;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  z-index:5;
+}
+.prog-step{
+  width:1px;height:32px;
+  background:rgba(184,149,58,.1);
+  position:relative;overflow:hidden;transition:height .3s;
+}
+.prog-step.on{background:var(--gold)}
+.prog-step.on{height:48px}
+/* Bottom detail line */
+#wardrobe-bottom{
+  position:absolute;bottom:88px;left:6vw;right:5vw;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:5;opacity:0;
+}
+.wb-left{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(184,149,58,.25)}
+.wb-right a{
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);text-decoration:none;
+  border-bottom:1px solid var(--gold-dim);padding-bottom:2px;
 }
 
-/* ── SECTION: FULLSCREEN ── */
-.fs {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* ── S3: QUOTE ── */
+#s3{background:var(--ink);flex-direction:column;text-align:center;padding:0 6vw}
+.s3-quote{
+  font-family:'Cormorant',serif;font-style:italic;font-weight:300;
+  font-size:clamp(28px,4vw,56px);line-height:1.15;
+  color:var(--warm-white);max-width:820px;
+  opacity:0;transform:translateY(28px);
 }
+.s3-quote em{color:var(--gold);font-style:normal}
+.s3-attr{
+  margin-top:32px;font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(184,149,58,.35);opacity:0;
+}
+.s3-rule{width:1px;height:48px;background:var(--gold-dim);margin:28px auto;opacity:0}
+.s3-cta{display:flex;gap:14px;align-items:center;justify-content:center;margin-top:8px;opacity:0}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--gold);color:var(--ink);
+  font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;
+  padding:14px 28px;border:none;border-radius:1px;cursor:none;text-decoration:none;
+  transition:opacity .2s,transform .2s;
+}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px)}
+.btn-secondary{
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(240,235,224,.35);text-decoration:none;
+  border:1px solid rgba(184,149,58,.2);padding:13px 24px;border-radius:1px;
+  transition:color .2s,border-color .2s;
+}
+.btn-secondary:hover{color:var(--gold);border-color:var(--gold-dim)}
 
-/* ── SCENE 1: HERO ── */
-#scene-hero {
-  background: var(--black);
-  flex-direction: column;
-  text-align: center;
-}
-#hero-bg-img {
-  position: absolute; inset: 0;
-  background-image: url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782385547/ChatGPT_Image_12_feb_2026_12_01_18_j490fq.png');
-  background-size: cover;
-  background-position: center;
-  transform: scale(1.1);
-  opacity: 0;
-}
-#hero-bg-img::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(10,9,5,.3) 0%, rgba(10,9,5,.7) 60%, rgba(10,9,5,1) 100%);
-}
-.hero-eyebrow {
-  position: relative; z-index: 2;
-  font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 20px;
-  opacity: 0; transform: translateY(16px);
-}
-.hero-h1 {
-  position: relative; z-index: 2;
-  font-family: 'Playfair Display', serif;
-  font-style: italic; font-weight: 900;
-  font-size: clamp(52px, 10vw, 130px);
-  line-height: .92; color: var(--white);
-  opacity: 0;
-}
-.hero-h1 .outline {
-  -webkit-text-stroke: 1.5px rgba(200,169,80,.5);
-  color: transparent;
-}
-.hero-sub {
-  position: relative; z-index: 2;
-  font-size: clamp(14px, 1.4vw, 17px);
-  font-weight: 300; color: var(--muted);
-  margin-top: 24px; line-height: 1.8;
-  opacity: 0; transform: translateY(12px);
-}
-.hero-scroll-cue {
-  position: absolute; bottom: 40px; left: 50%;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  z-index: 2; opacity: 0;
-}
-.hero-scroll-cue span {
-  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-  color: rgba(200,169,80,.35);
-}
-.hero-scroll-line {
-  width: 1px; height: 48px;
-  background: linear-gradient(to bottom, rgba(200,169,80,.4), transparent);
-}
-
-/* ── SCENE 2: SHIRT ZOOM ── */
-#scene-shirt {
-  background: var(--black);
-}
-.shirt-zoom-container {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-}
-.shirt-zoom-img {
-  width: clamp(240px, 28vw, 440px);
-  aspect-ratio: 3/4;
-  object-fit: cover;
-  object-position: center top;
-  border-radius: 2px;
-  transform: scale(0.7);
-  opacity: 0;
-  will-change: transform, opacity;
-}
-.shirt-zoom-word {
-  position: absolute;
-  font-family: 'Playfair Display', serif;
-  font-style: italic; font-weight: 900;
-  color: var(--white);
-  pointer-events: none;
-  opacity: 0;
-  will-change: opacity, transform;
-}
-#word-timeless {
-  font-size: clamp(48px, 8vw, 110px);
-  top: 50%; left: 6vw;
-  transform: translateY(-50%) translateX(-30px);
-}
-#word-original {
-  font-size: clamp(48px, 8vw, 110px);
-  top: 50%; right: 6vw;
-  transform: translateY(-50%) translateX(30px);
-  -webkit-text-stroke: 1.5px rgba(200,169,80,.4);
-  color: transparent;
-}
-#word-rare {
-  font-size: clamp(60px, 12vw, 160px);
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  color: rgba(200,169,80,.07);
-  letter-spacing: -4px;
-  z-index: 0;
-  white-space: nowrap;
-}
-.shirt-zoom-label {
-  position: absolute;
-  bottom: 48px; left: 50%;
-  transform: translateX(-50%);
-  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-  color: var(--gold); opacity: 0;
-  white-space: nowrap;
-}
-
-/* ── SCENE 3: HORIZONTAL STRIP ── */
-#scene-strip {
-  background: var(--black);
-  flex-direction: column;
-  overflow: hidden;
-}
-.strip-label {
-  position: absolute; top: 48px; left: 6vw;
-  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-  color: rgba(200,169,80,.35); z-index: 2;
-  opacity: 0;
-}
-.strip-heading {
-  position: absolute; top: 64px; left: 6vw; right: 6vw;
-  font-family: 'Playfair Display', serif;
-  font-style: italic; font-weight: 900;
-  font-size: clamp(36px, 5vw, 72px);
-  color: var(--white); line-height: 1;
-  z-index: 2; pointer-events: none;
-  opacity: 0;
-}
-.strip-track {
-  display: flex; gap: 16px;
-  position: absolute;
-  will-change: transform;
-  align-items: center;
-  padding: 0 6vw;
-}
-.strip-card {
-  flex-shrink: 0;
-  width: clamp(180px, 20vw, 260px);
-  aspect-ratio: 3/4;
-  overflow: hidden; border-radius: 2px;
-  position: relative;
-  opacity: 0; transform: translateY(40px);
-}
-.strip-card img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  transition: transform .6s cubic-bezier(.16,1,.3,1), filter .4s;
-  filter: saturate(.8);
-}
-.strip-card:hover img {
-  transform: scale(1.05);
-  filter: saturate(1);
-}
-.strip-card-info {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 24px 16px 16px;
-  background: linear-gradient(transparent, rgba(10,9,5,.85));
-  opacity: 0; transform: translateY(8px);
-  transition: opacity .3s, transform .3s;
-}
-.strip-card:hover .strip-card-info {
-  opacity: 1; transform: none;
-}
-.strip-card-tag {
-  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 3px;
-}
-.strip-card-name {
-  font-family: 'Playfair Display', serif;
-  font-style: italic; font-size: 16px; color: var(--white);
-}
-.strip-progress {
-  position: absolute; bottom: 32px; left: 6vw; right: 6vw;
-  height: 1px; background: rgba(200,169,80,.1); z-index: 2;
-}
-.strip-progress-fill {
-  height: 100%; background: var(--gold);
-  width: 0%; transition: width .08s linear;
-}
-.strip-counter {
-  position: absolute; bottom: 44px; right: 6vw;
-  font-size: 11px; letter-spacing: 2px;
-  color: rgba(200,169,80,.35); z-index: 2;
-}
-.strip-counter strong {
-  font-size: 22px; font-weight: 700; color: var(--gold);
-}
-
-/* ── SCENE 4: TEXT TAKEOVER ── */
-#scene-text {
-  background: var(--black);
-  flex-direction: column;
-  text-align: center;
-}
-.text-takeover-line {
-  font-family: 'Playfair Display', serif;
-  font-style: italic; font-weight: 900;
-  font-size: clamp(40px, 7vw, 100px);
-  line-height: .92;
-  opacity: 0; transform: translateY(40px);
-  will-change: opacity, transform;
-}
-.text-takeover-line.gold { color: var(--gold); }
-.text-takeover-sub {
-  font-size: clamp(14px, 1.3vw, 17px);
-  font-weight: 300; color: var(--muted);
-  margin-top: 28px; max-width: 440px;
-  text-align: center; line-height: 1.8;
-  opacity: 0; transform: translateY(16px);
-}
-.text-takeover-cta {
-  margin-top: 40px;
-  opacity: 0; transform: translateY(12px);
-  display: flex; gap: 16px; align-items: center; justify-content: center;
-}
-.btn-gold {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--gold); color: var(--black);
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 14px 28px; border: none; border-radius: 2px;
-  cursor: none; text-decoration: none;
-  transition: opacity .2s, transform .2s;
-}
-.btn-gold:hover { opacity: .87; transform: translateY(-2px); }
-.btn-outline {
-  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--muted); text-decoration: none;
-  border: 1px solid rgba(200,169,80,.2);
-  padding: 13px 24px; border-radius: 2px;
-  transition: color .2s, border-color .2s;
-}
-.btn-outline:hover { color: var(--gold); border-color: rgba(200,169,80,.5); }
-
-/* ── SCROLL PIN WRAPPERS ── */
-.pin-wrap { position: relative; }
-.pin-wrap-shirt { height: 250vh; }
-.pin-wrap-strip { height: 500vh; }
-.pin-wrap-text  { height: 180vh; }
-
-/* ── GRAIN ── */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 160px;
-  opacity: .028; pointer-events: none; z-index: 9000;
-}
-
-@media (max-width: 768px) {
-  body { cursor: auto; }
-  #cursor, #cursor-ring { display: none; }
-  #nav { padding: 20px 5vw; }
-  .nav-links { display: none; }
-  #word-timeless, #word-original { font-size: clamp(30px, 8vw, 52px); }
-  .pin-wrap-strip { height: 400vh; }
-  .strip-card { width: clamp(140px, 36vw, 180px); }
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  body{cursor:auto}
+  #cur,#cur-r{display:none}
+  #nav{padding:20px 5vw}
+  .nav-r .nav-link{display:none}
+  .w-card{flex-direction:column;gap:24px;padding:0 5vw;top:48%;width:100%}
+  .w-img-wrap{width:clamp(140px,48vw,200px)}
+  .w-info{text-align:center}
+  .w-info-num{justify-content:center}
+  .w-info-body{max-width:none}
+  #wardrobe-prog{display:none}
+  #wardrobe-bottom{display:none}
+  .s3-quote{font-size:clamp(22px,6vw,32px)}
 }
 </style>
 </head>
 <body>
 
-<!-- Cursor -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
+<div id="cur"></div>
+<div id="cur-r"></div>
 
-<!-- Nav -->
-<nav id="nav">
-  <div class="nav-logo">
+<!-- INTRO CURTAIN -->
+<div id="curtain">
+  <div id="curtain-logo">
     <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png" alt="Shirt Société">
   </div>
-  <div class="nav-links">
-    <a href="index.html">Shop</a>
-    <a href="index.html#about">Our Story</a>
-    <a href="blog.html">Blog</a>
-    <a href="index.html" class="nav-shop">Collection</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div id="nav-logo"><img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png" alt="Shirt Société"></div>
+  <div class="nav-r">
+    <a href="index.html" class="nav-link">Shop</a>
+    <a href="index.html#about" class="nav-link">Our Story</a>
+    <a href="blog.html" class="nav-link">Blog</a>
+    <a href="index.html" class="nav-enter">Enter Collection</a>
   </div>
 </nav>
 
-<!-- ═══ SCENE 1: HERO ═══ -->
-<section class="fs" id="scene-hero">
-  <div id="hero-bg-img"></div>
-  <div class="hero-eyebrow" id="heroEyebrow">Shirt Société &nbsp;·&nbsp; Est. 2025 &nbsp;·&nbsp; Harderwijk NL</div>
-  <div class="hero-h1" id="heroH1">
-    Timeless.<br>
-    Original.<br>
-    <span class="outline">Rare.</span>
+<!-- ═══════════ S1: HERO ═══════════ -->
+<section class="scene scene-full" id="s1">
+  <div id="s1-bg"></div>
+  <div class="s1-inner">
+    <div class="s1-pre" id="s1-pre">Est. 2025 &nbsp;·&nbsp; Harderwijk, Netherlands</div>
+    <h1 class="s1-h" id="s1-h">
+      A Wardrobe<br>of the <em>World's</em><br>Greatest Shirts.
+    </h1>
+    <div class="s1-rule" id="s1-rule"></div>
+    <p class="s1-sub" id="s1-sub">Club classics. World Cup countries.<br>Match worn originals. Nothing else.</p>
   </div>
-  <p class="hero-sub" id="heroSub">Vintage club shirts from the 80s and 90s,<br>World Cup countries and match worn originals.</p>
-  <div class="hero-scroll-cue" id="heroScrollCue">
-    <span>Scroll</span>
-    <div class="hero-scroll-line"></div>
+  <div class="s1-scroll" id="s1-scroll">
+    <span class="s1-scroll-label">Scroll to enter</span>
+    <div class="s1-scroll-track"><div class="s1-scroll-fill"></div></div>
   </div>
 </section>
 
-<!-- ═══ SCENE 2: SHIRT ZOOM ═══ -->
-<div class="pin-wrap pin-wrap-shirt" id="pinShirt">
-  <section class="fs" id="scene-shirt">
-    <div class="shirt-zoom-container">
-      <div id="word-rare" class="shirt-zoom-word">Rare.</div>
-      <img id="shirtZoomImg" class="shirt-zoom-img"
-        src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg"
-        alt="Vintage football shirt">
-      <div id="word-timeless" class="shirt-zoom-word">Timeless.</div>
-      <div id="word-original" class="shirt-zoom-word">Original.</div>
+<!-- ═══════════ S2: WARDROBE ═══════════ -->
+<div id="pin-wardrobe">
+<section class="scene" id="s2">
+  <div id="s2-light"></div>
+  <div class="wardrobe-rule-t" id="wrt"></div>
+  <div class="wardrobe-rule-b" id="wrb"></div>
+  <span class="wardrobe-section-label" id="wsl">The Collection</span>
+  <div id="wardrobe-count">01</div>
+
+  <div class="wardrobe-stage">
+
+    <!-- Card 1 -->
+    <div class="w-card" id="wc0">
+      <div class="w-img-wrap">
+        <div class="w-img-frame"></div>
+        <img class="w-img" src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg" alt="Match Worn">
+      </div>
+      <div class="w-info">
+        <div class="w-info-num">01 / 06 &nbsp;&nbsp; Match Worn</div>
+        <h2 class="w-info-h">A shirt<br>that saw<br>the game.</h2>
+        <p class="w-info-body">Not a replica. Not a reproduction. A shirt that was worn in an official match. The sweat is real. The history is real.</p>
+        <span class="w-info-tag">Verified Original</span>
+      </div>
     </div>
-    <div class="shirt-zoom-label" id="shirtZoomLabel">Match Worn &nbsp;·&nbsp; Verified &nbsp;·&nbsp; Rare</div>
-  </section>
+
+    <!-- Card 2 -->
+    <div class="w-card" id="wc1">
+      <div class="w-info" style="text-align:right">
+        <div class="w-info-num" style="justify-content:flex-end;flex-direction:row-reverse">02 / 06 &nbsp;&nbsp; Club Classic</div>
+        <h2 class="w-info-h">80s design.<br>Flawless<br>provenance.</h2>
+        <p class="w-info-body">The cut, the crest, the colour. An era when shirts were made to last, not to be worn once and discarded.</p>
+        <span class="w-info-tag">80s Era</span>
+      </div>
+      <div class="w-img-wrap">
+        <div class="w-img-frame"></div>
+        <img class="w-img" src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="Club Classic">
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="w-card" id="wc2">
+      <div class="w-img-wrap">
+        <div class="w-img-frame"></div>
+        <img class="w-img" src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg" alt="World Cup">
+      </div>
+      <div class="w-info">
+        <div class="w-info-num">03 / 06 &nbsp;&nbsp; World Cup</div>
+        <h2 class="w-info-h">A nation<br>wore this<br>shirt.</h2>
+        <p class="w-info-body">World Cup countries from the tournaments that defined football. Worn on the biggest stages, by the best players of their generation.</p>
+        <span class="w-info-tag">National Side</span>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="w-card" id="wc3">
+      <div class="w-info" style="text-align:right">
+        <div class="w-info-num" style="justify-content:flex-end;flex-direction:row-reverse">04 / 06 &nbsp;&nbsp; Player Issue</div>
+        <h2 class="w-info-h">Made for<br>one player.<br>Now yours.</h2>
+        <p class="w-info-body">Assigned to a specific player for a specific match. Player measurements, player number, player history. One of a kind.</p>
+        <span class="w-info-tag">Match Issued</span>
+      </div>
+      <div class="w-img-wrap">
+        <div class="w-img-frame"></div>
+        <img class="w-img" src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_1_iqseqd.jpg" alt="Player Issue">
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="w-card" id="wc4">
+      <div class="w-img-wrap">
+        <div class="w-img-frame"></div>
+        <img class="w-img" src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647124/WhatsApp_Image_2026-06-28_at_13.39.49_u27m3z.jpg" alt="Collector">
+      </div>
+      <div class="w-info">
+        <div class="w-info-num">05 / 06 &nbsp;&nbsp; Collector</div>
+        <h2 class="w-info-h">Rare.<br>Sourced.<br>Honest.</h2>
+        <p class="w-info-body">Found at Vintage Fußballbörse and private collections across Europe. We only sell what we can stand behind.</p>
+        <span class="w-info-tag">Rare Find</span>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="w-card" id="wc5">
+      <div class="w-info" style="text-align:right">
+        <div class="w-info-num" style="justify-content:flex-end;flex-direction:row-reverse">06 / 06 &nbsp;&nbsp; Heritage</div>
+        <h2 class="w-info-h">90s football<br>at its most<br>honest.</h2>
+        <p class="w-info-body">Before replica culture, before fast fashion, before the internet. These shirts were made to be worn, not collected. We preserve them anyway.</p>
+        <span class="w-info-tag">90s Heritage</span>
+      </div>
+      <div class="w-img-wrap">
+        <div class="w-img-frame"></div>
+        <img class="w-img" src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" alt="Heritage">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right progress -->
+  <div id="wardrobe-prog">
+    <div class="prog-step on" id="ps0"></div>
+    <div class="prog-step" id="ps1"></div>
+    <div class="prog-step" id="ps2"></div>
+    <div class="prog-step" id="ps3"></div>
+    <div class="prog-step" id="ps4"></div>
+    <div class="prog-step" id="ps5"></div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div id="wardrobe-bottom">
+    <span class="wb-left">Shirt Société &nbsp;·&nbsp; Vintage Football Shirts &nbsp;·&nbsp; Est. 2025</span>
+    <div class="wb-right"><a href="index.html">View full collection →</a></div>
+  </div>
+</section>
 </div>
 
-<!-- ═══ SCENE 3: HORIZONTAL STRIP ═══ -->
-<div class="pin-wrap pin-wrap-strip" id="pinStrip">
-  <section class="fs" id="scene-strip">
-    <div class="strip-label" id="stripLabel">The Collection</div>
-    <div class="strip-heading" id="stripHeading">Scroll the<br>Archive.</div>
-    <div class="strip-track" id="stripTrack">
-      <div class="strip-card" onclick="location.href='index.html#shop'">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="">
-        <div class="strip-card-info"><div class="strip-card-tag">Match Worn</div><div class="strip-card-name">Original Issue</div></div>
-      </div>
-      <div class="strip-card" onclick="location.href='index.html#shop'">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg" alt="">
-        <div class="strip-card-info"><div class="strip-card-tag">80s Club</div><div class="strip-card-name">Vintage Classic</div></div>
-      </div>
-      <div class="strip-card" onclick="location.href='index.html#shop'">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg" alt="">
-        <div class="strip-card-info"><div class="strip-card-tag">World Cup</div><div class="strip-card-name">National Side</div></div>
-      </div>
-      <div class="strip-card" onclick="location.href='index.html#shop'">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg" alt="">
-        <div class="strip-card-info"><div class="strip-card-tag">90s Era</div><div class="strip-card-name">European Strip</div></div>
-      </div>
-      <div class="strip-card" onclick="location.href='index.html#shop'">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_1_iqseqd.jpg" alt="">
-        <div class="strip-card-info"><div class="strip-card-tag">Match Worn</div><div class="strip-card-name">Player Issue</div></div>
-      </div>
-      <div class="strip-card" onclick="location.href='index.html#shop'">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647124/WhatsApp_Image_2026-06-28_at_13.39.49_u27m3z.jpg" alt="">
-        <div class="strip-card-info"><div class="strip-card-tag">Collector</div><div class="strip-card-name">Rare Find</div></div>
-      </div>
-      <div class="strip-card" onclick="location.href='index.html#shop'">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647509/WhatsApp_Image_2026-06-28_at_13.50.26_oxxvhy.jpg" alt="">
-        <div class="strip-card-info"><div class="strip-card-tag">80s Club</div><div class="strip-card-name">Away Strip</div></div>
-      </div>
-      <div class="strip-card" onclick="location.href='index.html#shop'">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647508/WhatsApp_Image_2026-06-28_at_13.50.27_1_dwktmf.jpg" alt="">
-        <div class="strip-card-info"><div class="strip-card-tag">Original</div><div class="strip-card-name">Match Issued</div></div>
-      </div>
-    </div>
-    <div class="strip-progress"><div class="strip-progress-fill" id="stripFill"></div></div>
-    <div class="strip-counter"><strong id="stripNum">1</strong> / 8</div>
-  </section>
-</div>
-
-<!-- ═══ SCENE 4: TEXT TAKEOVER ═══ -->
-<div class="pin-wrap pin-wrap-text" id="pinText">
-  <section class="fs" id="scene-text">
-    <div class="text-takeover-line" id="tt1">Every shirt</div>
-    <div class="text-takeover-line" id="tt2">tells a</div>
-    <div class="text-takeover-line gold" id="tt3">story.</div>
-    <p class="text-takeover-sub" id="ttSub">We make sure that story is true. Curated, verified and priced honestly for serious collectors.</p>
-    <div class="text-takeover-cta" id="ttCta">
-      <a href="index.html" class="btn-gold">
-        Shop the Collection
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="index.html#about" class="btn-outline">Our Story</a>
-    </div>
-  </section>
-</div>
+<!-- ═══════════ S3: CLOSING QUOTE ═══════════ -->
+<section class="scene scene-full" id="s3">
+  <blockquote class="s3-quote" id="s3-q">
+    Every shirt tells a story.<br>We make sure <em>that story is true.</em>
+  </blockquote>
+  <p class="s3-attr" id="s3-a">Shirt Société &nbsp;·&nbsp; Harderwijk, Netherlands</p>
+  <div class="s3-rule" id="s3-rule"></div>
+  <div class="s3-cta" id="s3-cta">
+    <a href="index.html" class="btn-primary">
+      Enter the Collection
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="index.html#about" class="btn-secondary">Our Story</a>
+  </div>
+</section>
 
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
 /* ── CURSOR ── */
-const cur = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
-let mx = window.innerWidth/2, my = window.innerHeight/2;
-let rx = mx, ry = my;
-window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-function animCursor() {
-  rx += (mx - rx) * 0.12;
-  ry += (my - ry) * 0.12;
-  cur.style.left = mx + 'px'; cur.style.top = my + 'px';
-  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-  requestAnimationFrame(animCursor);
+const cur=document.getElementById('cur'), curR=document.getElementById('cur-r');
+let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+document.addEventListener('mouseenter',()=>{},true);
+(function tick(){
+  rx+=(mx-rx)*.11; ry+=(my-ry)*.11;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+  curR.style.left=rx+'px'; curR.style.top=ry+'px';
+  requestAnimationFrame(tick);
+})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
+});
+
+/* ── CURTAIN ── */
+const curtainTl = gsap.timeline();
+curtainTl
+  .to('#curtain-logo',{opacity:1,duration:.6,ease:'power2.out'},0.3)
+  .to('#curtain-logo',{opacity:0,duration:.5,ease:'power2.in'},1.4)
+  .to('#curtain',{opacity:0,duration:.8,ease:'power2.inOut'},1.8)
+  .set('#curtain',{display:'none'});
+
+/* ── NAV ── */
+gsap.fromTo('#nav-logo img',{opacity:0,y:-8},{opacity:1,y:0,duration:.6,ease:'power2.out',delay:2.4});
+gsap.fromTo('.nav-r',{opacity:0},{opacity:1,duration:.5,ease:'power2.out',delay:2.6});
+
+/* ── S1: HERO ── */
+const s1 = gsap.timeline({delay:2.2});
+s1.to('#s1-bg',{opacity:1,scale:1,duration:1.6,ease:'power2.out'})
+  .to('#s1-pre',{opacity:1,y:0,duration:.7,ease:'power3.out'},'-=.8')
+  .to('#s1-h',{opacity:1,duration:1,ease:'power2.out'},'-=.5')
+  .to('#s1-rule',{opacity:1,scaleX:1,duration:.8,ease:'power2.out'},'-=.3')
+  .to('#s1-sub',{opacity:1,y:0,duration:.6,ease:'power2.out'},'-=.4')
+  .to('#s1-scroll',{opacity:1,duration:.5},'-=.2');
+
+// Hero parallax on scroll
+gsap.to('#s1-bg',{
+  yPercent:22,ease:'none',
+  scrollTrigger:{trigger:'#s1',start:'top top',end:'bottom top',scrub:true}
+});
+gsap.to('.s1-inner',{
+  opacity:0,y:-40,ease:'none',
+  scrollTrigger:{trigger:'#s1',start:'30% top',end:'80% top',scrub:true}
+});
+
+/* ── S2: WARDROBE (pinned scroll) ── */
+const CARDS = 6;
+let activeCard = -1;
+
+function showCard(n) {
+  if (n === activeCard) return;
+
+  // Hide current
+  if (activeCard >= 0) {
+    gsap.to('#wc'+activeCard, {
+      opacity:0, y:30, duration:.35, ease:'power2.in',
+      onComplete:()=>{ document.getElementById('wc'+activeCard).classList.remove('active'); }
+    });
+    document.getElementById('ps'+activeCard).classList.remove('on');
+  }
+
+  activeCard = n;
+
+  // Show new
+  const card = document.getElementById('wc'+n);
+  card.classList.add('active');
+  gsap.fromTo('#wc'+n,
+    {opacity:0, y:40},
+    {opacity:1, y:0, duration:.55, ease:'power3.out'}
+  );
+  document.getElementById('ps'+n).classList.add('on');
+
+  // Update big number
+  document.getElementById('wardrobe-count').textContent = ('0'+(n+1)).slice(-2);
 }
-animCursor();
 
-/* ── NAV ENTRANCE ── */
-const navTl = gsap.timeline({ delay: 2 });
-navTl.to('.nav-logo img', { opacity: 1, y: 0, duration: .7, ease: 'power2.out' });
-navTl.to('.nav-links', { opacity: 1, duration: .5, ease: 'power2.out' }, '-=.3');
-
-/* ── SCENE 1: HERO ENTRANCE ── */
-const heroTl = gsap.timeline({ delay: 0.2 });
-heroTl
-  .to('#hero-bg-img', { opacity: 1, scale: 1, duration: 2, ease: 'power2.out' })
-  .to('#heroEyebrow', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, 0.4)
-  .to('#heroH1', { opacity: 1, duration: 1, ease: 'power3.out',
-    onStart() { gsap.fromTo('#heroH1 .outline', { opacity:0 }, { opacity:1, delay:.4, duration:.8 }); }
-  }, 0.7)
-  .to('#heroSub', { opacity: 1, y: 0, duration: .7, ease: 'power2.out' }, 1.2)
-  .to('#heroScrollCue', { opacity: 1, duration: .5 }, 1.6);
-
-/* Scroll cue bounce */
-gsap.to('#heroScrollCue', { y: 10, repeat: -1, yoyo: true, duration: 1.4, ease: 'sine.inOut', delay: 2.5 });
-
-/* Hero parallax */
-gsap.to('#hero-bg-img', {
-  yPercent: 25, ease: 'none',
-  scrollTrigger: { trigger: '#scene-hero', start: 'top top', end: 'bottom top', scrub: true }
+// Entrance of wardrobe UI elements
+gsap.to(['#wrt','#wrb','#wsl','#wardrobe-bottom'],{
+  opacity:1,duration:.8,ease:'power2.out',stagger:.05,
+  scrollTrigger:{trigger:'#pin-wardrobe',start:'top 80%',toggleActions:'play none none none'}
 });
-gsap.to(['#heroH1','#heroEyebrow','#heroSub'], {
-  opacity: 0, y: -50, ease: 'none',
-  scrollTrigger: { trigger: '#scene-hero', start: '20% top', end: '70% top', scrub: true }
+gsap.to('#s2-light',{
+  opacity:1,duration:1,
+  scrollTrigger:{trigger:'#pin-wardrobe',start:'top 80%',toggleActions:'play none none none'}
 });
 
-/* ── SCENE 2: SHIRT ZOOM (pinned) ── */
-const shirtTl = gsap.timeline({
-  scrollTrigger: {
-    trigger: '#pinShirt',
-    pin: '#scene-shirt',
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: 1,
-  }
-});
-shirtTl
-  // Shirt zooms in from small
-  .to('#shirtZoomImg', { scale: 1, opacity: 1, duration: .3, ease: 'power2.out' }, 0)
-  // Big background word fades in
-  .to('#word-rare', { opacity: 1, duration: .2 }, 0.05)
-  // Left word slides in
-  .to('#word-timeless', { opacity: 1, x: 0, duration: .25, ease: 'power2.out' }, 0.15)
-  // Right word slides in
-  .to('#word-original', { opacity: 1, x: 0, duration: .25, ease: 'power2.out' }, 0.25)
-  // Label appears
-  .to('#shirtZoomLabel', { opacity: 1, duration: .2 }, 0.4)
-  // Everything holds...
-  // Then shirt grows even bigger and fades out as you leave
-  .to('#shirtZoomImg', { scale: 1.15, opacity: 0, duration: .35, ease: 'power2.in' }, 0.65)
-  .to(['#word-timeless','#word-original','#word-rare','#shirtZoomLabel'], { opacity: 0, duration: .2 }, 0.7);
-
-/* ── SCENE 3: HORIZONTAL STRIP (pinned) ── */
-const cards = document.querySelectorAll('.strip-card');
-const track = document.getElementById('stripTrack');
-
-// Cards entrance stagger
-gsap.to('.strip-card', {
-  opacity: 1, y: 0, stagger: .07, duration: .6, ease: 'power2.out',
-  scrollTrigger: { trigger: '#pinStrip', start: 'top 80%', toggleActions: 'play none none none' }
-});
-gsap.to(['#stripLabel','#stripHeading'], {
-  opacity: 1, duration: .7, ease: 'power2.out',
-  scrollTrigger: { trigger: '#pinStrip', start: 'top 80%', toggleActions: 'play none none none' }
-});
-
-// Horizontal scroll drive
+// Main scroll driver
 ScrollTrigger.create({
-  trigger: '#pinStrip',
-  pin: '#scene-strip',
-  start: 'top top',
-  end: 'bottom bottom',
-  scrub: 1,
+  trigger:'#pin-wardrobe',
+  pin:'#s2',
+  start:'top top',
+  end:'bottom bottom',
+  scrub:.8,
   onUpdate(self) {
-    const maxX = track.scrollWidth - track.parentElement.clientWidth + window.innerWidth * 0.12;
-    gsap.set(track, { x: -maxX * self.progress });
-    document.getElementById('stripFill').style.width = (self.progress * 100) + '%';
-    document.getElementById('stripNum').textContent = Math.min(Math.round(self.progress * 8) + 1, 8);
+    const n = Math.min(Math.floor(self.progress * CARDS), CARDS-1);
+    showCard(n);
   }
 });
 
-/* ── SCENE 4: TEXT TAKEOVER (pinned) ── */
-const textTl = gsap.timeline({
-  scrollTrigger: {
-    trigger: '#pinText',
-    pin: '#scene-text',
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: 1.2,
-  }
+/* ── S3: QUOTE ── */
+const s3tl = gsap.timeline({
+  scrollTrigger:{trigger:'#s3',start:'top 65%',toggleActions:'play none none none'}
 });
-textTl
-  .to('#tt1', { opacity: 1, y: 0, duration: .25, ease: 'power3.out' }, 0)
-  .to('#tt2', { opacity: 1, y: 0, duration: .25, ease: 'power3.out' }, 0.15)
-  .to('#tt3', { opacity: 1, y: 0, duration: .25, ease: 'power3.out' }, 0.3)
-  .to('#ttSub', { opacity: 1, y: 0, duration: .2, ease: 'power2.out' }, 0.5)
-  .to('#ttCta', { opacity: 1, y: 0, duration: .2, ease: 'power2.out' }, 0.65)
-  // Hold at full for a beat then subtle exit
-  .to(['#tt1','#tt2','#tt3','#ttSub'], { opacity: 0, y: -30, stagger: .04, duration: .2, ease: 'power2.in' }, 0.85)
-  .to('#ttCta', { opacity: 1, y: 0 }, 0.9); // CTA stays
+s3tl
+  .to('#s3-q',{opacity:1,y:0,duration:1,ease:'power3.out'})
+  .to('#s3-a',{opacity:1,duration:.6,ease:'power2.out'},'-=.3')
+  .to('#s3-rule',{opacity:1,duration:.6,ease:'power2.out'},'-=.2')
+  .to('#s3-cta',{opacity:1,y:0,duration:.6,ease:'power2.out'},'-=.2');
 </script>
 </body>
 </html>
