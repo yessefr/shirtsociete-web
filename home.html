@@ -4,1102 +4,600 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shirt Société | Vintage Football Shirts | Timeless, Original, Rare</title>
-<meta name="description" content="Vintage club shirts from the 80s and 90s, World Cup countries and match worn originals — curated with care.">
-<link rel="icon" type="image/png" href="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700;1,900&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
+<link rel="icon" href="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --black: #0a0905;
   --gold: #c8a950;
   --white: #f5f0e8;
-  --muted: rgba(245,240,232,0.45);
-  --border: rgba(200,169,80,0.15);
+  --muted: rgba(245,240,232,0.4);
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+html { scroll-behavior: auto; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
 
-/* ─── SECTION 1: HERO ─── */
-.hero {
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .3s, height .3s, background .3s;
+  mix-blend-mode: difference;
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(200,169,80,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: width .5s cubic-bezier(0.16,1,.3,1), height .5s cubic-bezier(0.16,1,.3,1);
+}
+body:has(a:hover) #cursor, body:has(button:hover) #cursor {
+  width: 20px; height: 20px;
+}
+body:has(a:hover) #cursor-ring, body:has(button:hover) #cursor-ring {
+  width: 56px; height: 56px;
+}
+
+/* ── NAV ── */
+#nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 6vw;
+  z-index: 100;
+  mix-blend-mode: normal;
+}
+.nav-logo img {
+  height: 38px; object-fit: contain;
+  opacity: 0; transform: translateY(-10px);
+}
+.nav-links {
+  display: flex; gap: 32px; align-items: center;
+  opacity: 0;
+}
+.nav-links a {
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-shop {
+  color: var(--gold) !important;
+  border: 1px solid rgba(200,169,80,0.3);
+  padding: 7px 18px; border-radius: 2px;
+}
+
+/* ── SECTION: FULLSCREEN ── */
+.fs {
   position: relative;
   width: 100%;
   height: 100vh;
-  min-height: 680px;
   overflow: hidden;
-  background: var(--black);
-}
-.hero-bg {
-  position: absolute;
-  top: -20%; left: 0;
-  width: 100%; height: 140%;
-  will-change: transform;
-}
-.hero-img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 1.1s cubic-bezier(0.4,0,0.2,1);
-}
-.hero-img.active { opacity: 1; }
-.hero-grad {
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(90deg, rgba(10,9,5,0.93) 0%, rgba(10,9,5,0.45) 60%, rgba(10,9,5,0.05) 100%),
-    linear-gradient(180deg, rgba(10,9,5,0.1) 0%, rgba(10,9,5,0) 40%, rgba(10,9,5,0.95) 100%);
-}
-.hero-overlay {
-  position: absolute; inset: 0;
-  background: var(--black);
-  z-index: 10;
-  pointer-events: none;
-}
-.hero-logo {
-  position: absolute; top: 32px; left: 7vw;
-  z-index: 8;
-}
-.hero-logo img { height: 42px; object-fit: contain; }
-.hero-nav {
-  position: absolute; top: 36px; right: 7vw;
-  display: flex; align-items: center; gap: 28px;
-  z-index: 8;
-}
-.hero-nav a {
-  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--muted); text-decoration: none; transition: color 0.2s;
-}
-.hero-nav a:hover { color: var(--white); }
-.hero-nav .nav-cta {
-  color: var(--gold);
-  border: 1px solid rgba(200,169,80,0.3);
-  padding: 7px 16px; border-radius: 2px;
-  transition: background 0.2s;
-}
-.hero-nav .nav-cta:hover { background: rgba(200,169,80,0.08); color: var(--gold); }
-.hero-content {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  padding: 0 7vw;
-  z-index: 5;
-  perspective: 1000px;
+}
+
+/* ── SCENE 1: HERO ── */
+#scene-hero {
+  background: var(--black);
+  flex-direction: column;
+  text-align: center;
+}
+#hero-bg-img {
+  position: absolute; inset: 0;
+  background-image: url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782385547/ChatGPT_Image_12_feb_2026_12_01_18_j490fq.png');
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.1);
+  opacity: 0;
+}
+#hero-bg-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(10,9,5,.3) 0%, rgba(10,9,5,.7) 60%, rgba(10,9,5,1) 100%);
 }
 .hero-eyebrow {
-  font-size: 11px; font-weight: 500;
-  letter-spacing: 4px; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 22px;
-  opacity: 0;
+  position: relative; z-index: 2;
+  font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 20px;
+  opacity: 0; transform: translateY(16px);
 }
-.hero-title { margin-bottom: 28px; }
-.hero-word {
-  display: block;
+.hero-h1 {
+  position: relative; z-index: 2;
   font-family: 'Playfair Display', serif;
   font-style: italic; font-weight: 900;
-  font-size: clamp(54px, 8.5vw, 114px);
-  line-height: 0.9;
-  color: var(--white);
+  font-size: clamp(52px, 10vw, 130px);
+  line-height: .92; color: var(--white);
   opacity: 0;
 }
-.hero-word.outline {
+.hero-h1 .outline {
+  -webkit-text-stroke: 1.5px rgba(200,169,80,.5);
   color: transparent;
-  -webkit-text-stroke: 1.5px rgba(200,169,80,0.5);
 }
 .hero-sub {
+  position: relative; z-index: 2;
   font-size: clamp(14px, 1.4vw, 17px);
   font-weight: 300; color: var(--muted);
-  max-width: 400px; line-height: 1.8;
-  margin-bottom: 40px; opacity: 0;
+  margin-top: 24px; line-height: 1.8;
+  opacity: 0; transform: translateY(12px);
 }
-.hero-cta { display: flex; align-items: center; gap: 20px; opacity: 0; }
-.btn-gold {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: var(--gold); color: var(--black);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 14px 28px; border: none; border-radius: 2px;
-  cursor: pointer; text-decoration: none;
-  transition: opacity 0.2s, transform 0.2s;
+.hero-scroll-cue {
+  position: absolute; bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  z-index: 2; opacity: 0;
 }
-.btn-gold:hover { opacity: 0.87; transform: translateY(-2px); }
-.btn-ghost {
-  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
-  color: var(--muted); text-decoration: none;
-  transition: color 0.2s;
-}
-.btn-ghost:hover { color: rgba(245,240,232,0.8); }
-.hero-dots {
-  position: absolute; bottom: 42px; right: 7vw;
-  display: flex; gap: 6px; z-index: 5;
-}
-.hero-dot {
-  height: 2px; width: 20px;
-  background: rgba(200,169,80,0.2);
-  cursor: pointer; transition: all 0.4s;
-}
-.hero-dot.on { background: var(--gold); width: 34px; }
-.scroll-hint {
-  position: absolute; bottom: 38px; left: 7vw;
-  display: flex; align-items: center; gap: 12px;
-  z-index: 5; opacity: 0;
-}
-.scroll-line { width: 38px; height: 1px; background: rgba(200,169,80,0.3); }
-.scroll-txt {
-  font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
-  color: rgba(200,169,80,0.4);
-}
-.hero-vert {
-  position: absolute; right: 2.5vw; top: 50%;
-  transform: translateY(-50%) rotate(90deg);
+.hero-scroll-cue span {
   font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-  color: rgba(200,169,80,0.18); white-space: nowrap; z-index: 5;
+  color: rgba(200,169,80,.35);
+}
+.hero-scroll-line {
+  width: 1px; height: 48px;
+  background: linear-gradient(to bottom, rgba(200,169,80,.4), transparent);
 }
 
-/* ─── SECTION 2: HORIZONTAL SHIRT PARADE ─── */
-.parade-wrap {
-  position: relative;
-  height: 500vh; /* tall scroll container */
+/* ── SCENE 2: SHIRT ZOOM ── */
+#scene-shirt {
   background: var(--black);
 }
-.parade-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.shirt-zoom-container {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
 }
-.parade-header {
+.shirt-zoom-img {
+  width: clamp(240px, 28vw, 440px);
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 2px;
+  transform: scale(0.7);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.shirt-zoom-word {
   position: absolute;
-  top: 0; left: 0; right: 0;
-  padding: 56px 7vw 0;
-  z-index: 4;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-.parade-eyebrow {
-  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-  color: var(--gold); font-weight: 600; margin-bottom: 6px;
-}
-.parade-title {
   font-family: 'Playfair Display', serif;
   font-style: italic; font-weight: 900;
-  font-size: clamp(28px, 4vw, 52px);
-  color: var(--white); line-height: 1;
-}
-.parade-counter {
-  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-  color: rgba(200,169,80,0.4); text-align: right;
-}
-.parade-counter span { color: var(--gold); font-size: 20px; font-weight: 700; }
-
-/* Horizontal track */
-.parade-track-outer {
-  overflow: hidden;
-  padding: 0 7vw;
-  position: relative;
-}
-.parade-track {
-  display: flex;
-  gap: 24px;
-  will-change: transform;
-  align-items: center;
-  padding: 20px 0;
-}
-.parade-card {
-  flex-shrink: 0;
-  width: clamp(220px, 22vw, 300px);
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-  border-radius: 2px;
-}
-.parade-card-inner {
-  position: relative;
-  aspect-ratio: 3/4;
-  overflow: hidden;
-  background: #111009;
-}
-.parade-card-inner img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s;
-  filter: saturate(0.85);
-}
-.parade-card:hover .parade-card-inner img {
-  transform: scale(1.06);
-  filter: saturate(1);
-}
-.parade-card-info {
-  padding: 14px 0 8px;
-}
-.parade-card-label {
-  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 4px; font-weight: 600;
-}
-.parade-card-name {
-  font-family: 'Playfair Display', serif;
-  font-style: italic; font-size: 18px;
-  color: var(--white); line-height: 1.2;
-}
-.parade-card-price {
-  font-size: 13px; color: var(--muted); margin-top: 4px;
-}
-/* Overlay shimmer on card */
-.parade-card-shine {
-  position: absolute; inset: 0;
-  background: linear-gradient(105deg, transparent 40%, rgba(200,169,80,0.06) 50%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-}
-.parade-card:hover .parade-card-shine { opacity: 1; }
-
-/* Progress bar */
-.parade-progress {
-  position: absolute;
-  bottom: 48px; left: 7vw; right: 7vw;
-  height: 1px;
-  background: rgba(200,169,80,0.1);
-  z-index: 4;
-}
-.parade-progress-fill {
-  height: 100%;
-  background: var(--gold);
-  width: 0%;
-  transition: width 0.1s linear;
-}
-/* CTA at end of parade */
-.parade-cta {
-  position: absolute;
-  bottom: 60px; right: 7vw;
-  z-index: 4;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.5s, transform 0.5s;
-}
-.parade-cta.visible { opacity: 1; transform: none; }
-
-/* ─── RESPONSIVE ─── */
-@media (max-width: 768px) {
-  .hero-nav { display: none; }
-  .hero-vert { display: none; }
-  .parade-header { padding: 40px 5vw 0; flex-direction: column; align-items: flex-start; gap: 4px; }
-  .parade-track-outer { padding: 0 5vw; }
-  .parade-card { width: clamp(160px, 44vw, 220px); }
-  .parade-wrap { height: 400vh; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-img, .parade-card-inner img { transition: none; }
-}
-
-/* ─── SECTION 3: 3D SHIRT SPOTLIGHT ─── */
-.spotlight-wrap {
-  position: relative;
-  height: 300vh;
-  background: var(--black);
-}
-.spotlight-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Background glow that shifts with rotation */
-.spotlight-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(200,169,80,0.04) 0%, transparent 70%);
-  pointer-events: none;
-  transition: opacity 0.5s;
-}
-
-/* Left side — text timeline */
-.spotlight-text {
-  position: relative;
-  z-index: 4;
-  width: 32%;
-  padding-right: 4vw;
-}
-.spotlight-step {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  transition: none;
-  width: 100%;
-}
-.spotlight-step.visible {
-  opacity: 1;
-}
-.spotlight-step-num {
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(200,169,80,0.4);
-  margin-bottom: 16px;
-}
-.spotlight-step-headline {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-weight: 900;
-  font-size: clamp(32px, 3.5vw, 52px);
-  line-height: 1;
   color: var(--white);
-  margin-bottom: 16px;
-}
-.spotlight-step-headline em {
-  color: var(--gold);
-  font-style: italic;
-}
-.spotlight-step-body {
-  font-size: clamp(13px, 1.2vw, 15px);
-  font-weight: 300;
-  color: rgba(245,240,232,0.5);
-  line-height: 1.75;
-  max-width: 280px;
-}
-.spotlight-step-tag {
-  display: inline-block;
-  margin-top: 16px;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold);
-  border: 1px solid rgba(200,169,80,0.25);
-  padding: 5px 12px;
-  border-radius: 2px;
-}
-
-/* Center — 3D shirt */
-.shirt-3d-wrap {
-  position: relative;
-  z-index: 4;
-  width: 36%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  perspective: 1200px;
-  perspective-origin: 50% 50%;
-}
-.shirt-3d-scene {
-  width: clamp(220px, 22vw, 340px);
-  aspect-ratio: 3/4;
-  position: relative;
-  transform-style: preserve-3d;
-  /* GSAP will drive rotateY */
-  will-change: transform;
-  filter: drop-shadow(0 40px 60px rgba(0,0,0,0.6));
-}
-.shirt-3d-face {
-  position: absolute;
-  inset: 0;
-  border-radius: 4px;
-  overflow: hidden;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-.shirt-3d-face img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-}
-.shirt-face-back {
-  transform: rotateY(180deg);
-}
-
-/* Gold line accent on sides */
-.shirt-3d-scene::before {
-  content: '';
-  position: absolute;
-  left: -20px;
-  top: 10%;
-  bottom: 10%;
-  width: 1px;
-  background: linear-gradient(to bottom, transparent, rgba(200,169,80,0.3), transparent);
-}
-.shirt-3d-scene::after {
-  content: '';
-  position: absolute;
-  right: -20px;
-  top: 10%;
-  bottom: 10%;
-  width: 1px;
-  background: linear-gradient(to bottom, transparent, rgba(200,169,80,0.3), transparent);
-}
-
-/* Right side — details / progress */
-.spotlight-right {
-  position: relative;
-  z-index: 4;
-  width: 22%;
-  padding-left: 3vw;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-.spotlight-progress-label {
-  font-size: 9px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(200,169,80,0.4);
-  margin-bottom: 10px;
-}
-.spotlight-progress-bar {
-  width: 1px;
-  height: 200px;
-  background: rgba(200,169,80,0.12);
-  position: relative;
-  margin-left: 4px;
-}
-.spotlight-progress-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: var(--gold);
-  height: 0%;
-  transition: height 0.1s linear;
-}
-.spotlight-progress-dot {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 12px rgba(200,169,80,0.5);
-  top: 0%;
-  transition: top 0.1s linear;
-}
-.spotlight-degree {
-  font-family: 'Playfair Display', serif;
-  font-size: 36px;
-  font-weight: 700;
-  color: rgba(200,169,80,0.25);
-  letter-spacing: -2px;
-  margin-top: 20px;
-}
-.spotlight-degree span {
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 1px;
-}
-.spotlight-cta-wrap {
+  pointer-events: none;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.5s, transform 0.5s;
+  will-change: opacity, transform;
 }
-.spotlight-cta-wrap.visible {
-  opacity: 1;
-  transform: none;
+#word-timeless {
+  font-size: clamp(48px, 8vw, 110px);
+  top: 50%; left: 6vw;
+  transform: translateY(-50%) translateX(-30px);
 }
-
-/* Scroll hint inside section */
-.spotlight-scroll-hint {
+#word-original {
+  font-size: clamp(48px, 8vw, 110px);
+  top: 50%; right: 6vw;
+  transform: translateY(-50%) translateX(30px);
+  -webkit-text-stroke: 1.5px rgba(200,169,80,.4);
+  color: transparent;
+}
+#word-rare {
+  font-size: clamp(60px, 12vw, 160px);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(200,169,80,.07);
+  letter-spacing: -4px;
+  z-index: 0;
+  white-space: nowrap;
+}
+.shirt-zoom-label {
   position: absolute;
-  bottom: 36px;
-  left: 50%;
+  bottom: 48px; left: 50%;
   transform: translateX(-50%);
-  font-size: 9px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(200,169,80,0.25);
-  z-index: 5;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); opacity: 0;
   white-space: nowrap;
 }
 
+/* ── SCENE 3: HORIZONTAL STRIP ── */
+#scene-strip {
+  background: var(--black);
+  flex-direction: column;
+  overflow: hidden;
+}
+.strip-label {
+  position: absolute; top: 48px; left: 6vw;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(200,169,80,.35); z-index: 2;
+  opacity: 0;
+}
+.strip-heading {
+  position: absolute; top: 64px; left: 6vw; right: 6vw;
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-weight: 900;
+  font-size: clamp(36px, 5vw, 72px);
+  color: var(--white); line-height: 1;
+  z-index: 2; pointer-events: none;
+  opacity: 0;
+}
+.strip-track {
+  display: flex; gap: 16px;
+  position: absolute;
+  will-change: transform;
+  align-items: center;
+  padding: 0 6vw;
+}
+.strip-card {
+  flex-shrink: 0;
+  width: clamp(180px, 20vw, 260px);
+  aspect-ratio: 3/4;
+  overflow: hidden; border-radius: 2px;
+  position: relative;
+  opacity: 0; transform: translateY(40px);
+}
+.strip-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform .6s cubic-bezier(.16,1,.3,1), filter .4s;
+  filter: saturate(.8);
+}
+.strip-card:hover img {
+  transform: scale(1.05);
+  filter: saturate(1);
+}
+.strip-card-info {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 24px 16px 16px;
+  background: linear-gradient(transparent, rgba(10,9,5,.85));
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .3s, transform .3s;
+}
+.strip-card:hover .strip-card-info {
+  opacity: 1; transform: none;
+}
+.strip-card-tag {
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 3px;
+}
+.strip-card-name {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 16px; color: var(--white);
+}
+.strip-progress {
+  position: absolute; bottom: 32px; left: 6vw; right: 6vw;
+  height: 1px; background: rgba(200,169,80,.1); z-index: 2;
+}
+.strip-progress-fill {
+  height: 100%; background: var(--gold);
+  width: 0%; transition: width .08s linear;
+}
+.strip-counter {
+  position: absolute; bottom: 44px; right: 6vw;
+  font-size: 11px; letter-spacing: 2px;
+  color: rgba(200,169,80,.35); z-index: 2;
+}
+.strip-counter strong {
+  font-size: 22px; font-weight: 700; color: var(--gold);
+}
+
+/* ── SCENE 4: TEXT TAKEOVER ── */
+#scene-text {
+  background: var(--black);
+  flex-direction: column;
+  text-align: center;
+}
+.text-takeover-line {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-weight: 900;
+  font-size: clamp(40px, 7vw, 100px);
+  line-height: .92;
+  opacity: 0; transform: translateY(40px);
+  will-change: opacity, transform;
+}
+.text-takeover-line.gold { color: var(--gold); }
+.text-takeover-sub {
+  font-size: clamp(14px, 1.3vw, 17px);
+  font-weight: 300; color: var(--muted);
+  margin-top: 28px; max-width: 440px;
+  text-align: center; line-height: 1.8;
+  opacity: 0; transform: translateY(16px);
+}
+.text-takeover-cta {
+  margin-top: 40px;
+  opacity: 0; transform: translateY(12px);
+  display: flex; gap: 16px; align-items: center; justify-content: center;
+}
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gold); color: var(--black);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 14px 28px; border: none; border-radius: 2px;
+  cursor: none; text-decoration: none;
+  transition: opacity .2s, transform .2s;
+}
+.btn-gold:hover { opacity: .87; transform: translateY(-2px); }
+.btn-outline {
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  border: 1px solid rgba(200,169,80,.2);
+  padding: 13px 24px; border-radius: 2px;
+  transition: color .2s, border-color .2s;
+}
+.btn-outline:hover { color: var(--gold); border-color: rgba(200,169,80,.5); }
+
+/* ── SCROLL PIN WRAPPERS ── */
+.pin-wrap { position: relative; }
+.pin-wrap-shirt { height: 250vh; }
+.pin-wrap-strip { height: 500vh; }
+.pin-wrap-text  { height: 180vh; }
+
+/* ── GRAIN ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px;
+  opacity: .028; pointer-events: none; z-index: 9000;
+}
+
 @media (max-width: 768px) {
-  .spotlight-sticky {
-    flex-direction: column;
-    padding: 80px 6vw 40px;
-    justify-content: flex-start;
-    gap: 24px;
-  }
-  .spotlight-text { width: 100%; padding: 0; }
-  .shirt-3d-wrap { width: 100%; }
-  .spotlight-right { display: none; }
-  .shirt-3d-scene { width: clamp(180px, 55vw, 240px); }
-  .spotlight-step-headline { font-size: clamp(26px, 7vw, 36px); }
+  body { cursor: auto; }
+  #cursor, #cursor-ring { display: none; }
+  #nav { padding: 20px 5vw; }
+  .nav-links { display: none; }
+  #word-timeless, #word-original { font-size: clamp(30px, 8vw, 52px); }
+  .pin-wrap-strip { height: 400vh; }
+  .strip-card { width: clamp(140px, 36vw, 180px); }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-     SECTION 1 — HERO
-═══════════════════════════════════════ -->
-<section class="hero" id="hero">
+<!-- Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-  <div class="hero-overlay" id="heroOverlay"></div>
-
-  <!-- Parallax background -->
-  <div class="hero-bg" id="heroBg">
-    <img class="hero-img active" id="img0"
-      src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_1_iqseqd.jpg" alt="">
-    <img class="hero-img" id="img1"
-      src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg" alt="">
-    <img class="hero-img" id="img2"
-      src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg" alt="">
-    <img class="hero-img" id="img3"
-      src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782385547/ChatGPT_Image_12_feb_2026_12_01_18_j490fq.png" alt="">
-    <div class="hero-grad"></div>
-  </div>
-
-  <!-- Logo -->
-  <div class="hero-logo">
+<!-- Nav -->
+<nav id="nav">
+  <div class="nav-logo">
     <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png" alt="Shirt Société">
   </div>
-
-  <!-- Nav -->
-  <nav class="hero-nav">
+  <div class="nav-links">
     <a href="index.html">Shop</a>
     <a href="index.html#about">Our Story</a>
     <a href="blog.html">Blog</a>
-    <a href="index.html" class="nav-cta">View Collection</a>
-  </nav>
-
-  <div class="hero-vert">Vintage Football Shirts — Est. 2025</div>
-
-  <!-- Content -->
-  <div class="hero-content">
-    <div class="hero-eyebrow" id="heroEyebrow">
-      Shirt Société &nbsp;·&nbsp; Since 2025 &nbsp;·&nbsp; Harderwijk NL
-    </div>
-    <div class="hero-title">
-      <span class="hero-word" id="word0">Timeless.</span>
-      <span class="hero-word" id="word1">Original.</span>
-      <span class="hero-word outline" id="word2">Rare.</span>
-    </div>
-    <p class="hero-sub" id="heroSub">
-      Vintage club shirts from the 80s and 90s,<br>
-      World Cup countries and match worn originals.
-    </p>
-    <div class="hero-cta" id="heroCta">
-      <a href="index.html" class="btn-gold">
-        Explore Collection
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </a>
-      <a href="index.html#about" class="btn-ghost">Our Story</a>
-    </div>
+    <a href="index.html" class="nav-shop">Collection</a>
   </div>
+</nav>
 
-  <!-- Image dots -->
-  <div class="hero-dots" id="heroDots">
-    <div class="hero-dot on" onclick="setImg(0)"></div>
-    <div class="hero-dot" onclick="setImg(1)"></div>
-    <div class="hero-dot" onclick="setImg(2)"></div>
-    <div class="hero-dot" onclick="setImg(3)"></div>
+<!-- ═══ SCENE 1: HERO ═══ -->
+<section class="fs" id="scene-hero">
+  <div id="hero-bg-img"></div>
+  <div class="hero-eyebrow" id="heroEyebrow">Shirt Société &nbsp;·&nbsp; Est. 2025 &nbsp;·&nbsp; Harderwijk NL</div>
+  <div class="hero-h1" id="heroH1">
+    Timeless.<br>
+    Original.<br>
+    <span class="outline">Rare.</span>
   </div>
-
-  <!-- Scroll hint -->
-  <div class="scroll-hint" id="scrollHint">
-    <div class="scroll-line"></div>
-    <span class="scroll-txt">Scroll to explore</span>
+  <p class="hero-sub" id="heroSub">Vintage club shirts from the 80s and 90s,<br>World Cup countries and match worn originals.</p>
+  <div class="hero-scroll-cue" id="heroScrollCue">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
   </div>
-
 </section>
 
-
-<!-- ═══════════════════════════════════════
-     SECTION 2 — HORIZONTAL SHIRT PARADE
-═══════════════════════════════════════ -->
-<div class="parade-wrap" id="paradeWrap">
-  <div class="parade-sticky" id="paradeSticky">
-
-    <!-- Header -->
-    <div class="parade-header">
-      <div>
-        <div class="parade-eyebrow">The Collection</div>
-        <div class="parade-title">Scroll the Archive</div>
-      </div>
-      <div class="parade-counter">
-        <span id="paradeNum">01</span> / 10
-      </div>
+<!-- ═══ SCENE 2: SHIRT ZOOM ═══ -->
+<div class="pin-wrap pin-wrap-shirt" id="pinShirt">
+  <section class="fs" id="scene-shirt">
+    <div class="shirt-zoom-container">
+      <div id="word-rare" class="shirt-zoom-word">Rare.</div>
+      <img id="shirtZoomImg" class="shirt-zoom-img"
+        src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg"
+        alt="Vintage football shirt">
+      <div id="word-timeless" class="shirt-zoom-word">Timeless.</div>
+      <div id="word-original" class="shirt-zoom-word">Original.</div>
     </div>
-
-    <!-- Horizontal track -->
-    <div class="parade-track-outer">
-      <div class="parade-track" id="paradeTrack">
-
-        <div class="parade-card" onclick="window.location.href='index.html#shop'">
-          <div class="parade-card-inner">
-            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="Vintage shirt">
-            <div class="parade-card-shine"></div>
-          </div>
-          <div class="parade-card-info">
-            <div class="parade-card-label">Match Worn</div>
-            <div class="parade-card-name">Original</div>
-          </div>
-        </div>
-
-        <div class="parade-card" onclick="window.location.href='index.html#shop'">
-          <div class="parade-card-inner">
-            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg" alt="Vintage shirt">
-            <div class="parade-card-shine"></div>
-          </div>
-          <div class="parade-card-info">
-            <div class="parade-card-label">80s Club</div>
-            <div class="parade-card-name">Vintage Classic</div>
-          </div>
-        </div>
-
-        <div class="parade-card" onclick="window.location.href='index.html#shop'">
-          <div class="parade-card-inner">
-            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg" alt="Vintage shirt">
-            <div class="parade-card-shine"></div>
-          </div>
-          <div class="parade-card-info">
-            <div class="parade-card-label">World Cup</div>
-            <div class="parade-card-name">National Side</div>
-          </div>
-        </div>
-
-        <div class="parade-card" onclick="window.location.href='index.html#shop'">
-          <div class="parade-card-inner">
-            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg" alt="Vintage shirt">
-            <div class="parade-card-shine"></div>
-          </div>
-          <div class="parade-card-info">
-            <div class="parade-card-label">90s Club</div>
-            <div class="parade-card-name">European Era</div>
-          </div>
-        </div>
-
-        <div class="parade-card" onclick="window.location.href='index.html#shop'">
-          <div class="parade-card-inner">
-            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_1_iqseqd.jpg" alt="Vintage shirt">
-            <div class="parade-card-shine"></div>
-          </div>
-          <div class="parade-card-info">
-            <div class="parade-card-label">Match Worn</div>
-            <div class="parade-card-name">Player Issue</div>
-          </div>
-        </div>
-
-        <div class="parade-card" onclick="window.location.href='index.html#shop'">
-          <div class="parade-card-inner">
-            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647124/WhatsApp_Image_2026-06-28_at_13.39.49_u27m3z.jpg" alt="Vintage shirt">
-            <div class="parade-card-shine"></div>
-          </div>
-          <div class="parade-card-info">
-            <div class="parade-card-label">Rare Find</div>
-            <div class="parade-card-name">Limited Edition</div>
-          </div>
-        </div>
-
-        <div class="parade-card" onclick="window.location.href='index.html#shop'">
-          <div class="parade-card-inner">
-            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647509/WhatsApp_Image_2026-06-28_at_13.50.26_oxxvhy.jpg" alt="Vintage shirt">
-            <div class="parade-card-shine"></div>
-          </div>
-          <div class="parade-card-info">
-            <div class="parade-card-label">80s Era</div>
-            <div class="parade-card-name">Classic Strip</div>
-          </div>
-        </div>
-
-        <div class="parade-card" onclick="window.location.href='index.html#shop'">
-          <div class="parade-card-inner">
-            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647509/WhatsApp_Image_2026-06-28_at_13.50.27_tx8ato.jpg" alt="Vintage shirt">
-            <div class="parade-card-shine"></div>
-          </div>
-          <div class="parade-card-info">
-            <div class="parade-card-label">World Cup</div>
-            <div class="parade-card-name">Country Edition</div>
-          </div>
-        </div>
-
-        <div class="parade-card" onclick="window.location.href='index.html#shop'">
-          <div class="parade-card-inner">
-            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647508/WhatsApp_Image_2026-06-28_at_13.50.27_1_dwktmf.jpg" alt="Vintage shirt">
-            <div class="parade-card-shine"></div>
-          </div>
-          <div class="parade-card-info">
-            <div class="parade-card-label">Collector</div>
-            <div class="parade-card-name">Original Issue</div>
-          </div>
-        </div>
-
-        <div class="parade-card" onclick="window.location.href='index.html#shop'">
-          <div class="parade-card-inner">
-            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_3_tn57da.jpg" alt="Vintage shirt">
-            <div class="parade-card-shine"></div>
-          </div>
-          <div class="parade-card-info">
-            <div class="parade-card-label">90s Club</div>
-            <div class="parade-card-name">Away Strip</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Progress bar -->
-    <div class="parade-progress">
-      <div class="parade-progress-fill" id="paradeProgress"></div>
-    </div>
-
-    <!-- CTA at end -->
-    <div class="parade-cta" id="paradeCta">
-      <a href="index.html" class="btn-gold">
-        View Full Collection
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </a>
-    </div>
-
-  </div>
+    <div class="shirt-zoom-label" id="shirtZoomLabel">Match Worn &nbsp;·&nbsp; Verified &nbsp;·&nbsp; Rare</div>
+  </section>
 </div>
 
+<!-- ═══ SCENE 3: HORIZONTAL STRIP ═══ -->
+<div class="pin-wrap pin-wrap-strip" id="pinStrip">
+  <section class="fs" id="scene-strip">
+    <div class="strip-label" id="stripLabel">The Collection</div>
+    <div class="strip-heading" id="stripHeading">Scroll the<br>Archive.</div>
+    <div class="strip-track" id="stripTrack">
+      <div class="strip-card" onclick="location.href='index.html#shop'">
+        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="">
+        <div class="strip-card-info"><div class="strip-card-tag">Match Worn</div><div class="strip-card-name">Original Issue</div></div>
+      </div>
+      <div class="strip-card" onclick="location.href='index.html#shop'">
+        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg" alt="">
+        <div class="strip-card-info"><div class="strip-card-tag">80s Club</div><div class="strip-card-name">Vintage Classic</div></div>
+      </div>
+      <div class="strip-card" onclick="location.href='index.html#shop'">
+        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg" alt="">
+        <div class="strip-card-info"><div class="strip-card-tag">World Cup</div><div class="strip-card-name">National Side</div></div>
+      </div>
+      <div class="strip-card" onclick="location.href='index.html#shop'">
+        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg" alt="">
+        <div class="strip-card-info"><div class="strip-card-tag">90s Era</div><div class="strip-card-name">European Strip</div></div>
+      </div>
+      <div class="strip-card" onclick="location.href='index.html#shop'">
+        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_1_iqseqd.jpg" alt="">
+        <div class="strip-card-info"><div class="strip-card-tag">Match Worn</div><div class="strip-card-name">Player Issue</div></div>
+      </div>
+      <div class="strip-card" onclick="location.href='index.html#shop'">
+        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647124/WhatsApp_Image_2026-06-28_at_13.39.49_u27m3z.jpg" alt="">
+        <div class="strip-card-info"><div class="strip-card-tag">Collector</div><div class="strip-card-name">Rare Find</div></div>
+      </div>
+      <div class="strip-card" onclick="location.href='index.html#shop'">
+        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647509/WhatsApp_Image_2026-06-28_at_13.50.26_oxxvhy.jpg" alt="">
+        <div class="strip-card-info"><div class="strip-card-tag">80s Club</div><div class="strip-card-name">Away Strip</div></div>
+      </div>
+      <div class="strip-card" onclick="location.href='index.html#shop'">
+        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647508/WhatsApp_Image_2026-06-28_at_13.50.27_1_dwktmf.jpg" alt="">
+        <div class="strip-card-info"><div class="strip-card-tag">Original</div><div class="strip-card-name">Match Issued</div></div>
+      </div>
+    </div>
+    <div class="strip-progress"><div class="strip-progress-fill" id="stripFill"></div></div>
+    <div class="strip-counter"><strong id="stripNum">1</strong> / 8</div>
+  </section>
+</div>
+
+<!-- ═══ SCENE 4: TEXT TAKEOVER ═══ -->
+<div class="pin-wrap pin-wrap-text" id="pinText">
+  <section class="fs" id="scene-text">
+    <div class="text-takeover-line" id="tt1">Every shirt</div>
+    <div class="text-takeover-line" id="tt2">tells a</div>
+    <div class="text-takeover-line gold" id="tt3">story.</div>
+    <p class="text-takeover-sub" id="ttSub">We make sure that story is true. Curated, verified and priced honestly for serious collectors.</p>
+    <div class="text-takeover-cta" id="ttCta">
+      <a href="index.html" class="btn-gold">
+        Shop the Collection
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="index.html#about" class="btn-outline">Our Story</a>
+    </div>
+  </section>
+</div>
 
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── HERO IMAGE CYCLE ── */
-const imgs = document.querySelectorAll('.hero-img');
-const dots = document.querySelectorAll('.hero-dot');
-let current = 0;
-
-function setImg(n) {
-  imgs[current].classList.remove('active');
-  dots[current].classList.remove('on');
-  current = n;
-  imgs[current].classList.add('active');
-  dots[current].classList.add('on');
+/* ── CURSOR ── */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = window.innerWidth/2, my = window.innerHeight/2;
+let rx = mx, ry = my;
+window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
 }
+animCursor();
 
-setInterval(() => setImg((current + 1) % imgs.length), 4200);
+/* ── NAV ENTRANCE ── */
+const navTl = gsap.timeline({ delay: 2 });
+navTl.to('.nav-logo img', { opacity: 1, y: 0, duration: .7, ease: 'power2.out' });
+navTl.to('.nav-links', { opacity: 1, duration: .5, ease: 'power2.out' }, '-=.3');
 
-/* ── HERO ENTRANCE ANIMATION ── */
-const tl = gsap.timeline({ delay: 0.25 });
+/* ── SCENE 1: HERO ENTRANCE ── */
+const heroTl = gsap.timeline({ delay: 0.2 });
+heroTl
+  .to('#hero-bg-img', { opacity: 1, scale: 1, duration: 2, ease: 'power2.out' })
+  .to('#heroEyebrow', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, 0.4)
+  .to('#heroH1', { opacity: 1, duration: 1, ease: 'power3.out',
+    onStart() { gsap.fromTo('#heroH1 .outline', { opacity:0 }, { opacity:1, delay:.4, duration:.8 }); }
+  }, 0.7)
+  .to('#heroSub', { opacity: 1, y: 0, duration: .7, ease: 'power2.out' }, 1.2)
+  .to('#heroScrollCue', { opacity: 1, duration: .5 }, 1.6);
 
-tl.fromTo('#heroOverlay',
-  { opacity: 1 },
-  { opacity: 0, duration: 1.4, ease: 'power2.inOut' }
-);
-tl.fromTo('#heroEyebrow',
-  { opacity: 0, y: 20 },
-  { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' },
-  '-=0.5'
-);
-['#word0','#word1','#word2'].forEach((id, i) => {
-  tl.fromTo(id,
-    { opacity: 0, y: 54, rotateX: -20, transformOrigin: 'top center' },
-    { opacity: 1, y: 0, rotateX: 0, duration: 0.88, ease: 'power3.out' },
-    i === 0 ? '-=0.2' : '-=0.58'
-  );
+/* Scroll cue bounce */
+gsap.to('#heroScrollCue', { y: 10, repeat: -1, yoyo: true, duration: 1.4, ease: 'sine.inOut', delay: 2.5 });
+
+/* Hero parallax */
+gsap.to('#hero-bg-img', {
+  yPercent: 25, ease: 'none',
+  scrollTrigger: { trigger: '#scene-hero', start: 'top top', end: 'bottom top', scrub: true }
 });
-tl.fromTo('#heroSub',
-  { opacity: 0, y: 16 },
-  { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
-  '-=0.45'
-);
-tl.fromTo('#heroCta',
-  { opacity: 0, y: 12 },
-  { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-  '-=0.4'
-);
-tl.fromTo('#scrollHint',
-  { opacity: 0 },
-  { opacity: 1, duration: 0.5 },
-  '-=0.2'
-);
-
-/* Scroll hint bounce */
-gsap.to('#scrollHint', {
-  y: 9, repeat: -1, yoyo: true,
-  duration: 1.3, ease: 'sine.inOut'
+gsap.to(['#heroH1','#heroEyebrow','#heroSub'], {
+  opacity: 0, y: -50, ease: 'none',
+  scrollTrigger: { trigger: '#scene-hero', start: '20% top', end: '70% top', scrub: true }
 });
 
-/* ── HERO PARALLAX ── */
-gsap.to('#heroBg', {
-  yPercent: 30,
-  ease: 'none',
+/* ── SCENE 2: SHIRT ZOOM (pinned) ── */
+const shirtTl = gsap.timeline({
   scrollTrigger: {
-    trigger: '#hero',
+    trigger: '#pinShirt',
+    pin: '#scene-shirt',
     start: 'top top',
-    end: 'bottom top',
-    scrub: true
+    end: 'bottom bottom',
+    scrub: 1,
   }
 });
+shirtTl
+  // Shirt zooms in from small
+  .to('#shirtZoomImg', { scale: 1, opacity: 1, duration: .3, ease: 'power2.out' }, 0)
+  // Big background word fades in
+  .to('#word-rare', { opacity: 1, duration: .2 }, 0.05)
+  // Left word slides in
+  .to('#word-timeless', { opacity: 1, x: 0, duration: .25, ease: 'power2.out' }, 0.15)
+  // Right word slides in
+  .to('#word-original', { opacity: 1, x: 0, duration: .25, ease: 'power2.out' }, 0.25)
+  // Label appears
+  .to('#shirtZoomLabel', { opacity: 1, duration: .2 }, 0.4)
+  // Everything holds...
+  // Then shirt grows even bigger and fades out as you leave
+  .to('#shirtZoomImg', { scale: 1.15, opacity: 0, duration: .35, ease: 'power2.in' }, 0.65)
+  .to(['#word-timeless','#word-original','#word-rare','#shirtZoomLabel'], { opacity: 0, duration: .2 }, 0.7);
 
-gsap.to('.hero-title', {
-  yPercent: -14,
-  ease: 'none',
-  scrollTrigger: {
-    trigger: '#hero',
-    start: 'top top',
-    end: 'bottom top',
-    scrub: true
-  }
+/* ── SCENE 3: HORIZONTAL STRIP (pinned) ── */
+const cards = document.querySelectorAll('.strip-card');
+const track = document.getElementById('stripTrack');
+
+// Cards entrance stagger
+gsap.to('.strip-card', {
+  opacity: 1, y: 0, stagger: .07, duration: .6, ease: 'power2.out',
+  scrollTrigger: { trigger: '#pinStrip', start: 'top 80%', toggleActions: 'play none none none' }
+});
+gsap.to(['#stripLabel','#stripHeading'], {
+  opacity: 1, duration: .7, ease: 'power2.out',
+  scrollTrigger: { trigger: '#pinStrip', start: 'top 80%', toggleActions: 'play none none none' }
 });
 
-gsap.to(['#heroEyebrow', '.hero-title', '#heroSub', '#heroCta', '#scrollHint'], {
-  opacity: 0, y: -36,
-  ease: 'none',
-  scrollTrigger: {
-    trigger: '#hero',
-    start: '25% top',
-    end: '65% top',
-    scrub: true
-  }
-});
-
-/* ── SECTION 2: HORIZONTAL SHIRT PARADE ── */
-const track = document.getElementById('paradeTrack');
-const cards = track.querySelectorAll('.parade-card');
-const progressFill = document.getElementById('paradeProgress');
-const paradeNum = document.getElementById('paradeNum');
-const paradeCta = document.getElementById('paradeCta');
-
-// Calculate total scroll distance for the track
-function getTrackScrollWidth() {
-  const trackW = track.scrollWidth;
-  const outerW = track.parentElement.clientWidth;
-  return trackW - outerW + 140; // extra padding
-}
-
+// Horizontal scroll drive
 ScrollTrigger.create({
-  trigger: '#paradeWrap',
+  trigger: '#pinStrip',
+  pin: '#scene-strip',
   start: 'top top',
   end: 'bottom bottom',
   scrub: 1,
-  onUpdate: (self) => {
-    const p = self.progress;
-    const maxX = getTrackScrollWidth();
-    gsap.set(track, { x: -maxX * p });
-
-    // Progress bar
-    progressFill.style.width = (p * 100) + '%';
-
-    // Card number counter
-    const cardIdx = Math.min(Math.floor(p * cards.length) + 1, cards.length);
-    paradeNum.textContent = cardIdx < 10 ? '0' + cardIdx : '' + cardIdx;
-
-    // Show CTA near end
-    if (p > 0.85) {
-      paradeCta.classList.add('visible');
-    } else {
-      paradeCta.classList.remove('visible');
-    }
+  onUpdate(self) {
+    const maxX = track.scrollWidth - track.parentElement.clientWidth + window.innerWidth * 0.12;
+    gsap.set(track, { x: -maxX * self.progress });
+    document.getElementById('stripFill').style.width = (self.progress * 100) + '%';
+    document.getElementById('stripNum').textContent = Math.min(Math.round(self.progress * 8) + 1, 8);
   }
 });
 
-// Cards fade in as they enter
-gsap.fromTo('.parade-card',
-  { opacity: 0, y: 32 },
-  {
-    opacity: 1, y: 0,
-    duration: 0.7,
-    stagger: 0.08,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '#paradeWrap',
-      start: 'top 80%',
-      toggleActions: 'play none none none'
-    }
-  }
-);
-
-// Header parallax within section 2
-gsap.fromTo('.parade-header',
-  { opacity: 0, y: 24 },
-  {
-    opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '#paradeWrap',
-      start: 'top 80%',
-      toggleActions: 'play none none none'
-    }
-  }
-);
-</script>
-
-<!-- ═══════════════════════════════════════
-     SECTION 3 — 3D SHIRT SPOTLIGHT
-═══════════════════════════════════════ -->
-<div class="spotlight-wrap" id="spotlightWrap">
-  <div class="spotlight-sticky" id="spotlightSticky">
-
-    <div class="spotlight-glow" id="spotlightGlow"></div>
-
-    <!-- Left: text timeline -->
-    <div class="spotlight-text" id="spotlightText">
-
-      <!-- Step 0: opening -->
-      <div class="spotlight-step visible" id="sstep0">
-        <div class="spotlight-step-num">01 — The Piece</div>
-        <div class="spotlight-step-headline">A shirt<br>that was<br><em>there.</em></div>
-        <div class="spotlight-step-body">Not a replica. Not a copy. A shirt that saw the match, wore the sweat, carried the number. Scroll to inspect it.</div>
-      </div>
-
-      <!-- Step 1: turning -->
-      <div class="spotlight-step" id="sstep1">
-        <div class="spotlight-step-num">02 — The Detail</div>
-        <div class="spotlight-step-headline">Every<br>thread<br><em>tells.</em></div>
-        <div class="spotlight-step-body">The print, the cut, the label inside. Vintage shirts carry their era in the weave. Nothing mass-produced looks like this.</div>
-        <span class="spotlight-step-tag">Match Worn Original</span>
-      </div>
-
-      <!-- Step 2: back -->
-      <div class="spotlight-step" id="sstep2">
-        <div class="spotlight-step-num">03 — Provenance</div>
-        <div class="spotlight-step-headline">Verified.<br>Sourced.<br><em>Honest.</em></div>
-        <div class="spotlight-step-body">We only sell what we can stand behind. Every shirt comes with full transparency — no guesses, no grey market.</div>
-        <span class="spotlight-step-tag">Shirt Société Standard</span>
-      </div>
-
-      <!-- Step 3: full rotation done -->
-      <div class="spotlight-step" id="sstep3">
-        <div class="spotlight-step-num">04 — Yours</div>
-        <div class="spotlight-step-headline">Ready<br>to wear<br><em>history.</em></div>
-        <div class="spotlight-step-body">Explore the full collection. Each piece is unique — once it's gone, it's gone.</div>
-      </div>
-
-    </div>
-
-    <!-- Center: 3D shirt -->
-    <div class="shirt-3d-wrap">
-      <div class="shirt-3d-scene" id="shirt3d">
-        <div class="shirt-3d-face shirt-face-front">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg"
-               alt="Shirt front">
-        </div>
-        <div class="shirt-3d-face shirt-face-back">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_3_tn57da.jpg"
-               alt="Shirt back">
-        </div>
-      </div>
-    </div>
-
-    <!-- Right: progress + degree counter -->
-    <div class="spotlight-right">
-      <div>
-        <div class="spotlight-progress-label">Rotation</div>
-        <div class="spotlight-progress-bar">
-          <div class="spotlight-progress-fill" id="spotlightFill"></div>
-          <div class="spotlight-progress-dot" id="spotlightDot"></div>
-        </div>
-        <div class="spotlight-degree" id="spotlightDeg">0<span>°</span></div>
-      </div>
-      <div class="spotlight-cta-wrap" id="spotlightCta">
-        <a href="index.html" class="btn-gold" style="font-size:11px;padding:12px 20px">
-          Shop the Collection
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </a>
-      </div>
-    </div>
-
-    <div class="spotlight-scroll-hint">Continue scrolling</div>
-
-  </div>
-</div>
-<script>
-/* ── SECTION 3: 3D SHIRT SCROLL ROTATION ── */
-(function() {
-  const shirt = document.getElementById('shirt3d');
-  const fill = document.getElementById('spotlightFill');
-  const dot = document.getElementById('spotlightDot');
-  const degEl = document.getElementById('spotlightDeg');
-  const cta = document.getElementById('spotlightCta');
-  const steps = [
-    document.getElementById('sstep0'),
-    document.getElementById('sstep1'),
-    document.getElementById('sstep2'),
-    document.getElementById('sstep3'),
-  ];
-
-  let currentStep = 0;
-
-  function showStep(n) {
-    if (n === currentStep) return;
-    steps[currentStep].classList.remove('visible');
-    // Animate out
-    gsap.fromTo(steps[currentStep],
-      { opacity: 1, y: 0 },
-      { opacity: 0, y: -20, duration: 0.35, ease: 'power2.in',
-        onComplete: () => steps[currentStep].style.display = 'none' }
-    );
-    currentStep = n;
-    steps[currentStep].style.display = 'block';
-    // Animate in
-    gsap.fromTo(steps[currentStep],
-      { opacity: 0, y: 24 },
-      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
-    );
-    steps[currentStep].classList.add('visible');
-  }
-
-  ScrollTrigger.create({
-    trigger: '#spotlightWrap',
+/* ── SCENE 4: TEXT TAKEOVER (pinned) ── */
+const textTl = gsap.timeline({
+  scrollTrigger: {
+    trigger: '#pinText',
+    pin: '#scene-text',
     start: 'top top',
     end: 'bottom bottom',
     scrub: 1.2,
-    onUpdate: (self) => {
-      const p = self.progress;
-      const deg = p * 360;
-
-      // Rotate shirt
-      gsap.set(shirt, { rotateY: deg });
-
-      // Progress bar
-      const pct = p * 100;
-      fill.style.height = pct + '%';
-      dot.style.top = pct + '%';
-
-      // Degree counter
-      degEl.innerHTML = Math.round(deg) + '<span>°</span>';
-
-      // Text steps — switch at 0%, 25%, 55%, 82%
-      if (p < 0.25) showStep(0);
-      else if (p < 0.55) showStep(1);
-      else if (p < 0.82) showStep(2);
-      else showStep(3);
-
-      // CTA at end
-      if (p > 0.88) {
-        cta.classList.add('visible');
-      } else {
-        cta.classList.remove('visible');
-      }
-
-      // Background glow intensifies mid-rotation
-      const glowIntensity = Math.sin(p * Math.PI);
-      document.getElementById('spotlightGlow').style.opacity = 0.5 + glowIntensity * 0.5;
-    }
-  });
-
-  // Entrance animation for section 3
-  gsap.fromTo('#spotlightSticky',
-    { opacity: 0 },
-    {
-      opacity: 1, duration: 1, ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '#spotlightWrap',
-        start: 'top 80%',
-        toggleActions: 'play none none none'
-      }
-    }
-  );
-})();
+  }
+});
+textTl
+  .to('#tt1', { opacity: 1, y: 0, duration: .25, ease: 'power3.out' }, 0)
+  .to('#tt2', { opacity: 1, y: 0, duration: .25, ease: 'power3.out' }, 0.15)
+  .to('#tt3', { opacity: 1, y: 0, duration: .25, ease: 'power3.out' }, 0.3)
+  .to('#ttSub', { opacity: 1, y: 0, duration: .2, ease: 'power2.out' }, 0.5)
+  .to('#ttCta', { opacity: 1, y: 0, duration: .2, ease: 'power2.out' }, 0.65)
+  // Hold at full for a beat then subtle exit
+  .to(['#tt1','#tt2','#tt3','#ttSub'], { opacity: 0, y: -30, stagger: .04, duration: .2, ease: 'power2.in' }, 0.85)
+  .to('#ttCta', { opacity: 1, y: 0 }, 0.9); // CTA stays
 </script>
 </body>
 </html>
