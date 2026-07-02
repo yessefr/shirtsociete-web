@@ -298,6 +298,242 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
 @media (prefers-reduced-motion: reduce) {
   .hero-img, .parade-card-inner img { transition: none; }
 }
+
+/* ─── SECTION 3: 3D SHIRT SPOTLIGHT ─── */
+.spotlight-wrap {
+  position: relative;
+  height: 300vh;
+  background: var(--black);
+}
+.spotlight-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Background glow that shifts with rotation */
+.spotlight-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(200,169,80,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+/* Left side — text timeline */
+.spotlight-text {
+  position: relative;
+  z-index: 4;
+  width: 32%;
+  padding-right: 4vw;
+}
+.spotlight-step {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: none;
+  width: 100%;
+}
+.spotlight-step.visible {
+  opacity: 1;
+}
+.spotlight-step-num {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(200,169,80,0.4);
+  margin-bottom: 16px;
+}
+.spotlight-step-headline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: clamp(32px, 3.5vw, 52px);
+  line-height: 1;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+.spotlight-step-headline em {
+  color: var(--gold);
+  font-style: italic;
+}
+.spotlight-step-body {
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-weight: 300;
+  color: rgba(245,240,232,0.5);
+  line-height: 1.75;
+  max-width: 280px;
+}
+.spotlight-step-tag {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(200,169,80,0.25);
+  padding: 5px 12px;
+  border-radius: 2px;
+}
+
+/* Center — 3D shirt */
+.shirt-3d-wrap {
+  position: relative;
+  z-index: 4;
+  width: 36%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+.shirt-3d-scene {
+  width: clamp(220px, 22vw, 340px);
+  aspect-ratio: 3/4;
+  position: relative;
+  transform-style: preserve-3d;
+  /* GSAP will drive rotateY */
+  will-change: transform;
+  filter: drop-shadow(0 40px 60px rgba(0,0,0,0.6));
+}
+.shirt-3d-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.shirt-3d-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.shirt-face-back {
+  transform: rotateY(180deg);
+}
+
+/* Gold line accent on sides */
+.shirt-3d-scene::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 10%;
+  bottom: 10%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(200,169,80,0.3), transparent);
+}
+.shirt-3d-scene::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: 10%;
+  bottom: 10%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(200,169,80,0.3), transparent);
+}
+
+/* Right side — details / progress */
+.spotlight-right {
+  position: relative;
+  z-index: 4;
+  width: 22%;
+  padding-left: 3vw;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.spotlight-progress-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(200,169,80,0.4);
+  margin-bottom: 10px;
+}
+.spotlight-progress-bar {
+  width: 1px;
+  height: 200px;
+  background: rgba(200,169,80,0.12);
+  position: relative;
+  margin-left: 4px;
+}
+.spotlight-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--gold);
+  height: 0%;
+  transition: height 0.1s linear;
+}
+.spotlight-progress-dot {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(200,169,80,0.5);
+  top: 0%;
+  transition: top 0.1s linear;
+}
+.spotlight-degree {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: rgba(200,169,80,0.25);
+  letter-spacing: -2px;
+  margin-top: 20px;
+}
+.spotlight-degree span {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.spotlight-cta-wrap {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.spotlight-cta-wrap.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Scroll hint inside section */
+.spotlight-scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(200,169,80,0.25);
+  z-index: 5;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .spotlight-sticky {
+    flex-direction: column;
+    padding: 80px 6vw 40px;
+    justify-content: flex-start;
+    gap: 24px;
+  }
+  .spotlight-text { width: 100%; padding: 0; }
+  .shirt-3d-wrap { width: 100%; }
+  .spotlight-right { display: none; }
+  .shirt-3d-scene { width: clamp(180px, 55vw, 240px); }
+  .spotlight-step-headline { font-size: clamp(26px, 7vw, 36px); }
+}
 </style>
 </head>
 <body>
@@ -693,6 +929,177 @@ gsap.fromTo('.parade-header',
     }
   }
 );
+</script>
+
+<!-- ═══════════════════════════════════════
+     SECTION 3 — 3D SHIRT SPOTLIGHT
+═══════════════════════════════════════ -->
+<div class="spotlight-wrap" id="spotlightWrap">
+  <div class="spotlight-sticky" id="spotlightSticky">
+
+    <div class="spotlight-glow" id="spotlightGlow"></div>
+
+    <!-- Left: text timeline -->
+    <div class="spotlight-text" id="spotlightText">
+
+      <!-- Step 0: opening -->
+      <div class="spotlight-step visible" id="sstep0">
+        <div class="spotlight-step-num">01 — The Piece</div>
+        <div class="spotlight-step-headline">A shirt<br>that was<br><em>there.</em></div>
+        <div class="spotlight-step-body">Not a replica. Not a copy. A shirt that saw the match, wore the sweat, carried the number. Scroll to inspect it.</div>
+      </div>
+
+      <!-- Step 1: turning -->
+      <div class="spotlight-step" id="sstep1">
+        <div class="spotlight-step-num">02 — The Detail</div>
+        <div class="spotlight-step-headline">Every<br>thread<br><em>tells.</em></div>
+        <div class="spotlight-step-body">The print, the cut, the label inside. Vintage shirts carry their era in the weave. Nothing mass-produced looks like this.</div>
+        <span class="spotlight-step-tag">Match Worn Original</span>
+      </div>
+
+      <!-- Step 2: back -->
+      <div class="spotlight-step" id="sstep2">
+        <div class="spotlight-step-num">03 — Provenance</div>
+        <div class="spotlight-step-headline">Verified.<br>Sourced.<br><em>Honest.</em></div>
+        <div class="spotlight-step-body">We only sell what we can stand behind. Every shirt comes with full transparency — no guesses, no grey market.</div>
+        <span class="spotlight-step-tag">Shirt Société Standard</span>
+      </div>
+
+      <!-- Step 3: full rotation done -->
+      <div class="spotlight-step" id="sstep3">
+        <div class="spotlight-step-num">04 — Yours</div>
+        <div class="spotlight-step-headline">Ready<br>to wear<br><em>history.</em></div>
+        <div class="spotlight-step-body">Explore the full collection. Each piece is unique — once it's gone, it's gone.</div>
+      </div>
+
+    </div>
+
+    <!-- Center: 3D shirt -->
+    <div class="shirt-3d-wrap">
+      <div class="shirt-3d-scene" id="shirt3d">
+        <div class="shirt-3d-face shirt-face-front">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg"
+               alt="Shirt front">
+        </div>
+        <div class="shirt-3d-face shirt-face-back">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_3_tn57da.jpg"
+               alt="Shirt back">
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: progress + degree counter -->
+    <div class="spotlight-right">
+      <div>
+        <div class="spotlight-progress-label">Rotation</div>
+        <div class="spotlight-progress-bar">
+          <div class="spotlight-progress-fill" id="spotlightFill"></div>
+          <div class="spotlight-progress-dot" id="spotlightDot"></div>
+        </div>
+        <div class="spotlight-degree" id="spotlightDeg">0<span>°</span></div>
+      </div>
+      <div class="spotlight-cta-wrap" id="spotlightCta">
+        <a href="index.html" class="btn-gold" style="font-size:11px;padding:12px 20px">
+          Shop the Collection
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="spotlight-scroll-hint">Continue scrolling</div>
+
+  </div>
+</div>
+<script>
+/* ── SECTION 3: 3D SHIRT SCROLL ROTATION ── */
+(function() {
+  const shirt = document.getElementById('shirt3d');
+  const fill = document.getElementById('spotlightFill');
+  const dot = document.getElementById('spotlightDot');
+  const degEl = document.getElementById('spotlightDeg');
+  const cta = document.getElementById('spotlightCta');
+  const steps = [
+    document.getElementById('sstep0'),
+    document.getElementById('sstep1'),
+    document.getElementById('sstep2'),
+    document.getElementById('sstep3'),
+  ];
+
+  let currentStep = 0;
+
+  function showStep(n) {
+    if (n === currentStep) return;
+    steps[currentStep].classList.remove('visible');
+    // Animate out
+    gsap.fromTo(steps[currentStep],
+      { opacity: 1, y: 0 },
+      { opacity: 0, y: -20, duration: 0.35, ease: 'power2.in',
+        onComplete: () => steps[currentStep].style.display = 'none' }
+    );
+    currentStep = n;
+    steps[currentStep].style.display = 'block';
+    // Animate in
+    gsap.fromTo(steps[currentStep],
+      { opacity: 0, y: 24 },
+      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+    );
+    steps[currentStep].classList.add('visible');
+  }
+
+  ScrollTrigger.create({
+    trigger: '#spotlightWrap',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 1.2,
+    onUpdate: (self) => {
+      const p = self.progress;
+      const deg = p * 360;
+
+      // Rotate shirt
+      gsap.set(shirt, { rotateY: deg });
+
+      // Progress bar
+      const pct = p * 100;
+      fill.style.height = pct + '%';
+      dot.style.top = pct + '%';
+
+      // Degree counter
+      degEl.innerHTML = Math.round(deg) + '<span>°</span>';
+
+      // Text steps — switch at 0%, 25%, 55%, 82%
+      if (p < 0.25) showStep(0);
+      else if (p < 0.55) showStep(1);
+      else if (p < 0.82) showStep(2);
+      else showStep(3);
+
+      // CTA at end
+      if (p > 0.88) {
+        cta.classList.add('visible');
+      } else {
+        cta.classList.remove('visible');
+      }
+
+      // Background glow intensifies mid-rotation
+      const glowIntensity = Math.sin(p * Math.PI);
+      document.getElementById('spotlightGlow').style.opacity = 0.5 + glowIntensity * 0.5;
+    }
+  });
+
+  // Entrance animation for section 3
+  gsap.fromTo('#spotlightSticky',
+    { opacity: 0 },
+    {
+      opacity: 1, duration: 1, ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '#spotlightWrap',
+        start: 'top 80%',
+        toggleActions: 'play none none none'
+      }
+    }
+  );
+})();
 </script>
 </body>
 </html>
