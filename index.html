@@ -2655,25 +2655,7 @@
   // ── CINEMATIC HOME ANIMATIONS ──
   (function() {
     function boot() {
-      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return // SAFETY NET: if GSAP fails to load/run within 3.5s, force everything visible
-    setTimeout(function() {
-      var wrap = document.getElementById('cin-home');
-      if (!wrap) return;
-      // if hero text is still invisible, GSAP didn't run — reveal all
-      var h1 = document.getElementById('cin-h1');
-      if (h1 && getComputedStyle(h1).opacity === '0') {
-        ['cin-ew','cin-h1','cin-sub','cin-btns','cin-cue','w-word0','w-word1','w-word2'].forEach(function(id){
-          var el = document.getElementById(id);
-          if (el) { el.style.opacity = '1'; el.style.transform = 'none'; }
-        });
-        // reveal all shirt-sweep and section wraps
-        wrap.querySelectorAll('[style*="opacity:0"]').forEach(function(el){
-          el.style.opacity = '1'; el.style.transform = 'none';
-        });
-      }
-    }, 3500);
-
-    setTimeout(boot, 80);
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return setTimeout(boot, 80);
       gsap.registerPlugin(ScrollTrigger);
 
       // Page scrolls via window (.desktop-main has no own overflow),
