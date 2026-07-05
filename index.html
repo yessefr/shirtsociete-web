@@ -956,9 +956,9 @@
   <section id="cin-s-words" style="position:relative;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--black);text-align:center">
     <div id="cin-words-bg" style="position:absolute;inset:-6%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;opacity:0;filter:brightness(.28) saturate(.55);will-change:transform,opacity"></div>
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 65% at 50% 50%,rgba(8,7,5,.4) 0%,rgba(8,7,5,.82) 100%);z-index:1"></div>
-    <div id="w-word0" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:var(--white);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute;z-index:2">Timeless.</div>
-    <div id="w-word1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:transparent;-webkit-text-stroke:1.5px rgba(200,169,80,.45);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute;z-index:2">Original.</div>
-    <div id="w-word2" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:var(--gold);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute;z-index:2">Rare.</div>
+    <div id="w-word0" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:var(--white);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute;z-index:2;will-change:transform,opacity,filter">Timeless.</div>
+    <div id="w-word1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:transparent;-webkit-text-stroke:1.5px rgba(200,169,80,.45);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute;z-index:2;will-change:transform,opacity,filter">Original.</div>
+    <div id="w-word2" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:var(--gold);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute;z-index:2;will-change:transform,opacity,filter">Rare.</div>
   </section>
 </div>
 
@@ -2692,7 +2692,7 @@
       gsap.to('#cin-words-bg', { yPercent: 12, ease: 'none',
         scrollTrigger: { trigger: '#cin-words-pin', start: 'top top', end: 'bottom top', scrub: true } });
       var wordsTl = gsap.timeline({
-        scrollTrigger: { trigger: '#cin-words-pin', pin: '#cin-s-words', pinType: 'fixed', start: 'top top', end: 'bottom bottom', scrub: 1.4, anticipatePin: 1 }
+        scrollTrigger: { trigger: '#cin-words-pin', pin: '#cin-s-words', start: 'top top', end: 'bottom bottom', scrub: 1.4, anticipatePin: 1 }
       });
       // Each word: fades+rises in, HOLDS clearly, then fully exits BEFORE next enters.
       // Faster snappier easing, clean gaps so words never stack on screen.
@@ -2727,7 +2727,7 @@
 
       var swTl = gsap.timeline({
         scrollTrigger: {
-          trigger: '#cin-sweep-pin', pin: '#cin-s-sweep', pinType: 'fixed', anticipatePin: 1,
+          trigger: '#cin-sweep-pin', pin: '#cin-s-sweep', anticipatePin: 1,
           start: 'top top', end: 'bottom bottom', scrub: 1.6,
           onUpdate: function(self) {
             var p = self.progress;
@@ -2844,7 +2844,7 @@
       if (h1 && getComputedStyle(h1).opacity === '0') {
         ['cin-ew','cin-h1','cin-sub','cin-btns','cin-cue','w-word0','w-word1','w-word2'].forEach(function(id){
           var el = document.getElementById(id);
-          if (el) { el.style.opacity = '1'; el.style.transform = 'none'; }
+          if (el) { el.style.opacity = '1'; el.style.transform = 'none'; el.style.filter = 'none'; }
         });
         // reveal all shirt-sweep and section wraps
         wrap.querySelectorAll('[style*="opacity:0"]').forEach(function(el){
