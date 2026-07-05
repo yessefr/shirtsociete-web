@@ -218,6 +218,28 @@
 
     /* ─── SECTION ─── */
     .section { padding: 48px; }
+    .cin-section {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+    }
+    .cin-section.cin-in { opacity: 1; transform: none; }
+    .card-enter {
+      opacity: 0;
+      transform: translateY(28px) scale(0.97);
+      transition: opacity .55s cubic-bezier(.16,1,.3,1), transform .55s cubic-bezier(.16,1,.3,1);
+    }
+    .card-enter.card-in { opacity: 1; transform: none; }
+    .section-label {
+      position: relative;
+    }
+    .cin-in .section-label::after {
+      content: '';
+      display: block;
+      width: 24px; height: 1px;
+      background: var(--gold);
+      margin-top: 5px;
+    }
     .section-header {
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 24px;
@@ -233,6 +255,38 @@
     .section-link:hover { color: var(--gold); }
 
     /* Horizontal scroll (mobile + desktop home) */
+
+    .sw-shirt {
+      position: absolute;
+      width: clamp(220px, 22vw, 320px);
+      aspect-ratio: 3/4;
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: pointer;
+      will-change: transform, opacity;
+      z-index: 4;
+      box-shadow: 0 32px 80px rgba(0,0,0,.7);
+    }
+    .sw-shirt img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+    }
+    .sw-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 24px 18px 18px;
+      background: linear-gradient(transparent, rgba(10,9,5,.88));
+    }
+    .sw-cat {
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 4px;
+    }
+    .sw-name {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 18px; color: var(--white);
+    }
+    .sw-shirt:hover { box-shadow: 0 40px 100px rgba(0,0,0,.8), 0 0 0 1px rgba(200,169,80,.2); }
+
     .shirt-row {
       display: flex; gap: 16px; overflow-x: auto; padding-bottom: 8px;
       scrollbar-width: none;
@@ -241,9 +295,16 @@
     .shirt-card-sm {
       flex: 0 0 260px; cursor: pointer;
       background: var(--grey); border-radius: 2px; overflow: hidden;
-      transition: transform 0.2s; position: relative;
+      transition: transform 0.45s cubic-bezier(.16,1,.3,1), box-shadow 0.35s, opacity 0.4s;
+      position: relative;
+      /* 3D tilt base */
+      transform-style: preserve-3d;
+      perspective: 800px;
     }
-    .shirt-card-sm:hover { transform: translateY(-4px); }
+    .shirt-card-sm:hover {
+      transform: translateY(-8px) rotateY(3deg) rotateX(-1.5deg);
+      box-shadow: 12px 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,169,80,0.12);
+    }
     .shirt-card-sm .img-hover {
       position: absolute; top: 0; left: 0; width: 100%; height: 320px;
       object-fit: contain; background: #1a1815; padding: 8px;
@@ -293,9 +354,15 @@
     }
     .shirt-card {
       background: var(--grey); border-radius: 2px; overflow: hidden;
-      cursor: pointer; transition: transform 0.2s; position: relative;
+      cursor: pointer;
+      transition: transform 0.45s cubic-bezier(.16,1,.3,1), box-shadow 0.35s;
+      position: relative;
+      transform-style: preserve-3d;
     }
-    .shirt-card:hover { transform: translateY(-4px); }
+    .shirt-card:hover {
+      transform: translateY(-10px) rotateY(4deg) rotateX(-2deg);
+      box-shadow: 14px 24px 48px rgba(0,0,0,0.55), 0 0 0 1px rgba(200,169,80,0.1);
+    }
     .shirt-card .img-hover {
       position: absolute; top: 0; left: 0; width: 100%;
       aspect-ratio: 3/4; object-fit: contain; background: #1a1815; padding: 8px;
@@ -543,6 +610,8 @@
       .toast.show { transform: translateY(0); }
     }
   </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
 
@@ -567,7 +636,7 @@
         </div>
         <div style="min-width:0">
           <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600">Next Event</div>
-          <div style="font-size:13px;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">VFB Frankfurt 🇩🇪 · 4 Jul</div>
+          <div style="font-size:13px;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Leipzig 🇩🇪 · 4 Oct</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
@@ -836,203 +905,218 @@
       </div>
     </nav>
     <div class="sidebar-footer">
-      <div style="margin-bottom:8px;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase">Contact</div>
-      <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a>
-      <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:flex;align-items:center;gap:6px;color:var(--gold);text-decoration:none;margin-top:8px;font-size:12px">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        @shirtsociete
-      </a>
-      <div style="margin-top:12px;font-size:11px">© 2026 Shirt Société</div>
+      <div style="margin-bottom:8px;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase">Contact</div><div id="cin-home">
+
+<!-- SCENE 1: HERO -->
+<section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;padding:0 52px">
+  <div id="cin-hero-bg" style="position:absolute;inset:-10%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782385547/ChatGPT_Image_12_feb_2026_12_01_18_j490fq.png') center/cover;will-change:transform"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,9,5,.88) 0%,rgba(10,9,5,.4) 60%,rgba(10,9,5,.05) 100%),linear-gradient(180deg,rgba(10,9,5,.15) 0%,rgba(10,9,5,0) 35%,rgba(10,9,5,.96) 100%)"></div>
+  <div id="cin-hero-text" style="position:relative;z-index:2;max-width:600px">
+    <div id="cin-ew" style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:14px;opacity:0;transform:translateY(16px)">
+      <span style="display:block;width:28px;height:1px;background:var(--gold)"></span>
+      Est. 2025 &middot; Harderwijk, Netherlands
     </div>
-  </aside>
+    <h1 id="cin-h1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(52px,6vw,88px);line-height:.88;letter-spacing:-2px;margin-bottom:24px;opacity:0;transform:translateY(32px)">
+      Vintage<br>football<br><span id="cin-h1-gold" style="color:transparent;-webkit-text-stroke:1.5px rgba(200,169,80,.5)">history.</span>
+    </h1>
+    <p id="cin-sub" style="font-size:15px;font-weight:300;color:rgba(245,240,232,.45);line-height:1.85;max-width:340px;margin-bottom:36px;border-left:1px solid rgba(200,169,80,.2);padding-left:16px;opacity:0;transform:translateY(14px)">
+      Match worn originals. Club classics. World Cup countries. Nothing else.
+    </p>
+    <div id="cin-btns" style="display:flex;align-items:center;gap:20px;opacity:0;transform:translateY(10px)">
+      <button onclick="dGoTo('shop')" style="display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--black);border:none;padding:14px 26px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase">
+        Shop Collection
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <button onclick="dGoTo('about')" style="background:none;border:none;color:rgba(245,240,232,.35);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Our Story</button>
+    </div>
+  </div>
+  <div id="cin-cue" style="position:absolute;bottom:36px;left:52px;display:flex;align-items:center;gap:12px;opacity:0;z-index:2">
+    <div style="width:40px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)"></div>
+    <span style="font-size:8px;letter-spacing:4px;text-transform:uppercase;color:rgba(200,169,80,.4)">Scroll to explore</span>
+  </div>
+</section>
 
-  <!-- Desktop Main -->
-  <main class="desktop-main">
+<!-- SCENE 2: WORDS TAKEOVER — Timeless Original Rare -->
+<div id="cin-words-pin" style="position:relative;height:300vh">
+  <section id="cin-s-words" style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--black);text-align:center">
+    <div id="w-word0" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:var(--white);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute">Timeless.</div>
+    <div id="w-word1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:transparent;-webkit-text-stroke:1.5px rgba(200,169,80,.45);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute">Original.</div>
+    <div id="w-word2" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:var(--gold);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute">Rare.</div>
+  </section>
+</div>
 
-    <!-- HOME -->
-    <div class="dscreen active" id="d-screen-home">
+<!-- SCENE 3: SHIRT SWEEP -->
+<div id="cin-sweep-pin" style="position:relative;height:600vh">
+  <section id="cin-s-sweep" style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--black)">
 
-      <div class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-          <div class="hero-eyebrow anim-ready fade-in">Est. in passion</div>
-          <h1 class="hero-title anim-ready fade-up delay-1">Vintage<br><span>football</span><br>history.</h1>
-          <p class="hero-sub anim-ready fade-up delay-2">Curated match worn shirts & rare originals from the golden era of football.</p>
-          <div style="display:flex;gap:16px;flex-wrap:wrap">
-            <button class="btn-primary" onclick="dGoTo('shop')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-              Shop the collection
-            </button>
-            <button onclick="dGoTo('about')" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(200,169,80,0.5);color:var(--gold);padding:14px 28px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;transition:all 0.2s">
-              Our Story
-            </button>
-          </div>
+    <div id="swbg0" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+    <div id="swbg1" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+    <div id="swbg2" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+    <div id="swbg3" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782992050/WhatsApp_Image_2026-07-02_at_13.33.30_3_z9fb9y.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,transparent 0%,transparent 28%,rgba(10,9,5,.8) 100%),linear-gradient(180deg,rgba(10,9,5,.8) 0%,transparent 18%,transparent 78%,rgba(10,9,5,.95) 100%);pointer-events:none;z-index:6"></div>
+
+    <!-- 4 shirts stacked, GSAP moves each one -->
+    <div id="sw0" class="sw-shirt" onclick="dGoTo('shop')">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg">
+      <div class="sw-info"><div class="sw-cat">Club Classic</div><div class="sw-name">80s Original</div></div>
+    </div>
+    <div id="sw1" class="sw-shirt" onclick="dGoTo('shop')">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg">
+      <div class="sw-info"><div class="sw-cat">Match Worn</div><div class="sw-name">Verified Original</div></div>
+    </div>
+    <div id="sw2" class="sw-shirt" onclick="dGoTo('shop')">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg">
+      <div class="sw-info"><div class="sw-cat">World Cup</div><div class="sw-name">National Side</div></div>
+    </div>
+    <div id="sw3" class="sw-shirt" onclick="dGoTo('shop')">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782992050/WhatsApp_Image_2026-07-02_at_13.33.30_3_z9fb9y.jpg">
+      <div class="sw-info"><div class="sw-cat">Heritage</div><div class="sw-name">Rare Piece</div></div>
+    </div>
+
+    <div id="sw-prog" style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,169,80,.06);z-index:8">
+      <div id="sw-fill" style="height:100%;background:var(--gold);width:0"></div>
+    </div>
+  </section>
+</div>
+
+<!-- SCENE 4: NEXT EVENT BANNER -->
+<div id="cin-event-banner" style="opacity:0;transform:translateY(40px)">
+  <div style="background:linear-gradient(135deg,rgba(200,169,80,.1),rgba(200,169,80,.03));border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:36px 52px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:24px">
+        <div style="position:relative;flex-shrink:0;width:20px;height:20px">
+          <div style="width:20px;height:20px;border-radius:50%;background:var(--gold);animation:pulseGlow 1.5s ease-in-out infinite;position:absolute"></div>
+          <div style="position:absolute;inset:-6px;border-radius:50%;background:rgba(200,169,80,.2);animation:pulseRing 1.5s ease-in-out infinite"></div>
         </div>
-      </div>
-
-      <!-- Frankfurt Countdown Banner - between hero and featured -->
-      <div class="anim-ready fade-up" style="background:linear-gradient(135deg,rgba(200,169,80,0.1),rgba(200,169,80,0.03));border-top:1px solid rgba(200,169,80,0.2);border-bottom:1px solid rgba(200,169,80,0.2);padding:32px 48px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap">
-          <div style="display:flex;align-items:center;gap:24px">
-            <div style="position:relative;flex-shrink:0;width:20px;height:20px">
-              <div style="width:20px;height:20px;border-radius:50%;background:var(--gold);animation:pulseGlow 1.5s ease-in-out infinite;position:absolute"></div>
-              <div style="position:absolute;inset:-6px;border-radius:50%;background:rgba(200,169,80,0.25);animation:pulseRing 1.5s ease-in-out infinite"></div>
-            </div>
-            <div>
-              <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:600">Next Event</div>
-              <div style="font-size:26px;font-weight:900;color:var(--white);margin-bottom:4px;letter-spacing:-0.5px">Vintage Fußballbörse — Frankfurt 🇩🇪</div>
-              <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-                <span style="font-size:14px;color:var(--text-muted)">4 July 2026 &nbsp;·&nbsp; 10:00–17:00</span>
-                <a href="https://www.instagram.com/vintagefussball/" target="_blank"
-                  style="font-size:13px;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:5px;opacity:0.75;transition:opacity 0.2s"
-                  onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.75">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                    <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                  </svg>
-                  @vintagefussball
-                </a>
-              </div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:4px;padding:16px 20px;min-width:72px">
-              <div id="home-countdown-days" style="font-size:40px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-2px">--</div>
-              <div style="font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Days</div>
-            </div>
-            <div style="font-size:32px;color:rgba(200,169,80,0.3);font-weight:200;padding-bottom:16px">:</div>
-            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:4px;padding:16px 20px;min-width:72px">
-              <div id="home-countdown-hours" style="font-size:40px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-2px">--</div>
-              <div style="font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Hours</div>
-            </div>
-            <div style="font-size:32px;color:rgba(200,169,80,0.3);font-weight:200;padding-bottom:16px">:</div>
-            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:4px;padding:16px 20px;min-width:72px">
-              <div id="home-countdown-mins" style="font-size:40px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-2px">--</div>
-              <div style="font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Mins</div>
-            </div>
-            <button onclick="dGoTo('about')"
-              style="margin-left:16px;background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:16px 28px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;align-self:center;transition:background 0.2s"
-              onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">More info →</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Drop countdown banner -->
-      
-
-      <div class="section">
-        <div class="section-header anim-ready fade-up">
-          <div class="section-label">Featured Pieces</div>
-          <span class="section-link" onclick="dGoTo('shop')">View all →</span>
-        </div>
-        <div id="d-featured-row" class="shirt-row"><div class="loading">Loading...</div></div>
-      </div>
-
-
-      <!-- Drop banner with email signup -->
-      <div id="drop-banner" class="anim-ready scale-up" style="background:linear-gradient(135deg,rgba(200,169,80,0.1),rgba(200,169,80,0.03));border-top:1px solid rgba(200,169,80,0.2);border-bottom:1px solid rgba(200,169,80,0.2);padding:40px 48px;text-align:center">
-
-          <!-- Header centered -->
-          <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:8px">
-            <div style="position:relative;width:16px;height:16px;flex-shrink:0">
-              <div style="width:16px;height:16px;border-radius:50%;background:#4caf7d;animation:pulseGlow 1.5s ease-in-out infinite;position:absolute"></div>
-              <div style="position:absolute;inset:-5px;border-radius:50%;background:rgba(76,175,125,0.25);animation:pulseRing 1.5s ease-in-out infinite"></div>
-            </div>
-            <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600">Upcoming Drop</div>
-          </div>
-          <div style="font-size:30px;font-weight:900;color:var(--white);margin-bottom:6px;letter-spacing:-0.5px">New Shirt Drop</div>
-          <div style="font-size:14px;color:var(--text-muted);margin-bottom:28px">Monday 6 July 2026 &nbsp;&middot;&nbsp; 12:00 &nbsp;&middot;&nbsp; Club shirts, World Cup countries &amp; Match Worn</div>
-
-          <!-- Countdown centered -->
-          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:28px">
-            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:4px;padding:16px 20px;min-width:72px">
-              <div id="drop-days" style="font-size:40px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-2px">--</div>
-              <div style="font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Days</div>
-            </div>
-            <div style="font-size:32px;color:rgba(200,169,80,0.25);font-weight:200;padding-bottom:16px">:</div>
-            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:4px;padding:16px 20px;min-width:72px">
-              <div id="drop-hours" style="font-size:40px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-2px">--</div>
-              <div style="font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Hours</div>
-            </div>
-            <div style="font-size:32px;color:rgba(200,169,80,0.25);font-weight:200;padding-bottom:16px">:</div>
-            <div style="text-align:center;background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:4px;padding:16px 20px;min-width:72px">
-              <div id="drop-mins" style="font-size:40px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-2px">--</div>
-              <div style="font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Mins</div>
-            </div>
-          </div>
-
-          <!-- Email signup centered -->
-          <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding-top:20px;border-top:1px solid rgba(200,169,80,0.12)">
-            <div style="font-size:13px;color:var(--text-muted)">Get notified:</div>
-            <input type="email" id="drop-email-input" placeholder="your@email.com"
-              style="background:rgba(0,0,0,0.3);border:1px solid rgba(200,169,80,0.2);border-radius:2px;padding:10px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:220px"
-              onfocus="this.style.borderColor='rgba(200,169,80,0.6)'" onblur="this.style.borderColor='rgba(200,169,80,0.2)'">
-            <button onclick="submitDropEmail()" id="drop-email-btn"
-              style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:0.5px;text-transform:uppercase;transition:opacity 0.2s"
-              onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-              Notify Me
-            </button>
-            <a href="https://www.instagram.com/shirtsociete/" target="_blank"
-              style="display:inline-flex;align-items:center;gap:5px;color:var(--text-muted);text-decoration:none;font-size:13px;transition:color 0.2s"
-              onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">
-              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              @shirtsociete
-            </a>
-            <div id="drop-email-confirm" style="display:none;font-size:13px;color:var(--gold);font-weight:500">✓ You are on the list!</div>
-          </div>
-
-      </div>
-
-      <div class="divider"></div>
-      <div class="section">
-        <div class="section-header anim-ready fade-up">
-          <div class="section-label">Match Worn</div>
-          <span class="section-link" onclick="dGoTo('shop');dSetFilter('match_worn')">View all →</span>
-        </div>
-        <div id="d-matchworn-row" class="shirt-row"><div class="loading">Loading...</div></div>
-      </div>
-
-      <div class="divider"></div>
-      <div class="section">
-        <div class="section-header anim-ready fade-up">
-          <div class="section-label">National Teams</div>
-          <span class="section-link" onclick="dGoTo('shop');dSetFilter('national')">View all →</span>
-        </div>
-        <div id="d-national-row" class="shirt-row"><div class="loading">Loading...</div></div>
-      </div>
-
-      <div class="divider"></div>
-      <div class="section">
-        <div class="section-header anim-ready fade-up">
-          <div class="section-label">Clubs</div>
-          <span class="section-link" onclick="dGoTo('shop');dSetFilter('clubs')">View all →</span>
-        </div>
-        <div id="d-clubs-row" class="shirt-row"><div class="loading">Loading...</div></div>
-      </div>
-
-      <!-- Instagram Strip -->
-      <div class="anim-ready fade-up" style="border-top:1px solid #1e1c17;padding:64px;background:#0d0b08;display:flex;align-items:center;justify-content:space-between;gap:40px">
         <div>
-          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500">Follow the Journey</div>
-          <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;margin-bottom:12px">@shirtsociete</h2>
-          <p style="font-size:14px;color:var(--text-muted);margin-bottom:24px;max-width:400px">From the stands of Vintage Fußballbörse in Cologne, Düsseldorf and Hamburg — to next stop Frankfurt on July 4th. Follow the journey behind Shirt Société and be the first to see new arrivals, rare pieces and event coverage.</p>
-          <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);padding:14px 28px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-            Follow on Instagram
-          </a>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:420px;flex-shrink:0">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_3_tn57da.jpg" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px" alt="">
-          <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="width:100%;aspect-ratio:1;background:var(--grey);border-radius:2px;display:flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid #2a2820">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          </a>
+          <div id="ev-eyebrow" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600;opacity:0;transform:translateX(-16px)">Next Event</div>
+          <div id="ev-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,48px);color:var(--white);margin-bottom:4px;opacity:0;transform:translateX(-20px)">Leipzig</div>
+          <div id="ev-date" style="font-size:13px;color:var(--text-muted);opacity:0">Sunday 4 October 2026 &middot; 10:00 to 17:00</div>
         </div>
       </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:16px 20px;min-width:72px">
+          <div id="cin-days" style="font-size:40px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
+          <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-top:4px">Days</div>
+        </div>
+        <div style="font-size:28px;color:rgba(200,169,80,.2);padding-bottom:14px">:</div>
+        <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:16px 20px;min-width:72px">
+          <div id="cin-hours" style="font-size:40px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
+          <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-top:4px">Hours</div>
+        </div>
+        <div style="font-size:28px;color:rgba(200,169,80,.2);padding-bottom:14px">:</div>
+        <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:16px 20px;min-width:72px">
+          <div id="cin-mins" style="font-size:40px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
+          <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-top:4px">Mins</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 5: DROP BANNER -->
+<div id="cin-drop-banner" style="opacity:0;transform:translateY(40px)">
+  <div id="drop-banner" style="background:linear-gradient(135deg,rgba(200,169,80,.1),rgba(200,169,80,.03));border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:36px 52px;text-align:center">
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:10px">
+      <div style="position:relative;width:14px;height:14px;flex-shrink:0">
+        <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;animation:pulseGlow 1.5s ease-in-out infinite;position:absolute"></div>
+        <div style="position:absolute;inset:-4px;border-radius:50%;background:rgba(76,175,125,.22);animation:pulseRing 1.5s ease-in-out infinite"></div>
+      </div>
+      <div id="db-eyebrow" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;opacity:0">Upcoming Drop</div>
+    </div>
+    <div id="db-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,48px);color:var(--white);margin-bottom:6px;opacity:0;transform:translateY(16px)">New Shirt Drop</div>
+    <div id="db-sub" style="font-size:13px;color:var(--text-muted);margin-bottom:24px;opacity:0">Monday 6 July 2026 &middot; 12:00 &middot; Club shirts, World Cup countries &amp; Match Worn</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px">
+      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:14px 18px;min-width:68px">
+        <div id="drop-days" style="font-size:38px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+        <div style="font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Days</div>
+      </div>
+      <div style="font-size:28px;color:rgba(200,169,80,.2);padding-bottom:14px">:</div>
+      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:14px 18px;min-width:68px">
+        <div id="drop-hours" style="font-size:38px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+        <div style="font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Hours</div>
+      </div>
+      <div style="font-size:28px;color:rgba(200,169,80,.2);padding-bottom:14px">:</div>
+      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:14px 18px;min-width:68px">
+        <div id="drop-mins" style="font-size:38px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
+        <div style="font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Mins</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding-top:20px;border-top:1px solid rgba(200,169,80,.1)">
+      <input type="email" id="drop-email-input" placeholder="your@email.com" style="background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:2px;padding:10px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:210px">
+      <button onclick="submitDropEmail()" id="drop-email-btn" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:10px 18px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;text-transform:uppercase">Notify Me</button>
+      <div id="drop-email-confirm" style="display:none;font-size:13px;color:var(--gold);font-weight:500">&#10003; You are on the list!</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 6: FEATURED SHIRTS (from Supabase) -->
+<div id="cin-featured">
+  <div style="padding:52px 52px 36px">
+    <div id="feat-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
+      <div>
+        <div id="feat-eyebrow" style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">The Collection</div>
+        <div id="feat-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Featured Pieces</div>
+      </div>
+      <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
+    </div>
+    <div id="d-featured-row" class="shirt-row" style="display:flex;gap:20px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
+  </div>
+
+  <div style="height:1px;background:rgba(255,255,255,.05);margin:0 52px"></div>
+
+  <div style="padding:48px 52px 36px">
+    <div id="mw-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
+      <div>
+        <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Authentic &amp; Verified</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Match Worn</div>
+      </div>
+      <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
+    </div>
+    <div id="d-matchworn-row" class="shirt-row" style="display:flex;gap:20px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
+  </div>
+
+  <div style="height:1px;background:rgba(255,255,255,.05);margin:0 52px"></div>
+
+  <div style="padding:48px 52px 36px">
+    <div id="nat-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
+      <div>
+        <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">World Cup Countries</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">National Sides</div>
+      </div>
+      <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
+    </div>
+    <div id="d-national-row" class="shirt-row" style="display:flex;gap:20px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
+  </div>
+
+  <div style="height:1px;background:rgba(255,255,255,.05);margin:0 52px"></div>
+
+  <div style="padding:48px 52px 64px">
+    <div id="cl-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
+      <div>
+        <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Club Heritage</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Club Shirts</div>
+      </div>
+      <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
+    </div>
+    <div id="d-clubs-row" class="shirt-row" style="display:flex;gap:20px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
+  </div>
+</div>
+
+</div><!-- end cin-home -->w" id="d-national-row" style="display:flex;gap:16px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
+    </div>
+    <div style="height:1px;background:rgba(255,255,255,.04);margin:0 48px"></div>
+    <div class="section" style="padding:48px">
+      <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <div class="section-label" style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600">Club Shirts</div>
+        <span style="font-size:13px;color:var(--text-muted);cursor:pointer;font-weight:500" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all →</span>
+      </div>
+      <div class="shirt-row" id="d-clubs-row" style="display:flex;gap:16px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
+    </div>
+  </div>
+
+</div><!-- end cin-home -->
     </div>
 
     <!-- SHOP -->
@@ -1181,7 +1265,7 @@
       </div>
 
       <!-- Fair photos -->
-      <div class="anim-ready fade-up" style="padding:64px;border-top:1px solid #1e1c17">
+      <div class="anim-about fade-in" style="padding:64px;border-top:1px solid #1e1c17">
         <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500">On the Road</div>
         <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;margin-bottom:32px">At the Fairs</h2>
         <!-- Photo collage - 3 equal photos -->
@@ -1228,7 +1312,7 @@
         <div style="overflow-x:auto;padding-bottom:8px">
           <div style="min-width:900px">
             <!-- Horizontal line -->
-            <div style="height:3px;background:linear-gradient(to right,#4caf7d 60%,var(--gold) 75%,rgba(74,70,64,0.3) 100%);border-radius:2px;margin:0 12px 0"></div>
+            <div style="height:3px;background:linear-gradient(to right,#4caf7d 78%,rgba(74,70,64,0.3) 100%);border-radius:2px;margin:0 12px 0"></div>
 
             <!-- Events row -->
             <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:0;padding:0 4px">
@@ -1283,17 +1367,16 @@
 
               <!-- Frankfurt -->
               <div style="text-align:center">
-                <div style="width:18px;height:18px;border-radius:50%;background:var(--black);border:3px solid var(--gold);box-shadow:0 0 8px rgba(200,169,80,0.4);margin:0 auto;margin-top:-10px;position:relative;z-index:2"></div>
-                <div style="margin-top:10px;background:rgba(200,169,80,0.05);border:1px solid rgba(200,169,80,0.3);border-radius:3px;padding:24px 16px;cursor:pointer"
-                  onclick="toggleFrankfurtVideo(this)">
-                  <div style="font-size:12px;color:rgba(200,169,80,0.7);margin-bottom:8px;letter-spacing:0.5px">04.07 · 🇩🇪</div>
-                  <div style="font-size:30px;font-weight:900;color:var(--gold);margin-bottom:6px">Frankfurt</div>
-                  <div style="font-size:13px;color:rgba(200,169,80,0.6);margin-bottom:10px">Vintage Fußballbörse</div>
-                  <div id="frankfurt-countdown" style="font-size:13px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;letter-spacing:0.5px"></div>
-                  <div style="font-size:9px;color:rgba(200,169,80,0.5);margin-top:2px">10:00 – 17:00</div>
-                  <div style="font-size:11px;color:rgba(200,169,80,0.5);margin-top:10px;display:flex;align-items:center;justify-content:center;gap:4px">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="rgba(200,169,80,0.5)" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    Preview
+                <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
+                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px;cursor:pointer;transition:border-color 0.2s"
+                  onmouseover="this.style.borderColor='#4caf7d'" onmouseout="this.style.borderColor='#252320'"
+                  onclick="openEventGallery('frankfurt')">
+                  <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">04.07 · 🇩🇪</div>
+                  <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Frankfurt</div>
+                  <div style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
+                  <div style="font-size:11px;color:#4caf7d;display:flex;align-items:center;justify-content:center;gap:4px;opacity:0.8">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    View impressions
                   </div>
                 </div>
               </div>
@@ -1316,13 +1399,13 @@
 
 
       <!-- Story section -->
-      <div class="anim-ready fade-up" style="display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:100%">
+      <div class="anim-about slide-left" style="display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:100%">
         <div style="padding:64px;border-right:1px solid #1e1c17">
           <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:500">Who We Are</div>
           <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:36px;line-height:1.2;margin-bottom:20px">A Collector's Eye,<br>A Curator's Touch</h2>
           <p style="font-size:16px;line-height:1.9;color:#b0a898;margin-bottom:16px">Shirt Société was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for collectors around the globe.</p>
           <p style="font-size:16px;line-height:1.9;color:#b0a898;margin-bottom:16px">From vintage clubs to match worn pieces worn by legends, every shirt in our collection has been hand-picked for its authenticity, rarity and history. We don't just sell shirts. We preserve football heritage.</p>
-          <p style="font-size:16px;line-height:1.9;color:#b0a898;margin-bottom:32px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Cologne (31.05.2026), Düsseldorf (13.06.2026) and Hamburg (04.02.2026), Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next stop: Frankfurt, July 4th 2026.</p>
+          <p style="font-size:16px;line-height:1.9;color:#b0a898;margin-bottom:32px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Cologne (31.05.2026), Düsseldorf (13.06.2026) and Hamburg (04.02.2026), Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next stop: Leipzig, October 4th 2026.</p>
           <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);padding:14px 28px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             Follow on Instagram
@@ -1368,6 +1451,7 @@
           <!-- Navigation arrows + current photo -->
           <div style="position:relative;margin-bottom:16px">
             <img id="gallery-main-img" src="" alt="" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:#111009;display:block">
+            <video id="gallery-main-video" controls playsinline preload="metadata" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:#111009;display:none"></video>
             <!-- Prev -->
             <button onclick="galleryPrev()" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:var(--white);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">‹</button>
             <!-- Next -->
@@ -1380,28 +1464,8 @@
         </div>
       </div>
 
-      <!-- Frankfurt Video Modal -->
-      <div id="frankfurt-video-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:1000;align-items:center;justify-content:center;padding:20px" onclick="closeFrankfurtVideo(event)">
-        <div style="position:relative;width:100%;max-width:360px;display:flex;flex-direction:column;align-items:center" onclick="event.stopPropagation()">
-          <!-- Close button -->
-          <button onclick="closeFrankfurtVideo()" style="position:absolute;top:-48px;right:0;background:none;border:none;color:rgba(255,255,255,0.6);font-size:28px;cursor:pointer;line-height:1;padding:8px">×</button>
-          <!-- Label -->
-          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500">Frankfurt Preview</div>
-          <!-- Vertical video - 9:16 -->
-          <video
-            id="frankfurt-video"
-            src="https://res.cloudinary.com/dinpfdojh/video/upload/v1782645498/WhatsApp_Video_2026-06-27_at_22.49.44_gdwc6l.mp4"
-            controls
-            playsinline
-            preload="none"
-            style="width:100%;max-width:360px;aspect-ratio:9/16;object-fit:cover;border-radius:8px;background:#0a0905;display:block">
-          </video>
-          <div style="margin-top:12px;font-size:13px;color:var(--text-muted);text-align:center">Shirts coming to Frankfurt · 4 July 2026</div>
-        </div>
-      </div>
-
       <!-- CTA -->
-      <div class="anim-ready scale-up" style="padding:64px;background:#0d0b08;border-top:1px solid #1e1c17;text-align:center">
+      <div class="anim-about scale-in" style="padding:64px;background:#0d0b08;border-top:1px solid #1e1c17;text-align:center">
         <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:40px;margin-bottom:12px">Authenticity. Heritage. <span style="color:var(--gold)">Football History.</span></div>
         <p style="font-size:15px;color:var(--text-muted);margin-bottom:32px">Find your next piece of football history in our collection.</p>
         <button class="btn-primary" onclick="dGoTo('shop')" style="margin-right:16px">Shop the Collection</button>
@@ -2127,6 +2191,18 @@
 
   // ── EVENT GALLERIES ──
   const EVENT_GALLERIES = {
+    frankfurt: {
+      city: 'Frankfurt',
+      subtitle: 'Vintage Fußballbörse · 04.07.2026',
+      photos: [
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_2_tehmnf.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_1_pmnjoz.jpg',
+        'https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg',
+        'https://res.cloudinary.com/dinpfdojh/video/upload/v1783254947/WhatsApp_Video_2026-07-05_at_14.23.31_ajhoyd.mp4',
+        'https://res.cloudinary.com/dinpfdojh/video/upload/v1783254948/WhatsApp_Video_2026-07-05_at_14.23.31_1_ukmw7e.mp4'
+      ]
+    },
     hamburg: {
       city: 'Hamburg',
       subtitle: 'Vintage Fußballbörse · 04.02.2026',
@@ -2178,11 +2254,18 @@
     updateGalleryPhoto();
     // Build thumbnails
     const thumbs = document.getElementById('gallery-thumbs');
-    thumbs.innerHTML = data.photos.map((url, i) => `
-      <img src="${url}" onclick="setGalleryPhoto(${i})"
-        style="width:72px;height:72px;object-fit:cover;border-radius:2px;cursor:pointer;opacity:${i===0?1:0.5};transition:opacity 0.2s;border:${i===0?'2px solid #4caf7d':'2px solid transparent'}"
-        id="gallery-thumb-${i}">
-    `).join('');
+    thumbs.innerHTML = data.photos.map((url, i) => {
+      const isVideo = url.indexOf('.mp4') !== -1;
+      const thumbSrc = isVideo ? url.replace('.mp4', '.jpg') : url;
+      const playIcon = isVideo ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><div style="width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center"><svg width="10" height="10" viewBox="0 0 24 24" fill="#fff"><polygon points="6 3 20 12 6 21 6 3"/></svg></div></div>` : '';
+      return `
+      <div style="position:relative;display:inline-block" onclick="setGalleryPhoto(${i})">
+        <img src="${thumbSrc}"
+          style="width:72px;height:72px;object-fit:cover;border-radius:2px;cursor:pointer;opacity:${i===0?1:0.5};transition:opacity 0.2s;border:${i===0?'2px solid #4caf7d':'2px solid transparent'};display:block"
+          id="gallery-thumb-${i}">
+        ${playIcon}
+      </div>`;
+    }).join('');
     // Show overlay
     const overlay = document.getElementById('event-gallery-overlay');
     overlay.style.display = 'flex';
@@ -2191,13 +2274,27 @@
 
   function closeEventGallery(e) {
     if (e && e.target !== document.getElementById('event-gallery-overlay')) return;
+    const vid = document.getElementById('gallery-main-video');
+    if (vid) vid.pause();
     document.getElementById('event-gallery-overlay').style.display = 'none';
     document.body.style.overflow = '';
   }
 
   function updateGalleryPhoto() {
     const img = document.getElementById('gallery-main-img');
-    img.src = currentGalleryPhotos[currentGalleryIndex];
+    const vid = document.getElementById('gallery-main-video');
+    const url = currentGalleryPhotos[currentGalleryIndex];
+    const isVideo = url.indexOf('.mp4') !== -1;
+    if (vid) { vid.pause(); }
+    if (isVideo && vid) {
+      img.style.display = 'none';
+      vid.style.display = 'block';
+      if (vid.src !== url) vid.src = url;
+    } else {
+      if (vid) { vid.style.display = 'none'; vid.removeAttribute('src'); vid.load(); }
+      img.style.display = 'block';
+      img.src = url;
+    }
     document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${currentGalleryPhotos.length}`;
     // Update thumbs
     currentGalleryPhotos.forEach((_, i) => {
@@ -2233,39 +2330,10 @@
     }
   });
 
-  // ── FRANKFURT VIDEO ──
-  function toggleFrankfurtVideo() {
-    const overlay = document.getElementById('frankfurt-video-overlay');
-    const video = document.getElementById('frankfurt-video');
-    overlay.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    video.play();
-  }
-
-  function closeFrankfurtVideo(e) {
-    if (e && e.target !== document.getElementById('frankfurt-video-overlay')) return;
-    const overlay = document.getElementById('frankfurt-video-overlay');
-    const video = document.getElementById('frankfurt-video');
-    overlay.style.display = 'none';
-    document.body.style.overflow = '';
-    video.pause();
-    video.currentTime = 0;
-  }
-
-  // Close with Escape key
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      const overlay = document.getElementById('frankfurt-video-overlay');
-      if (overlay && overlay.style.display === 'flex') {
-        closeFrankfurtVideo({ target: overlay });
-      }
-    }
-  });
-
   // ── COUNTDOWN ──
   function updateCountdown() {
-    // Frankfurt fair: 4 July 2026, 10:00 local time (CET = UTC+2)
-    const target = new Date('2026-07-04T10:00:00+02:00');
+    // Leipzig fair: 4 October 2026, 10:00 local time (CEST = UTC+2)
+    const target = new Date('2026-10-04T10:00:00+02:00');
     const now = new Date();
     const diff = target - now;
 
@@ -2509,11 +2577,242 @@
         }
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
     document.querySelectorAll('.anim-ready').forEach(el => observer.observe(el));
+
+    // About section animations
+    const aboutObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('played');
+          aboutObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.anim-about').forEach(el => aboutObs.observe(el));
+  }
+
+  // Watch for when about section becomes active
+  function initAboutAnimations() {
+    // Add anim classes to about section elements dynamically
+    const aboutScreen = document.getElementById('d-screen-about');
+    if (!aboutScreen) return;
+
+    // Stats
+    aboutScreen.querySelectorAll('.stat-val, [class*="stat"]').forEach((el, i) => {
+      if (!el.classList.contains('anim-about')) {
+        el.classList.add('anim-about','fade-up','d'+Math.min(i+1,5));
+      }
+    });
+
+    // Section headers in about
+    aboutScreen.querySelectorAll('.section-label, .section-header').forEach((el,i) => {
+      if (!el.classList.contains('anim-about')) {
+        el.classList.add('anim-about','fade-up','d'+(i%3+1));
+      }
+    });
+
+    // Photos
+    aboutScreen.querySelectorAll('img').forEach((el,i) => {
+      const wrap = el.closest('.about-photo-hover') || el.parentElement;
+      if (!wrap.classList.contains('anim-about') && !el.classList.contains('anim-about')) {
+        el.classList.add('anim-about','scale-in','d'+Math.min(i%3+1,3));
+        el.classList.add('about-photo-hover');
+      }
+    });
+
+    // Re-run observer
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('played'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+    aboutScreen.querySelectorAll('.anim-about').forEach(el => obs.observe(el));
   }
 
   // initScrollAnimations is called after shirts load via setTimeout in fetchShirts
+
+  // ── HERO PARALLAX (fixed photo) ──
+  (function() {
+    const bg = document.getElementById('dHeroBg');
+    if (!bg) return;
+    const heroEl = bg.closest('.hero');
+    if (!heroEl) return;
+    const main = document.querySelector('.main');
+    const scroller = main || window;
+    function onScroll() {
+      var rect = heroEl.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+      var prog = Math.max(0, Math.min(1, -rect.top / rect.height));
+      bg.style.transform = 'scale(1.06) translateY(' + (prog * 14) + '%)';
+    }
+    if (main) main.addEventListener('scroll', onScroll, {passive:true});
+    else window.addEventListener('scroll', onScroll, {passive:true});
+  })();
+
+  // ── CINEMATIC HOME ANIMATIONS ──
+  (function() {
+    function boot() {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return setTimeout(boot, 80);
+      gsap.registerPlugin(ScrollTrigger);
+
+      var sc = document.querySelector('.desktop-main');
+      if (!sc) return;
+      ScrollTrigger.defaults({ scroller: sc });
+
+      // ── HERO ENTRANCE ──
+      gsap.set('#cin-hero-bg', { scale: 1.06 });
+      var htl = gsap.timeline({ delay: 0.3 });
+      htl
+        .to('#cin-hero-bg', { scale: 1, duration: 2.2, ease: 'power2.out' })
+        .to('#cin-ew',    { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=1.6')
+        .to('#cin-h1',    { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out' }, '-=0.6')
+        .to('#cin-sub',   { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.5')
+        .to('#cin-btns',  { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4')
+        .to('#cin-cue',   { opacity: 1,       duration: 0.4                     }, '-=0.2');
+
+      gsap.to('#cin-cue', { y: 8, repeat: -1, yoyo: true, duration: 1.3, ease: 'sine.inOut', delay: 2.5 });
+
+      // Hero parallax
+      gsap.to('#cin-hero-bg', { yPercent: 20, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: 'top top', end: 'bottom top', scrub: true } });
+      gsap.to('#cin-hero-text', { opacity: 0, y: -32, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: '18% top', end: '68% top', scrub: true } });
+      gsap.to('#cin-cue', { opacity: 0, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: '8% top', end: '30% top', scrub: true } });
+
+      // ── WORDS: Timeless / Original / Rare ──
+      var wordsTl = gsap.timeline({
+        scrollTrigger: { trigger: '#cin-words-pin', pin: '#cin-s-words', start: 'top top', end: 'bottom bottom', scrub: 1.2 }
+      });
+      wordsTl
+        .to('#w-word0', { opacity: 1, y: 0, duration: 0.18 }, 0)
+        .to('#w-word0', { opacity: 0, y: -40, duration: 0.14 }, 0.28)
+        .to('#w-word1', { opacity: 1, y: 0, duration: 0.18 }, 0.32)
+        .to('#w-word1', { opacity: 0, y: -40, duration: 0.14 }, 0.58)
+        .to('#w-word2', { opacity: 1, y: 0, duration: 0.18 }, 0.64)
+        .to('#w-word2', { opacity: 0, y: -40, duration: 0.14 }, 0.9);
+
+      // ── SHIRT SWEEP ──
+      gsap.set('#sw0', { xPercent: -140, rotation: -10, opacity: 0, scale: 0.85 });
+      gsap.set('#sw1', { xPercent:  140, rotation:  10, opacity: 0, scale: 0.85 });
+      gsap.set('#sw2', { xPercent: -140, rotation:  -8, opacity: 0, scale: 0.85 });
+      gsap.set('#sw3', { xPercent:  140, rotation:   8, opacity: 0, scale: 0.85 });
+
+      var swBgs = ['#swbg0','#swbg1','#swbg2','#swbg3'];
+
+      var swTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#cin-sweep-pin', pin: '#cin-s-sweep',
+          start: 'top top', end: 'bottom bottom', scrub: 1.6,
+          onUpdate: function(self) {
+            var p = self.progress;
+            document.getElementById('sw-fill').style.width = (p * 100) + '%';
+            var bi = Math.min(Math.floor(p * 4.5), 3);
+            swBgs.forEach(function(id, i) {
+              var el = document.querySelector(id);
+              if (el) el.style.opacity = i === bi ? '1' : '0';
+            });
+          }
+        }
+      });
+
+      swTl
+        // shirt0 sweeps in and holds center
+        .to('#sw0', { xPercent: 0, rotation: 0, opacity: 1, scale: 1, duration: 0.2, ease: 'power2.out' }, 0)
+        // shirt0 sweeps out right, shirt1 comes in
+        .to('#sw0', { xPercent: 140, rotation: 12, opacity: 0, duration: 0.18, ease: 'power2.in' }, 0.28)
+        .to('#sw1', { xPercent: 0, rotation: 0, opacity: 1, scale: 1, duration: 0.2, ease: 'power2.out' }, 0.32)
+        // shirt1 out left, shirt2 in
+        .to('#sw1', { xPercent: -140, rotation: -12, opacity: 0, duration: 0.18, ease: 'power2.in' }, 0.56)
+        .to('#sw2', { xPercent: 0, rotation: 0, opacity: 1, scale: 1, duration: 0.2, ease: 'power2.out' }, 0.60)
+        // shirt2 out right, shirt3 in
+        .to('#sw2', { xPercent: 140, rotation: 12, opacity: 0, duration: 0.18, ease: 'power2.in' }, 0.78)
+        .to('#sw3', { xPercent: 0, rotation: 0, opacity: 1, scale: 1, duration: 0.18, ease: 'power2.out' }, 0.82)
+        // shirt3 scale up + fade to exit
+        .to('#sw3', { scale: 1.06, opacity: 0, duration: 0.12, ease: 'power2.in' }, 0.92);
+
+      // ── BANNERS REVEAL ──
+      ['#cin-event-banner','#cin-drop-banner'].forEach(function(id) {
+        var el = document.querySelector(id);
+        if (!el) return;
+        gsap.to(el, {
+          opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+        });
+        // word-by-word for event banner sub-elements
+        var kids = el.querySelectorAll('#ev-eyebrow, #ev-title, #ev-date, #db-eyebrow, #db-title, #db-sub');
+        kids.forEach(function(k, i) {
+          gsap.to(k, { opacity: 1, x: 0, y: 0, duration: 0.6, delay: i * 0.1, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+          });
+        });
+      });
+
+      // ── SECTION HEADERS REVEAL ──
+      ['#feat-header','#mw-header','#nat-header','#cl-header'].forEach(function(id) {
+        var el = document.querySelector(id);
+        if (!el) return;
+        gsap.to(el, {
+          opacity: 1, y: 0, duration: 0.75, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+        });
+      });
+
+      // ── SHIRT CARDS: stagger + 3D tilt ──
+      function animCards() {
+        document.querySelectorAll('.shirt-card-sm, .shirt-card').forEach(function(card, i) {
+          if (card._c) return; card._c = true;
+          gsap.fromTo(card,
+            { opacity: 0, y: 36, scale: 0.95, rotateY: 8 },
+            { opacity: 1, y: 0, scale: 1, rotateY: 0,
+              duration: 0.65, delay: (i % 5) * 0.08, ease: 'power3.out',
+              transformPerspective: 800,
+              scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none none' }
+            }
+          );
+          card.addEventListener('mousemove', function(e) {
+            var r = card.getBoundingClientRect();
+            var x = (e.clientX - r.left) / r.width - 0.5;
+            var y = (e.clientY - r.top)  / r.height - 0.5;
+            gsap.to(card, { rotateY: x * 16, rotateX: -y * 9, translateY: -10, scale: 1.03,
+              duration: 0.25, ease: 'power2.out', transformPerspective: 700, overwrite: true });
+          });
+          card.addEventListener('mouseleave', function() {
+            gsap.to(card, { rotateY: 0, rotateX: 0, translateY: 0, scale: 1,
+              duration: 0.5, ease: 'power3.out', overwrite: true });
+          });
+        });
+      }
+
+      var origRA = window.renderAll;
+      if (origRA) {
+        window.renderAll = function() {
+          origRA.apply(this, arguments);
+          setTimeout(function() { animCards(); ScrollTrigger.refresh(); }, 150);
+        };
+      }
+
+      // ── COUNTDOWNS ──
+      function pad(n) { return n < 10 ? '0'+n : ''+n; }
+      function cinCd() {
+        var t = new Date('2026-10-04T10:00:00+02:00'), now = new Date(), d = t - now;
+        var set = function(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
+        if (d <= 0) { ['cin-days','cin-hours','cin-mins'].forEach(function(id){set(id,'00');}); return; }
+        set('cin-days', pad(Math.floor(d/86400000)));
+        set('cin-hours', pad(Math.floor((d%86400000)/3600000)));
+        set('cin-mins', pad(Math.floor((d%3600000)/60000)));
+      }
+      function dropCd() {
+        var t = new Date('2026-07-06T12:00:00+02:00'), now = new Date(), d = t - now;
+        var set = function(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
+        if (d <= 0) { ['drop-days','drop-hours','drop-mins'].forEach(function(id){set(id,'00');}); return; }
+        set('drop-days', pad(Math.floor(d/86400000)));
+        set('drop-hours', pad(Math.floor((d%86400000)/3600000)));
+        set('drop-mins', pad(Math.floor((d%3600000)/60000)));
+      }
+      cinCd(); dropCd();
+      setInterval(cinCd, 30000); setInterval(dropCd, 30000);
+    }
+
+    setTimeout(boot, 200);
+  })();
 
   // ── INIT ──
   updateCartBadge();
