@@ -905,7 +905,22 @@
       </div>
     </nav>
     <div class="sidebar-footer">
-      <div style="margin-bottom:8px;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase">Contact</div><div id="cin-home">
+      <div style="margin-bottom:8px;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase">Contact</div>
+      <div style="font-size:12px;line-height:1.9">
+        <a href="mailto:info@shirtsociete.com" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">info@shirtsociete.com</a><br>
+        <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">@shirtsociete</a>
+      </div>
+      <div style="margin-top:12px;font-size:11px">© 2026 Shirt Société</div>
+    </div>
+  </aside>
+
+  <!-- Desktop Main -->
+  <main class="desktop-main">
+
+    <!-- HOME -->
+    <div class="dscreen active" id="d-screen-home">
+
+<div id="cin-home">
 
 <!-- SCENE 1: HERO -->
 <section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;padding:0 52px">
@@ -938,7 +953,7 @@
 
 <!-- SCENE 2: WORDS TAKEOVER — Timeless Original Rare -->
 <div id="cin-words-pin" style="position:relative;height:300vh">
-  <section id="cin-s-words" style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--black);text-align:center">
+  <section id="cin-s-words" style="position:relative;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--black);text-align:center">
     <div id="w-word0" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:var(--white);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute">Timeless.</div>
     <div id="w-word1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:transparent;-webkit-text-stroke:1.5px rgba(200,169,80,.45);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute">Original.</div>
     <div id="w-word2" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:var(--gold);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute">Rare.</div>
@@ -947,7 +962,7 @@
 
 <!-- SCENE 3: SHIRT SWEEP -->
 <div id="cin-sweep-pin" style="position:relative;height:600vh">
-  <section id="cin-s-sweep" style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--black)">
+  <section id="cin-s-sweep" style="position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--black)">
 
     <div id="swbg0" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
     <div id="swbg1" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
@@ -1103,18 +1118,6 @@
     <div id="d-clubs-row" class="shirt-row" style="display:flex;gap:20px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
   </div>
 </div>
-
-</div><!-- end cin-home -->w" id="d-national-row" style="display:flex;gap:16px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
-    </div>
-    <div style="height:1px;background:rgba(255,255,255,.04);margin:0 48px"></div>
-    <div class="section" style="padding:48px">
-      <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
-        <div class="section-label" style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600">Club Shirts</div>
-        <span style="font-size:13px;color:var(--text-muted);cursor:pointer;font-weight:500" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all →</span>
-      </div>
-      <div class="shirt-row" id="d-clubs-row" style="display:flex;gap:16px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
-    </div>
-  </div>
 
 </div><!-- end cin-home -->
     </div>
@@ -2652,12 +2655,30 @@
   // ── CINEMATIC HOME ANIMATIONS ──
   (function() {
     function boot() {
-      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return setTimeout(boot, 80);
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return // SAFETY NET: if GSAP fails to load/run within 3.5s, force everything visible
+    setTimeout(function() {
+      var wrap = document.getElementById('cin-home');
+      if (!wrap) return;
+      // if hero text is still invisible, GSAP didn't run — reveal all
+      var h1 = document.getElementById('cin-h1');
+      if (h1 && getComputedStyle(h1).opacity === '0') {
+        ['cin-ew','cin-h1','cin-sub','cin-btns','cin-cue','w-word0','w-word1','w-word2'].forEach(function(id){
+          var el = document.getElementById(id);
+          if (el) { el.style.opacity = '1'; el.style.transform = 'none'; }
+        });
+        // reveal all shirt-sweep and section wraps
+        wrap.querySelectorAll('[style*="opacity:0"]').forEach(function(el){
+          el.style.opacity = '1'; el.style.transform = 'none';
+        });
+      }
+    }, 3500);
+
+    setTimeout(boot, 80);
       gsap.registerPlugin(ScrollTrigger);
 
-      var sc = document.querySelector('.desktop-main');
-      if (!sc) return;
-      ScrollTrigger.defaults({ scroller: sc });
+      // Page scrolls via window (.desktop-main has no own overflow),
+      // so we use the default window scroller — do NOT override it.
+      var sc = document.querySelector('.desktop-main') || document.body;
 
       // ── HERO ENTRANCE ──
       gsap.set('#cin-hero-bg', { scale: 1.06 });
@@ -2679,7 +2700,7 @@
 
       // ── WORDS: Timeless / Original / Rare ──
       var wordsTl = gsap.timeline({
-        scrollTrigger: { trigger: '#cin-words-pin', pin: '#cin-s-words', start: 'top top', end: 'bottom bottom', scrub: 1.2 }
+        scrollTrigger: { trigger: '#cin-words-pin', pin: '#cin-s-words', pinType: 'fixed', start: 'top top', end: 'bottom bottom', scrub: 1.2, anticipatePin: 1 }
       });
       wordsTl
         .to('#w-word0', { opacity: 1, y: 0, duration: 0.18 }, 0)
@@ -2699,7 +2720,7 @@
 
       var swTl = gsap.timeline({
         scrollTrigger: {
-          trigger: '#cin-sweep-pin', pin: '#cin-s-sweep',
+          trigger: '#cin-sweep-pin', pin: '#cin-s-sweep', pinType: 'fixed', anticipatePin: 1,
           start: 'top top', end: 'bottom bottom', scrub: 1.6,
           onUpdate: function(self) {
             var p = self.progress;
@@ -2810,6 +2831,24 @@
       cinCd(); dropCd();
       setInterval(cinCd, 30000); setInterval(dropCd, 30000);
     }
+
+    // SAFETY NET: if GSAP fails to load/run within 3.5s, force everything visible
+    setTimeout(function() {
+      var wrap = document.getElementById('cin-home');
+      if (!wrap) return;
+      // if hero text is still invisible, GSAP didn't run — reveal all
+      var h1 = document.getElementById('cin-h1');
+      if (h1 && getComputedStyle(h1).opacity === '0') {
+        ['cin-ew','cin-h1','cin-sub','cin-btns','cin-cue','w-word0','w-word1','w-word2'].forEach(function(id){
+          var el = document.getElementById(id);
+          if (el) { el.style.opacity = '1'; el.style.transform = 'none'; }
+        });
+        // reveal all shirt-sweep and section wraps
+        wrap.querySelectorAll('[style*="opacity:0"]').forEach(function(el){
+          el.style.opacity = '1'; el.style.transform = 'none';
+        });
+      }
+    }, 3500);
 
     setTimeout(boot, 200);
   })();
