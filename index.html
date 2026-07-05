@@ -2205,7 +2205,6 @@
       photos: [
         'https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg',
         'https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_2_tehmnf.jpg',
-        'https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_1_pmnjoz.jpg',
         'https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg',
         'https://res.cloudinary.com/dinpfdojh/video/upload/v1783254947/WhatsApp_Video_2026-07-05_at_14.23.31_ajhoyd.mp4',
         'https://res.cloudinary.com/dinpfdojh/video/upload/v1783254948/WhatsApp_Video_2026-07-05_at_14.23.31_1_ukmw7e.mp4'
@@ -2686,27 +2685,38 @@
       gsap.to('#cin-cue', { opacity: 0, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: '8% top', end: '30% top', scrub: true } });
 
       // ── WORDS: Timeless / Original / Rare ──
-      gsap.set(['#w-word0','#w-word1','#w-word2'], { opacity: 0, y: 60 });
+      gsap.set(['#w-word0','#w-word1','#w-word2'], { opacity: 0, y: 80, scale: 0.82, filter: 'blur(12px)', rotateX: 25, transformPerspective: 800 });
       // Fade in words background photo + slow parallax drift
       gsap.fromTo('#cin-words-bg', { opacity: 0 }, { opacity: 1, ease: 'none',
         scrollTrigger: { trigger: '#cin-words-pin', start: 'top 90%', end: 'top 40%', scrub: true } });
       gsap.to('#cin-words-bg', { yPercent: 12, ease: 'none',
         scrollTrigger: { trigger: '#cin-words-pin', start: 'top top', end: 'bottom top', scrub: true } });
       var wordsTl = gsap.timeline({
-        scrollTrigger: { trigger: '#cin-words-pin', pin: '#cin-s-words', pinType: 'fixed', start: 'top top', end: 'bottom bottom', scrub: 1, anticipatePin: 1 }
+        scrollTrigger: { trigger: '#cin-words-pin', pin: '#cin-s-words', pinType: 'fixed', start: 'top top', end: 'bottom bottom', scrub: 1.4, anticipatePin: 1 }
       });
       // Each word: fades+rises in, HOLDS clearly, then fully exits BEFORE next enters.
       // Faster snappier easing, clean gaps so words never stack on screen.
+      // Each word rises + scales up + unblurs into focus, holds, then blurs+lifts away.
+      // Cinematic depth via rotateX and blur. Clean gaps so only one word shows at a time.
       wordsTl
-        // Word 0 — Timeless
-        .fromTo('#w-word0', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.12, ease: 'power3.out' }, 0.02)
-        .to('#w-word0', { opacity: 0, y: -55, duration: 0.10, ease: 'power2.in' }, 0.26)
-        // Word 1 — Original (starts only after word0 is gone)
-        .fromTo('#w-word1', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.12, ease: 'power3.out' }, 0.38)
-        .to('#w-word1', { opacity: 0, y: -55, duration: 0.10, ease: 'power2.in' }, 0.62)
-        // Word 2 — Rare
-        .fromTo('#w-word2', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.12, ease: 'power3.out' }, 0.74)
-        .to('#w-word2', { opacity: 0, y: -55, duration: 0.10, ease: 'power2.in' }, 0.98);
+        // ── Timeless ──
+        .fromTo('#w-word0',
+          { opacity: 0, y: 80, scale: 0.82, filter: 'blur(12px)', rotateX: 25, textShadow: '0 0 0px rgba(200,169,80,0)' },
+          { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', rotateX: 0, textShadow: '0 0 40px rgba(200,169,80,0.25)', duration: 0.15, ease: 'power3.out' }, 0.02)
+        .to('#w-word0',
+          { opacity: 0, y: -70, scale: 1.12, filter: 'blur(10px)', rotateX: -20, duration: 0.11, ease: 'power2.in' }, 0.27)
+        // ── Original ──
+        .fromTo('#w-word1',
+          { opacity: 0, y: 80, scale: 0.82, filter: 'blur(12px)', rotateX: 25 },
+          { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', rotateX: 0, duration: 0.15, ease: 'power3.out' }, 0.40)
+        .to('#w-word1',
+          { opacity: 0, y: -70, scale: 1.12, filter: 'blur(10px)', rotateX: -20, duration: 0.11, ease: 'power2.in' }, 0.65)
+        // ── Rare ──
+        .fromTo('#w-word2',
+          { opacity: 0, y: 80, scale: 0.82, filter: 'blur(12px)', rotateX: 25 },
+          { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', rotateX: 0, duration: 0.15, ease: 'power3.out' }, 0.78)
+        .to('#w-word2',
+          { opacity: 0, y: -60, scale: 1.15, filter: 'blur(10px)', duration: 0.10, ease: 'power2.in' }, 0.98);
 
       // ── SHIRT SWEEP ──
       gsap.set('#sw0', { xPercent: -140, rotation: -10, opacity: 0, scale: 0.85 });
