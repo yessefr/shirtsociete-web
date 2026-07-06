@@ -274,16 +274,22 @@
     }
     .sw-info {
       position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 24px 18px 18px;
-      background: linear-gradient(transparent, rgba(10,9,5,.88));
+      padding: 44px 20px 26px;
+      background: linear-gradient(transparent, rgba(10,9,5,.5) 38%, rgba(10,9,5,.96));
     }
     .sw-cat {
       font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
       color: var(--gold); margin-bottom: 4px;
     }
     .sw-name {
-      font-family: 'Playfair Display', serif; font-style: italic;
-      font-size: 18px; color: var(--white);
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: clamp(26px, 2.4vw, 38px); color: var(--white); line-height: 1.05;
+      text-shadow: 0 2px 24px rgba(0,0,0,.7);
+    }
+    .sw-cat-lg {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: clamp(22px, 1.8vw, 30px); color: var(--gold); line-height: 1.05;
+      margin-bottom: 2px; text-shadow: 0 2px 24px rgba(0,0,0,.7);
     }
     .sw-shirt:hover { box-shadow: 0 40px 100px rgba(0,0,0,.8), 0 0 0 1px rgba(200,169,80,.2); }
 
@@ -966,23 +972,23 @@
 <div id="cin-sweep-pin" style="position:relative;height:600vh">
   <section id="cin-s-sweep" style="position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--black)">
 
-    <div id="swbg0" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782992050/WhatsApp_Image_2026-07-02_at_13.33.30_3_z9fb9y.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+    <div id="swbg0" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
     <div id="swbg1" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
     <div id="swbg2" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,transparent 0%,transparent 28%,rgba(10,9,5,.8) 100%),linear-gradient(180deg,rgba(10,9,5,.8) 0%,transparent 18%,transparent 78%,rgba(10,9,5,.95) 100%);pointer-events:none;z-index:6"></div>
 
     <!-- 4 shirts stacked, GSAP moves each one -->
     <div id="sw0" class="sw-shirt" onclick="dShopCategory('clubs')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782992050/WhatsApp_Image_2026-07-02_at_13.33.30_3_z9fb9y.jpg">
-      <div class="sw-info"><div class="sw-cat">Club Classic</div><div class="sw-name">90s, 80s &amp; 2000s Shirts</div></div>
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg">
+      <div class="sw-info"><div class="sw-name">Club Classics</div></div>
     </div>
     <div id="sw1" class="sw-shirt" onclick="dShopCategory('national')">
       <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg">
-      <div class="sw-info"><div class="sw-cat">National Teams</div><div class="sw-name">80s, 90s &amp; 2000s Shirts</div></div>
+      <div class="sw-info"><div class="sw-name">National Teams</div></div>
     </div>
     <div id="sw2" class="sw-shirt" onclick="dGoTo('about')">
       <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg">
-      <div class="sw-info"><div class="sw-cat">Our Story</div><div class="sw-name">Who We Are</div></div>
+      <div class="sw-info"><div class="sw-cat-lg">Our Story</div><div class="sw-name">Who We Are</div></div>
     </div>
     <div id="sw-prog" style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,169,80,.06);z-index:8">
       <div id="sw-fill" style="height:100%;background:var(--gold);width:0"></div>
