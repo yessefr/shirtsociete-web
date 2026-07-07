@@ -179,7 +179,7 @@
     }
     .hero-bg {
       position: absolute; inset: 0;
-      background-image: url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782385547/ChatGPT_Image_12_feb_2026_12_01_18_j490fq.png');
+      background-image: url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg');
       background-size: cover; background-position: center 40%;
       filter: brightness(0.35);
     }
@@ -414,6 +414,61 @@
     /* Gallery */
     .gallery-main {
       position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+      cursor: grab;
+      user-select: none;
+    }
+    .gallery-main.dragging { cursor: grabbing; }
+    .gallery-main img {
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+    .gallery-zoom-hint {
+      position: absolute; bottom: 12px; right: 12px;
+      background: rgba(10,9,5,.7); color: var(--gold);
+      font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 6px 12px; border-radius: 2px; pointer-events: none;
+      display: flex; align-items: center; gap: 6px; z-index: 3;
+    }
+    /* Fullscreen zoom lightbox */
+    #zoom-lightbox {
+      position: fixed; inset: 0; z-index: 3000;
+      background: rgba(6,5,4,.96);
+      display: none; align-items: center; justify-content: center;
+      cursor: zoom-out;
+    }
+    #zoom-lightbox.open { display: flex; }
+    #zoom-lightbox-img {
+      max-width: 92vw; max-height: 88vh;
+      object-fit: contain;
+      transition: transform .15s ease-out;
+      transform-origin: center center;
+      cursor: zoom-in;
+      user-select: none; -webkit-user-drag: none;
+    }
+    #zoom-lightbox-img.zoomed { cursor: move; }
+    .zoom-close {
+      position: absolute; top: 24px; right: 28px;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(200,169,80,.25);
+      color: var(--cream); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 3001; transition: background .2s;
+    }
+    .zoom-close:hover { background: rgba(200,169,80,.15); }
+    .zoom-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(200,169,80,.2);
+      color: var(--cream); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 3001; transition: background .2s;
+    }
+    .zoom-nav:hover { background: rgba(200,169,80,.15); }
+    .zoom-nav.prev { left: 24px; }
+    .zoom-nav.next { right: 24px; }
+    .zoom-counter {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; letter-spacing: 2px; color: var(--muted); z-index: 3001;
     }
     .gallery-main img {
       width: 100%; aspect-ratio: 3/4; object-fit: contain;
@@ -930,7 +985,31 @@
 
 <!-- SCENE 1: HERO -->
 <section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;padding:0 52px">
-  <div id="cin-hero-bg" style="position:absolute;inset:-10%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782385547/ChatGPT_Image_12_feb_2026_12_01_18_j490fq.png') center/cover;will-change:transform"></div>
+    <!-- Compact event + drop pills (top of page) -->
+    <div id="cin-top-pills" style="position:absolute;top:24px;right:28px;z-index:5;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(-12px)">
+      <div onclick="document.getElementById('cin-event-banner').scrollIntoView({behavior:'smooth',block:'center'})" style="display:flex;align-items:center;gap:10px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(200,169,80,.25);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.6)'" onmouseout="this.style.borderColor='rgba(200,169,80,.25)'">
+        <div style="position:relative;width:8px;height:8px;flex-shrink:0">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
+          <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(200,169,80,.3);animation:pulseRing 1.5s ease-in-out infinite"></div>
+        </div>
+        <div style="line-height:1.2">
+          <div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600">Next Event</div>
+          <div style="font-size:12px;color:var(--white);font-weight:600">Leipzig · 4 Oct</div>
+        </div>
+      </div>
+      <div onclick="document.getElementById('cin-drop-banner').scrollIntoView({behavior:'smooth',block:'center'})" style="display:flex;align-items:center;gap:10px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(76,175,125,.3);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(76,175,125,.7)'" onmouseout="this.style.borderColor='rgba(76,175,125,.3)'">
+        <div style="position:relative;width:8px;height:8px;flex-shrink:0">
+          <div style="width:8px;height:8px;border-radius:50%;background:#4caf7d;position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
+          <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(76,175,125,.3);animation:pulseRing 1.5s ease-in-out infinite"></div>
+        </div>
+        <div style="line-height:1.2">
+          <div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#4caf7d;font-weight:600">Upcoming Drop</div>
+          <div style="font-size:12px;color:var(--white);font-weight:600">18 July · 17:00</div>
+        </div>
+      </div>
+    </div>
+
+  <div id="cin-hero-bg" style="position:absolute;inset:-10%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;will-change:transform"></div>
   <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,9,5,.88) 0%,rgba(10,9,5,.4) 60%,rgba(10,9,5,.05) 100%),linear-gradient(180deg,rgba(10,9,5,.15) 0%,rgba(10,9,5,0) 35%,rgba(10,9,5,.96) 100%)"></div>
   <div id="cin-hero-text" style="position:relative;z-index:2;max-width:600px">
     <div id="cin-ew" style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:14px;opacity:0;transform:translateY(16px)">
@@ -1185,6 +1264,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
             <img id="d-detail-main-img" src="" alt="">
+            <div class="gallery-zoom-hint"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Click to zoom</div>
             <button class="gallery-arrow next" onclick="galleryNav('d',1)">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
             </button>
@@ -1281,8 +1361,8 @@
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px">
           <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg"
             style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px" alt="Shirt Société at the fair">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_qxxfzx.jpg"
-            style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px" alt="Fair">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg"
+            style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px" alt="Frankfurt Vintage Fußballbörse">
           <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg"
             style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px" alt="Düsseldorf">
         </div>
@@ -1414,7 +1494,7 @@
           <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:36px;line-height:1.2;margin-bottom:20px">A Collector's Eye,<br>A Curator's Touch</h2>
           <p style="font-size:16px;line-height:1.9;color:#b0a898;margin-bottom:16px">Shirt Société was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for collectors around the globe.</p>
           <p style="font-size:16px;line-height:1.9;color:#b0a898;margin-bottom:16px">From vintage clubs to match worn pieces worn by legends, every shirt in our collection has been hand-picked for its authenticity, rarity and history. We don't just sell shirts. We preserve football heritage.</p>
-          <p style="font-size:16px;line-height:1.9;color:#b0a898;margin-bottom:32px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Cologne (31.05.2026), Düsseldorf (13.06.2026) and Hamburg (04.02.2026), Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next stop: Leipzig, October 4th 2026.</p>
+          <p style="font-size:16px;line-height:1.9;color:#b0a898;margin-bottom:32px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Hamburg (04.02.2026), Cologne (31.05.2026), Düsseldorf (13.06.2026) and most recently Frankfurt (04.07.2026), Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next stop: Leipzig, October 4th 2026.</p>
           <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);padding:14px 28px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             Follow on Instagram
@@ -1846,6 +1926,112 @@
       t.classList.toggle('active', i === currentImgIndex);
     });
   }
+
+  // ── ZOOM LIGHTBOX ──
+  var zoomLevel = 1, zoomPanX = 0, zoomPanY = 0;
+
+  function openZoom() {
+    if (!currentImages.length) return;
+    var lb = document.getElementById('zoom-lightbox');
+    var img = document.getElementById('zoom-lightbox-img');
+    img.src = currentImages[currentImgIndex];
+    zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
+    img.style.transform = 'scale(1)';
+    img.classList.remove('zoomed');
+    updateZoomCounter();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeZoom(e) {
+    // only close on backdrop / close btn / nav, not when clicking zoomed image
+    if (e && e.target.id === 'zoom-lightbox-img' && zoomLevel > 1) return;
+    document.getElementById('zoom-lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function zoomNav(e, dir) {
+    if (e) e.stopPropagation();
+    if (!currentImages.length) return;
+    currentImgIndex = (currentImgIndex + dir + currentImages.length) % currentImages.length;
+    var img = document.getElementById('zoom-lightbox-img');
+    zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
+    img.style.transform = 'scale(1)';
+    img.classList.remove('zoomed');
+    img.src = currentImages[currentImgIndex];
+    updateZoomCounter();
+    // sync main detail image too
+    var mainId = document.getElementById('d-detail-main-img') ? 'd-detail-main-img' : 'm-detail-main-img';
+    var mainEl = document.getElementById(mainId);
+    if (mainEl) mainEl.src = currentImages[currentImgIndex];
+  }
+  function toggleZoomLevel(e) {
+    if (e) e.stopPropagation();
+    var img = document.getElementById('zoom-lightbox-img');
+    if (zoomLevel === 1) {
+      zoomLevel = 2.4;
+      img.classList.add('zoomed');
+    } else {
+      zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
+      img.classList.remove('zoomed');
+    }
+    img.style.transform = 'scale(' + zoomLevel + ') translate(' + zoomPanX + 'px,' + zoomPanY + 'px)';
+  }
+  function updateZoomCounter() {
+    var c = document.getElementById('zoom-counter');
+    if (c) c.textContent = (currentImgIndex + 1) + ' / ' + currentImages.length;
+  }
+
+  // Pan the zoomed image with mouse move
+  (function initZoomPan() {
+    var img = document.getElementById('zoom-lightbox-img');
+    if (!img) return;
+    img.addEventListener('mousemove', function(e) {
+      if (zoomLevel <= 1) return;
+      var r = img.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      img.style.transform = 'scale(' + zoomLevel + ') translate(' + (-x * 80) + 'px,' + (-y * 80) + 'px)';
+    });
+  })();
+
+  // Keyboard nav in lightbox
+  document.addEventListener('keydown', function(e) {
+    var lb = document.getElementById('zoom-lightbox');
+    if (!lb || !lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeZoom();
+    else if (e.key === 'ArrowLeft') zoomNav(null, -1);
+    else if (e.key === 'ArrowRight') zoomNav(null, 1);
+  });
+
+  // ── DRAG-TO-SWIPE on desktop gallery ──
+  (function initGalleryDrag() {
+    function attach(mainId) {
+      var main = document.getElementById(mainId);
+      if (!main) return;
+      var box = main.closest('.gallery-main');
+      if (!box) return;
+      var startX = 0, dragging = false, moved = false;
+      box.addEventListener('mousedown', function(e) {
+        dragging = true; moved = false; startX = e.clientX;
+        box.classList.add('dragging');
+      });
+      window.addEventListener('mousemove', function(e) {
+        if (!dragging) return;
+        if (Math.abs(e.clientX - startX) > 8) moved = true;
+      });
+      window.addEventListener('mouseup', function(e) {
+        if (!dragging) return;
+        dragging = false;
+        box.classList.remove('dragging');
+        var dx = e.clientX - startX;
+        var ctx = mainId === 'm-detail-main-img' ? 'm' : 'd';
+        if (dx < -45) galleryNav(ctx, 1);
+        else if (dx > 45) galleryNav(ctx, -1);
+        else if (!moved) openZoom();  // a click (no drag) opens zoom
+      });
+    }
+    attach('d-detail-main-img');
+    attach('m-detail-main-img');
+  })();
 
   function switchImg(el, src, mainId) {
     document.getElementById(mainId).src = src;
@@ -2681,7 +2867,8 @@
         .to('#cin-h1',    { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out' }, '-=0.6')
         .to('#cin-sub',   { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.5')
         .to('#cin-btns',  { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4')
-        .to('#cin-cue',   { opacity: 1,       duration: 0.4                     }, '-=0.2');
+        .to('#cin-cue',   { opacity: 1,       duration: 0.4                     }, '-=0.2')
+        .to('#cin-top-pills', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3');
 
       gsap.to('#cin-cue', { y: 8, repeat: -1, yoyo: true, duration: 1.3, ease: 'sine.inOut', delay: 2.5 });
 
@@ -2819,6 +3006,35 @@
         };
       }
 
+      // ── EVENT + DROP BANNER REVEALS ──
+      // Leipzig event banner: rises + fades in when scrolled into view
+      var evBanner = document.getElementById('cin-event-banner');
+      if (evBanner) {
+        gsap.fromTo(evBanner,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+            scrollTrigger: { trigger: evBanner, start: 'top 88%', toggleActions: 'play none none none' } });
+        // Countdown digits pop in with a stagger
+        gsap.fromTo(evBanner.querySelectorAll('#cin-days, #cin-hours, #cin-mins'),
+          { opacity: 0, y: 12, scale: 0.9 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.08, ease: 'back.out(1.6)',
+            scrollTrigger: { trigger: evBanner, start: 'top 82%', toggleActions: 'play none none none' } });
+      }
+
+      // Drop banner: rises + fades in when scrolled into view
+      var drBanner = document.getElementById('cin-drop-banner');
+      if (drBanner) {
+        gsap.fromTo(drBanner,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+            scrollTrigger: { trigger: drBanner, start: 'top 88%', toggleActions: 'play none none none' } });
+        // Drop countdown digits stagger
+        gsap.fromTo(drBanner.querySelectorAll('#drop-days, #drop-hours, #drop-mins'),
+          { opacity: 0, y: 12, scale: 0.9 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.08, ease: 'back.out(1.6)',
+            scrollTrigger: { trigger: drBanner, start: 'top 82%', toggleActions: 'play none none none' } });
+      }
+
       // ── COUNTDOWNS ──
       function pad(n) { return n < 10 ? '0'+n : ''+n; }
       function cinCd() {
@@ -2848,7 +3064,7 @@
       // if hero text is still invisible, GSAP didn't run — reveal all
       var h1 = document.getElementById('cin-h1');
       if (h1 && getComputedStyle(h1).opacity === '0') {
-        ['cin-ew','cin-h1','cin-sub','cin-btns','cin-cue','w-word0','w-word1','w-word2'].forEach(function(id){
+        ['cin-ew','cin-h1','cin-sub','cin-btns','cin-cue','cin-top-pills','w-word0','w-word1','w-word2'].forEach(function(id){
           var el = document.getElementById(id);
           if (el) { el.style.opacity = '1'; el.style.transform = 'none'; el.style.filter = 'none'; }
         });
@@ -2868,5 +3084,20 @@
   fetchShirts();
   setTimeout(initFromHash, 800); // wait for shirts to load
 </script>
+
+<!-- Zoom Lightbox -->
+<div id="zoom-lightbox" onclick="closeZoom(event)">
+  <div class="zoom-close" onclick="closeZoom(event)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </div>
+  <div class="zoom-nav prev" onclick="zoomNav(event,-1)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+  </div>
+  <img id="zoom-lightbox-img" src="" alt="" onclick="toggleZoomLevel(event)">
+  <div class="zoom-nav next" onclick="zoomNav(event,1)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
+  </div>
+  <div class="zoom-counter" id="zoom-counter"></div>
+</div>
 </body>
 </html>
