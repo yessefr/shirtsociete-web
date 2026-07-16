@@ -2495,6 +2495,10 @@
     if (screen === 'cart') renderDesktopCart();
     if (screen === 'checkout') buildCheckoutForms();
     if (screen === 'wishlist') renderWishlist();
+    // screens are hidden at boot, so ScrollTrigger must re-measure once one becomes visible
+    if (typeof ScrollTrigger !== 'undefined') {
+      requestAnimationFrame(function(){ ScrollTrigger.refresh(); });
+    }
   }
   function dGoBack() { dGoTo(dPrevScreen); }
   // Navigate to shop pre-filtered by category (used by cinematic sweep cards)
@@ -3198,9 +3202,15 @@
       var maskText = document.getElementById('ab-mask-text');
       if (maskText) {
         gsap.fromTo(maskText,
-          { backgroundPosition: 'center 15%' },
-          { backgroundPosition: 'center 85%', ease: 'none',
-            scrollTrigger: { trigger: '#ab-mask', start: 'top top', end: 'bottom top', scrub: 0.8 } });
+          { backgroundPosition: 'center 8%' },
+          { backgroundPosition: 'center 92%', ease: 'none',
+            scrollTrigger: {
+              trigger: '#ab-mask',
+              start: 'top top',      // banner is at the very top of the page
+              end: 'bottom top',     // ...until it has fully scrolled away
+              scrub: 0.8,
+              invalidateOnRefresh: true
+            } });
       }
 
       // ── MOUSE TRACKING (Atoms-style parallax on hero) ──
