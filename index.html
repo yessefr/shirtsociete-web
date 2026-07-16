@@ -1179,6 +1179,14 @@
   </section>
 </div>
 
+<!-- SCENE 3B: SEE-THROUGH TEXT (image scrubs through the letters) -->
+<section id="cin-mask" style="position:relative;height:64vh;min-height:420px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--black)">
+  <div id="cin-mask-text" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,170px);line-height:.88;letter-spacing:-3px;text-align:center;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782992050/WhatsApp_Image_2026-07-02_at_13.33.30_3_z9fb9y.jpg') center 30%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;will-change:background-position;user-select:none">
+    SHIRT<br>SOCIÉTÉ
+  </div>
+  <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(200,169,80,.4)">Est. 2025 · Harderwijk</div>
+</section>
+
 <!-- SCENE 4: NEXT EVENT BANNER -->
 <div id="cin-event-banner" style="opacity:0;transform:translateY(40px)">
   <div style="background:linear-gradient(135deg,rgba(200,169,80,.1),rgba(200,169,80,.03));border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:36px 52px">
@@ -3183,6 +3191,57 @@
           setTimeout(function() { animCards(); ScrollTrigger.refresh(); }, 150);
         };
       }
+
+      // ── SEE-THROUGH TEXT SCRUB (image pans through the letters on scroll) ──
+      var maskText = document.getElementById('cin-mask-text');
+      if (maskText) {
+        gsap.fromTo(maskText,
+          { backgroundPosition: 'center 0%' },
+          { backgroundPosition: 'center 100%', ease: 'none',
+            scrollTrigger: { trigger: '#cin-mask', start: 'top bottom', end: 'bottom top', scrub: 0.8 } });
+        // gentle scale-in of the whole word block
+        gsap.fromTo(maskText,
+          { scale: 0.92, opacity: 0.4 },
+          { scale: 1, opacity: 1, ease: 'power2.out',
+            scrollTrigger: { trigger: '#cin-mask', start: 'top 85%', end: 'center center', scrub: 0.8 } });
+      }
+
+      // ── MOUSE TRACKING (Atoms-style parallax on hero) ──
+      (function() {
+        var heroSec = document.getElementById('cin-s1');
+        var heroBg = document.getElementById('cin-hero-bg');
+        var heroText = document.getElementById('cin-hero-text');
+        var pills = document.getElementById('cin-top-pills');
+        if (!heroSec || !heroBg) return;
+        var raf = null, mx = 0, my = 0;
+        heroSec.addEventListener('mousemove', function(e) {
+          var r = heroSec.getBoundingClientRect();
+          mx = (e.clientX - r.left) / r.width - 0.5;   // -0.5 .. 0.5
+          my = (e.clientY - r.top) / r.height - 0.5;
+          if (!raf) raf = requestAnimationFrame(apply);
+        });
+        heroSec.addEventListener('mouseleave', function() {
+          mx = 0; my = 0;
+          if (!raf) raf = requestAnimationFrame(apply);
+        });
+        function apply() {
+          raf = null;
+          // bg drifts WITH the cursor, text drifts gently AGAINST it = depth
+          gsap.to(heroBg,   { x: mx * 26, y: my * 16, duration: 0.9, ease: 'power2.out', overwrite: false });
+          if (heroText) gsap.to(heroText, { x: mx * -14, duration: 0.9, ease: 'power2.out', overwrite: false });
+          if (pills)    gsap.to(pills,    { x: mx * -8,  duration: 1.1, ease: 'power2.out', overwrite: false });
+        }
+      })();
+
+      // ── 3D SCROLL TILT (banners tip upright as they enter) ──
+      ['#cin-event-banner', '#cin-drop-banner', '#cin-mask'].forEach(function(sel) {
+        var el = document.querySelector(sel);
+        if (!el) return;
+        gsap.fromTo(el,
+          { rotateX: 9, transformPerspective: 900, transformOrigin: 'center top' },
+          { rotateX: 0, ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 95%', end: 'top 55%', scrub: 0.7 } });
+      });
 
       // ── EVENT + DROP BANNER REVEALS ──
       // Leipzig event banner: rises + fades in when scrolled into view
