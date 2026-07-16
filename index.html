@@ -624,11 +624,25 @@
       .screen.active { display: flex; }
 
       /* Mobile hero */
-      .m-hero { background: linear-gradient(160deg, #1a1710 0%, var(--black) 60%); padding: 32px 20px 40px; position: relative; overflow: hidden; }
+      .m-hero {
+      position: relative; overflow: hidden;
+      min-height: 78vh; padding: 32px 20px 40px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .m-hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;
+    }
+    .m-hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(10,9,5,.55) 0%, rgba(10,9,5,.35) 35%, rgba(10,9,5,.96) 100%);
+    }
+    .m-hero > *:not(.m-hero-bg) { position: relative; z-index: 2; }
       .m-hero-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
-      .m-hero-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 36px; line-height: 1.1; color: var(--white); margin-bottom: 8px; }
+      .m-hero-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 44px; line-height: .95; letter-spacing: -1px; color: var(--white); margin-bottom: 12px; }
+    .m-hero-title span { color: transparent; -webkit-text-stroke: 1.2px rgba(200,169,80,.55); }
       .m-hero-title span { color: var(--gold); }
-      .m-hero-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+      .m-hero-sub { font-size: 13px; font-weight: 300; color: rgba(245,240,232,.6); margin-bottom: 24px; line-height: 1.7; border-left: 1px solid rgba(200,169,80,.25); padding-left: 12px; }
       .m-section-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; padding: 24px 20px 12px; }
       .m-shirt-row { display: flex; gap: 12px; overflow-x: auto; padding: 0 20px 16px; scrollbar-width: none; }
       .m-shirt-row::-webkit-scrollbar { display: none; }
@@ -720,13 +734,102 @@
     </div>
   </div>
   <div class="m-hero">
-    <div class="m-hero-eyebrow">Est. in passion</div>
-    <h1 class="m-hero-title">Vintage<br><span>football</span><br>history.</h1>
-    <p class="m-hero-sub">Curated match worn shirts & rare originals.</p>
+    <div class="m-hero-bg"></div>
+    <!-- compact pills -->
+    <div style="position:absolute;top:16px;right:16px;z-index:3;display:flex;flex-direction:column;gap:8px">
+      <div onclick="mGoTo('about')" style="display:flex;align-items:center;gap:8px;background:rgba(10,9,5,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(200,169,80,.3);border-radius:100px;padding:6px 12px 6px 9px;cursor:pointer">
+        <div style="position:relative;width:6px;height:6px;flex-shrink:0">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
+        </div>
+        <div style="line-height:1.15">
+          <div style="font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600">Next Event</div>
+          <div style="font-size:10px;color:var(--white);font-weight:600">Leipzig · 4 Oct</div>
+        </div>
+      </div>
+      <div onclick="mShopNew()" style="display:flex;align-items:center;gap:8px;background:rgba(10,9,5,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(76,175,125,.35);border-radius:100px;padding:6px 12px 6px 9px;cursor:pointer">
+        <div style="position:relative;width:6px;height:6px;flex-shrink:0">
+          <div style="width:6px;height:6px;border-radius:50%;background:#4caf7d;position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
+        </div>
+        <div style="line-height:1.15">
+          <div style="font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:#4caf7d;font-weight:600">Upcoming Drop</div>
+          <div style="font-size:10px;color:var(--white);font-weight:600">22 July · 17:00</div>
+        </div>
+      </div>
+    </div>
+    <div class="m-hero-eyebrow">Est. 2025 · Harderwijk, NL</div>
+    <h1 class="m-hero-title">Vintage<br>football<br><span>history.</span></h1>
+    <p class="m-hero-sub">Authenticity. Heritage. Curated Vintage &amp; Match Worn Football Shirts</p>
     <button class="btn-primary" onclick="mGoTo('shop')">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
       Shop the collection
     </button>
+  </div>
+
+  <!-- Words: Timeless / Original / Rare (mobile) -->
+  <div style="position:relative;padding:64px 20px;text-align:center;overflow:hidden">
+    <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;filter:brightness(.26) saturate(.5)"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.35),rgba(8,7,5,.9))"></div>
+    <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:6px">
+      <div class="m-word" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:38px;line-height:1;color:var(--white)">Timeless.</div>
+      <div class="m-word" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:38px;line-height:1;color:transparent;-webkit-text-stroke:1.2px rgba(200,169,80,.5)">Original.</div>
+      <div class="m-word" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:38px;line-height:1;color:var(--gold)">Rare.</div>
+    </div>
+  </div>
+
+  <!-- Category cards (mobile version of the sweep) -->
+  <div style="padding:32px 20px;display:flex;flex-direction:column;gap:14px">
+    <div onclick="mShopCategory('clubs')" style="position:relative;height:180px;border-radius:3px;overflow:hidden;cursor:pointer">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top">
+      <div style="position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,9,5,.9))"></div>
+      <div style="position:absolute;bottom:16px;left:16px;font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);text-shadow:0 2px 16px rgba(0,0,0,.7)">Club Classics</div>
+    </div>
+    <div onclick="mShopCategory('national')" style="position:relative;height:180px;border-radius:3px;overflow:hidden;cursor:pointer">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top">
+      <div style="position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,9,5,.9))"></div>
+      <div style="position:absolute;bottom:16px;left:16px;font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);text-shadow:0 2px 16px rgba(0,0,0,.7)">National Teams</div>
+    </div>
+    <div onclick="mGoTo('about')" style="position:relative;height:180px;border-radius:3px;overflow:hidden;cursor:pointer">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top">
+      <div style="position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,9,5,.9))"></div>
+      <div style="position:absolute;bottom:16px;left:16px">
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:20px;color:var(--gold);text-shadow:0 2px 16px rgba(0,0,0,.7)">Our Story</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;color:var(--white);text-shadow:0 2px 16px rgba(0,0,0,.7)">Who We Are</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drop banner (mobile) -->
+  <div style="background:linear-gradient(135deg,rgba(200,169,80,.1),rgba(200,169,80,.03));border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:28px 20px;text-align:center">
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px">
+      <div style="position:relative;width:10px;height:10px;flex-shrink:0">
+        <div style="width:10px;height:10px;border-radius:50%;background:#4caf7d;position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
+        <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(76,175,125,.25);animation:pulseRing 1.5s ease-in-out infinite"></div>
+      </div>
+      <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600">Upcoming Drop</div>
+    </div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);margin-bottom:6px">New Shirt Drop</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:18px;line-height:1.6">Wednesday 22 July 2026 · 17:00<br>Vintage National &amp; Club Shirts · 80s, 90s &amp; 00s</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:18px">
+      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:10px 14px;min-width:56px">
+        <div id="m-drop-days" style="font-size:26px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
+        <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px">Days</div>
+      </div>
+      <div style="font-size:20px;color:rgba(200,169,80,.2);padding-bottom:10px">:</div>
+      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:10px 14px;min-width:56px">
+        <div id="m-drop-hours" style="font-size:26px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
+        <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px">Hours</div>
+      </div>
+      <div style="font-size:20px;color:rgba(200,169,80,.2);padding-bottom:10px">:</div>
+      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:10px 14px;min-width:56px">
+        <div id="m-drop-mins" style="font-size:26px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
+        <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px">Mins</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;justify-content:center">
+      <input type="email" id="m-drop-email-input" placeholder="your@email.com" style="background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:2px;padding:9px 12px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;flex:1;max-width:180px">
+      <button onclick="submitDropEmailMobile()" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.5px">Notify</button>
+    </div>
+    <div id="m-drop-email-confirm" style="display:none;font-size:12px;color:var(--gold);font-weight:500;margin-top:10px">✓ You are on the list!</div>
   </div>
   <div class="m-section-label">Featured Pieces</div>
   <div id="m-featured-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
@@ -737,7 +840,7 @@
   <div class="m-section-label">National Teams</div>
   <div id="m-national-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
   <div class="m-divider"></div>
-  <div class="m-section-label">Clubs</div>
+  <div class="m-section-label">Club Shirts</div>
   <div id="m-clubs-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
 </div>
 
@@ -748,10 +851,11 @@
     <input type="text" id="m-search-input" placeholder="Search club, player, season..." oninput="mFilterShirts()">
   </div>
   <div class="m-filters">
-    <button class="m-filter-btn active" onclick="mSetFilter('all',this)">All</button>
-    <button class="m-filter-btn" onclick="mSetFilter('match_worn',this)">Match Worn</button>
-    <button class="m-filter-btn" onclick="mSetFilter('clubs',this)">Clubs</button>
-    <button class="m-filter-btn" onclick="mSetFilter('national',this)">National</button>
+    <button class="m-filter-btn active" onclick="mSetFilter('all',this)" id="m-filter-all">All</button>
+    <button class="m-filter-btn" onclick="mSetFilter('new',this)" id="m-filter-new" style="border-color:rgba(76,175,125,.45)">New</button>
+    <button class="m-filter-btn" onclick="mSetFilter('match_worn',this)" id="m-filter-mw">Match Worn</button>
+    <button class="m-filter-btn" onclick="mSetFilter('clubs',this)" id="m-filter-clubs">Clubs</button>
+    <button class="m-filter-btn" onclick="mSetFilter('national',this)" id="m-filter-national">National</button>
   </div>
   <div style="display:flex;gap:8px;padding:0 20px 12px;overflow-x:auto;scrollbar-width:none">
     <select id="m-filter-size" onchange="mFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
@@ -987,7 +1091,7 @@
 <section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;padding:0 52px">
     <!-- Compact event + drop pills (top of page) -->
     <div id="cin-top-pills" style="position:absolute;top:24px;right:28px;z-index:5;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(-12px)">
-      <div onclick="document.getElementById('cin-event-banner').scrollIntoView({behavior:'smooth',block:'center'})" style="display:flex;align-items:center;gap:10px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(200,169,80,.25);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.6)'" onmouseout="this.style.borderColor='rgba(200,169,80,.25)'">
+      <div onclick="dGoTo('about')" style="display:flex;align-items:center;gap:10px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(200,169,80,.25);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.6)'" onmouseout="this.style.borderColor='rgba(200,169,80,.25)'">
         <div style="position:relative;width:8px;height:8px;flex-shrink:0">
           <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
           <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(200,169,80,.3);animation:pulseRing 1.5s ease-in-out infinite"></div>
@@ -997,14 +1101,14 @@
           <div style="font-size:12px;color:var(--white);font-weight:600">Leipzig · 4 Oct</div>
         </div>
       </div>
-      <div onclick="document.getElementById('cin-drop-banner').scrollIntoView({behavior:'smooth',block:'center'})" style="display:flex;align-items:center;gap:10px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(76,175,125,.3);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(76,175,125,.7)'" onmouseout="this.style.borderColor='rgba(76,175,125,.3)'">
+      <div onclick="dShopNewest()" style="display:flex;align-items:center;gap:10px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(76,175,125,.3);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(76,175,125,.7)'" onmouseout="this.style.borderColor='rgba(76,175,125,.3)'">
         <div style="position:relative;width:8px;height:8px;flex-shrink:0">
           <div style="width:8px;height:8px;border-radius:50%;background:#4caf7d;position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
           <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(76,175,125,.3);animation:pulseRing 1.5s ease-in-out infinite"></div>
         </div>
         <div style="line-height:1.2">
           <div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#4caf7d;font-weight:600">Upcoming Drop</div>
-          <div style="font-size:12px;color:var(--white);font-weight:600">18 July · 17:00</div>
+          <div style="font-size:12px;color:var(--white);font-weight:600">22 July · 17:00</div>
         </div>
       </div>
     </div>
@@ -1126,7 +1230,7 @@
       <div id="db-eyebrow" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;opacity:0">Upcoming Drop</div>
     </div>
     <div id="db-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,48px);color:var(--white);margin-bottom:6px;opacity:0;transform:translateY(16px)">New Shirt Drop</div>
-    <div id="db-sub" style="font-size:13px;color:var(--text-muted);margin-bottom:24px;opacity:0">Saturday 18 July 2026 &middot; 17:00 &middot; Vintage National &amp; Club Shirts &middot; 80s, 90s &amp; 00s</div>
+    <div id="db-sub" style="font-size:13px;color:var(--text-muted);margin-bottom:24px;opacity:0">Wednesday 22 July 2026 &middot; 17:00 &middot; Vintage National &amp; Club Shirts &middot; 80s, 90s &amp; 00s</div>
     <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px">
       <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:14px 18px;min-width:68px">
         <div id="drop-days" style="font-size:38px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
@@ -1219,6 +1323,7 @@
           <input type="text" id="d-search-input" placeholder="Search club, player, season..." oninput="dFilterShirts()">
         </div>
         <button class="filter-btn active" onclick="dSetFilter('all',this)" id="d-filter-all">All</button>
+        <button class="filter-btn" onclick="dSetFilter('new',this)" id="d-filter-new" style="border-color:rgba(76,175,125,.4)">New</button>
         <button class="filter-btn" onclick="dSetFilter('match_worn',this)" id="d-filter-mw">Match Worn</button>
         <button class="filter-btn" onclick="dSetFilter('clubs',this)" id="d-filter-clubs">Clubs</button>
         <button class="filter-btn" onclick="dSetFilter('national',this)" id="d-filter-national">National</button>
@@ -1723,7 +1828,12 @@
     const priceFilter = document.getElementById('m-filter-price')?.value || '';
     const sort = document.getElementById('m-sort')?.value || 'newest';
     let shirts = [...allShirts];
-    if (mCurrentFilter !== 'all') shirts = shirts.filter(s => s.category === mCurrentFilter);
+    if (mCurrentFilter === 'new') {
+      var mCutoff = Date.now() - 21 * 24 * 60 * 60 * 1000;
+      shirts = shirts.filter(s => s.created_at && new Date(s.created_at).getTime() >= mCutoff);
+    } else if (mCurrentFilter !== 'all') {
+      shirts = shirts.filter(s => s.category === mCurrentFilter);
+    }
     if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search) || (s.season||'').toLowerCase().includes(search));
     if (sizeFilter) shirts = shirts.filter(s => s.size === sizeFilter);
     if (priceFilter) {
@@ -1799,7 +1909,7 @@
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     if (btn) { btn.classList.add('active'); }
     else {
-      const map = {all:'d-filter-all',match_worn:'d-filter-mw',clubs:'d-filter-clubs',national:'d-filter-national'};
+      const map = {all:'d-filter-all',new:'d-filter-new',match_worn:'d-filter-mw',clubs:'d-filter-clubs',national:'d-filter-national'};
       document.getElementById(map[filter])?.classList.add('active');
     }
     renderDesktopGrid();
@@ -1823,7 +1933,12 @@
     const priceFilter = document.getElementById('d-filter-price')?.value || '';
     const sort = document.getElementById('d-sort')?.value || 'newest';
     let shirts = [...allShirts];
-    if (dCurrentFilter !== 'all') shirts = shirts.filter(s => s.category === dCurrentFilter);
+    if (dCurrentFilter === 'new') {
+      var cutoff = Date.now() - 21 * 24 * 60 * 60 * 1000;
+      shirts = shirts.filter(s => s.created_at && new Date(s.created_at).getTime() >= cutoff);
+    } else if (dCurrentFilter !== 'all') {
+      shirts = shirts.filter(s => s.category === dCurrentFilter);
+    }
     if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search) || (s.season||'').toLowerCase().includes(search));
     if (sizeFilter) shirts = shirts.filter(s => s.size === sizeFilter);
     if (priceFilter) {
@@ -2271,6 +2386,59 @@
     if (screen === 'cart') renderMobileCart();
     if (screen === 'checkout') buildCheckoutForms();
   }
+
+  // ── MOBILE: category + new shortcuts (match desktop pills) ──
+  function mShopCategory(cat) {
+    mGoTo('shop');
+    setTimeout(function(){
+      mSetFilter(cat, null);
+      var map = {all:'m-filter-all', new:'m-filter-new', match_worn:'m-filter-mw', clubs:'m-filter-clubs', national:'m-filter-national'};
+      var btn = document.getElementById(map[cat]);
+      if (btn) { document.querySelectorAll('.m-filter-btn').forEach(function(b){ b.classList.remove('active'); }); btn.classList.add('active'); }
+    }, 30);
+  }
+  function mShopNew() {
+    mGoTo('shop');
+    setTimeout(function(){
+      mSetFilter('new', null);
+      var btn = document.getElementById('m-filter-new');
+      if (btn) { document.querySelectorAll('.m-filter-btn').forEach(function(b){ b.classList.remove('active'); }); btn.classList.add('active'); }
+      var s = document.getElementById('m-sort');
+      if (s) s.value = 'newest';
+      renderMobileGrid();
+    }, 30);
+  }
+  // ── MOBILE: drop email signup ──
+  async function submitDropEmailMobile() {
+    var input = document.getElementById('m-drop-email-input');
+    var confirmEl = document.getElementById('m-drop-email-confirm');
+    if (!input || !input.value.trim() || !input.value.includes('@')) return;
+    try {
+      await fetch('/api/drop-signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: input.value.trim(), drop: 'New Shirt Drop - July 22 2026' })
+      });
+      input.style.display = 'none';
+      if (confirmEl) confirmEl.style.display = 'block';
+    } catch (e) {
+      if (confirmEl) { confirmEl.textContent = 'Something went wrong, try again'; confirmEl.style.display = 'block'; }
+    }
+  }
+  // ── MOBILE: drop countdown ──
+  function mDropCountdown() {
+    var t = new Date('2026-07-22T17:00:00+02:00'), now = new Date(), d = t - now;
+    function p(n) { return n < 10 ? '0' + n : '' + n; }
+    var ids = ['m-drop-days','m-drop-hours','m-drop-mins'];
+    if (d <= 0) { ids.forEach(function(id){ var e = document.getElementById(id); if (e) e.textContent = '00'; }); return; }
+    var dd = document.getElementById('m-drop-days'), dh = document.getElementById('m-drop-hours'), dm = document.getElementById('m-drop-mins');
+    if (dd) dd.textContent = p(Math.floor(d / 86400000));
+    if (dh) dh.textContent = p(Math.floor((d % 86400000) / 3600000));
+    if (dm) dm.textContent = p(Math.floor((d % 3600000) / 60000));
+  }
+  mDropCountdown();
+  setInterval(mDropCountdown, 30000);
+
   function mGoBack() { mGoTo(mPrevScreen); }
 
   // ── DESKTOP NAV ──
@@ -2290,6 +2458,16 @@
   function dShopCategory(cat) {
     dGoTo('shop');
     setTimeout(function(){ dSetFilter(cat, null); }, 30);
+  }
+  // Drop pill: go to shop, show all, sort by newest (latest drop on top)
+  function dShopNewest() {
+    dGoTo('shop');
+    setTimeout(function(){
+      dSetFilter('new', null);
+      var sortEl = document.getElementById('d-sort');
+      if (sortEl) { sortEl.value = 'newest'; }
+      if (typeof dFilterShirts === 'function') dFilterShirts();
+    }, 30);
   }
 
   // ── TOAST ──
@@ -2591,7 +2769,7 @@
 
   // ── DROP COUNTDOWN ──
   function updateDropCountdown() {
-    var dropTarget = new Date("2026-07-18T17:00:00+02:00");
+    var dropTarget = new Date("2026-07-22T17:00:00+02:00");
     var now = new Date();
 
     // Hide after drop goes live
@@ -2744,7 +2922,7 @@
       const res = await fetch('https://shirtsociete.netlify.app/api/drop-signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: input.value.trim(), drop: 'New Shirt Drop - July 18 2026' })
+        body: JSON.stringify({ email: input.value.trim(), drop: 'New Shirt Drop - July 22 2026' })
       });
       const data = await res.json();
       if (!res.ok) {
@@ -3046,7 +3224,7 @@
         set('cin-mins', pad(Math.floor((d%3600000)/60000)));
       }
       function dropCd() {
-        var t = new Date('2026-07-18T17:00:00+02:00'), now = new Date(), d = t - now;
+        var t = new Date('2026-07-22T17:00:00+02:00'), now = new Date(), d = t - now;
         var set = function(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
         if (d <= 0) { ['drop-days','drop-hours','drop-mins'].forEach(function(id){set(id,'00');}); return; }
         set('drop-days', pad(Math.floor(d/86400000)));
