@@ -1212,8 +1212,8 @@
 
 <!-- SCENE 5: NEXT EVENT BANNER -->
 <div id="cin-event-banner" style="opacity:0;transform:translateY(40px)">
-  <div style="position:relative;border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:36px 52px;overflow:hidden">
-    <div id="ev-seethrough" style="position:absolute;inset:-15%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1784229972/images_1_zhpwmj.png') center/cover;filter:brightness(.78) saturate(1.15) contrast(1.05);will-change:transform"></div>
+  <div style="position:relative;border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:56px 52px;overflow:hidden">
+    <div id="ev-seethrough" style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1784229972/images_1_zhpwmj.png') center/100% 100% no-repeat;filter:brightness(.85) saturate(1.25) contrast(1.08);will-change:transform"></div>
     <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,9,5,.72) 0%,rgba(10,9,5,.42) 40%,rgba(10,9,5,.22) 70%,rgba(10,9,5,.35) 100%)"></div>
     <div style="position:relative;z-index:2">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap">
@@ -3295,7 +3295,8 @@
       }
 
       // ── SEE-THROUGH BANNER BACKGROUNDS (slow parallax drift) ──
-      [['#ev-seethrough', '#cin-event-banner'], ['#dr-seethrough', '#cin-drop-banner']].forEach(function(pair) {
+      // note: the event flag is fitted (not cropped), so it must NOT drift — only the drop sheen parallaxes
+      [['#dr-seethrough', '#cin-drop-banner']].forEach(function(pair) {
         var bg = document.querySelector(pair[0]);
         if (!bg) return;
         gsap.fromTo(bg, { yPercent: -8 }, { yPercent: 8, ease: 'none',
