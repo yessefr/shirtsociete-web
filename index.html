@@ -1140,14 +1140,6 @@
   </div>
 </section>
 
-<!-- SCENE 2: SEE-THROUGH TEXT (under the hero) -->
-<section id="cin-mask" style="position:relative;height:64vh;min-height:420px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--black)">
-  <div id="cin-mask-text" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,170px);line-height:.88;letter-spacing:-3px;text-align:center;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;will-change:background-position;user-select:none">
-    SHIRT<br>SOCIÉTÉ
-  </div>
-  <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(200,169,80,.4)">Est. 2025 · Harderwijk</div>
-</section>
-
 <!-- SCENE 3: DOLLY (camera pulls back — real Frankfurt stand) -->
 <div id="cin-dolly-pin" style="position:relative;height:420vh">
   <section id="cin-dolly" style="position:relative;height:100vh;overflow:hidden;background:var(--black)">
@@ -1226,6 +1218,16 @@
           <div id="ev-eyebrow" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,.9);opacity:0;transform:translateX(-16px)">Next Event</div>
           <div id="ev-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,48px);color:var(--white);text-shadow:0 2px 12px rgba(0,0,0,.95),0 4px 30px rgba(0,0,0,.7);margin-bottom:4px;opacity:0;transform:translateX(-20px)">Leipzig</div>
           <div id="ev-date" style="font-size:13px;color:rgba(245,240,232,.8);text-shadow:0 1px 8px rgba(0,0,0,.9);opacity:0">Vintage Fußballbörse &middot; Sunday 4 October 2026 &middot; 10:00 to 17:00</div>
+          <div id="ev-btns" style="display:flex;align-items:center;gap:10px;margin-top:16px;opacity:0;transform:translateY(10px)">
+            <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:rgba(6,5,4,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(200,169,80,.35);color:var(--gold);text-decoration:none;padding:9px 16px;border-radius:2px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s" onmouseover="this.style.background='rgba(200,169,80,.16)';this.style.borderColor='rgba(200,169,80,.7)'" onmouseout="this.style.background='rgba(6,5,4,.72)';this.style.borderColor='rgba(200,169,80,.35)'">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              @vintagefussball
+            </a>
+            <button onclick="dGoTo('about')" style="display:inline-flex;align-items:center;gap:7px;background:rgba(6,5,4,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.18);color:rgba(245,240,232,.9);padding:9px 16px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.12)';this.style.borderColor='rgba(255,255,255,.4)'" onmouseout="this.style.background='rgba(6,5,4,.72)';this.style.borderColor='rgba(255,255,255,.18)'">
+              Event timeline
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
@@ -1486,17 +1488,14 @@
 
     <!-- ABOUT -->
     <div class="dscreen" id="d-screen-about">
-      <!-- Hero -->
-      <div style="position:relative;height:420px;overflow:hidden">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png" alt="Shirt Société" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.35)">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;padding:64px">
-          <div>
-            <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500">Our Story</div>
-            <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:56px;line-height:1.1;color:var(--white);margin-bottom:16px">Where Football<br><span style="color:var(--gold)">History</span> Lives On</h1>
-            <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:rgba(245,240,232,0.7);max-width:500px">Curated vintage & match worn shirts, sourced across Europe by a true football collector.</p>
-          </div>
+      <!-- Hero: see-through SHIRT SOCIÉTÉ banner -->
+      <section id="ab-mask" style="position:relative;height:64vh;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--black)">
+        <div id="ab-mask-text" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,170px);line-height:.88;letter-spacing:-3px;text-align:center;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;will-change:background-position;user-select:none">
+          SHIRT<br>SOCIÉTÉ
         </div>
-      </div>
+        <p style="margin-top:26px;max-width:520px;text-align:center;font-size:14px;font-weight:300;line-height:1.8;color:rgba(245,240,232,.55);padding:0 24px">Curated vintage &amp; match worn shirts, sourced across Europe by a true football collector.</p>
+        <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(200,169,80,.4)">Est. 2025 · Harderwijk</div>
+      </section>
 
       <!-- Fair photos -->
       <div class="anim-about fade-in" style="padding:64px;border-top:1px solid #1e1c17">
@@ -1720,9 +1719,13 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
       Back
     </div>
-    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500">Our Story</div>
-    <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:28px;line-height:1.2;margin-bottom:16px">Where Football<br>History Lives On</h2>
-    <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="Shirt Société at the fair" style="width:100%;border-radius:2px;margin-bottom:20px;object-fit:cover;height:220px">
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:500">Our Story</div>
+    <div style="position:relative;margin-bottom:20px;padding:36px 0;text-align:center;background:var(--black);border-radius:2px;overflow:hidden">
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(38px,13vw,58px);line-height:.9;letter-spacing:-2px;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none">
+        SHIRT<br>SOCIÉTÉ
+      </div>
+      <div style="margin-top:14px;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(200,169,80,.45)">Est. 2025 · Harderwijk</div>
+    </div>
     <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:16px">Shirt Société was founded by Yesse Fredriks out of a deep passion for football and the history behind the shirts that made the game. What started as a personal collection grew into a curated platform for collectors across Europe.</p>
     <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:24px">Every shirt in our collection tells a story — from match worn pieces worn by legends to rare vintage originals from the golden era of European football.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
@@ -3192,17 +3195,12 @@
       }
 
       // ── SEE-THROUGH TEXT SCRUB (image pans through the letters on scroll) ──
-      var maskText = document.getElementById('cin-mask-text');
+      var maskText = document.getElementById('ab-mask-text');
       if (maskText) {
         gsap.fromTo(maskText,
-          { backgroundPosition: 'center 0%' },
-          { backgroundPosition: 'center 100%', ease: 'none',
-            scrollTrigger: { trigger: '#cin-mask', start: 'top bottom', end: 'bottom top', scrub: 0.8 } });
-        // gentle scale-in of the whole word block
-        gsap.fromTo(maskText,
-          { scale: 0.92, opacity: 0.4 },
-          { scale: 1, opacity: 1, ease: 'power2.out',
-            scrollTrigger: { trigger: '#cin-mask', start: 'top 85%', end: 'center center', scrub: 0.8 } });
+          { backgroundPosition: 'center 15%' },
+          { backgroundPosition: 'center 85%', ease: 'none',
+            scrollTrigger: { trigger: '#ab-mask', start: 'top top', end: 'bottom top', scrub: 0.8 } });
       }
 
       // ── MOUSE TRACKING (Atoms-style parallax on hero) ──
@@ -3233,7 +3231,7 @@
       })();
 
       // ── 3D SCROLL TILT (banners tip upright as they enter) ──
-      ['#cin-event-banner', '#cin-drop-banner', '#cin-mask'].forEach(function(sel) {
+      ['#cin-event-banner', '#cin-drop-banner'].forEach(function(sel) {
         var el = document.querySelector(sel);
         if (!el) return;
         gsap.fromTo(el,
@@ -3312,6 +3310,10 @@
           { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
             scrollTrigger: { trigger: evBanner, start: 'top 88%', toggleActions: 'play none none none' } });
         // Countdown digits pop in with a stagger
+        gsap.fromTo(evBanner.querySelectorAll('#ev-eyebrow, #ev-title, #ev-date, #ev-btns'),
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, x: 0, duration: 0.6, stagger: 0.07, ease: 'power3.out',
+            scrollTrigger: { trigger: evBanner, start: 'top 86%', toggleActions: 'play none none none' } });
         gsap.fromTo(evBanner.querySelectorAll('#cin-days, #cin-hours, #cin-mins'),
           { opacity: 0, y: 12, scale: 0.9 },
           { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.08, ease: 'back.out(1.6)',
