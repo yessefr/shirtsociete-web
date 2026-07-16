@@ -1187,27 +1187,37 @@
   <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(200,169,80,.4)">Est. 2025 · Harderwijk</div>
 </section>
 
-<!-- SCENE 3C: WALK-THROUGH (camera pushes into each image) -->
-<div id="cin-walk-pin" style="position:relative;height:340vh">
-  <section id="cin-walk" style="position:relative;height:100vh;overflow:hidden;background:var(--black)">
-    <div class="walk-img" id="walk0" style="position:absolute;inset:-4%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg') center/cover;will-change:transform,opacity;transform:scale(1)"></div>
-    <div class="walk-img" id="walk1" style="position:absolute;inset:-4%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782992050/WhatsApp_Image_2026-07-02_at_13.33.30_3_z9fb9y.jpg') center/cover;will-change:transform,opacity;opacity:0;transform:scale(1)"></div>
-    <div class="walk-img" id="walk2" style="position:absolute;inset:-4%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg') center/cover;will-change:transform,opacity;opacity:0;transform:scale(1)"></div>
-    <!-- vignette for depth -->
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 75% at 50% 50%,transparent 30%,rgba(8,7,5,.75) 100%),linear-gradient(180deg,rgba(8,7,5,.6),transparent 20%,transparent 80%,rgba(8,7,5,.92));pointer-events:none;z-index:5"></div>
-    <!-- captions -->
-    <div id="walk-cap0" class="walk-cap" style="position:absolute;bottom:56px;left:50%;transform:translate(-50%,14px);text-align:center;z-index:6;opacity:0">
-      <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">On the road</div>
-      <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(24px,3vw,40px);color:var(--white)">The Fairs</div>
+<!-- SCENE 3C: DOLLY (camera pulls back from close-up to wide, real Frankfurt stand) -->
+<div id="cin-dolly-pin" style="position:relative;height:420vh">
+  <section id="cin-dolly" style="position:relative;height:100vh;overflow:hidden;background:var(--black)">
+
+    <!-- FRAME 1: close up (starts full-bleed, scales down as camera pulls back) -->
+    <div id="dolly-close" style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1784227901/WhatsApp_Image_2026-07-16_at_20.51.09_eaydjy.jpg') center 45%/cover;will-change:transform,opacity;transform:scale(1.42)"></div>
+
+    <!-- FRAME 2: wide shot (revealed underneath as the close-up dissolves) -->
+    <div id="dolly-wide" style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 45%/cover;will-change:transform,opacity;opacity:0;transform:scale(1.18)"></div>
+
+    <!-- cinematic grade + vignette -->
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 75% 80% at 50% 48%,transparent 25%,rgba(8,7,5,.72) 100%),linear-gradient(180deg,rgba(8,7,5,.55) 0%,transparent 22%,transparent 74%,rgba(8,7,5,.94) 100%);pointer-events:none;z-index:4"></div>
+
+    <!-- BIG SEE-THROUGH HEADLINE (sits in the scene like the TikTok) -->
+    <div id="dolly-words" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;pointer-events:none;text-align:center">
+      <div id="dw0" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(46px,7.5vw,116px);line-height:.86;letter-spacing:-3px;color:var(--white);text-shadow:0 4px 40px rgba(0,0,0,.55);opacity:0;transform:translateY(30px)">VINTAGE</div>
+      <div id="dw1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(46px,7.5vw,116px);line-height:.86;letter-spacing:-3px;color:transparent;-webkit-text-stroke:1.5px rgba(200,169,80,.75);opacity:0;transform:translateY(30px)">FOOTBALL</div>
+      <div id="dw2" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(46px,7.5vw,116px);line-height:.86;letter-spacing:-3px;color:var(--gold);text-shadow:0 4px 40px rgba(0,0,0,.55);opacity:0;transform:translateY(30px)">HISTORY</div>
     </div>
-    <div id="walk-cap1" class="walk-cap" style="position:absolute;bottom:56px;left:50%;transform:translate(-50%,14px);text-align:center;z-index:6;opacity:0">
-      <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">The collection</div>
-      <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(24px,3vw,40px);color:var(--white)">The Shirts</div>
+
+    <!-- caption that lands at the end of the pull-back -->
+    <div id="dolly-cap" style="position:absolute;bottom:52px;left:50%;transform:translate(-50%,16px);text-align:center;z-index:6;opacity:0">
+      <div style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:7px">Vintage Fußballbörse · Frankfurt</div>
+      <div style="font-size:13px;font-weight:300;color:rgba(245,240,232,.65)">Our stand, 4 July 2026</div>
     </div>
-    <div id="walk-cap2" class="walk-cap" style="position:absolute;bottom:56px;left:50%;transform:translate(-50%,14px);text-align:center;z-index:6;opacity:0">
-      <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Since 2025</div>
-      <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(24px,3vw,40px);color:var(--white)">The Story</div>
+
+    <!-- progress -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,169,80,.06);z-index:7">
+      <div id="dolly-fill" style="height:100%;background:var(--gold);width:0"></div>
     </div>
+
   </section>
 </div>
 
@@ -3267,52 +3277,54 @@
             scrollTrigger: { trigger: el, start: 'top 95%', end: 'top 55%', scrub: 0.7 } });
       });
 
-      // ── WALK-THROUGH: camera pushes INTO each photo, crossfades to next ──
-      if (document.getElementById('cin-walk-pin')) {
-        var walkTl = gsap.timeline({
+      // ── DOLLY: camera pulls back from close-up to the wide stand shot ──
+      if (document.getElementById('cin-dolly-pin')) {
+        var dolTl = gsap.timeline({
           scrollTrigger: {
-            trigger: '#cin-walk-pin', pin: '#cin-walk', anticipatePin: 1,
-            start: 'top top', end: 'bottom bottom', scrub: 1
+            trigger: '#cin-dolly-pin', pin: '#cin-dolly', anticipatePin: 1,
+            start: 'top top', end: 'bottom bottom', scrub: 1.1,
+            onUpdate: function(self) {
+              var f = document.getElementById('dolly-fill');
+              if (f) f.style.width = (self.progress * 100) + '%';
+            }
           }
         });
-        walkTl
-          // photo 0: push in, caption up, then fade to next
-          .fromTo('#walk0', { scale: 1 }, { scale: 1.55, ease: 'none', duration: 0.34 }, 0)
-          .to('#walk-cap0', { opacity: 1, y: -14, duration: 0.08 }, 0.03)
-          .to('#walk-cap0', { opacity: 0, duration: 0.05 }, 0.26)
-          .to('#walk0', { opacity: 0, duration: 0.07 }, 0.30)
-          // photo 1
-          .fromTo('#walk1', { opacity: 0, scale: 1 }, { opacity: 1, duration: 0.06, ease: 'none' }, 0.30)
-          .to('#walk1', { scale: 1.55, ease: 'none', duration: 0.34 }, 0.33)
-          .to('#walk-cap1', { opacity: 1, y: -14, duration: 0.08 }, 0.37)
-          .to('#walk-cap1', { opacity: 0, duration: 0.05 }, 0.59)
-          .to('#walk1', { opacity: 0, duration: 0.07 }, 0.63)
-          // photo 2: push in and hold to the end
-          .fromTo('#walk2', { opacity: 0, scale: 1 }, { opacity: 1, duration: 0.06, ease: 'none' }, 0.63)
-          .to('#walk2', { scale: 1.5, ease: 'none', duration: 0.34 }, 0.66)
-          .to('#walk-cap2', { opacity: 1, y: -14, duration: 0.08 }, 0.70)
-          .to('#walk-cap2', { opacity: 0, duration: 0.06 }, 0.94);
+        dolTl
+          // camera pulls back on the close-up
+          .to('#dolly-close', { scale: 1.0, ease: 'none', duration: 0.52 }, 0)
+          // headline rises word by word while we travel
+          .to('#dw0', { opacity: 1, y: 0, duration: 0.07, ease: 'power3.out' }, 0.06)
+          .to('#dw1', { opacity: 1, y: 0, duration: 0.07, ease: 'power3.out' }, 0.13)
+          .to('#dw2', { opacity: 1, y: 0, duration: 0.07, ease: 'power3.out' }, 0.20)
+          // dissolve into the wide frame — the room opens up
+          .to('#dolly-close', { opacity: 0, ease: 'none', duration: 0.16 }, 0.42)
+          .to('#dolly-wide', { opacity: 1, ease: 'none', duration: 0.16 }, 0.42)
+          .to('#dolly-wide', { scale: 1.0, ease: 'none', duration: 0.42 }, 0.42)
+          // headline drifts back and softens as the room takes over
+          .to('#dolly-words', { scale: 0.9, opacity: 0.55, ease: 'none', duration: 0.30 }, 0.56)
+          // caption lands
+          .to('#dolly-cap', { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.80)
+          .to(['#dolly-words', '#dolly-cap'], { opacity: 0, duration: 0.07, ease: 'power2.in' }, 0.95);
 
-        // mouse parallax inside the walk scene (subtle look-around while walking)
+        // look-around parallax with the mouse
         (function() {
-          var walkSec = document.getElementById('cin-walk');
-          if (!walkSec) return;
-          var wraf = null, wx = 0, wy = 0;
-          walkSec.addEventListener('mousemove', function(e) {
-            var r = walkSec.getBoundingClientRect();
-            wx = (e.clientX - r.left) / r.width - 0.5;
-            wy = (e.clientY - r.top) / r.height - 0.5;
-            if (!wraf) wraf = requestAnimationFrame(wapply);
+          var sec = document.getElementById('cin-dolly');
+          if (!sec) return;
+          var r2 = null, dx = 0, dy = 0;
+          sec.addEventListener('mousemove', function(e) {
+            var r = sec.getBoundingClientRect();
+            dx = (e.clientX - r.left) / r.width - 0.5;
+            dy = (e.clientY - r.top) / r.height - 0.5;
+            if (!r2) r2 = requestAnimationFrame(dapply);
           });
-          walkSec.addEventListener('mouseleave', function() {
-            wx = 0; wy = 0;
-            if (!wraf) wraf = requestAnimationFrame(wapply);
+          sec.addEventListener('mouseleave', function() {
+            dx = 0; dy = 0;
+            if (!r2) r2 = requestAnimationFrame(dapply);
           });
-          function wapply() {
-            wraf = null;
-            ['#walk0','#walk1','#walk2'].forEach(function(sel) {
-              gsap.to(sel, { x: wx * 30, y: wy * 18, duration: 1, ease: 'power2.out', overwrite: false });
-            });
+          function dapply() {
+            r2 = null;
+            gsap.to(['#dolly-close', '#dolly-wide'], { x: dx * 26, y: dy * 15, duration: 1, ease: 'power2.out', overwrite: false });
+            gsap.to('#dolly-words', { x: dx * -16, duration: 1.1, ease: 'power2.out', overwrite: false });
           }
         })();
       }
