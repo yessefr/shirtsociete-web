@@ -1140,54 +1140,15 @@
   </div>
 </section>
 
-<!-- SCENE 2: WORDS TAKEOVER — Timeless Original Rare -->
-<div id="cin-words-pin" style="position:relative;height:320vh">
-  <section id="cin-s-words" style="position:relative;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--black);text-align:center">
-    <div id="cin-words-bg" style="position:absolute;inset:-6%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;opacity:0;filter:brightness(.28) saturate(.55);will-change:transform,opacity"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 65% at 50% 50%,rgba(8,7,5,.4) 0%,rgba(8,7,5,.82) 100%);z-index:1"></div>
-    <div id="w-word0" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:var(--white);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute;z-index:2;will-change:transform,opacity,filter">Timeless.</div>
-    <div id="w-word1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:transparent;-webkit-text-stroke:1.5px rgba(200,169,80,.45);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute;z-index:2;will-change:transform,opacity,filter">Original.</div>
-    <div id="w-word2" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,148px);line-height:.88;color:var(--gold);letter-spacing:-3px;opacity:0;transform:translateY(48px);position:absolute;z-index:2;will-change:transform,opacity,filter">Rare.</div>
-  </section>
-</div>
-
-<!-- SCENE 3: SHIRT SWEEP -->
-<div id="cin-sweep-pin" style="position:relative;height:600vh">
-  <section id="cin-s-sweep" style="position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--black)">
-
-    <div id="swbg0" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
-    <div id="swbg1" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
-    <div id="swbg2" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,transparent 0%,transparent 28%,rgba(10,9,5,.8) 100%),linear-gradient(180deg,rgba(10,9,5,.8) 0%,transparent 18%,transparent 78%,rgba(10,9,5,.95) 100%);pointer-events:none;z-index:6"></div>
-
-    <!-- 4 shirts stacked, GSAP moves each one -->
-    <div id="sw0" class="sw-shirt" onclick="dShopCategory('clubs')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg">
-      <div class="sw-info"><div class="sw-name">Club Classics</div></div>
-    </div>
-    <div id="sw1" class="sw-shirt" onclick="dShopCategory('national')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg">
-      <div class="sw-info"><div class="sw-name">National Teams</div></div>
-    </div>
-    <div id="sw2" class="sw-shirt" onclick="dGoTo('about')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg">
-      <div class="sw-info"><div class="sw-cat-lg">Our Story</div><div class="sw-name">Who We Are</div></div>
-    </div>
-    <div id="sw-prog" style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,169,80,.06);z-index:8">
-      <div id="sw-fill" style="height:100%;background:var(--gold);width:0"></div>
-    </div>
-  </section>
-</div>
-
-<!-- SCENE 3B: SEE-THROUGH TEXT (image scrubs through the letters) -->
+<!-- SCENE 2: SEE-THROUGH TEXT (under the hero) -->
 <section id="cin-mask" style="position:relative;height:64vh;min-height:420px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--black)">
-  <div id="cin-mask-text" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,170px);line-height:.88;letter-spacing:-3px;text-align:center;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_2_tehmnf.jpg') center 30%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;will-change:background-position;user-select:none">
+  <div id="cin-mask-text" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,170px);line-height:.88;letter-spacing:-3px;text-align:center;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782992050/WhatsApp_Image_2026-07-02_at_13.33.30_1_duqrhh.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;will-change:background-position;user-select:none">
     SHIRT<br>SOCIÉTÉ
   </div>
   <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(200,169,80,.4)">Est. 2025 · Harderwijk</div>
 </section>
 
-<!-- SCENE 3C: DOLLY (camera pulls back from close-up to wide, real Frankfurt stand) -->
+<!-- SCENE 3: DOLLY (camera pulls back — real Frankfurt stand) -->
 <div id="cin-dolly-pin" style="position:relative;height:420vh">
   <section id="cin-dolly" style="position:relative;height:100vh;overflow:hidden;background:var(--black)">
 
@@ -1221,9 +1182,40 @@
   </section>
 </div>
 
-<!-- SCENE 4: NEXT EVENT BANNER -->
+<!-- SCENE 4: SHIRT SWEEP -->
+<div id="cin-sweep-pin" style="position:relative;height:600vh">
+  <section id="cin-s-sweep" style="position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--black)">
+
+    <div id="swbg0" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+    <div id="swbg1" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+    <div id="swbg2" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,transparent 0%,transparent 28%,rgba(10,9,5,.8) 100%),linear-gradient(180deg,rgba(10,9,5,.8) 0%,transparent 18%,transparent 78%,rgba(10,9,5,.95) 100%);pointer-events:none;z-index:6"></div>
+
+    <!-- 4 shirts stacked, GSAP moves each one -->
+    <div id="sw0" class="sw-shirt" onclick="dShopCategory('clubs')">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg">
+      <div class="sw-info"><div class="sw-name">Club Classics</div></div>
+    </div>
+    <div id="sw1" class="sw-shirt" onclick="dShopCategory('national')">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg">
+      <div class="sw-info"><div class="sw-name">National Teams</div></div>
+    </div>
+    <div id="sw2" class="sw-shirt" onclick="dGoTo('about')">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg">
+      <div class="sw-info"><div class="sw-cat-lg">Our Story</div><div class="sw-name">Who We Are</div></div>
+    </div>
+    <div id="sw-prog" style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,169,80,.06);z-index:8">
+      <div id="sw-fill" style="height:100%;background:var(--gold);width:0"></div>
+    </div>
+  </section>
+</div>
+
+<!-- SCENE 5: NEXT EVENT BANNER -->
 <div id="cin-event-banner" style="opacity:0;transform:translateY(40px)">
-  <div style="background:linear-gradient(135deg,rgba(200,169,80,.1),rgba(200,169,80,.03));border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:36px 52px">
+  <div style="position:relative;border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:36px 52px;overflow:hidden">
+    <div id="ev-seethrough" style="position:absolute;inset:-15%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_2_tehmnf.jpg') center 40%/cover;filter:brightness(.34) saturate(.6);will-change:transform"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,9,5,.82),rgba(10,9,5,.62) 55%,rgba(200,169,80,.06))"></div>
+    <div style="position:relative;z-index:2">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap">
       <div style="display:flex;align-items:center;gap:24px">
         <div style="position:relative;flex-shrink:0;width:20px;height:20px">
@@ -1255,15 +1247,19 @@
     </div>
   </div>
 </div>
+</div>
 
 <!-- Divider between Next Event and Upcoming Drop -->
 <div style="padding:0 48px">
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(200,169,80,.25),transparent);margin:8px 0"></div>
 </div>
 
-<!-- SCENE 5: DROP BANNER -->
+<!-- SCENE 6: DROP BANNER -->
 <div id="cin-drop-banner" style="opacity:0;transform:translateY(40px)">
-  <div id="drop-banner" style="background:linear-gradient(135deg,rgba(200,169,80,.1),rgba(200,169,80,.03));border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:36px 52px;text-align:center">
+  <div id="drop-banner" style="position:relative;border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:36px 52px;text-align:center;overflow:hidden">
+    <div id="dr-seethrough" style="position:absolute;inset:-15%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782992050/WhatsApp_Image_2026-07-02_at_13.33.30_3_z9fb9y.jpg') center 40%/cover;filter:brightness(.32) saturate(.6);will-change:transform"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,9,5,.84),rgba(10,9,5,.64) 55%,rgba(76,175,125,.05))"></div>
+    <div style="position:relative;z-index:2">
     <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:10px">
       <div style="position:relative;width:14px;height:14px;flex-shrink:0">
         <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;animation:pulseGlow 1.5s ease-in-out infinite;position:absolute"></div>
@@ -1296,8 +1292,9 @@
     </div>
   </div>
 </div>
+</div>
 
-<!-- SCENE 6: FEATURED SHIRTS (from Supabase) -->
+<!-- SCENE 7: FEATURED SHIRTS (from Supabase) -->
 <div id="cin-featured">
   <div style="padding:52px 52px 36px">
     <div id="feat-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
@@ -3097,39 +3094,6 @@
       gsap.to('#cin-hero-text', { opacity: 0, y: -32, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: '18% top', end: '68% top', scrub: true } });
       gsap.to('#cin-cue', { opacity: 0, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: '8% top', end: '30% top', scrub: true } });
 
-      // ── WORDS: Timeless / Original / Rare ──
-      gsap.set(['#w-word0','#w-word1','#w-word2'], { opacity: 0, y: 80, scale: 0.82, filter: 'blur(12px)', rotateX: 25, transformPerspective: 800 });
-      // Fade in words background photo + slow parallax drift
-      gsap.fromTo('#cin-words-bg', { opacity: 0 }, { opacity: 1, ease: 'none',
-        scrollTrigger: { trigger: '#cin-words-pin', start: 'top 90%', end: 'top 40%', scrub: true } });
-      gsap.to('#cin-words-bg', { yPercent: 12, ease: 'none',
-        scrollTrigger: { trigger: '#cin-words-pin', start: 'top top', end: 'bottom top', scrub: true } });
-      var wordsTl = gsap.timeline({
-        scrollTrigger: { trigger: '#cin-words-pin', pin: '#cin-s-words', start: 'top top', end: 'bottom bottom', scrub: 1.4, anticipatePin: 1 }
-      });
-      // Each word: fades+rises in, HOLDS clearly, then fully exits BEFORE next enters.
-      // Faster snappier easing, clean gaps so words never stack on screen.
-      // Each word rises + scales up + unblurs into focus, holds, then blurs+lifts away.
-      // Cinematic depth via rotateX and blur. Clean gaps so only one word shows at a time.
-      wordsTl
-        // ── Timeless ──
-        .fromTo('#w-word0',
-          { opacity: 0, y: 80, scale: 0.82, filter: 'blur(12px)', rotateX: 25, textShadow: '0 0 0px rgba(200,169,80,0)' },
-          { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', rotateX: 0, textShadow: '0 0 40px rgba(200,169,80,0.25)', duration: 0.15, ease: 'power3.out' }, 0.02)
-        .to('#w-word0',
-          { opacity: 0, y: -70, scale: 1.12, filter: 'blur(10px)', rotateX: -20, duration: 0.11, ease: 'power2.in' }, 0.27)
-        // ── Original ──
-        .fromTo('#w-word1',
-          { opacity: 0, y: 80, scale: 0.82, filter: 'blur(12px)', rotateX: 25 },
-          { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', rotateX: 0, duration: 0.15, ease: 'power3.out' }, 0.40)
-        .to('#w-word1',
-          { opacity: 0, y: -70, scale: 1.12, filter: 'blur(10px)', rotateX: -20, duration: 0.11, ease: 'power2.in' }, 0.65)
-        // ── Rare ──
-        .fromTo('#w-word2',
-          { opacity: 0, y: 80, scale: 0.82, filter: 'blur(12px)', rotateX: 25 },
-          { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', rotateX: 0, duration: 0.15, ease: 'power3.out' }, 0.78)
-        .to('#w-word2',
-          { opacity: 0, y: -60, scale: 1.15, filter: 'blur(10px)', duration: 0.10, ease: 'power2.in' }, 0.98);
 
       // ── SHIRT SWEEP ──
       gsap.set('#sw0', { xPercent: -140, rotation: -10, opacity: 0, scale: 0.85 });
@@ -3329,6 +3293,14 @@
         })();
       }
 
+      // ── SEE-THROUGH BANNER BACKGROUNDS (slow parallax drift) ──
+      [['#ev-seethrough', '#cin-event-banner'], ['#dr-seethrough', '#cin-drop-banner']].forEach(function(pair) {
+        var bg = document.querySelector(pair[0]);
+        if (!bg) return;
+        gsap.fromTo(bg, { yPercent: -8 }, { yPercent: 8, ease: 'none',
+          scrollTrigger: { trigger: pair[1], start: 'top bottom', end: 'bottom top', scrub: true } });
+      });
+
       // ── EVENT + DROP BANNER REVEALS ──
       // Leipzig event banner: rises + fades in when scrolled into view
       var evBanner = document.getElementById('cin-event-banner');
@@ -3387,7 +3359,7 @@
       // if hero text is still invisible, GSAP didn't run — reveal all
       var h1 = document.getElementById('cin-h1');
       if (h1 && getComputedStyle(h1).opacity === '0') {
-        ['cin-ew','cin-h1','cin-sub','cin-btns','cin-cue','cin-top-pills','w-word0','w-word1','w-word2'].forEach(function(id){
+        ['cin-ew','cin-h1','cin-sub','cin-btns','cin-cue','cin-top-pills'].forEach(function(id){
           var el = document.getElementById(id);
           if (el) { el.style.opacity = '1'; el.style.transform = 'none'; el.style.filter = 'none'; }
         });
