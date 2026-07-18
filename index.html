@@ -1158,6 +1158,11 @@
         Saved
         <span id="d-wishlist-count" style="margin-left:auto;background:var(--grey-light,#3a3830);color:var(--text-muted);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
       </div>
+      <div class="nav-item" onclick="dGoTo('profile')" id="d-nav-profile">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        My Wardrobe
+        <span id="d-wardrobe-count" style="margin-left:auto;background:var(--gold);color:var(--black);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
+      </div>
       <a class="nav-item" href="/blog.html" style="text-decoration:none">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         Blog
@@ -3727,12 +3732,22 @@
     }).join('');
   }
 
+  function updateWardrobeBadge() {
+    var n = getWardrobe().length;
+    var b = document.getElementById('d-wardrobe-count');
+    if (b) { b.textContent = n; b.style.display = n ? 'inline' : 'none'; }
+  }
+
   function initProfile() {
     renderWardrobe();
     renderMobileWardrobe();
     loadProfileDetails();
+    updateWardrobeBadge();
   }
 
+
+  // keep the wardrobe badge current from first paint
+  try { if (typeof updateWardrobeBadge === 'function') updateWardrobeBadge(); } catch(e){}
 
   // ── INIT ──
   updateCartBadge();
