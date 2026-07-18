@@ -685,6 +685,116 @@
       .toast.show { transform: translateY(0); }
     }
 
+
+    /* ═══ PROFILE — MY WARDROBE ═══ */
+    #prof-banner {
+      position: relative; height: 42vh; min-height: 300px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow: hidden; background: var(--black); text-align: center;
+    }
+    #prof-banner-text {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: clamp(48px,8vw,120px); line-height: .88; letter-spacing: -3px;
+      background: url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center 35%/cover no-repeat;
+      -webkit-background-clip: text; background-clip: text; color: transparent; user-select: none;
+    }
+    #prof-banner-sub {
+      margin-top: 18px; font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: rgba(200,169,80,.55);
+    }
+    .prof-section { max-width: 1100px; margin: 0 auto; padding: 48px; }
+    .prof-section-label {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 6px;
+    }
+    .prof-section-label::after {
+      content: ''; display: block; width: 28px; height: 1px; background: var(--gold); margin-top: 6px;
+    }
+    /* the 3D rail */
+    #wardrobe-stage {
+      position: relative; height: 440px; margin-top: 28px;
+      perspective: 1400px; overflow: hidden;
+      background: linear-gradient(180deg, #0b0a07 0%, #060504 100%);
+      border: 1px solid rgba(200,169,80,.12); border-radius: 3px;
+    }
+    #wardrobe-stage::before {
+      /* the brass rail */
+      content: ''; position: absolute; top: 58px; left: 5%; right: 5%; height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(200,169,80,.6) 12%, rgba(200,169,80,.6) 88%, transparent);
+      box-shadow: 0 0 14px rgba(200,169,80,.4); z-index: 3;
+    }
+    #wardrobe-rail {
+      position: absolute; inset: 0; transform-style: preserve-3d;
+      display: flex; align-items: center; justify-content: center; gap: 34px;
+      transition: transform .5s cubic-bezier(.16,1,.3,1);
+      padding: 0 60px;
+    }
+    .ward-shirt {
+      position: relative; flex: 0 0 auto; width: 200px; cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform .45s cubic-bezier(.16,1,.3,1), filter .45s;
+      filter: brightness(.82) saturate(.92);
+    }
+    .ward-shirt:hover { transform: translateY(-10px) rotateY(6deg) scale(1.04); filter: brightness(1.05) saturate(1.05); }
+    .ward-hook {
+      width: 2px; height: 46px; margin: 0 auto -1px;
+      background: linear-gradient(180deg, rgba(200,169,80,.7), rgba(200,169,80,.25));
+    }
+    .ward-img {
+      width: 200px; height: 260px; object-fit: cover; object-position: center top;
+      border: 1px solid rgba(200,169,80,.28);
+      box-shadow: 0 30px 60px rgba(0,0,0,.65), 0 0 0 1px rgba(0,0,0,.4);
+      background: #12100d; display: block;
+    }
+    .ward-cap {
+      margin-top: 12px; text-align: center;
+    }
+    .ward-cap-club { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
+    .ward-cap-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: var(--cream, #f5f0e8); }
+    #wardrobe-empty {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100%; text-align: center; padding: 0 40px;
+    }
+    #wardrobe-empty svg { opacity: .3; margin-bottom: 18px; }
+    #wardrobe-empty p { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 340px; margin-bottom: 22px; }
+    .ward-nav {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(6,5,4,.7); border: 1px solid rgba(200,169,80,.3);
+      color: var(--gold); display: none; align-items: center; justify-content: center;
+      cursor: pointer; transition: background .2s;
+    }
+    .ward-nav:hover { background: rgba(200,169,80,.16); }
+    .ward-nav.prev { left: 16px; } .ward-nav.next { right: 16px; }
+    #wardrobe-stage.scrollable .ward-nav { display: flex; }
+    /* details / account */
+    .prof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .prof-card {
+      background: #131110; border: 1px solid #221f1b; border-radius: 3px; padding: 28px;
+    }
+    .prof-field { margin-bottom: 16px; }
+    .prof-field label { display: block; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+    .prof-field input {
+      width: 100%; background: #0b0a08; border: 1px solid #2a2723; border-radius: 2px;
+      padding: 11px 13px; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none;
+      transition: border-color .2s;
+    }
+    .prof-field input:focus { border-color: rgba(200,169,80,.5); }
+    .prof-save {
+      background: var(--gold); color: var(--black); border: none; border-radius: 2px;
+      padding: 12px 22px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; margin-top: 8px;
+    }
+    .prof-order {
+      display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #221f1b;
+    }
+    .prof-order:last-child { border-bottom: none; }
+    .prof-order img { width: 48px; height: 62px; object-fit: cover; border-radius: 2px; flex-shrink: 0; }
+    .prof-order-info { flex: 1; min-width: 0; }
+    .prof-order-title { font-size: 13px; color: var(--white); margin-bottom: 2px; }
+    .prof-order-meta { font-size: 11px; color: var(--text-muted); }
+    @media (max-width: 900px) { .prof-grid { grid-template-columns: 1fr; } }
+
     /* ── cart flight (short version) ── */
     #cart-flight {
       position: fixed; z-index: 9000; pointer-events: none;
@@ -954,10 +1064,19 @@
 
 <!-- MOBILE PROFILE -->
 <div id="screen-profile" class="screen">
-  <div style="padding:24px 20px 0">
-    <div style="font-size:22px;font-weight:500;margin-bottom:4px">Shirt Société</div>
-    <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Timeless, Original, Rare</div>
-    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding-bottom:12px">Explore</div>
+  <!-- My Wardrobe (mobile) -->
+  <div style="position:relative;padding:36px 20px 20px;text-align:center;background:linear-gradient(180deg,#0b0a07,#060504);overflow:hidden;margin-bottom:8px">
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(40px,15vw,64px);line-height:.9;letter-spacing:-2px;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none">MY<br>WARDROBE</div>
+    <div style="margin-top:12px;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(200,169,80,.5)">Your Collection</div>
+  </div>
+  <div id="m-wardrobe-row" style="display:flex;gap:14px;overflow-x:auto;padding:8px 20px 20px;scrollbar-width:none"></div>
+  <div id="m-wardrobe-empty" style="display:none;padding:0 20px 24px;text-align:center">
+    <p style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:16px">Your wardrobe is empty. Every shirt you collect will hang here.</p>
+    <button onclick="mGoTo('shop')" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Browse the collection</button>
+  </div>
+
+  <div style="padding:8px 20px 0">
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding-bottom:12px;border-top:1px solid #1e1c17;padding-top:20px">Explore</div>
     <div class="profile-item" onclick="mGoTo('shop')">
       <span>Shop the Collection</span>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
@@ -1486,14 +1605,51 @@
 
     <!-- PROFILE -->
     <div class="dscreen" id="d-screen-profile">
-      <div class="profile-wrap">
-        <div class="profile-header">
-          <div class="profile-avatar">👕</div>
-          <div class="profile-name">Guest</div>
-          <div class="profile-email">Sign in to view your orders</div>
+      <!-- Banner -->
+      <section id="prof-banner">
+        <div id="prof-banner-text">MY WARDROBE</div>
+        <div id="prof-banner-sub">Shirt Société · Your Collection</div>
+      </section>
+
+      <!-- The 3D rail -->
+      <div class="prof-section">
+        <div class="prof-section-label">Your Pieces</div>
+        <div id="wardrobe-stage">
+          <div class="ward-nav prev" onclick="wardrobeScroll(-1)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          </div>
+          <div id="wardrobe-rail"></div>
+          <div class="ward-nav next" onclick="wardrobeScroll(1)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
+          </div>
+          <div id="wardrobe-empty" style="display:none">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.4"><path d="M20 7h-4V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2H4a1 1 0 00-1 1v11a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/></svg>
+            <p>Your wardrobe is empty. Every shirt you collect will hang here.</p>
+            <button class="prof-save" onclick="dGoTo('shop')">Browse the collection</button>
+          </div>
         </div>
-        <div class="profile-section-title">Contact</div>
-        <div class="profile-item"><span>info@shirtsociete.com</span></div>
+      </div>
+
+      <!-- Account + orders -->
+      <div class="prof-section">
+        <div class="prof-grid">
+          <div>
+            <div class="prof-section-label" style="margin-bottom:18px">Your Details</div>
+            <div class="prof-card">
+              <div class="prof-field"><label>Name</label><input id="prof-name" type="text" placeholder="Your name"></div>
+              <div class="prof-field"><label>Email</label><input id="prof-email" type="email" placeholder="you@email.com"></div>
+              <div class="prof-field"><label>Address</label><input id="prof-address" type="text" placeholder="Street, city"></div>
+              <button class="prof-save" onclick="saveProfileDetails()">Save details</button>
+              <span id="prof-saved" style="display:none;margin-left:12px;font-size:12px;color:var(--gold)">Saved ✓</span>
+            </div>
+          </div>
+          <div>
+            <div class="prof-section-label" style="margin-bottom:18px">Order History</div>
+            <div class="prof-card" id="prof-orders">
+              <div style="font-size:13px;color:var(--text-muted)">No orders yet.</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2449,8 +2605,10 @@
     if (screen === 'about') document.getElementById('m-tab-profile').classList.add('active');
     if (screen === 'wishlist') { document.getElementById('m-tab-wishlist').classList.add('active'); renderWishlist(); }
     window.scrollTo(0,0);
+    if (screen === 'profile') initProfile();
     if (screen === 'cart') renderMobileCart();
     if (screen === 'checkout') buildCheckoutForms();
+      if (screen === 'profile') initProfile();
   }
 
   // ── MOBILE: category + new shortcuts (match desktop pills) ──
@@ -2518,6 +2676,7 @@
     if (screen === 'cart') renderDesktopCart();
     if (screen === 'checkout') buildCheckoutForms();
     if (screen === 'wishlist') renderWishlist();
+    if (screen === 'profile') initProfile();
     // screens are hidden at boot, so ScrollTrigger must re-measure once one becomes visible
     if (typeof ScrollTrigger !== 'undefined') {
       requestAnimationFrame(function(){ ScrollTrigger.refresh(); });
@@ -3222,6 +3381,15 @@
       }
 
       // ── SEE-THROUGH TEXT SCRUB (image pans through the letters on scroll) ──
+      // profile 'MY WARDROBE' banner scrub
+      var profBanner = document.getElementById('prof-banner-text');
+      if (profBanner) {
+        gsap.fromTo(profBanner,
+          { backgroundPosition: 'center 20%' },
+          { backgroundPosition: 'center 80%', ease: 'none',
+            scrollTrigger: { trigger: '#prof-banner', start: 'top top', end: 'bottom top', scrub: 0.8, invalidateOnRefresh: true } });
+      }
+
       var maskText = document.getElementById('ab-mask-text');
       if (maskText) {
         gsap.fromTo(maskText,
@@ -3445,6 +3613,126 @@
       }, '>-0.05')
       .fromTo(badge, { scale: 1 }, { scale: 1.35, duration: 0.16, yoyo: true, repeat: 1, ease: 'power2.out' }, '-=0.18');
   }
+
+
+  // ══════════════════════════════════════════
+  //  PROFILE — MY WARDROBE (local, no login)
+  // ══════════════════════════════════════════
+  var wardrobeOffset = 0;
+
+  function getWardrobe() {
+    try { return JSON.parse(localStorage.getItem('ss_wardrobe') || '[]'); } catch (e) { return []; }
+  }
+
+  function renderWardrobe() {
+    var rail = document.getElementById('wardrobe-rail');
+    var empty = document.getElementById('wardrobe-empty');
+    var stage = document.getElementById('wardrobe-stage');
+    if (!rail) return;
+    var items = getWardrobe();
+
+    if (!items.length) {
+      rail.innerHTML = '';
+      if (empty) empty.style.display = 'flex';
+      if (stage) stage.classList.remove('scrollable');
+      renderProfileOrders([]);
+      return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    rail.innerHTML = items.map(function(s) {
+      return '<div class="ward-shirt" onclick="openDetail(\'' + s.id + '\',\'d\')">' +
+               '<div class="ward-hook"></div>' +
+               '<img class="ward-img" src="' + (s.image || '') + '" alt="' + (s.title || '') + '">' +
+               '<div class="ward-cap">' +
+                 '<div class="ward-cap-club">' + (s.club || 'Shirt Société') + '</div>' +
+                 '<div class="ward-cap-title">' + (s.title || '') + '</div>' +
+               '</div>' +
+             '</div>';
+    }).join('');
+
+    // enable nav arrows only when it overflows
+    if (stage) {
+      wardrobeOffset = 0;
+      rail.style.transform = 'translateX(0px)';
+      setTimeout(function() {
+        stage.classList.toggle('scrollable', rail.scrollWidth > stage.clientWidth + 20);
+      }, 60);
+    }
+    renderProfileOrders(items);
+  }
+
+  function wardrobeScroll(dir) {
+    var rail = document.getElementById('wardrobe-rail');
+    var stage = document.getElementById('wardrobe-stage');
+    if (!rail || !stage) return;
+    var max = Math.max(0, rail.scrollWidth - stage.clientWidth + 80);
+    wardrobeOffset = Math.min(max, Math.max(0, wardrobeOffset + dir * 260));
+    rail.style.transform = 'translateX(' + (-wardrobeOffset) + 'px)';
+  }
+
+  function renderProfileOrders(items) {
+    var box = document.getElementById('prof-orders');
+    if (!box) return;
+    if (!items.length) { box.innerHTML = '<div style="font-size:13px;color:var(--text-muted)">No orders yet.</div>'; return; }
+    box.innerHTML = items.slice().reverse().map(function(s) {
+      var d = s.date ? new Date(s.date).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) : '';
+      return '<div class="prof-order">' +
+               '<img src="' + (s.image || '') + '" alt="">' +
+               '<div class="prof-order-info">' +
+                 '<div class="prof-order-title">' + (s.title || '') + '</div>' +
+                 '<div class="prof-order-meta">' + (s.club ? s.club + ' · ' : '') + (d || '') + (s.ref ? ' · ' + s.ref : '') + '</div>' +
+               '</div>' +
+               (s.price ? '<div style="font-size:13px;color:var(--gold)">\u20ac' + s.price + '</div>' : '') +
+             '</div>';
+    }).join('');
+  }
+
+  function loadProfileDetails() {
+    var d = {};
+    try { d = JSON.parse(localStorage.getItem('ss_profile') || '{}'); } catch (e) {}
+    var n = document.getElementById('prof-name'), e = document.getElementById('prof-email'), a = document.getElementById('prof-address');
+    if (n) n.value = d.name || '';
+    if (e) e.value = d.email || '';
+    if (a) a.value = d.address || '';
+  }
+
+  function saveProfileDetails() {
+    var d = {
+      name: (document.getElementById('prof-name') || {}).value || '',
+      email: (document.getElementById('prof-email') || {}).value || '',
+      address: (document.getElementById('prof-address') || {}).value || ''
+    };
+    try { localStorage.setItem('ss_profile', JSON.stringify(d)); } catch (e) {}
+    var s = document.getElementById('prof-saved');
+    if (s) { s.style.display = 'inline'; setTimeout(function(){ s.style.display = 'none'; }, 2000); }
+  }
+
+  function renderMobileWardrobe() {
+    var row = document.getElementById('m-wardrobe-row');
+    var empty = document.getElementById('m-wardrobe-empty');
+    if (!row) return;
+    var items = getWardrobe();
+    if (!items.length) { row.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+    if (empty) empty.style.display = 'none';
+    row.innerHTML = items.map(function(s) {
+      return '<div style="flex:0 0 150px;cursor:pointer" onclick="openDetail(\'' + s.id + '\',\'m\')">' +
+               '<div style="width:2px;height:28px;margin:0 auto;background:linear-gradient(180deg,rgba(200,169,80,.7),rgba(200,169,80,.2))"></div>' +
+               '<img src="' + (s.image || '') + '" style="width:150px;height:195px;object-fit:cover;object-position:center top;border:1px solid rgba(200,169,80,.25);background:#12100d;display:block">' +
+               '<div style="text-align:center;margin-top:8px">' +
+                 '<div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:2px">' + (s.club || 'Shirt Société') + '</div>' +
+                 '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;color:var(--white)">' + (s.title || '') + '</div>' +
+               '</div>' +
+             '</div>';
+    }).join('');
+  }
+
+  function initProfile() {
+    renderWardrobe();
+    renderMobileWardrobe();
+    loadProfileDetails();
+  }
+
 
   // ── INIT ──
   updateCartBadge();
