@@ -685,116 +685,6 @@
       .toast.show { transform: translateY(0); }
     }
 
-    /* ═══ THE VAULT — fly-through ceremony ═══ */
-    #vault {
-      position: fixed; inset: 0; z-index: 9000;
-      background: #060504;
-      display: none;
-      perspective: 620px;
-      perspective-origin: 50% 50%;
-      overflow: hidden;
-    }
-    #vault.on { display: block; }
-    #vault-corridor {
-      position: absolute; inset: 0;
-      transform-style: preserve-3d;
-      will-change: transform;
-    }
-    /* corridor surfaces */
-    #vault-floor, #vault-ceiling {
-      position: absolute; left: 50%; width: 3000px; height: 4200px;
-      margin-left: -1500px;
-      background:
-        repeating-linear-gradient(90deg, rgba(200,169,80,.05) 0 2px, transparent 2px 160px),
-        linear-gradient(180deg, #0d0b08, #050403);
-      transform-style: preserve-3d;
-    }
-    #vault-floor   { top: 50%;  transform: rotateX(90deg)  translateZ(-260px); transform-origin: top center; }
-    #vault-ceiling { bottom: 50%; transform: rotateX(-90deg) translateZ(-260px); transform-origin: bottom center; }
-    /* brass rails running down both walls */
-    .vault-rail {
-      position: absolute; top: 50%; width: 4px; height: 4200px;
-      background: linear-gradient(180deg, rgba(200,169,80,.5), rgba(200,169,80,.15));
-      box-shadow: 0 0 16px rgba(200,169,80,.35);
-      transform-style: preserve-3d;
-    }
-    #vault-rail-l { left: 50%;  transform: translate3d(-420px,-190px,0) rotateY(90deg); transform-origin: left center; }
-    #vault-rail-r { left: 50%;  transform: translate3d( 420px,-190px,0) rotateY(90deg); transform-origin: left center; }
-    #vault-shirts { position: absolute; inset: 0; transform-style: preserve-3d; }
-    /* each hanging shirt */
-    .vault-shirt {
-      position: absolute; top: 50%; left: 50%;
-      width: 150px; height: 200px;
-      margin: -100px 0 0 -75px;
-      background-size: cover; background-position: center top;
-      border: 1px solid rgba(200,169,80,.14);
-      box-shadow: 0 30px 60px rgba(0,0,0,.7);
-      filter: brightness(.5) saturate(.75);
-      will-change: transform;
-    }
-    .vault-shirt::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(200,169,80,.10), transparent 55%);
-    }
-    /* the hero shirt at the end of the corridor */
-    #vault-hero {
-      position: absolute; top: 50%; left: 50%;
-      width: 300px; margin: -230px 0 0 -150px;
-      text-align: center;
-      opacity: 0;
-      transform: translateZ(-1500px);
-      will-change: transform, opacity;
-    }
-    #vault-hero-glow {
-      position: absolute; left: 50%; top: 40%;
-      width: 760px; height: 760px; margin: -380px 0 0 -380px;
-      background: radial-gradient(circle, rgba(200,169,80,.30) 0%, rgba(200,169,80,.08) 32%, transparent 66%);
-      opacity: 0; pointer-events: none;
-    }
-    #vault-hero-img {
-      position: relative;
-      width: 300px; height: 380px; object-fit: cover; object-position: center top;
-      border: 1px solid rgba(200,169,80,.45);
-      box-shadow: 0 0 0 1px rgba(0,0,0,.6), 0 50px 90px rgba(0,0,0,.85), 0 0 90px rgba(200,169,80,.22);
-      background: #12100d;
-    }
-    #vault-hero-plate { position: relative; margin-top: 26px; opacity: 0; }
-    #vault-hero-club {
-      font-size: 9px; letter-spacing: 5px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 9px;
-    }
-    #vault-hero-title {
-      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
-      font-size: 28px; line-height: 1.15; color: var(--cream, #f5f0e8);
-      text-shadow: 0 2px 26px rgba(0,0,0,.8);
-    }
-    #vault-hero-line {
-      width: 0; height: 1px; margin: 15px auto 0;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    #vault-hero-sub {
-      margin-top: 13px;
-      font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
-      color: rgba(245,240,232,.42);
-    }
-    /* atmosphere */
-    #vault-grain {
-      position: absolute; inset: 0; pointer-events: none; opacity: .05;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
-    }
-    #vault-vignette {
-      position: absolute; inset: 0; pointer-events: none;
-      background: radial-gradient(ellipse 62% 62% at 50% 50%, transparent 32%, rgba(4,3,2,.88) 100%);
-    }
-    #vault-skip {
-      position: absolute; bottom: 30px; right: 34px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-      color: rgba(245,240,232,.3); cursor: pointer; z-index: 3;
-      padding: 8px 16px; border: 1px solid rgba(245,240,232,.12); border-radius: 2px;
-      transition: color .2s, border-color .2s; opacity: 0;
-    }
-    #vault-skip:hover { color: rgba(245,240,232,.8); border-color: rgba(245,240,232,.35); }
     /* ── cart flight (short version) ── */
     #cart-flight {
       position: fixed; z-index: 9000; pointer-events: none;
@@ -805,12 +695,6 @@
       display: none;
     }
     #cart-flight.on { display: block; }
-    @media (max-width: 767px) {
-      #vault { perspective: 460px; }
-      #vault-hero { width: 210px; margin-left: -105px; }
-      #vault-hero-img { width: 210px; height: 266px; }
-      #vault-hero-title { font-size: 21px; }
-    }
   </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -3529,97 +3413,7 @@
   })();
 
 
-  // ══════════════════════════════════════════
-  //  THE VAULT — fly-through ceremony
-  // ══════════════════════════════════════════
-  var vaultBusy = false;
-
-  // Build the corridor of hanging shirts from the real catalogue
-  function vaultBuildCorridor(excludeId) {
-    var wrap = document.getElementById('vault-shirts');
-    if (!wrap) return;
-    wrap.innerHTML = '';
-    var pool = (allShirts || []).filter(function(s) { return s.id !== excludeId; });
-    // fall back to any shirt if the catalogue is thin
-    if (!pool.length) pool = (allShirts || []);
-    var DEPTH = 12;           // pairs of shirts down the corridor
-    var SPACING = 330;        // px between pairs
-    for (var i = 0; i < DEPTH; i++) {
-      [-1, 1].forEach(function(side) {
-        var s = pool.length ? pool[(i * 2 + (side > 0 ? 1 : 0)) % pool.length] : null;
-        var el = document.createElement('div');
-        el.className = 'vault-shirt';
-        if (s) el.style.backgroundImage = "url('" + getImg(s) + "')";
-        else el.style.background = 'linear-gradient(160deg,#1a1712,#0d0b08)';
-        var z = -400 - i * SPACING;
-        var x = side * (300 + (i % 2) * 26);
-        var y = -30 + (i % 3) * 16;
-        var rot = side * -26;
-        el.style.transform = 'translate3d(' + x + 'px,' + y + 'px,' + z + 'px) rotateY(' + rot + 'deg)';
-        wrap.appendChild(el);
-      });
-    }
-    return DEPTH * SPACING + 400;
-  }
-
-  function vaultClose() {
-    var v = document.getElementById('vault');
-    if (!v) return;
-    if (typeof gsap !== 'undefined') gsap.killTweensOf(['#vault-corridor', '#vault-hero', '#vault-hero-glow', '#vault-hero-plate', '#vault-hero-line', '#vault-skip']);
-    v.classList.remove('on');
-    document.body.style.overflow = '';
-    vaultBusy = false;
-  }
-
-  // The full ceremony — used on purchase
-  function vaultFlyThrough(shirt, onDone) {
-    var v = document.getElementById('vault');
-    if (!v || typeof gsap === 'undefined' || !shirt) { if (onDone) onDone(); return; }
-    if (vaultBusy) return;
-    vaultBusy = true;
-
-    var travel = vaultBuildCorridor(shirt.id) || 4400;
-
-    document.getElementById('vault-hero-img').src = getImg(shirt);
-    document.getElementById('vault-hero-club').textContent = shirt.club || 'Shirt Société';
-    document.getElementById('vault-hero-title').textContent = shirt.title || '';
-    document.getElementById('vault-hero-sub').textContent = shirt.season ? ('Season ' + shirt.season) : 'Authenticated original';
-
-    v.classList.add('on');
-    document.body.style.overflow = 'hidden';
-
-    gsap.set('#vault-corridor', { z: 0 });
-    gsap.set('#vault-hero', { opacity: 0, z: -(travel + 260) });
-    gsap.set('#vault-hero-glow', { opacity: 0, scale: 0.7 });
-    gsap.set('#vault-hero-plate', { opacity: 0, y: 16 });
-    gsap.set('#vault-hero-line', { width: 0 });
-    gsap.set('#vault-skip', { opacity: 0 });
-
-    var tl = gsap.timeline({
-      onComplete: function() { vaultClose(); if (onDone) onDone(); }
-    });
-
-    tl
-      .to('#vault-skip', { opacity: 1, duration: 0.5 }, 0.6)
-      // the drone travels down the corridor
-      .to('#vault-corridor', { z: travel, duration: 3.4, ease: 'power1.inOut' }, 0)
-      // subtle banking, like a drone correcting itself
-      .fromTo('#vault-corridor', { rotateY: -2.4, rotateX: 1.2 },
-        { rotateY: 2.4, rotateX: -0.8, duration: 3.4, ease: 'sine.inOut' }, 0)
-      // the piece emerges from the dark
-      .to('#vault-hero', { opacity: 1, duration: 0.9, ease: 'power1.out' }, 1.9)
-      .to('#vault-hero-glow', { opacity: 1, scale: 1, duration: 1.5, ease: 'power2.out' }, 2.2)
-      // arrival
-      .to('#vault-hero-plate', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 3.3)
-      .to('#vault-hero-line', { width: 120, duration: 0.8, ease: 'power2.out' }, 3.5)
-      // hold, then fade the room away
-      .to(['#vault-hero', '#vault-hero-glow'], { opacity: 0, duration: 0.8, ease: 'power2.in' }, 5.1)
-      .to('#vault-skip', { opacity: 0, duration: 0.4 }, 5.1);
-
-    var skip = document.getElementById('vault-skip');
-    if (skip) skip.onclick = function() { tl.kill(); vaultClose(); if (onDone) onDone(); };
-  }
-
+  // ── cart flight ──
   // The short version — used when adding to cart
   function cartFlight(shirt, fromEl) {
     if (typeof gsap === 'undefined' || !shirt) return;
@@ -3674,31 +3468,6 @@
   <div class="zoom-counter" id="zoom-counter"></div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     THE VAULT — fly-through ceremony
-══════════════════════════════════════════ -->
-<div id="vault" aria-hidden="true">
-  <div id="vault-corridor">
-    <div id="vault-floor"></div>
-    <div id="vault-ceiling"></div>
-    <div id="vault-rail-l" class="vault-rail"></div>
-    <div id="vault-rail-r" class="vault-rail"></div>
-    <div id="vault-shirts"></div>
-    <div id="vault-hero">
-      <div id="vault-hero-glow"></div>
-      <img id="vault-hero-img" src="" alt="">
-      <div id="vault-hero-plate">
-        <div id="vault-hero-club"></div>
-        <div id="vault-hero-title"></div>
-        <div id="vault-hero-line"></div>
-        <div id="vault-hero-sub"></div>
-      </div>
-    </div>
-  </div>
-  <div id="vault-grain"></div>
-  <div id="vault-vignette"></div>
-  <div id="vault-skip">Skip</div>
-</div>
 <div id="cart-flight"></div>
 </body>
 </html>
