@@ -2,13 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FKJWGECXN"></script>
+  <!-- Google Analytics — loaded ONLY after cookie consent (AVG/GDPR compliant) -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-3FKJWGECXN');
+    // Consent Mode v2 — everything denied by default until the user accepts
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      analytics_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
+    function ssLoadAnalytics() {
+      if (window.__ssGA) return;
+      window.__ssGA = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-3FKJWGECXN';
+      document.head.appendChild(s);
+      gtag('js', new Date());
+      gtag('config', 'G-3FKJWGECXN', { anonymize_ip: true });
+    }
+    // if the visitor already accepted in a previous visit, restore analytics
+    try {
+      var _sc = JSON.parse(localStorage.getItem('ss_cookie_consent') || 'null');
+      if (_sc && _sc.analytics) {
+        gtag('consent', 'update', { analytics_storage: 'granted' });
+        ssLoadAnalytics();
+      }
+    } catch (e) {}
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shirt Société | Vintage Football Shirts | Timeless, Original, Rare</title>
@@ -308,8 +330,7 @@
       perspective: 800px;
     }
     .shirt-card-sm:hover {
-      transform: translateY(-8px) rotateY(3deg) rotateX(-1.5deg);
-      box-shadow: 12px 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,169,80,0.12);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.45), 0 0 0 1px rgba(200,169,80,0.14);
     }
     .shirt-card-sm .img-hover {
       position: absolute; top: 0; left: 0; width: 100%; height: 320px;
@@ -366,8 +387,7 @@
       transform-style: preserve-3d;
     }
     .shirt-card:hover {
-      transform: translateY(-10px) rotateY(4deg) rotateX(-2deg);
-      box-shadow: 14px 24px 48px rgba(0,0,0,0.55), 0 0 0 1px rgba(200,169,80,0.1);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,169,80,0.12);
     }
     .shirt-card .img-hover {
       position: absolute; top: 0; left: 0; width: 100%;
@@ -442,11 +462,12 @@
     #zoom-lightbox-img {
       max-width: 92vw; max-height: 88vh;
       object-fit: contain;
-      transition: transform .15s ease-out;
+      transition: transform .25s ease-out;
       transform-origin: center center;
       cursor: zoom-in;
       user-select: none; -webkit-user-drag: none;
     }
+    #zoom-lightbox-img.zoomed { transition: none; cursor: crosshair; }
     #zoom-lightbox-img.zoomed { cursor: move; }
     .zoom-close {
       position: absolute; top: 24px; right: 28px;
@@ -1072,7 +1093,7 @@
   <div id="m-wardrobe-row" style="display:flex;gap:14px;overflow-x:auto;padding:8px 20px 20px;scrollbar-width:none"></div>
   <div id="m-wardrobe-empty" style="display:none;padding:0 20px 24px;text-align:center">
     <p style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:16px">Your wardrobe is empty. Every shirt you collect will hang here.</p>
-    <button onclick="mGoTo('shop')" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Browse the collection</button>
+    <button onclick="goShop()" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Browse the collection</button>
   </div>
 
   <div style="padding:8px 20px 0">
@@ -1148,21 +1169,6 @@
         Shop
         <span id="d-shirt-count" style="margin-left:auto;background:#1e1c17;padding:2px 8px;border-radius:10px;font-size:11px;color:var(--text-muted)"></span>
       </div>
-      <div class="nav-item" onclick="dGoTo('cart')" id="d-nav-cart">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Cart
-        <span id="d-cart-count" style="margin-left:auto;background:var(--gold);color:var(--black);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
-      </div>
-      <div class="nav-item" onclick="dGoTo('wishlist')" id="d-nav-wishlist">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-        Saved
-        <span id="d-wishlist-count" style="margin-left:auto;background:var(--grey-light,#3a3830);color:var(--text-muted);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
-      </div>
-      <div class="nav-item" onclick="dGoTo('profile')" id="d-nav-profile">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        My Wardrobe
-        <span id="d-wardrobe-count" style="margin-left:auto;background:var(--gold);color:var(--black);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
-      </div>
       <a class="nav-item" href="/blog.html" style="text-decoration:none">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         Blog
@@ -1171,6 +1177,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
         Our Story
       </div>
+
       <div class="nav-section-label" style="margin-top:8px">Categories</div>
       <div class="nav-item" onclick="dGoTo('shop');dSetFilter('match_worn')" id="d-nav-mw">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
@@ -1203,12 +1210,42 @@
         </svg>
         National Teams
       </div>
+
+      <div class="nav-section-label" style="margin-top:8px">Account</div>
+      <div class="nav-item" onclick="dGoTo('wishlist')" id="d-nav-wishlist">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        Saved
+        <span id="d-wishlist-count" style="margin-left:auto;background:var(--grey-light,#3a3830);color:var(--text-muted);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
+      </div>
+      <div class="nav-item" onclick="dGoTo('cart')" id="d-nav-cart">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Cart
+        <span id="d-cart-count" style="margin-left:auto;background:var(--gold);color:var(--black);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
+      </div>
+      <div class="nav-item" onclick="dGoTo('profile')" id="d-nav-profile">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        My Wardrobe
+        <span id="d-wardrobe-count" style="margin-left:auto;background:var(--gold);color:var(--black);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
+      </div>
     </nav>
     <div class="sidebar-footer">
       <div style="margin-bottom:8px;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase">Contact</div>
       <div style="font-size:12px;line-height:1.9">
         <a href="mailto:info@shirtsociete.com" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">info@shirtsociete.com</a><br>
         <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">@shirtsociete</a>
+      </div>
+      <div style="margin-top:14px;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase">Legal</div>
+      <div style="font-size:11.5px;line-height:1.9">
+        <a href="/refund.html" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Refund Policy</a><br>
+        <a href="/shipping.html" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Shipping Policy</a><br>
+        <a href="/privacy.html" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Privacy Policy</a><br>
+        <a href="/terms.html" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Terms of Service</a><br>
+        <a href="#" onclick="ssOpenCookieSettings();return false;" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Cookie Preferences</a>
+      </div>
+      <div style="margin-top:14px;font-size:10.5px;line-height:1.7;color:rgba(245,240,232,.4)">
+        Shirt Société<br>
+        Korhoenlaan 1-190, 3847 LL Harderwijk<br>
+        KvK 97828408 · BTW NL005290775B10
       </div>
       <div style="margin-top:12px;font-size:11px">© 2026 Shirt Société</div>
     </div>
@@ -1630,7 +1667,7 @@
           <div id="wardrobe-empty" style="display:none">
             <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.4"><path d="M20 7h-4V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2H4a1 1 0 00-1 1v11a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/></svg>
             <p>Your wardrobe is empty. Every shirt you collect will hang here.</p>
-            <button class="prof-save" onclick="dGoTo('shop')">Browse the collection</button>
+            <button class="prof-save" onclick="goShop()">Browse the collection</button>
           </div>
         </div>
       </div>
@@ -2297,7 +2334,7 @@
     if (e) e.stopPropagation();
     var img = document.getElementById('zoom-lightbox-img');
     if (zoomLevel === 1) {
-      zoomLevel = 2.4;
+      zoomLevel = 2.6;
       img.classList.add('zoomed');
     } else {
       zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
@@ -2312,14 +2349,24 @@
 
   // Pan the zoomed image with mouse move
   (function initZoomPan() {
+    var lb = document.getElementById('zoom-lightbox');
     var img = document.getElementById('zoom-lightbox-img');
-    if (!img) return;
-    img.addEventListener('mousemove', function(e) {
+    if (!img || !lb) return;
+    // While zoomed, moving the cursor pans across the WHOLE image — no need to zoom out first.
+    // Cursor position (0..1 over the viewport) maps to the full hidden extent of the scaled image.
+    lb.addEventListener('mousemove', function(e) {
       if (zoomLevel <= 1) return;
-      var r = img.getBoundingClientRect();
-      var x = (e.clientX - r.left) / r.width - 0.5;
-      var y = (e.clientY - r.top) / r.height - 0.5;
-      img.style.transform = 'scale(' + zoomLevel + ') translate(' + (-x * 80) + 'px,' + (-y * 80) + 'px)';
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var px = Math.min(1, Math.max(0, e.clientX / vw));
+      var py = Math.min(1, Math.max(0, e.clientY / vh));
+      var rect = img.getBoundingClientRect();
+      // how much bigger the scaled image is than the shown box, in each axis
+      var overflowX = (img.naturalWidth  ? (rect.width  * (zoomLevel - 1)) : rect.width  * (zoomLevel - 1));
+      var overflowY = (img.naturalHeight ? (rect.height * (zoomLevel - 1)) : rect.height * (zoomLevel - 1));
+      // translate so cursor at left shows left edge, cursor at right shows right edge (full coverage)
+      var tx = (0.5 - px) * (overflowX / zoomLevel);
+      var ty = (0.5 - py) * (overflowY / zoomLevel);
+      img.style.transform = 'scale(' + zoomLevel + ') translate(' + tx + 'px,' + ty + 'px)';
     });
   })();
 
@@ -3363,17 +3410,7 @@
               scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none none' }
             }
           );
-          card.addEventListener('mousemove', function(e) {
-            var r = card.getBoundingClientRect();
-            var x = (e.clientX - r.left) / r.width - 0.5;
-            var y = (e.clientY - r.top)  / r.height - 0.5;
-            gsap.to(card, { rotateY: x * 16, rotateX: -y * 9, translateY: -10, scale: 1.03,
-              duration: 0.25, ease: 'power2.out', transformPerspective: 700, overwrite: true });
-          });
-          card.addEventListener('mouseleave', function() {
-            gsap.to(card, { rotateY: 0, rotateX: 0, translateY: 0, scale: 1,
-              duration: 0.5, ease: 'power3.out', overwrite: true });
-          });
+          // (hover 3D tilt removed — cards now show the second photo on hover)
         });
       }
 
@@ -3749,6 +3786,13 @@
   // keep the wardrobe badge current from first paint
   try { if (typeof updateWardrobeBadge === 'function') updateWardrobeBadge(); } catch(e){}
 
+  // go to shop from anywhere (works on both desktop & mobile layouts)
+  function goShop() {
+    if (window.innerWidth >= 768 && typeof dGoTo === 'function') dGoTo('shop');
+    else if (typeof mGoTo === 'function') mGoTo('shop');
+    else if (typeof dGoTo === 'function') dGoTo('shop');
+  }
+
   // ── INIT ──
   updateCartBadge();
   updateWishlistBadge();
@@ -3772,5 +3816,120 @@
 </div>
 
 <div id="cart-flight"></div>
+
+<!-- ═══ COOKIE CONSENT ═══ -->
+<div id="cookie-banner" style="position:fixed;bottom:24px;left:24px;z-index:9500;display:none;width:360px;max-width:calc(100vw - 48px);background:linear-gradient(180deg,#0d0b08,#080604);border:1px solid rgba(200,169,80,.28);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);overflow:hidden">
+  <div style="padding:20px 22px 8px">
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:17px;color:var(--gold);margin-bottom:8px">Cookie preferences</div>
+    <div style="font-size:12px;line-height:1.65;color:rgba(245,240,232,.6)">We use essential cookies to run the shop, and optional cookies you control. See our <a href="/privacy.html" style="color:var(--gold);text-decoration:underline">Privacy Policy</a>.</div>
+  </div>
+
+  <div style="padding:14px 22px 4px;display:flex;flex-direction:column;gap:12px">
+    <!-- Required -->
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <div style="flex-shrink:0;width:34px;height:19px;border-radius:20px;background:rgba(200,169,80,.35);position:relative;margin-top:1px">
+        <div style="position:absolute;top:2px;right:2px;width:15px;height:15px;border-radius:50%;background:var(--gold)"></div>
+      </div>
+      <div>
+        <div style="font-size:12.5px;font-weight:600;color:var(--cream);margin-bottom:2px">Required</div>
+        <div style="font-size:11px;line-height:1.5;color:rgba(245,240,232,.45)">Needed for the cart and core features. Always on.</div>
+      </div>
+    </div>
+    <!-- Personalization -->
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <div id="ck-personalization" onclick="ssToggle('personalization')" style="flex-shrink:0;width:34px;height:19px;border-radius:20px;background:var(--gold);position:relative;cursor:pointer;transition:background .2s;margin-top:1px">
+        <div class="ck-knob" style="position:absolute;top:2px;left:17px;width:15px;height:15px;border-radius:50%;background:#0a0905;transition:left .2s"></div>
+      </div>
+      <div>
+        <div style="font-size:12.5px;font-weight:600;color:var(--cream);margin-bottom:2px">Personalization</div>
+        <div style="font-size:11px;line-height:1.5;color:rgba(245,240,232,.45)">Remembers your actions to tailor your next visit.</div>
+      </div>
+    </div>
+    <!-- Marketing -->
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <div id="ck-marketing" onclick="ssToggle('marketing')" style="flex-shrink:0;width:34px;height:19px;border-radius:20px;background:var(--gold);position:relative;cursor:pointer;transition:background .2s;margin-top:1px">
+        <div class="ck-knob" style="position:absolute;top:2px;left:17px;width:15px;height:15px;border-radius:50%;background:#0a0905;transition:left .2s"></div>
+      </div>
+      <div>
+        <div style="font-size:12.5px;font-weight:600;color:var(--cream);margin-bottom:2px">Marketing</div>
+        <div style="font-size:11px;line-height:1.5;color:rgba(245,240,232,.45)">Used to optimise marketing and ads elsewhere.</div>
+      </div>
+    </div>
+    <!-- Analytics -->
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <div id="ck-analytics" onclick="ssToggle('analytics')" style="flex-shrink:0;width:34px;height:19px;border-radius:20px;background:rgba(245,240,232,.15);position:relative;cursor:pointer;transition:background .2s;margin-top:1px">
+        <div class="ck-knob" style="position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#0a0905;transition:left .2s"></div>
+      </div>
+      <div>
+        <div style="font-size:12.5px;font-weight:600;color:var(--cream);margin-bottom:2px">Analytics</div>
+        <div style="font-size:11px;line-height:1.5;color:rgba(245,240,232,.45)">Helps us understand how the site is used.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;padding:16px 22px 20px">
+    <button onclick="ssCookieAll(false)" style="flex:1;background:transparent;border:1px solid rgba(245,240,232,.2);color:rgba(245,240,232,.8);padding:10px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Decline</button>
+    <button onclick="ssCookieSave()" style="flex:1;background:transparent;border:1px solid rgba(200,169,80,.4);color:var(--gold);padding:10px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Save</button>
+    <button onclick="ssCookieAll(true)" style="flex:1.3;background:var(--gold);border:none;color:var(--black);padding:10px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Accept all</button>
+  </div>
+</div>
+
+<script>
+  var ssConsent = { personalization: true, marketing: true, analytics: false };
+
+  function ssToggle(key) {
+    ssConsent[key] = !ssConsent[key];
+    ssPaintCheckbox(key);
+  }
+  function ssPaintCheckbox(key) {
+    var box = document.getElementById('ck-' + key);
+    if (!box) return;
+    var knob = box.querySelector('.ck-knob');
+    if (ssConsent[key]) {
+      box.style.background = 'var(--gold)';
+      if (knob) knob.style.left = '17px';
+    } else {
+      box.style.background = 'rgba(245,240,232,.15)';
+      if (knob) knob.style.left = '2px';
+    }
+  }
+  function ssCookieAll(val) {
+    ssConsent.personalization = val; ssConsent.marketing = val; ssConsent.analytics = val;
+    ['personalization','marketing','analytics'].forEach(ssPaintCheckbox);
+    ssCookieSave();
+  }
+  function ssCookieSave() {
+    try { localStorage.setItem('ss_cookie_consent', JSON.stringify(ssConsent)); } catch (e) {}
+    var b = document.getElementById('cookie-banner');
+    if (b) b.style.display = 'none';
+    if (ssConsent.analytics) {
+      if (typeof gtag === 'function') gtag('consent', 'update', { analytics_storage: 'granted' });
+      if (typeof ssLoadAnalytics === 'function') ssLoadAnalytics();
+    }
+  }
+  function ssCookieDismiss() {
+    // closing without choosing = only required cookies (nothing extra loads)
+    var b = document.getElementById('cookie-banner');
+    if (b) b.style.display = 'none';
+  }
+  function ssOpenCookieSettings() {
+    var b = document.getElementById('cookie-banner');
+    if (b) { b.style.display = 'block'; ['personalization','marketing','analytics'].forEach(ssPaintCheckbox); }
+  }
+  (function() {
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem('ss_cookie_consent') || 'null'); } catch (e) {}
+    if (saved && typeof saved === 'object') {
+      ssConsent = { personalization: !!saved.personalization, marketing: !!saved.marketing, analytics: !!saved.analytics };
+    } else {
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          var b = document.getElementById('cookie-banner');
+          if (b) { b.style.display = 'block'; ['personalization','marketing','analytics'].forEach(ssPaintCheckbox); }
+        }, 800);
+      });
+    }
+  })();
+</script>
 </body>
 </html>
