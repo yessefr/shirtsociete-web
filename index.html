@@ -80,7 +80,8 @@
   }
   </script>
   <title>Shirt Société | Vintage Football Shirts | Timeless, Original, Rare</title>
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_fill,g_center,w_128,h_128,r_max,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png">
+  <link rel="apple-touch-icon" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_fill,g_center,w_180,h_180,r_max,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1591,8 +1592,11 @@
 
     <!-- CART -->
     <div class="dscreen" id="d-screen-cart">
+      <section id="cart-banner" style="position:relative;height:36vh;min-height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--black);text-align:center">
+        <div id="cart-banner-text" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(46px,8vw,110px);line-height:.88;letter-spacing:-3px;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none">MY CART</div>
+        <div style="margin-top:14px;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(200,169,80,.5)">Shirt Société · Checkout</div>
+      </section>
       <div class="cart-wrap">
-        <div class="cart-title">Your Cart</div>
         <div id="d-cart-content"></div>
       </div>
     </div>
@@ -1625,8 +1629,11 @@
 
     <!-- WISHLIST -->
     <div class="dscreen" id="d-screen-wishlist">
-      <div style="padding:48px;max-width:900px">
-        <h2 style="font-size:28px;font-weight:500;margin-bottom:4px">Saved Shirts</h2>
+      <section id="saved-banner" style="position:relative;height:36vh;min-height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--black);text-align:center">
+        <div id="saved-banner-text" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(46px,8vw,110px);line-height:.88;letter-spacing:-3px;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none">SAVED</div>
+        <div style="margin-top:14px;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(200,169,80,.5)">Shirt Société · Your Selection</div>
+      </section>
+      <div style="padding:40px 48px;max-width:900px">
         <p style="font-size:14px;color:var(--text-muted);margin-bottom:32px">Shirts you've liked. Sold items are marked automatically.</p>
         <div id="d-wishlist-content"></div>
       </div>
@@ -3420,6 +3427,16 @@
           { backgroundPosition: 'center 80%', ease: 'none',
             scrollTrigger: { trigger: '#prof-banner', start: 'top top', end: 'bottom top', scrub: 0.8, invalidateOnRefresh: true } });
       }
+      // cart + saved see-through banners scrub
+      [['cart-banner-text','#cart-banner'], ['saved-banner-text','#saved-banner']].forEach(function(pair) {
+        var el = document.getElementById(pair[0]);
+        if (el) {
+          gsap.fromTo(el,
+            { backgroundPosition: 'center 20%' },
+            { backgroundPosition: 'center 80%', ease: 'none',
+              scrollTrigger: { trigger: pair[1], start: 'top top', end: 'bottom top', scrub: 0.8, invalidateOnRefresh: true } });
+        }
+      });
 
       var maskText = document.getElementById('ab-mask-text');
       if (maskText) {
