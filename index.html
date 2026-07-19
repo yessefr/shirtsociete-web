@@ -80,8 +80,7 @@
   }
   </script>
   <title>Shirt Société | Vintage Football Shirts | Timeless, Original, Rare</title>
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_fill,g_center,w_128,h_128,r_max,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png">
-  <link rel="apple-touch-icon" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_fill,g_center,w_180,h_180,r_max,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -377,11 +376,33 @@
     }
     .filter-btn.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
 
+
+    .like-btn {
+      background: rgba(20,18,16,.82);
+      -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+      border: 1px solid rgba(200,169,80,.55);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--cream); padding: 0;
+      transition: all .2s;
+    }
+    .like-btn:hover { border-color: var(--gold); background: rgba(30,27,23,.9); }
+    .like-btn svg { width: 15px; height: 15px; }
+    .like-btn.liked { border-color: var(--gold); }
+    .shirt-card-size { font-size: 10px; color: var(--text-muted); letter-spacing: .5px; margin-top: 2px; }
+    .shirt-cat-badge {
+      position: absolute; bottom: 8px; left: 8px; z-index: 3;
+      background: rgba(6,5,4,.78); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(200,169,80,.3); border-radius: 2px;
+      padding: 4px 9px; font-size: 8px; letter-spacing: 1.2px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; line-height: 1.3; max-width: 70%;
+    }
     .shirt-grid {
       display: grid; padding: 24px 48px 48px;
-      gap: 20px;
-      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      grid-template-columns: repeat(4, 1fr);
     }
+    @media (max-width: 1200px) { .shirt-grid { grid-template-columns: repeat(3, 1fr); } }
     .shirt-card {
       background: var(--grey); border-radius: 2px; overflow: hidden;
       cursor: pointer;
@@ -1096,7 +1117,7 @@
   <div id="m-wardrobe-row" style="display:flex;gap:14px;overflow-x:auto;padding:8px 20px 20px;scrollbar-width:none"></div>
   <div id="m-wardrobe-empty" style="display:none;padding:0 20px 24px;text-align:center">
     <p style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:16px">Your wardrobe is empty. Every shirt you collect will hang here.</p>
-    <button onclick="goShop()" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Browse the collection</button>
+    <button onclick="mGoTo('shop')" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Browse the collection</button>
   </div>
 
   <div style="padding:8px 20px 0">
@@ -1661,7 +1682,7 @@
           <div id="wardrobe-empty" style="display:none">
             <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.4"><path d="M20 7h-4V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2H4a1 1 0 00-1 1v11a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/></svg>
             <p>Your wardrobe is empty. Every shirt you collect will hang here.</p>
-            <button class="prof-save" onclick="goShop()">Browse the collection</button>
+            <button class="prof-save" onclick="document.getElementById('d-nav-shop').click()">Browse the collection</button>
           </div>
         </div>
       </div>
@@ -2046,7 +2067,7 @@
         <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')"
           style="top:6px;right:6px;width:28px;height:28px;z-index:3">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-            fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2.5">
+            fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'var(--cream)'}" stroke-width="2.5">
             <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
           </svg>
         </button>
@@ -2099,8 +2120,9 @@
       return `
         <div class="m-shirt-card" onclick="openDetail('${s.id}','m')" style="position:relative">
           <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
+          <div class="shirt-cat-badge">${catLabel(s)}</div>
           <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:6px;right:6px;width:28px;height:28px;z-index:3">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'var(--cream)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
           </button>
           <div class="m-shirt-card-body">
             <div class="m-shirt-card-club">${s.club||''}</div>
@@ -2138,7 +2160,7 @@
         <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
         ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
         <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:8px;right:8px;z-index:3">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'var(--cream)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
         </button>
         <div class="shirt-card-sm-info">
           <div class="shirt-card-sm-club">${s.club||''}</div>
@@ -2171,6 +2193,16 @@
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('d-filter-all').classList.add('active');
     renderDesktopGrid();
+  }
+
+  // build the corner badge: category + year
+  function catLabel(s) {
+    var cat = '';
+    if (s.category === 'national') cat = 'National Team';
+    else if (s.category === 'clubs') cat = 'Club';
+    else if (s.category === 'match_worn') cat = 'Match Worn';
+    var yr = s.season || '';
+    return (cat && yr) ? (cat + ' · ' + yr) : (cat || yr || '');
   }
 
   function renderDesktopGrid() {
@@ -2207,12 +2239,14 @@
         <div class="shirt-card anim-ready scale-up ${delay}" onclick="openDetail('${s.id}','d')">
           <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
           ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
+          <div class="shirt-cat-badge">${catLabel(s)}</div>
           <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" title="Save shirt" style="top:auto;bottom:8px;right:8px;width:30px;height:30px;z-index:3">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'currentColor'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'none'}" stroke="${isLiked ? 'var(--gold)' : 'var(--cream)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
           </button>
           <div class="shirt-card-body">
             <div class="shirt-card-club">${s.club||''}</div>
             <div class="shirt-card-title">${s.title}</div>
+            ${s.size ? `<div class="shirt-card-size">Size ${s.size}</div>` : ''}
             <div class="shirt-card-footer">
               <div class="shirt-card-price">€${parseFloat(s.price).toFixed(2)}</div>
               ${inCart ? '<span class="sold-badge">In cart ✓</span>' : `<button class="add-btn" onclick="event.stopPropagation();quickAdd('${s.id}', event)">+</button>`}
