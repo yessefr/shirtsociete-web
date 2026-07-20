@@ -1641,6 +1641,10 @@
           <div id="d-detail-specs" class="detail-specs"></div>
           <p id="d-detail-desc" class="detail-desc"></p>
           <button id="d-detail-add-btn" class="detail-add-btn" onclick="addToCartFromDetail()">Add to Cart</button>
+          <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:11px;border:1px solid rgba(200,169,80,.3);border-radius:2px;color:var(--text-muted);text-decoration:none;font-size:12px;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='rgba(200,169,80,.3)';this.style.color='var(--text-muted)'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+            Questions about this shirt? Message us on Instagram
+          </a>
         </div>
       </div>
     </div>
@@ -2313,11 +2317,43 @@
   }
 
   // ── DETAIL ──
+  // Structured data so Google can index each shirt as a product (Google Images / Shopping)
+  function injectProductSchema(shirt, images) {
+    try {
+      var old = document.getElementById('ld-product');
+      if (old) old.remove();
+      var data = {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": shirt.title,
+        "image": images,
+        "description": shirt.description || (shirt.title + ' — vintage football shirt at Shirt Société.'),
+        "brand": { "@type": "Brand", "name": shirt.club || "Shirt Société" },
+        "category": "Football shirt",
+        "offers": {
+          "@type": "Offer",
+          "url": "https://shirtsociete.com/",
+          "priceCurrency": "EUR",
+          "price": parseFloat(shirt.price).toFixed(2),
+          "availability": shirt.available === false ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+          "itemCondition": "https://schema.org/UsedCondition",
+          "seller": { "@type": "Organization", "name": "Shirt Société" }
+        }
+      };
+      var el = document.createElement('script');
+      el.type = 'application/ld+json';
+      el.id = 'ld-product';
+      el.textContent = JSON.stringify(data);
+      document.head.appendChild(el);
+    } catch (e) {}
+  }
+
   function openDetail(id, ctx) {
     const shirt = allShirts.find(s => s.id === id);
     if (!shirt) return;
     currentShirt = shirt;
     const images = shirt.images && shirt.images.length ? shirt.images : [getImg(shirt)];
+    injectProductSchema(shirt, images);
 
     if (ctx === 'm') {
       currentImages = images;
@@ -3878,7 +3914,7 @@
   }
 
   function initProfile() {
-    // playWardrobeIntro();  // intro video disabled for now — re-enable when the new clip is ready
+    playWardrobeIntro();
     renderWardrobe();
     renderMobileWardrobe();
     loadProfileDetails();
@@ -4052,7 +4088,7 @@
 <div id="wardrobe-intro" style="position:fixed;inset:0;z-index:9200;background:#060504;display:none;align-items:center;justify-content:center">
   <video id="wardrobe-intro-video" playsinline muted preload="auto"
     style="width:100%;height:100%;object-fit:cover"
-    src="https://res.cloudinary.com/dinpfdojh/video/upload/v1784552874/video_1784407153767_fc4fff03_yboknu.mp4"></video>
+    src="https://res.cloudinary.com/dinpfdojh/video/upload/v1784576435/openart-video_1784367163444_3db72d01_1784367163462_ef2816fa_1_runpzu.mp4"></video>
   <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 45%,rgba(4,3,2,.6) 100%)"></div>
   <div id="wardrobe-intro-skip" style="position:absolute;bottom:30px;right:34px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.4);cursor:pointer;z-index:3;padding:8px 16px;border:1px solid rgba(245,240,232,.15);border-radius:2px">Skip</div>
 </div>
