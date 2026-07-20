@@ -352,10 +352,15 @@
           <div class="page-title">Shirts</div>
           <div class="page-subtitle">Manage your inventory</div>
         </div>
-        <button class="btn btn-primary" onclick="openShirtModal()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Add Shirt
-        </button>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-primary" onclick="openShirtModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Shirt
+          </button>
+          <button class="btn" style="background:#2a2620;color:var(--gold);border:1px solid var(--gold)" onclick="importDropShirts()" id="import-drop-btn">
+            Import drop (22 July)
+          </button>
+        </div>
       </div>
       <div class="toolbar">
         <div class="search-box">
@@ -750,6 +755,249 @@
   function editShirt(id) {
     const shirt = allShirts.find(s => s.id === id);
     if (shirt) openShirtModal(shirt);
+  }
+
+
+  // ── One-click import of the 22 July drop shirts ──
+  // Creates all shirts as available:false (hidden). Flip them to Available in the table on drop day.
+  const DROP_SHIRTS = [
+  {
+    "title": "Real Betis 1988 Home",
+    "club": "Real Betis",
+    "category": "clubs",
+    "season": "1988",
+    "size": "M",
+    "price": 150,
+    "images": [
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576256/WhatsApp_Image_2026-07-20_at_21.34.40_1_ahqn1q.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576256/WhatsApp_Image_2026-07-20_at_21.34.40_i90qmd.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576251/WhatsApp_Image_2026-07-20_at_21.34.41_8_ya6en8.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576257/WhatsApp_Image_2026-07-20_at_21.34.42_vwe3me.jpg"
+    ],
+    "available": false,
+    "condition": "Very good",
+    "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576256/WhatsApp_Image_2026-07-20_at_21.34.40_1_ahqn1q.jpg",
+    "featured": false
+  },
+  {
+    "title": "Brazil 2004 Home Ronaldinho (Longsleeve)",
+    "club": "Brazil",
+    "category": "national",
+    "season": "2004",
+    "size": "XL",
+    "price": 225,
+    "images": [
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576256/WhatsApp_Image_2026-07-20_at_21.34.41_ftwzwl.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_1_rn4kob.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576253/WhatsApp_Image_2026-07-20_at_21.34.42_10_vbj7pj.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576255/WhatsApp_Image_2026-07-20_at_21.34.42_13_yha1tl.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576255/WhatsApp_Image_2026-07-20_at_21.34.42_11_wi2a3k.jpg"
+    ],
+    "available": false,
+    "condition": "Very good",
+    "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576256/WhatsApp_Image_2026-07-20_at_21.34.41_ftwzwl.jpg",
+    "featured": false
+  },
+  {
+    "title": "Boca Juniors 2001 Home",
+    "club": "Boca Juniors",
+    "category": "clubs",
+    "season": "2001",
+    "size": "L",
+    "price": 145,
+    "images": [
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_4_ccuzg0.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_5_nq0fbc.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576251/WhatsApp_Image_2026-07-20_at_21.34.41_7_wnfrp8.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576251/WhatsApp_Image_2026-07-20_at_21.34.41_6_aage9b.jpg"
+    ],
+    "available": false,
+    "condition": "Very good",
+    "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_4_ccuzg0.jpg",
+    "featured": false
+  },
+  {
+    "title": "Brazil 1998 Home",
+    "club": "Brazil",
+    "category": "national",
+    "season": "1998",
+    "size": "L",
+    "price": 150,
+    "images": [
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_3_unohzu.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_2_riwnl4.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576248/WhatsApp_Image_2026-07-20_at_21.34.42_5_vq0ncz.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576250/WhatsApp_Image_2026-07-20_at_21.34.42_7_wxyakq.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576254/WhatsApp_Image_2026-07-20_at_21.34.42_3_dfdczv.jpg"
+    ],
+    "available": false,
+    "condition": "Very good",
+    "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_3_unohzu.jpg",
+    "featured": false
+  },
+  {
+    "title": "Atletico Madrid 1992/93 Home",
+    "club": "Atletico Madrid",
+    "category": "clubs",
+    "season": "1992/93",
+    "size": "L",
+    "price": 150,
+    "images": [
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577071/WhatsApp_Image_2026-07-20_at_21.49.37_gzkeex.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577068/WhatsApp_Image_2026-07-20_at_21.49.35_2_cggbrq.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577081/WhatsApp_Image_2026-07-20_at_21.49.38_22_eqersa.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577081/WhatsApp_Image_2026-07-20_at_21.49.38_23_wilcj7.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577082/WhatsApp_Image_2026-07-20_at_21.49.38_20_k1j6ml.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577082/WhatsApp_Image_2026-07-20_at_21.49.38_21_zg7vnm.jpg"
+    ],
+    "available": false,
+    "condition": "Very good",
+    "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577071/WhatsApp_Image_2026-07-20_at_21.49.37_gzkeex.jpg",
+    "featured": false
+  },
+  {
+    "title": "Eintracht Braunschweig 1987 Home",
+    "club": "Eintracht Braunschweig",
+    "category": "clubs",
+    "season": "1987",
+    "size": "M/L",
+    "price": 225,
+    "images": [
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_6_mbimui.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_5_a0i1xk.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577075/WhatsApp_Image_2026-07-20_at_21.49.38_11_kq6jea.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577078/WhatsApp_Image_2026-07-20_at_21.49.38_10_lq2wtf.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577076/WhatsApp_Image_2026-07-20_at_21.49.38_12_wja3zn.jpg"
+    ],
+    "available": false,
+    "condition": "Very good",
+    "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_6_mbimui.jpg",
+    "featured": false
+  },
+  {
+    "title": "Brazil 2004 Home Ronaldo",
+    "club": "Brazil",
+    "category": "national",
+    "season": "2004",
+    "size": "M",
+    "price": 225,
+    "images": [
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_9_bws8hk.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577071/WhatsApp_Image_2026-07-20_at_21.49.37_10_ussu8v.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577074/WhatsApp_Image_2026-07-20_at_21.49.38_5_dxnphq.jpg"
+    ],
+    "available": false,
+    "condition": "Very good",
+    "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_9_bws8hk.jpg",
+    "featured": false
+  },
+  {
+    "title": "Netherlands 2004 Away Heitinga",
+    "club": "Netherlands",
+    "category": "national",
+    "season": "2004",
+    "size": "XXL",
+    "price": 150,
+    "images": [
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_12_ddahfx.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_11_mcm3qs.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577071/WhatsApp_Image_2026-07-20_at_21.49.38_1_sffxzf.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577071/WhatsApp_Image_2026-07-20_at_21.49.38_2_duwkr2.jpg"
+    ],
+    "available": false,
+    "condition": "Very good",
+    "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_12_ddahfx.jpg",
+    "featured": false
+  },
+  {
+    "title": "Germany 1994 Home",
+    "club": "Germany",
+    "category": "national",
+    "season": "1994",
+    "size": "M",
+    "price": 150,
+    "images": [
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_1_dhzmjb.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_2_f6r5pz.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577079/WhatsApp_Image_2026-07-20_at_21.49.38_18_jlw7et.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577079/WhatsApp_Image_2026-07-20_at_21.49.38_19_cxbjyc.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577078/WhatsApp_Image_2026-07-20_at_21.49.38_16_v6ijy2.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577078/WhatsApp_Image_2026-07-20_at_21.49.38_17_jo2z2k.jpg"
+    ],
+    "available": false,
+    "condition": "Very good",
+    "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_1_dhzmjb.jpg",
+    "featured": false
+  },
+  {
+    "title": "AC Milan 1990/91 Home",
+    "club": "AC Milan",
+    "category": "clubs",
+    "season": "1990/91",
+    "size": "XL",
+    "price": 245,
+    "images": [
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_8_n8kffa.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_7_zv93ro.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577073/WhatsApp_Image_2026-07-20_at_21.49.38_7_q8bi5g.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577073/WhatsApp_Image_2026-07-20_at_21.49.38_8_nzezoi.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577073/WhatsApp_Image_2026-07-20_at_21.49.38_6_jjxcmr.jpg"
+    ],
+    "available": false,
+    "condition": "Very good",
+    "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_8_n8kffa.jpg",
+    "featured": false
+  },
+  {
+    "title": "Manchester United 2005 Home",
+    "club": "Manchester United",
+    "category": "clubs",
+    "season": "2005",
+    "size": "XL",
+    "price": 100,
+    "images": [
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_4_enqowc.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_3_l4qwqz.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577077/WhatsApp_Image_2026-07-20_at_21.49.38_14_u4gyhw.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577078/WhatsApp_Image_2026-07-20_at_21.49.38_13_jvynqb.jpg",
+      "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577079/WhatsApp_Image_2026-07-20_at_21.49.38_15_jiyiyo.jpg"
+    ],
+    "available": false,
+    "condition": "Very good",
+    "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_4_enqowc.jpg",
+    "featured": false
+  }
+];
+
+  async function importDropShirts() {
+    if (!confirm('Import ' + DROP_SHIRTS.length + ' drop shirts? They will be created as HIDDEN (not available). You flip them to Available on drop day.')) return;
+    const btn = document.getElementById('import-drop-btn');
+    btn.disabled = true;
+    const apiBase = 'https://shirtsociete.netlify.app/api';
+    let ok = 0, fail = 0;
+    for (let i = 0; i < DROP_SHIRTS.length; i++) {
+      const s = DROP_SHIRTS[i];
+      btn.textContent = 'Importing ' + (i+1) + '/' + DROP_SHIRTS.length + '...';
+      const payload = {
+        title: s.title, club: s.club, category: s.category,
+        price: parseFloat(s.price), size: s.size, season: s.season,
+        condition: s.condition, description: null,
+        image: s.image, images: s.images,
+        available: false, featured: false
+      };
+      try {
+        const res = await fetch(apiBase + '/admin-shirts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) { ok++; } else { fail++; console.error('Import failed for', s.title, await res.text()); }
+      } catch (e) { fail++; console.error('Import error for', s.title, e); }
+    }
+    btn.disabled = false;
+    btn.textContent = 'Import drop (22 July)';
+    showToast('Imported ' + ok + ' shirts' + (fail ? (', ' + fail + ' failed (see console)') : ''), fail ? 'error' : 'success');
+    if (typeof loadShirts === 'function') loadShirts();
   }
 
   async function saveShirt() {
