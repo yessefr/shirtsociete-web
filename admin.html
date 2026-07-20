@@ -982,7 +982,7 @@
         title: s.title, club: s.club, category: s.category,
         price: parseFloat(s.price), size: s.size, season: s.season,
         condition: s.condition, description: null,
-        image: s.image, images: s.images,
+        images: s.images,
         available: false, featured: false
       };
       try {
@@ -991,12 +991,26 @@
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
           body: JSON.stringify(payload)
         });
-        if (res.ok) { ok++; } else { fail++; console.error('Import failed for', s.title, await res.text()); }
-      } catch (e) { fail++; console.error('Import error for', s.title, e); }
+        if (res.ok) { ok++; }
+        else {
+          fail++;
+          const errText = await res.text();
+          console.error('Import failed for', s.title, res.status, errText);
+          if (!window.__importFirstErr) window.__importFirstErr = s.title + ' → ' + res.status + ' ' + errText;
+        }
+      } catch (e) {
+        fail++;
+        console.error('Import error for', s.title, e);
+        if (!window.__importFirstErr) window.__importFirstErr = s.title + ' → ' + e.message;
+      }
     }
     btn.disabled = false;
     btn.textContent = 'Import drop (22 July)';
-    showToast('Imported ' + ok + ' shirts' + (fail ? (', ' + fail + ' failed (see console)') : ''), fail ? 'error' : 'success');
+    if (fail && window.__importFirstErr) {
+      alert('Import problem:\n\n' + window.__importFirstErr + '\n\n(This is the first error — the rest are likely the same. Screenshot this.)');
+      window.__importFirstErr = null;
+    }
+    showToast('Imported ' + ok + ' shirts' + (fail ? (', ' + fail + ' failed') : ''), fail ? 'error' : 'success');
     if (typeof loadShirts === 'function') loadShirts();
   }
 
