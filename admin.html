@@ -511,6 +511,18 @@
           <label class="form-label">Image 3 — Extra photo (Cloudinary URL)</label>
           <input type="text" class="form-input" id="m-image3" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
         </div>
+        <div class="form-group full">
+          <label class="form-label">Image 4 — Extra photo (Cloudinary URL)</label>
+          <input type="text" class="form-input" id="m-image4" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Image 5 — Extra photo (Cloudinary URL)</label>
+          <input type="text" class="form-input" id="m-image5" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Image 6 — Extra photo (Cloudinary URL)</label>
+          <input type="text" class="form-input" id="m-image6" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
         <input type="hidden" id="m-existing-images" value="[]">
         <div class="form-group full">
           <label class="form-label">Description</label>
@@ -735,6 +747,12 @@
     if (imgEl) imgEl.value = shirt?.images?.[0] || '';
     if (img2El) img2El.value = shirt?.images?.[1] || '';
     if (img3El) img3El.value = shirt?.images?.[2] || '';
+    var img4El = document.getElementById('m-image4');
+    var img5El = document.getElementById('m-image5');
+    var img6El = document.getElementById('m-image6');
+    if (img4El) img4El.value = shirt?.images?.[3] || '';
+    if (img5El) img5El.value = shirt?.images?.[4] || '';
+    if (img6El) img6El.value = shirt?.images?.[5] || '';
     if (existEl) existEl.value = JSON.stringify(shirt?.images || []);
     document.getElementById('m-description').value = shirt?.description || '';
     document.getElementById('m-available').value = shirt ? String(shirt.available) : 'true';
@@ -744,7 +762,7 @@
 
   function closeShirtModal() {
     document.getElementById('shirt-modal').classList.remove('open');
-    ['m-image','m-image2','m-image3'].forEach(function(id) {
+    ['m-image','m-image2','m-image3','m-image4','m-image5','m-image6'].forEach(function(id) {
       var el = document.getElementById(id);
       if (el) el.value = '';
     });
@@ -777,7 +795,8 @@
     "available": false,
     "condition": "Very good",
     "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576256/WhatsApp_Image_2026-07-20_at_21.34.40_1_ahqn1q.jpg",
-    "featured": false
+    "featured": false,
+    "description": "A classic Real Betis home shirt from 1988, carrying the green and white stripes of the Seville side. A true piece of late-eighties Spanish football, in very good vintage condition."
   },
   {
     "title": "Brazil 2004 Home Ronaldinho (Longsleeve)",
@@ -796,7 +815,8 @@
     "available": false,
     "condition": "Very good",
     "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576256/WhatsApp_Image_2026-07-20_at_21.34.41_ftwzwl.jpg",
-    "featured": false
+    "featured": false,
+    "description": "The iconic yellow Brazil home shirt from 2004 in rare longsleeve form, with Ronaldinho on the back. From the golden era of Brazilian flair. Very good condition."
   },
   {
     "title": "Boca Juniors 2001 Home",
@@ -814,7 +834,8 @@
     "available": false,
     "condition": "Very good",
     "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_4_ccuzg0.jpg",
-    "featured": false
+    "featured": false,
+    "description": "The unmistakable blue and gold of Boca Juniors, 2001 home edition. A shirt steeped in the passion of La Bombonera. In very good vintage condition."
   },
   {
     "title": "Brazil 1998 Home",
@@ -833,7 +854,8 @@
     "available": false,
     "condition": "Very good",
     "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_3_unohzu.jpg",
-    "featured": false
+    "featured": false,
+    "description": "The legendary Brazil home shirt of 1998, worn on the road to the World Cup final in France. A defining shirt of its generation, in very good condition."
   },
   {
     "title": "Atletico Madrid 1992/93 Home",
@@ -853,7 +875,8 @@
     "available": false,
     "condition": "Very good",
     "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577071/WhatsApp_Image_2026-07-20_at_21.49.37_gzkeex.jpg",
-    "featured": false
+    "featured": false,
+    "description": "Atletico Madrid's red and white stripes from the 1992/93 season. Early-nineties Spanish football at its finest, in very good vintage condition."
   },
   {
     "title": "Eintracht Braunschweig 1987 Home",
@@ -872,7 +895,8 @@
     "available": false,
     "condition": "Very good",
     "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_6_mbimui.jpg",
-    "featured": false
+    "featured": false,
+    "description": "A rare Eintracht Braunschweig home shirt from 1987, a genuine slice of German football history. Hard to find and in very good condition."
   },
   {
     "title": "Brazil 2004 Home Ronaldo",
@@ -889,7 +913,8 @@
     "available": false,
     "condition": "Very good",
     "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_9_bws8hk.jpg",
-    "featured": false
+    "featured": false,
+    "description": "The classic yellow Brazil home shirt from 2004 with Ronaldo on the back. A tribute to one of the game's greatest strikers, in very good condition."
   },
   {
     "title": "Netherlands 2004 Away Heitinga",
@@ -907,7 +932,8 @@
     "available": false,
     "condition": "Very good",
     "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_12_ddahfx.jpg",
-    "featured": false
+    "featured": false,
+    "description": "The Netherlands away shirt from 2004 with Heitinga on the back. A memorable Oranje design from the mid-2000s, in very good vintage condition."
   },
   {
     "title": "Germany 1994 Home",
@@ -927,7 +953,8 @@
     "available": false,
     "condition": "Very good",
     "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_1_dhzmjb.jpg",
-    "featured": false
+    "featured": false,
+    "description": "The Germany home shirt from 1994, worn by the reigning world champions. A bold and iconic nineties design, in very good condition."
   },
   {
     "title": "AC Milan 1990/91 Home",
@@ -946,7 +973,8 @@
     "available": false,
     "condition": "Very good",
     "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_8_n8kffa.jpg",
-    "featured": false
+    "featured": false,
+    "description": "The famous red and black stripes of AC Milan, 1990/91 home shirt. From one of the greatest club sides ever assembled. In very good vintage condition."
   },
   {
     "title": "Manchester United 2005 Home",
@@ -965,7 +993,8 @@
     "available": false,
     "condition": "Very good",
     "image": "https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_4_enqowc.jpg",
-    "featured": false
+    "featured": false,
+    "description": "The Manchester United home shirt from 2005, in the classic red of Old Trafford. A recognisable modern classic, in very good condition."
   }
 ];
 
@@ -981,7 +1010,7 @@
       const payload = {
         title: s.title, club: s.club, category: s.category,
         price: parseFloat(s.price), size: s.size, season: s.season,
-        condition: s.condition, description: null,
+        condition: s.condition, description: s.description || null,
         images: s.images,
         available: false, featured: false
       };
@@ -1036,7 +1065,10 @@
         var img1 = (document.getElementById('m-image') || {}).value || '';
         var img2 = (document.getElementById('m-image2') || {}).value || '';
         var img3 = (document.getElementById('m-image3') || {}).value || '';
-        var imgs = [img1.trim(), img2.trim(), img3.trim()].filter(function(u) { return u; });
+        var img4 = (document.getElementById('m-image4') || {}).value || '';
+        var img5 = (document.getElementById('m-image5') || {}).value || '';
+        var img6 = (document.getElementById('m-image6') || {}).value || '';
+        var imgs = [img1.trim(), img2.trim(), img3.trim(), img4.trim(), img5.trim(), img6.trim()].filter(function(u) { return u; });
         if (imgs.length > 0) return imgs;
         try { return JSON.parse((document.getElementById('m-existing-images') || {}).value || '[]'); } catch(e) { return []; }
       })(),
