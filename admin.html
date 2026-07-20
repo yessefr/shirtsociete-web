@@ -360,6 +360,9 @@
           <button class="btn" style="background:#2a2620;color:var(--gold);border:1px solid var(--gold)" onclick="importDropShirts()" id="import-drop-btn">
             Import drop (22 July)
           </button>
+          <button class="btn" style="background:var(--green,#4caf7d);color:#0a0905;border:none;font-weight:700" onclick="goLiveDropShirts()" id="golive-drop-btn">
+            Go live — drop shirts
+          </button>
         </div>
       </div>
       <div class="toolbar">
@@ -1040,6 +1043,41 @@
       window.__importFirstErr = null;
     }
     showToast('Imported ' + ok + ' shirts' + (fail ? (', ' + fail + ' failed') : ''), fail ? 'error' : 'success');
+    if (typeof loadShirts === 'function') loadShirts();
+  }
+
+  // ── One-click GO LIVE: make all imported drop shirts visible in the shop ──
+  // Matches shirts by the drop titles, and only flips the ones still hidden. Your other shirts are untouched.
+  async function goLiveDropShirts() {
+    const dropTitles = DROP_SHIRTS.map(function(s){ return s.title; });
+    const targets = (allShirts || []).filter(function(s){
+      return dropTitles.indexOf(s.title) !== -1 && !s.available;
+    });
+    if (!targets.length) {
+      showToast('No hidden drop shirts found to activate (they may already be live).', 'error');
+      return;
+    }
+    if (!confirm('Set ' + targets.length + ' drop shirts LIVE now? They will appear in the shop immediately.')) return;
+    const btn = document.getElementById('golive-drop-btn');
+    btn.disabled = true;
+    const apiBase = 'https://shirtsociete.netlify.app/api';
+    let ok = 0, fail = 0, firstErr = null;
+    for (let i = 0; i < targets.length; i++) {
+      const s = targets[i];
+      btn.textContent = 'Going live ' + (i+1) + '/' + targets.length + '...';
+      try {
+        const res = await fetch(apiBase + '/admin-shirts?id=' + s.id, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ available: true })
+        });
+        if (res.ok) { ok++; } else { fail++; if (!firstErr) firstErr = s.title + ' → ' + res.status + ' ' + (await res.text()); }
+      } catch (e) { fail++; if (!firstErr) firstErr = s.title + ' → ' + e.message; }
+    }
+    btn.disabled = false;
+    btn.textContent = 'Go live — drop shirts';
+    if (fail && firstErr) alert('Some shirts failed:\n\n' + firstErr);
+    showToast(ok + ' shirts are now LIVE' + (fail ? (', ' + fail + ' failed') : ''), fail ? 'error' : 'success');
     if (typeof loadShirts === 'function') loadShirts();
   }
 
