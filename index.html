@@ -787,6 +787,8 @@
       transition: transform .5s cubic-bezier(.16,1,.3,1);
       padding: 0 60px;
     }
+    #wardrobe-stage.is-empty #wardrobe-rail,
+    #wardrobe-stage.is-empty .ward-nav { pointer-events: none; }
     .ward-shirt {
       position: relative; flex: 0 0 auto; width: 200px; cursor: pointer;
       transform-style: preserve-3d;
@@ -810,6 +812,7 @@
     .ward-cap-club { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
     .ward-cap-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: var(--cream, #f5f0e8); }
     #wardrobe-empty {
+      position: absolute; inset: 0; z-index: 5;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       height: 100%; text-align: center; padding: 0 40px;
     }
@@ -863,6 +866,16 @@
       display: none;
     }
     #cart-flight.on { display: block; }
+    /* pulsing dots for the Next Event / Upcoming Drop pills */
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1;   transform: scale(1); }
+      50%      { opacity: .45; transform: scale(.82); }
+    }
+    @keyframes pulseRing {
+      0%   { opacity: .55; transform: scale(1); }
+      70%  { opacity: 0;   transform: scale(2.6); }
+      100% { opacity: 0;   transform: scale(2.6); }
+    }
   </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -3738,11 +3751,12 @@
     if (!items.length) {
       rail.innerHTML = '';
       if (empty) empty.style.display = 'flex';
-      if (stage) stage.classList.remove('scrollable');
+      if (stage) { stage.classList.remove('scrollable'); stage.classList.add('is-empty'); }
       renderProfileOrders([]);
       return;
     }
     if (empty) empty.style.display = 'none';
+    if (stage) stage.classList.remove('is-empty');
 
     rail.innerHTML = items.map(function(s) {
       return '<div class="ward-shirt" onclick="openDetail(\'' + s.id + '\',\'d\')">' +
