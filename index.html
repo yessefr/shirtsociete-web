@@ -1741,9 +1741,8 @@
           <div>
             <div class="prof-section-label" style="margin-bottom:18px">Your Details</div>
             <div class="prof-card">
-              <div class="prof-field"><label>Name</label><input id="prof-name" type="text" placeholder="Your name"></div>
+              <div class="prof-field"><label>Username</label><input id="prof-name" type="text" placeholder="Your name"></div>
               <div class="prof-field"><label>Email</label><input id="prof-email" type="email" placeholder="you@email.com"></div>
-              <div class="prof-field"><label>Address</label><input id="prof-address" type="text" placeholder="Street, city"></div>
               <button class="prof-save" onclick="saveProfileDetails()">Save details</button>
               <span id="prof-saved" style="display:none;margin-left:12px;font-size:12px;color:var(--gold)">Saved ✓</span>
             </div>
@@ -3807,23 +3806,24 @@
   }
 
   function loadProfileDetails() {
-    var d = {};
-    try { d = JSON.parse(localStorage.getItem('ss_profile') || '{}'); } catch (e) {}
-    var n = document.getElementById('prof-name'), e = document.getElementById('prof-email'), a = document.getElementById('prof-address');
-    if (n) n.value = d.name || '';
-    if (e) e.value = d.email || '';
-    if (a) a.value = d.address || '';
+    // details are write-and-clear; fields start empty each visit
+    var n = document.getElementById('prof-name'), e = document.getElementById('prof-email');
+    if (n) n.value = '';
+    if (e) e.value = '';
   }
 
   function saveProfileDetails() {
     var d = {
       name: (document.getElementById('prof-name') || {}).value || '',
-      email: (document.getElementById('prof-email') || {}).value || '',
-      address: (document.getElementById('prof-address') || {}).value || ''
+      email: (document.getElementById('prof-email') || {}).value || ''
     };
     try { localStorage.setItem('ss_profile', JSON.stringify(d)); } catch (e) {}
     var s = document.getElementById('prof-saved');
     if (s) { s.style.display = 'inline'; setTimeout(function(){ s.style.display = 'none'; }, 2000); }
+    // clear the inputs after saving
+    var n = document.getElementById('prof-name'), e = document.getElementById('prof-email');
+    if (n) n.value = '';
+    if (e) e.value = '';
   }
 
   function renderMobileWardrobe() {
@@ -3851,7 +3851,34 @@
     if (b) { b.textContent = n; b.style.display = n ? 'inline' : 'none'; }
   }
 
+  var wardrobeIntroPlayed = false;
+  function playWardrobeIntro() {
+    if (wardrobeIntroPlayed) return;
+    wardrobeIntroPlayed = true;
+    var ov = document.getElementById('wardrobe-intro');
+    var vid = document.getElementById('wardrobe-intro-video');
+    var skip = document.getElementById('wardrobe-intro-skip');
+    if (!ov || !vid) return;
+    var done = false;
+    function finish() {
+      if (done) return; done = true;
+      ov.style.opacity = '0';
+      ov.style.transition = 'opacity .5s';
+      setTimeout(function(){ ov.style.display = 'none'; ov.style.opacity = '1'; }, 500);
+      try { vid.pause(); } catch(e) {}
+    }
+    ov.style.display = 'flex';
+    vid.currentTime = 0;
+    vid.addEventListener('ended', finish, { once: true });
+    vid.addEventListener('error', finish, { once: true });
+    if (skip) skip.onclick = finish;
+    setTimeout(finish, 15000); // safety
+    var p = vid.play();
+    if (p && p.catch) p.catch(function(){ finish(); });
+  }
+
   function initProfile() {
+    playWardrobeIntro();
     renderWardrobe();
     renderMobileWardrobe();
     loadProfileDetails();
@@ -4020,5 +4047,14 @@
     if (b) { b.style.display = 'block'; ['personalization','marketing','analytics'].forEach(ssPaintCheckbox); }
   }
 </script>
+
+<!-- My Wardrobe intro video (plays once per session) -->
+<div id="wardrobe-intro" style="position:fixed;inset:0;z-index:9200;background:#060504;display:none;align-items:center;justify-content:center">
+  <video id="wardrobe-intro-video" playsinline muted preload="auto"
+    style="width:100%;height:100%;object-fit:cover"
+    src="https://res.cloudinary.com/dinpfdojh/video/upload/v1784552874/video_1784407153767_fc4fff03_yboknu.mp4"></video>
+  <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 45%,rgba(4,3,2,.6) 100%)"></div>
+  <div id="wardrobe-intro-skip" style="position:absolute;bottom:30px;right:34px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.4);cursor:pointer;z-index:3;padding:8px 16px;border:1px solid rgba(245,240,232,.15);border-radius:2px">Skip</div>
+</div>
 </body>
 </html>
