@@ -3907,18 +3907,19 @@
     // reset + reveal the big see-through title, then fade it out so the video breathes
     var titleEl = document.getElementById('wardrobe-intro-title');
     if (titleEl) {
+      // show the title only for the first ~second, then fade out quickly
       titleEl.style.transition = 'none';
       titleEl.style.opacity = '0';
-      titleEl.style.transform = 'scale(1.06)';
+      titleEl.style.transform = 'scale(1.04)';
       requestAnimationFrame(function() {
-        titleEl.style.transition = 'opacity 1s ease, transform 3s ease';
+        titleEl.style.transition = 'opacity .35s ease, transform 1.2s ease';
         titleEl.style.opacity = '1';
         titleEl.style.transform = 'scale(1)';
       });
       setTimeout(function() {
-        titleEl.style.transition = 'opacity 1.2s ease';
+        titleEl.style.transition = 'opacity .6s ease';
         titleEl.style.opacity = '0';
-      }, 3800);
+      }, 1300);
     }
     vid.currentTime = 0;
     vid.addEventListener('ended', finish, { once: true });
@@ -4106,12 +4107,11 @@
     style="width:100%;height:100%;object-fit:cover"
     src="https://res.cloudinary.com/dinpfdojh/video/upload/v1784635503/openart-video_1784557449812_135b9230_1784557449840_13ecf9c3_bxe8ra.mp4"></video>
   <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 40%,rgba(4,3,2,.55) 100%)"></div>
-  <!-- big see-through MY WARDROBE title over the video, fades out after the intro -->
-  <div id="wardrobe-intro-title" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2">
-    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(52px,11vw,150px);line-height:.86;letter-spacing:-3px;text-align:center;
-      background:url('https://res.cloudinary.com/dinpfdojh/video/upload/so_1/v1784635503/openart-video_1784557449812_135b9230_1784557449840_13ecf9c3_bxe8ra.jpg') center 30%/cover no-repeat;
-      -webkit-background-clip:text;background-clip:text;color:transparent;
-      filter:drop-shadow(0 4px 30px rgba(0,0,0,.6))">MY<br>WARDROBE</div>
+  <!-- MY WARDROBE title over the video: white/gold/black, shown only briefly at the very start -->
+  <div id="wardrobe-intro-title" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2;text-align:center;background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(6,5,4,.55),transparent 75%)">
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(48px,10vw,132px);line-height:.86;letter-spacing:-3px;color:#f5f0e8;text-shadow:0 2px 20px rgba(0,0,0,.85),0 6px 50px rgba(0,0,0,.6)">MY<br>WARDROBE</div>
+    <div style="margin-top:22px;font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:clamp(18px,3vw,34px);color:var(--gold);text-shadow:0 2px 16px rgba(0,0,0,.9)">Shirt Société</div>
+    <div style="margin-top:14px;width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
   </div>
   <div id="wardrobe-intro-skip" style="position:absolute;bottom:30px;right:34px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.55);cursor:pointer;z-index:3;padding:8px 16px;border:1px solid rgba(245,240,232,.2);border-radius:2px">Skip</div>
 </div>
