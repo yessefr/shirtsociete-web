@@ -1900,6 +1900,7 @@
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">04.10 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:var(--white);margin-bottom:6px">Leipzig</div>
                   <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
+                  <a href="https://www.instagram.com/p/Da-wkVJjOm1/?img_index=1" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;font-size:11px;font-style:italic;letter-spacing:1px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.4);padding-bottom:2px" onmouseover="this.style.color='#e0c56a'" onmouseout="this.style.color='var(--gold)'">to be continued →</a>
                 </div>
               </div>
 
@@ -3921,6 +3922,24 @@
         titleEl.style.opacity = '0';
       }, 1300);
     }
+    // OUTRO: near the end, fade the video out early and show "Your Collection"
+    var outroEl = document.getElementById('wardrobe-outro-title');
+    var outroShown = false;
+    function showOutro() {
+      if (outroShown) return; outroShown = true;
+      if (outroEl) {
+        outroEl.style.transition = 'opacity .6s ease';
+        outroEl.style.opacity = '1';
+      }
+      // gently dim the video behind the outro text
+      vid.style.transition = 'opacity .8s ease, filter .8s ease';
+      vid.style.filter = 'brightness(.4)';
+      // hand off to the wardrobe shortly after the outro appears
+      setTimeout(finish, 1700);
+    }
+    vid.addEventListener('timeupdate', function() {
+      if (vid.duration && (vid.duration - vid.currentTime) <= 1.6) showOutro();
+    });
     vid.currentTime = 0;
     vid.addEventListener('ended', finish, { once: true });
     vid.addEventListener('error', finish, { once: true });
@@ -4110,6 +4129,12 @@
   <!-- MY WARDROBE title over the video: white/gold/black, shown only briefly at the very start -->
   <div id="wardrobe-intro-title" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2;text-align:center;background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(6,5,4,.55),transparent 75%)">
     <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(48px,10vw,132px);line-height:.86;letter-spacing:-3px;color:#f5f0e8;text-shadow:0 2px 20px rgba(0,0,0,.85),0 6px 50px rgba(0,0,0,.6)">MY<br>WARDROBE</div>
+    <div style="margin-top:22px;font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:clamp(18px,3vw,34px);color:var(--gold);text-shadow:0 2px 16px rgba(0,0,0,.9)">Shirt Société</div>
+    <div style="margin-top:14px;width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
+  </div>
+  <!-- outro title: appears just before the video ends -->
+  <div id="wardrobe-outro-title" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2;text-align:center;opacity:0;background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(6,5,4,.6),transparent 75%)">
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(44px,9vw,120px);line-height:.86;letter-spacing:-3px;color:#f5f0e8;text-shadow:0 2px 20px rgba(0,0,0,.85),0 6px 50px rgba(0,0,0,.6)">Your<br>Collection</div>
     <div style="margin-top:22px;font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:clamp(18px,3vw,34px);color:var(--gold);text-shadow:0 2px 16px rgba(0,0,0,.9)">Shirt Société</div>
     <div style="margin-top:14px;width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
   </div>
