@@ -3904,6 +3904,22 @@
       try { vid.pause(); } catch(e) {}
     }
     ov.style.display = 'flex';
+    // reset + reveal the big see-through title, then fade it out so the video breathes
+    var titleEl = document.getElementById('wardrobe-intro-title');
+    if (titleEl) {
+      titleEl.style.transition = 'none';
+      titleEl.style.opacity = '0';
+      titleEl.style.transform = 'scale(1.06)';
+      requestAnimationFrame(function() {
+        titleEl.style.transition = 'opacity 1s ease, transform 3s ease';
+        titleEl.style.opacity = '1';
+        titleEl.style.transform = 'scale(1)';
+      });
+      setTimeout(function() {
+        titleEl.style.transition = 'opacity 1.2s ease';
+        titleEl.style.opacity = '0';
+      }, 3800);
+    }
     vid.currentTime = 0;
     vid.addEventListener('ended', finish, { once: true });
     vid.addEventListener('error', finish, { once: true });
@@ -4085,12 +4101,19 @@
 </script>
 
 <!-- My Wardrobe intro video (plays once per session) -->
-<div id="wardrobe-intro" style="position:fixed;inset:0;z-index:9200;background:#060504;display:none;align-items:center;justify-content:center">
+<div id="wardrobe-intro" style="position:fixed;inset:0;z-index:9200;background:#060504;display:none;align-items:center;justify-content:center;overflow:hidden">
   <video id="wardrobe-intro-video" playsinline muted preload="auto"
     style="width:100%;height:100%;object-fit:cover"
-    src="https://res.cloudinary.com/dinpfdojh/video/upload/v1784576435/openart-video_1784367163444_3db72d01_1784367163462_ef2816fa_1_runpzu.mp4"></video>
-  <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 45%,rgba(4,3,2,.6) 100%)"></div>
-  <div id="wardrobe-intro-skip" style="position:absolute;bottom:30px;right:34px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.4);cursor:pointer;z-index:3;padding:8px 16px;border:1px solid rgba(245,240,232,.15);border-radius:2px">Skip</div>
+    src="https://res.cloudinary.com/dinpfdojh/video/upload/v1784635503/openart-video_1784557449812_135b9230_1784557449840_13ecf9c3_bxe8ra.mp4"></video>
+  <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 40%,rgba(4,3,2,.55) 100%)"></div>
+  <!-- big see-through MY WARDROBE title over the video, fades out after the intro -->
+  <div id="wardrobe-intro-title" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2">
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(52px,11vw,150px);line-height:.86;letter-spacing:-3px;text-align:center;
+      background:url('https://res.cloudinary.com/dinpfdojh/video/upload/so_1/v1784635503/openart-video_1784557449812_135b9230_1784557449840_13ecf9c3_bxe8ra.jpg') center 30%/cover no-repeat;
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 4px 30px rgba(0,0,0,.6))">MY<br>WARDROBE</div>
+  </div>
+  <div id="wardrobe-intro-skip" style="position:absolute;bottom:30px;right:34px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.55);cursor:pointer;z-index:3;padding:8px 16px;border:1px solid rgba(245,240,232,.2);border-radius:2px">Skip</div>
 </div>
 </body>
 </html>
