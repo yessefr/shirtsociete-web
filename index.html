@@ -486,22 +486,6 @@
       .spec-row { grid-template-columns: 105px 1fr; gap: 12px; }
       .spec-val { font-size: 14px; }
     }
-    /* ── trust bar on the detail page ── */
-    .trust-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      border: 1px solid #1e1c17; border-radius: 3px;
-      margin-top: 22px; overflow: hidden;
-    }
-    .trust-item {
-      display: flex; align-items: center; gap: 11px;
-      padding: 16px 18px; border-bottom: 1px solid #1e1c17;
-      font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
-      color: rgba(245,240,232,.78); font-weight: 500;
-    }
-    .trust-item:nth-child(odd) { border-right: 1px solid #1e1c17; }
-    .trust-item:nth-child(3), .trust-item:nth-child(4) { border-bottom: none; }
-    .trust-item svg { width: 19px; height: 19px; flex-shrink: 0; color: var(--gold); }
-
     /* ── expandable info sections ── */
     .detail-accordion { margin-top: 30px; }
     .acc-label {
@@ -531,11 +515,6 @@
     }
     .acc-body p:last-child { margin-bottom: 0; }
     .acc-body a { color: var(--gold); }
-    @media (max-width: 700px) {
-      .trust-grid { grid-template-columns: 1fr; }
-      .trust-item:nth-child(odd) { border-right: none; }
-      .trust-item:nth-child(3) { border-bottom: 1px solid #1e1c17; }
-    }
     .shirt-grid {
       display: grid; padding: 24px 48px 48px;
       gap: 16px;
@@ -687,10 +666,7 @@
     }
     .detail-club { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
     .detail-price { font-size: 36px; color: var(--gold); font-weight: 500; margin-bottom: 24px; }
-    .detail-specs {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 12px; margin-bottom: 24px;
-    }
+    .detail-specs { margin-bottom: 24px; }
     .spec-item { background: var(--grey); padding: 14px; border-radius: 2px; }
     .spec-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
     .spec-value { font-size: 15px; font-weight: 500; }
@@ -1737,26 +1713,6 @@
           <p id="d-detail-desc" class="detail-desc"></p>
           <button id="d-detail-add-btn" class="detail-add-btn" onclick="addToCartFromDetail()">Add to Cart</button>
 
-          <!-- trust bar -->
-          <div class="trust-grid">
-            <div class="trust-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 3.5v6c0 5-3.4 9.3-8 10.5C7.4 20.8 4 16.5 4 11.5v-6L12 2z"/><polyline points="9 12 11 14 15 10"/></svg>
-              <span>100% Authentic</span>
-            </div>
-            <div class="trust-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="6" width="14" height="11" rx="1"/><path d="M15 9h4l3 3v5h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>
-              <span>Worldwide Shipping</span>
-            </div>
-            <div class="trust-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="9 14 4 9 9 4"/><path d="M4 9h11a5 5 0 015 5v1"/></svg>
-              <span>14 Day Returns</span>
-            </div>
-            <div class="trust-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="1.5"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
-              <span>Secure Checkout</span>
-            </div>
-          </div>
-
           <!-- expandable info -->
           <div class="detail-accordion">
             <div class="acc-label">Shipping, Returns &amp; More</div>
@@ -1776,24 +1732,6 @@
               <div class="acc-body">
                 <p>Every shirt in our collection is checked by hand before it is listed. We verify the manufacturer tags, stitching, badge application and wash label against the year and edition it claims to be.</p>
                 <p>We only sell originals. If a piece is a reissue or a replica, that is stated clearly in the description. Any flaw, repair or sign of wear is photographed and mentioned.</p>
-              </div>
-            </div>
-            <div class="acc-item" onclick="toggleAcc(this)">
-              <div class="acc-head"><span>Washing Instructions</span>
-                <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <div class="acc-body">
-                <p>These shirts are decades old, so treat them gently. Wash inside out at 30°C on a delicate cycle, with a mild detergent and no bleach or fabric softener.</p>
-                <p>Never tumble dry and never iron directly on a print or badge. Dry flat, away from direct sunlight, and store on a padded hanger.</p>
-              </div>
-            </div>
-            <div class="acc-item" onclick="toggleAcc(this)">
-              <div class="acc-head"><span>Size &amp; Fit</span>
-                <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <div class="acc-body">
-                <p>The size shown is the size printed on the original label. Vintage sizing runs differently from modern sizing: shirts from the 80s and 90s are often boxier and shorter, while 2000s shirts tend to run slimmer.</p>
-                <p>If a shirt fits noticeably larger or smaller than its label suggests, we mention it in the description. Unsure about a specific piece? Message us and we will measure it for you.</p>
               </div>
             </div>
           </div>
@@ -2849,7 +2787,9 @@
     wrap.style.display = 'block';
     title.textContent = heading;
     renderDesktopRow('d-related-row', related);
-    setTimeout(initRowScrollers, 120);
+    // the row was hidden at boot, so its scroll arrows must be (re)measured now
+    row.scrollLeft = 0;
+    [60, 250, 700].forEach(function(ms) { setTimeout(initRowScrollers, ms); });
   }
 
   function buildSpecs(shirt) {
