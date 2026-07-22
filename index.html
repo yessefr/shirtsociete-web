@@ -321,18 +321,27 @@
     .sw-shirt:hover { box-shadow: 0 40px 100px rgba(0,0,0,.8), 0 0 0 1px rgba(200,169,80,.2); }
 
     .shirt-row {
-      display: flex; gap: 16px; overflow-x: auto; padding-bottom: 8px;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 10px;
       scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      scroll-snap-type: x proximity;
     }
     .shirt-row::-webkit-scrollbar { display: none; }
+    .shirt-row > * { scroll-snap-align: start; }
     .shirt-card-sm {
-      flex: 0 0 260px; cursor: pointer;
+      flex: 0 0 240px;
+      width: 240px;
+      cursor: pointer;
       background: var(--grey); border-radius: 2px; overflow: hidden;
-      transition: transform 0.45s cubic-bezier(.16,1,.3,1), box-shadow 0.35s, opacity 0.4s;
+      transition: box-shadow 0.35s, opacity 0.4s;
       position: relative;
-      /* 3D tilt base */
-      transform-style: preserve-3d;
-      perspective: 800px;
+      display: flex; flex-direction: column;
     }
     .shirt-card-sm:hover {
       box-shadow: 0 12px 30px rgba(0,0,0,0.45), 0 0 0 1px rgba(200,169,80,0.14);
@@ -418,10 +427,36 @@
       max-width: calc(100% - 16px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       text-shadow: 0 1px 4px rgba(0,0,0,.9);
     }
-    /* photo-only view: just the shirts, no text */
-    .shirt-grid.photo-only .shirt-card-body { display: none; }
-    .shirt-grid.photo-only .shirt-cat-badge { display: none; }
-    .shirt-grid.photo-only { gap: 10px; }
+    /* list view: photo left, details right, items stacked under each other */
+    .shirt-grid.list-view {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .shirt-grid.list-view .shirt-card {
+      flex-direction: row;
+      align-items: stretch;
+    }
+    .shirt-grid.list-view .shirt-card-img {
+      flex: 0 0 150px;
+      width: 150px;
+      aspect-ratio: 3/4;
+    }
+    .shirt-grid.list-view .shirt-card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 24px;
+    }
+    .shirt-grid.list-view .shirt-card-club { font-size: 11px; margin-bottom: 6px; }
+    .shirt-grid.list-view .shirt-card-title { font-size: 17px; margin-bottom: 8px; }
+    .shirt-grid.list-view .shirt-card-size { font-size: 12px; margin-bottom: 10px; }
+    .shirt-grid.list-view .shirt-card-price { font-size: 19px; }
+    .shirt-grid.list-view .shirt-card-footer { margin-top: 10px; }
+    @media (max-width: 700px) {
+      .shirt-grid.list-view .shirt-card-img { flex: 0 0 110px; width: 110px; }
+      .shirt-grid.list-view .shirt-card-body { padding: 14px 16px; }
+    }
     /* sold shirts stay visible (good for Google) but are clearly marked */
     .shirt-card.is-sold .shirt-card-img img,
     .shirt-card-sm.is-sold .sm-card-img img { filter: grayscale(.55) brightness(.45); }
@@ -443,9 +478,9 @@
     .shirt-card {
       background: var(--grey); border-radius: 2px; overflow: hidden;
       cursor: pointer;
-      transition: transform 0.45s cubic-bezier(.16,1,.3,1), box-shadow 0.35s;
+      transition: box-shadow 0.35s;
       position: relative;
-      transform-style: preserve-3d;
+      display: flex; flex-direction: column;
     }
     .shirt-card:hover {
       box-shadow: 0 14px 34px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,169,80,0.12);
@@ -1506,7 +1541,7 @@
       </div>
       <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
     </div>
-    <div id="d-featured-row" class="shirt-row" style="display:flex;gap:20px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
+    <div id="d-featured-row" class="shirt-row"></div>
   </div>
 
   <div style="height:1px;background:rgba(255,255,255,.05);margin:0 52px"></div>
@@ -1519,7 +1554,7 @@
       </div>
       <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
     </div>
-    <div id="d-matchworn-row" class="shirt-row" style="display:flex;gap:20px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
+    <div id="d-matchworn-row" class="shirt-row"></div>
   </div>
 
   <div style="height:1px;background:rgba(255,255,255,.05);margin:0 52px"></div>
@@ -1532,7 +1567,7 @@
       </div>
       <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
     </div>
-    <div id="d-national-row" class="shirt-row" style="display:flex;gap:20px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
+    <div id="d-national-row" class="shirt-row"></div>
   </div>
 
   <div style="height:1px;background:rgba(255,255,255,.05);margin:0 52px"></div>
@@ -1545,7 +1580,7 @@
       </div>
       <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
     </div>
-    <div id="d-clubs-row" class="shirt-row" style="display:flex;gap:20px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none"></div>
+    <div id="d-clubs-row" class="shirt-row"></div>
   </div>
 </div>
 
@@ -1594,11 +1629,11 @@
         </select>
         <button onclick="resetFilters()" style="background:none;border:none;color:var(--text-muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 0;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">✕ Reset</button>
         <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
-          <div id="d-view-photo" onclick="setShopView('photo')" title="Photos only" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #2e2c27;border-radius:2px;cursor:pointer;background:#1a1815;transition:all .2s">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <div id="d-view-grid" onclick="setShopView('grid')" title="Grid view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:2px;cursor:pointer;background:#2a2620;transition:all .2s">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--gold)"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           </div>
-          <div id="d-view-detail" onclick="setShopView('detail')" title="With details" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:2px;cursor:pointer;background:#2a2620;transition:all .2s">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--gold)"><rect x="3" y="3" width="18" height="12"/><line x1="3" y1="18" x2="14" y2="18"/><line x1="3" y1="21" x2="10" y2="21"/></svg>
+          <div id="d-view-list" onclick="setShopView('list')" title="List view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #2e2c27;border-radius:2px;cursor:pointer;background:#1a1815;transition:all .2s">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><rect x="3" y="4" width="6" height="6"/><line x1="12" y1="6" x2="21" y2="6"/><line x1="12" y1="9" x2="18" y2="9"/><rect x="3" y="14" width="6" height="6"/><line x1="12" y1="16" x2="21" y2="16"/><line x1="12" y1="19" x2="18" y2="19"/></svg>
           </div>
         </div>
       </div>
@@ -1634,10 +1669,6 @@
           <div id="d-detail-specs" class="detail-specs"></div>
           <p id="d-detail-desc" class="detail-desc"></p>
           <button id="d-detail-add-btn" class="detail-add-btn" onclick="addToCartFromDetail()">Add to Cart</button>
-          <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:11px;border:1px solid rgba(200,169,80,.3);border-radius:2px;color:var(--text-muted);text-decoration:none;font-size:12px;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='rgba(200,169,80,.3)';this.style.color='var(--text-muted)'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
-            Questions about this shirt? Message us on Instagram
-          </a>
         </div>
       </div>
     </div>
@@ -2200,72 +2231,94 @@
     renderDesktopRow('d-national-row', national);
     renderDesktopRow('d-clubs-row', clubs);
     setTimeout(initRowScrollers, 150);
+    setTimeout(initRowScrollers, 600);
   }
+
+  window.addEventListener('load', function() { setTimeout(initRowScrollers, 800); });
 
   // horizontal scroll arrows for the homepage rows
   function initRowScrollers() {
     ['d-featured-row','d-matchworn-row','d-national-row','d-clubs-row'].forEach(function(id) {
       var row = document.getElementById(id);
-      if (!row || row.dataset.scrollerReady) return;
-      row.dataset.scrollerReady = '1';
-      row.style.scrollBehavior = 'smooth';
+      if (!row) return;
       var parent = row.parentElement;
       if (!parent) return;
       parent.style.position = 'relative';
 
+      // if the arrows already exist for this row, just refresh their state
+      if (row._arrows) { row._arrows.update(); return; }
+
       function mkBtn(dir) {
         var b = document.createElement('div');
         b.textContent = dir < 0 ? '\u2039' : '\u203A';
-        b.style.cssText = 'position:absolute;top:50%;' + (dir < 0 ? 'left:8px' : 'right:8px') +
-          ';transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(10,9,5,.85);' +
-          'border:1px solid rgba(200,169,80,.35);color:var(--gold);display:flex;align-items:center;justify-content:center;' +
-          'font-size:22px;line-height:1;cursor:pointer;z-index:5;opacity:0;transition:opacity .25s,border-color .2s;' +
-          '-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);user-select:none';
-        b.onmouseover = function(){ this.style.borderColor = 'var(--gold)'; };
-        b.onmouseout = function(){ this.style.borderColor = 'rgba(200,169,80,.35)'; };
+        b.style.cssText = 'position:absolute;top:calc(50% - 20px);' + (dir < 0 ? 'left:6px' : 'right:6px') +
+          ';transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(10,9,5,.9);' +
+          'border:1px solid rgba(200,169,80,.4);color:#c8a950;display:flex;align-items:center;justify-content:center;' +
+          'font-size:24px;line-height:1;cursor:pointer;z-index:6;opacity:0;transition:opacity .25s,border-color .2s,background .2s;' +
+          '-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);user-select:none;font-family:serif';
+        b.onmouseover = function(){ this.style.borderColor = '#c8a950'; this.style.background = 'rgba(20,18,12,.95)'; };
+        b.onmouseout = function(){ this.style.borderColor = 'rgba(200,169,80,.4)'; this.style.background = 'rgba(10,9,5,.9)'; };
         b.onclick = function(e) {
           e.stopPropagation();
-          row.scrollBy({ left: dir * Math.max(280, row.clientWidth * 0.8), behavior: 'smooth' });
+          e.preventDefault();
+          row.scrollBy({ left: dir * Math.max(260, row.clientWidth * 0.75), behavior: 'smooth' });
         };
         return b;
       }
       var prev = mkBtn(-1), next = mkBtn(1);
       parent.appendChild(prev); parent.appendChild(next);
 
-      function updateArrows() {
-        var canLeft = row.scrollLeft > 4;
-        var canRight = row.scrollLeft + row.clientWidth < row.scrollWidth - 4;
+      function update() {
+        var overflowing = row.scrollWidth > row.clientWidth + 6;
+        var canLeft = overflowing && row.scrollLeft > 4;
+        var canRight = overflowing && (row.scrollLeft + row.clientWidth < row.scrollWidth - 4);
         prev.style.opacity = canLeft ? '1' : '0';
         prev.style.pointerEvents = canLeft ? 'auto' : 'none';
         next.style.opacity = canRight ? '1' : '0';
         next.style.pointerEvents = canRight ? 'auto' : 'none';
       }
-      row.addEventListener('scroll', updateArrows);
-      window.addEventListener('resize', updateArrows);
-      setTimeout(updateArrows, 300);
+      row._arrows = { update: update };
 
-      // drag to scroll with the mouse
+      row.addEventListener('scroll', update);
+      window.addEventListener('resize', update);
+      // images load late — re-check a few times
+      [100, 400, 900, 1800].forEach(function(ms){ setTimeout(update, ms); });
+      if (window.ResizeObserver) {
+        try { new ResizeObserver(update).observe(row); } catch (e) {}
+      }
+
+      // ── drag to scroll (mouse) ──
       var down = false, startX = 0, startScroll = 0, moved = false;
       row.addEventListener('mousedown', function(e) {
         down = true; moved = false;
         startX = e.pageX; startScroll = row.scrollLeft;
         row.style.scrollBehavior = 'auto';
+        row.style.cursor = 'grabbing';
       });
       window.addEventListener('mouseup', function() {
+        if (!down) return;
         down = false;
         row.style.scrollBehavior = 'smooth';
+        row.style.cursor = '';
       });
       row.addEventListener('mousemove', function(e) {
         if (!down) return;
+        e.preventDefault();
         var dx = e.pageX - startX;
         if (Math.abs(dx) > 4) moved = true;
         row.scrollLeft = startScroll - dx;
       });
       row.addEventListener('click', function(e) {
-        if (moved) { e.stopPropagation(); e.preventDefault(); }
+        if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
       }, true);
+
+      // ── touch swipe works natively via overflow-x; just refresh arrows ──
+      row.addEventListener('touchend', function(){ setTimeout(update, 120); }, { passive: true });
+
+      update();
     });
   }
+
 
   function renderDesktopRow(id, shirts) {
     const el = document.getElementById(id);
@@ -2276,7 +2329,7 @@
     if (shopPage > totalPages) shopPage = 1;
     const pageShirts = shirts.slice((shopPage - 1) * SHOP_PER_PAGE, shopPage * SHOP_PER_PAGE);
     renderPagination(totalShirts, totalPages);
-    el.className = 'shirt-grid' + (shopView === 'photo' ? ' photo-only' : '');
+    el.className = 'shirt-grid' + (shopView === 'list' ? ' list-view' : '');
     el.innerHTML = pageShirts.map((s, idx) => {
       const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
       const isLiked = wishlist.includes(s.id);
@@ -2340,23 +2393,28 @@
   }
 
   // ── SHOP: view mode + pagination ──
-  var shopView = 'detail';           // 'detail' = photo + info, 'photo' = photo only
+  var shopView = 'grid';   // 'grid' = cards with info below, 'list' = photo left + info right, stacked
   var shopPage = 1;
   var SHOP_PER_PAGE = 40;
 
   function setShopView(mode) {
     shopView = mode;
-    var pv = document.getElementById('d-view-photo');
-    var dv = document.getElementById('d-view-detail');
-    if (pv && dv) {
-      var on = 'border:1px solid var(--gold);background:#2a2620';
-      var off = 'border:1px solid #2e2c27;background:#1a1815';
-      pv.style.cssText = 'width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer;transition:all .2s;' + (mode === 'photo' ? on : off);
-      dv.style.cssText = 'width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer;transition:all .2s;' + (mode === 'detail' ? on : off);
-      var ps = pv.querySelector('svg'), ds = dv.querySelector('svg');
-      if (ps) ps.style.color = mode === 'photo' ? 'var(--gold)' : 'var(--text-muted)';
-      if (ds) ds.style.color = mode === 'detail' ? 'var(--gold)' : 'var(--text-muted)';
+    var gv = document.getElementById('d-view-grid');
+    var lv = document.getElementById('d-view-list');
+    var base = 'width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer;transition:all .2s;';
+    var on = 'border:1px solid var(--gold);background:#2a2620';
+    var off = 'border:1px solid #2e2c27;background:#1a1815';
+    if (gv) {
+      gv.style.cssText = base + (mode === 'grid' ? on : off);
+      var gs = gv.querySelector('svg');
+      if (gs) gs.style.color = mode === 'grid' ? 'var(--gold)' : 'var(--text-muted)';
     }
+    if (lv) {
+      lv.style.cssText = base + (mode === 'list' ? on : off);
+      var ls = lv.querySelector('svg');
+      if (ls) ls.style.color = mode === 'list' ? 'var(--gold)' : 'var(--text-muted)';
+    }
+    try { localStorage.setItem('ss_shop_view', mode); } catch (e) {}
     renderDesktopGrid();
   }
 
@@ -2876,6 +2934,14 @@
       </select>
     </div>
     <div class="form-group"><label>Order Notes</label><textarea id="f-notes" placeholder="Any special requests..."></textarea></div>
+    <div class="form-section-label" style="margin-top:24px">Discount Code</div>
+    <div class="form-group">
+      <div style="display:flex;gap:8px">
+        <input type="text" id="cf-discount-input" placeholder="Enter code" style="flex:1;text-transform:uppercase">
+        <button type="button" id="cf-discount-btn" onclick="applyDiscountCode()" style="background:transparent;border:1px solid rgba(200,169,80,.45);color:var(--gold);border-radius:2px;padding:0 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Apply</button>
+      </div>
+      <div id="cf-discount-msg" style="display:none;margin-top:8px;font-size:12px"></div>
+    </div>
   `;
 
   function buildCheckoutForms() {
@@ -2888,15 +2954,79 @@
     });
   }
 
+  // ── DISCOUNT CODES ──
+  // The code shown here is only a preview. The backend re-checks it and decides the
+  // real amount, so the price can't be tampered with in the browser.
+  var appliedDiscount = null;   // { code, type: 'percent'|'fixed', value, amount }
+
+  async function applyDiscountCode() {
+    var input = document.getElementById('cf-discount-input');
+    var msg = document.getElementById('cf-discount-msg');
+    var btn = document.getElementById('cf-discount-btn');
+    if (!input) return;
+    var code = (input.value || '').trim().toUpperCase();
+    function say(text, ok) {
+      if (!msg) return;
+      msg.style.display = 'block';
+      msg.style.color = ok ? 'var(--gold)' : '#e07a6a';
+      msg.textContent = text;
+    }
+    if (!code) { say('Enter a code first.', false); return; }
+
+    btn.disabled = true; btn.textContent = '...';
+    try {
+      var res = await fetch('https://shirtsociete.netlify.app/api/validate-discount', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: code, subtotal: getCartTotal() })
+      });
+      var data = await res.json();
+      if (res.ok && data.valid) {
+        appliedDiscount = { code: code, type: data.type, value: data.value, amount: data.amount };
+        say('Code applied: ' + data.label, true);
+        input.disabled = true;
+        btn.textContent = 'Remove';
+        btn.disabled = false;
+        btn.onclick = removeDiscountCode;
+      } else {
+        appliedDiscount = null;
+        say(data.error || 'This code is not valid.', false);
+        btn.textContent = 'Apply';
+        btn.disabled = false;
+      }
+    } catch (e) {
+      appliedDiscount = null;
+      say('Could not check the code. Please try again.', false);
+      btn.textContent = 'Apply';
+      btn.disabled = false;
+    }
+    renderCheckoutSummary();
+  }
+
+  function removeDiscountCode() {
+    appliedDiscount = null;
+    var input = document.getElementById('cf-discount-input');
+    var msg = document.getElementById('cf-discount-msg');
+    var btn = document.getElementById('cf-discount-btn');
+    if (input) { input.disabled = false; input.value = ''; }
+    if (msg) msg.style.display = 'none';
+    if (btn) { btn.textContent = 'Apply'; btn.disabled = false; btn.onclick = applyDiscountCode; }
+    renderCheckoutSummary();
+  }
+
   function renderCheckoutSummary() {
     const sub = getCartTotal();
     const country = getSelectedCountry();
     const shipInfo = country ? getShippingForCountry(country, sub) : null;
     const ship = shipInfo ? shipInfo.cost : null;
-    const total = sub + (ship || 0);
+    const discount = appliedDiscount ? appliedDiscount.amount : 0;
+    const total = Math.max(0, sub - discount) + (ship || 0);
     const shipRow = (ship === null)
       ? '<div class="summary-item"><span>Shipping</span><span style="color:var(--text-muted)">Select country</span></div>'
       : '<div class="summary-item"><span>Shipping' + (shipInfo.isFree ? ' (free over €' + shipInfo.freeAt + ')' : '') + '</span><span>' + (ship === 0 ? 'Free' : '€' + ship.toFixed(2)) + '</span></div>';
+    const discountRow = appliedDiscount
+      ? '<div class="summary-item" style="color:var(--gold)"><span>Discount (' + appliedDiscount.code + ')</span><span>- €' + discount.toFixed(2) + '</span></div>'
+      : '';
     const customsRow = (shipInfo && shipInfo.hasCustoms)
       ? '<div class="summary-item" style="font-size:11px;color:var(--text-muted)"><span>Customs / duties may apply</span><span></span></div>'
       : '';
@@ -2904,9 +3034,10 @@
       <div class="order-summary-title">Order Summary</div>
       ${cart.map(i => `<div class="summary-item"><span>${i.title}</span><span>€${parseFloat(i.price).toFixed(2)}</span></div>`).join('')}
       <div class="summary-item"><span>Subtotal</span><span>€${sub.toFixed(2)}</span></div>
+      ${discountRow}
       ${shipRow}
       ${customsRow}
-      <div class="summary-total"><span>Total</span><span>${ship === null ? '€' + sub.toFixed(2) + '+' : '€' + total.toFixed(2)}</span></div>`;
+      <div class="summary-total"><span>Total</span><span>${ship === null ? '€' + Math.max(0, sub - discount).toFixed(2) + '+' : '€' + total.toFixed(2)}</span></div>`;
     var ms = document.getElementById('m-checkout-summary'); if (ms) ms.innerHTML = summaryHTML;
     var ds = document.getElementById('d-order-summary'); if (ds) ds.innerHTML = summaryHTML;
   }
@@ -2953,7 +3084,7 @@
       const res = await fetch('https://shirtsociete.netlify.app/api/create-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: cart, customer })
+        body: JSON.stringify({ items: cart, customer, discountCode: appliedDiscount ? appliedDiscount.code : null })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Payment failed');
