@@ -352,18 +352,10 @@
           <div class="page-title">Shirts</div>
           <div class="page-subtitle">Manage your inventory</div>
         </div>
-        <div style="display:flex;gap:10px">
-          <button class="btn btn-primary" onclick="openShirtModal()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Add Shirt
-          </button>
-          <button class="btn" style="background:#2a2620;color:var(--gold);border:1px solid var(--gold)" onclick="importDropShirts()" id="import-drop-btn">
-            Import drop (22 July)
-          </button>
-          <button class="btn" style="background:var(--green,#4caf7d);color:#0a0905;border:none;font-weight:700" onclick="goLiveDropShirts()" id="golive-drop-btn">
-            Go live — drop shirts
-          </button>
-        </div>
+        <button class="btn btn-primary" onclick="openShirtModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Shirt
+        </button>
       </div>
       <div class="toolbar">
         <div class="search-box">
@@ -1046,18 +1038,14 @@
     if (typeof loadShirts === 'function') loadShirts();
   }
 
-  // ── One-click GO LIVE: make all imported drop shirts visible in the shop ──
-  // Matches shirts by the drop titles, and only flips the ones still hidden. Your other shirts are untouched.
+  // ── One-click GO LIVE: make every hidden shirt visible in the shop ──
   async function goLiveDropShirts() {
-    const dropTitles = DROP_SHIRTS.map(function(s){ return s.title; });
-    const targets = (allShirts || []).filter(function(s){
-      return dropTitles.indexOf(s.title) !== -1 && !s.available;
-    });
+    const targets = (allShirts || []).filter(function(s){ return !s.available; });
     if (!targets.length) {
-      showToast('No hidden drop shirts found to activate (they may already be live).', 'error');
+      showToast('All shirts are already live.', 'error');
       return;
     }
-    if (!confirm('Set ' + targets.length + ' drop shirts LIVE now? They will appear in the shop immediately.')) return;
+    if (!confirm('Set ' + targets.length + ' shirts LIVE now? They will all appear in the shop immediately.')) return;
     const btn = document.getElementById('golive-drop-btn');
     btn.disabled = true;
     const apiBase = 'https://shirtsociete.netlify.app/api';
