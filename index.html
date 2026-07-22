@@ -334,15 +334,17 @@
     .shirt-card-sm:hover {
       box-shadow: 0 12px 30px rgba(0,0,0,0.45), 0 0 0 1px rgba(200,169,80,0.14);
     }
-    .shirt-card-sm .img-hover {
-      position: absolute; top: 0; left: 0; width: 100%; height: 320px;
-      object-fit: contain; background: #1a1815; padding: 8px;
-      opacity: 0; transition: opacity 0.3s;
+    .sm-card-img {
+      position: relative; width: 100%; aspect-ratio: 3/4;
+      overflow: hidden; background: #1a1815;
     }
-    .shirt-card-sm:hover .img-hover { opacity: 1; }
-    .shirt-card-sm .img-main { transition: opacity 0.3s; }
-    .shirt-card-sm:hover .img-main { opacity: 0; }
-    .shirt-card-sm img { width: 100%; height: 320px; object-fit: contain; background: #1a1815; padding: 8px; }
+    .sm-card-img img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: contain;
+      background: #1a1815; padding: 8px;
+    }
+    .sm-card-img .img-hover { opacity: 0; transition: opacity .3s; }
+    .shirt-card-sm:hover .sm-card-img .img-hover { opacity: 1; }
     .shirt-card-sm-info { padding: 12px 14px; }
     .shirt-card-sm-club { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
     .shirt-card-sm-title { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 6px; }
@@ -866,7 +868,7 @@
       display: none;
     }
     #cart-flight.on { display: block; }
-    /* pulsing dots for the Next Event / Upcoming Drop pills */
+    /* pulsing dots for the Next Event / New Shirts Added pills */
     @keyframes pulseGlow {
       0%, 100% { opacity: 1;   transform: scale(1); }
       50%      { opacity: .45; transform: scale(.82); }
@@ -943,7 +945,7 @@
           <div style="width:6px;height:6px;border-radius:50%;background:#4caf7d;position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
         </div>
         <div style="line-height:1.15">
-          <div style="font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:#4caf7d;font-weight:600">Upcoming Drop</div>
+          <div style="font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:#4caf7d;font-weight:600">New Shirts Added</div>
           <div style="font-size:10px;color:var(--white);font-weight:600">22 July · 17:00</div>
         </div>
       </div>
@@ -997,9 +999,9 @@
         <div style="width:10px;height:10px;border-radius:50%;background:#4caf7d;position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
         <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(76,175,125,.25);animation:pulseRing 1.5s ease-in-out infinite"></div>
       </div>
-      <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600">Upcoming Drop</div>
+      <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600">New Shirts Added</div>
     </div>
-    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);margin-bottom:6px">New Shirt Drop</div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);margin-bottom:6px">New Shirts Added!</div>
     <div style="font-size:11px;color:var(--text-muted);margin-bottom:18px;line-height:1.6">Wednesday 22 July 2026 · 17:00<br>Vintage National &amp; Club Shirts · 80s, 90s &amp; 00s</div>
     <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:18px">
       <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:10px 14px;min-width:56px">
@@ -1283,7 +1285,7 @@
     <div class="sidebar-footer">
       <div style="margin-bottom:7px;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase">Contact</div>
       <div style="font-size:11.5px;line-height:1.85;margin-bottom:14px">
-        <a href="mailto:info@shirtsociete.com" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">info@shirtsociete.com</a><br>
+        <a href="#" onclick="openContactModal();return false;" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">info@shirtsociete.com</a><br>
         <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">@shirtsociete</a>
       </div>
       <div style="margin-bottom:7px;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase">Legal</div>
@@ -1327,7 +1329,7 @@
           <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(76,175,125,.3);animation:pulseRing 1.5s ease-in-out infinite"></div>
         </div>
         <div style="line-height:1.2">
-          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf7d;font-weight:600">Upcoming Drop</div>
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf7d;font-weight:600">New Shirts Added</div>
           <div style="font-size:15px;color:var(--white);font-weight:600">22 July · 17:00</div>
         </div>
       </div>
@@ -1471,7 +1473,7 @@
 </div>
 </div>
 
-<!-- Divider between Next Event and Upcoming Drop -->
+<!-- Divider between Next Event and New Shirts Added -->
 <div style="padding:0 48px">
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(200,169,80,.25),transparent);margin:8px 0"></div>
 </div>
@@ -1488,9 +1490,9 @@
         <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;animation:pulseGlow 1.5s ease-in-out infinite;position:absolute"></div>
         <div style="position:absolute;inset:-4px;border-radius:50%;background:rgba(76,175,125,.22);animation:pulseRing 1.5s ease-in-out infinite"></div>
       </div>
-      <div id="db-eyebrow" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;opacity:0">Upcoming Drop</div>
+      <div id="db-eyebrow" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;opacity:0">New Shirts Added</div>
     </div>
-    <div id="db-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(22px,2.6vw,34px);color:var(--white);margin-bottom:5px;opacity:0;transform:translateY(16px)">New Shirt Drop</div>
+    <div id="db-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(22px,2.6vw,34px);color:var(--white);margin-bottom:5px;opacity:0;transform:translateY(16px)">New Shirts Added!</div>
     <div id="db-sub" style="font-size:13px;color:var(--text-muted);margin-bottom:24px;opacity:0">Wednesday 22 July 2026 &middot; 17:00 &middot; Vintage National &amp; Club Shirts &middot; 80s, 90s &amp; 00s</div>
     <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px">
       <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:10px 14px;min-width:54px">
@@ -2208,8 +2210,74 @@
     const clubs = allShirts.filter(s => s.category === 'clubs');
     renderDesktopRow('d-featured-row', featured.length ? featured : allShirts.slice(0,6));
     renderDesktopRow('d-matchworn-row', matchWorn);
+    setTimeout(initRowScrollers, 100);
     renderDesktopRow('d-national-row', national);
     renderDesktopRow('d-clubs-row', clubs);
+  }
+
+  // horizontal scroll arrows for the homepage rows
+  function initRowScrollers() {
+    ['d-featured-row','d-matchworn-row','d-national-row'].forEach(function(id) {
+      var row = document.getElementById(id);
+      if (!row || row.dataset.scrollerReady) return;
+      row.dataset.scrollerReady = '1';
+      row.style.scrollBehavior = 'smooth';
+      var parent = row.parentElement;
+      if (!parent) return;
+      parent.style.position = 'relative';
+
+      function mkBtn(dir) {
+        var b = document.createElement('div');
+        b.textContent = dir < 0 ? '\u2039' : '\u203A';
+        b.style.cssText = 'position:absolute;top:50%;' + (dir < 0 ? 'left:8px' : 'right:8px') +
+          ';transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(10,9,5,.85);' +
+          'border:1px solid rgba(200,169,80,.35);color:var(--gold);display:flex;align-items:center;justify-content:center;' +
+          'font-size:22px;line-height:1;cursor:pointer;z-index:5;opacity:0;transition:opacity .25s,border-color .2s;' +
+          '-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);user-select:none';
+        b.onmouseover = function(){ this.style.borderColor = 'var(--gold)'; };
+        b.onmouseout = function(){ this.style.borderColor = 'rgba(200,169,80,.35)'; };
+        b.onclick = function(e) {
+          e.stopPropagation();
+          row.scrollBy({ left: dir * Math.max(280, row.clientWidth * 0.8), behavior: 'smooth' });
+        };
+        return b;
+      }
+      var prev = mkBtn(-1), next = mkBtn(1);
+      parent.appendChild(prev); parent.appendChild(next);
+
+      function updateArrows() {
+        var canLeft = row.scrollLeft > 4;
+        var canRight = row.scrollLeft + row.clientWidth < row.scrollWidth - 4;
+        prev.style.opacity = canLeft ? '1' : '0';
+        prev.style.pointerEvents = canLeft ? 'auto' : 'none';
+        next.style.opacity = canRight ? '1' : '0';
+        next.style.pointerEvents = canRight ? 'auto' : 'none';
+      }
+      row.addEventListener('scroll', updateArrows);
+      window.addEventListener('resize', updateArrows);
+      setTimeout(updateArrows, 300);
+
+      // drag to scroll with the mouse
+      var down = false, startX = 0, startScroll = 0, moved = false;
+      row.addEventListener('mousedown', function(e) {
+        down = true; moved = false;
+        startX = e.pageX; startScroll = row.scrollLeft;
+        row.style.scrollBehavior = 'auto';
+      });
+      window.addEventListener('mouseup', function() {
+        down = false;
+        row.style.scrollBehavior = 'smooth';
+      });
+      row.addEventListener('mousemove', function(e) {
+        if (!down) return;
+        var dx = e.pageX - startX;
+        if (Math.abs(dx) > 4) moved = true;
+        row.scrollLeft = startScroll - dx;
+      });
+      row.addEventListener('click', function(e) {
+        if (moved) { e.stopPropagation(); e.preventDefault(); }
+      }, true);
+    });
   }
 
   function renderDesktopRow(id, shirts) {
@@ -2221,14 +2289,18 @@
       const rowDelay = 'delay-' + ((idx % 4) + 1);
       return `
       <div class="shirt-card-sm anim-ready fade-up ${rowDelay}" onclick="openDetail('${s.id}','d')">
-        <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
-        ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
-        <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:8px;right:8px;z-index:3">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(245,240,232,.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--cream)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-        </button>
+        <div class="sm-card-img">
+          <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
+          ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
+          ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
+          <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:8px;right:8px;width:28px;height:28px;z-index:3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(245,240,232,.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--cream)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </button>
+        </div>
         <div class="shirt-card-sm-info">
           <div class="shirt-card-sm-club">${s.club||''}</div>
           <div class="shirt-card-sm-title">${s.title}</div>
+          ${s.size ? `<div class="shirt-card-size">Size ${s.size}</div>` : ''}
           <div class="shirt-card-sm-price">€${parseFloat(s.price).toFixed(2)}</div>
         </div>
       </div>`;
@@ -2843,7 +2915,7 @@
       await fetch('/api/drop-signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: input.value.trim(), drop: 'New Shirt Drop - July 22 2026' })
+        body: JSON.stringify({ email: input.value.trim(), drop: 'New Shirts Added! - July 22 2026' })
       });
       input.style.display = 'none';
       if (confirmEl) confirmEl.style.display = 'block';
@@ -3354,7 +3426,7 @@
       const res = await fetch('https://shirtsociete.netlify.app/api/drop-signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: input.value.trim(), drop: 'New Shirt Drop - July 22 2026' })
+        body: JSON.stringify({ email: input.value.trim(), drop: 'New Shirts Added! - July 22 2026' })
       });
       const data = await res.json();
       if (!res.ok) {
@@ -4145,5 +4217,107 @@
   </div>
   <div id="wardrobe-intro-skip" style="position:absolute;bottom:30px;right:34px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.55);cursor:pointer;z-index:3;padding:8px 16px;border:1px solid rgba(245,240,232,.2);border-radius:2px">Skip</div>
 </div>
+
+<!-- ═══ CONTACT MODAL ═══ -->
+<div id="contact-modal" style="position:fixed;inset:0;z-index:9600;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:24px;overflow-y:auto">
+  <div style="width:100%;max-width:520px;background:linear-gradient(180deg,#0d0b08,#080604);border:1px solid rgba(200,169,80,.28);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 28px 18px;border-bottom:1px solid rgba(200,169,80,.15)">
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--cream);line-height:1">Contact</div>
+        <div style="margin-top:6px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(200,169,80,.6)">Shirt Société</div>
+      </div>
+      <div onclick="closeContactModal()" style="cursor:pointer;font-size:24px;line-height:1;color:rgba(245,240,232,.5);padding:0 4px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,.5)'">&times;</div>
+    </div>
+
+    <div style="padding:24px 28px 28px">
+      <p style="font-size:13px;color:rgba(245,240,232,.6);line-height:1.7;margin:0 0 20px">Any question about a shirt, an order or the fairs? Send us a message and we'll get back to you.</p>
+
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <input id="cf-name" type="text" placeholder="Your name" style="width:100%;background:#131109;border:1px solid #22201a;border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='#22201a'">
+        <input id="cf-email" type="email" placeholder="Your email" style="width:100%;background:#131109;border:1px solid #22201a;border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='#22201a'">
+        <input id="cf-subject" type="text" placeholder="Subject (optional)" style="width:100%;background:#131109;border:1px solid #22201a;border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='#22201a'">
+        <textarea id="cf-message" rows="5" placeholder="Your message" style="width:100%;background:#131109;border:1px solid #22201a;border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;resize:vertical;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='#22201a'"></textarea>
+      </div>
+
+      <div id="cf-status" style="display:none;margin-top:14px;font-size:12.5px;line-height:1.6"></div>
+
+      <div style="display:flex;align-items:center;gap:12px;margin-top:20px;flex-wrap:wrap">
+        <button id="cf-send" onclick="sendContactMessage()" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:13px 28px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Send message</button>
+        <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;color:rgba(245,240,232,.55);text-decoration:none;font-size:12px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,.55)'">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+          or message us on Instagram
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openContactModal() {
+    var m = document.getElementById('contact-modal');
+    if (m) { m.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  }
+  function closeContactModal() {
+    var m = document.getElementById('contact-modal');
+    if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
+    var s = document.getElementById('cf-status');
+    if (s) s.style.display = 'none';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeContactModal();
+  });
+  (function() {
+    var m = document.getElementById('contact-modal');
+    if (m) m.addEventListener('click', function(e) { if (e.target === m) closeContactModal(); });
+  })();
+
+  async function sendContactMessage() {
+    var name = (document.getElementById('cf-name') || {}).value || '';
+    var email = (document.getElementById('cf-email') || {}).value || '';
+    var subject = (document.getElementById('cf-subject') || {}).value || '';
+    var message = (document.getElementById('cf-message') || {}).value || '';
+    var status = document.getElementById('cf-status');
+    var btn = document.getElementById('cf-send');
+
+    function show(text, ok) {
+      if (!status) return;
+      status.style.display = 'block';
+      status.style.color = ok ? 'var(--gold)' : '#e07a6a';
+      status.textContent = text;
+    }
+
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      show('Please fill in your name, email and message.', false);
+      return;
+    }
+    if (email.indexOf('@') === -1) {
+      show('Please enter a valid email address.', false);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    try {
+      var res = await fetch('https://shirtsociete.netlify.app/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), subject: subject.trim(), message: message.trim() })
+      });
+      if (res.ok) {
+        show('Thank you. Your message has been sent — we will get back to you soon.', true);
+        ['cf-name','cf-email','cf-subject','cf-message'].forEach(function(id) {
+          var el = document.getElementById(id); if (el) el.value = '';
+        });
+        setTimeout(closeContactModal, 2600);
+      } else {
+        show('Something went wrong. Please email us directly at info@shirtsociete.com', false);
+      }
+    } catch (e) {
+      show('Something went wrong. Please email us directly at info@shirtsociete.com', false);
+    }
+    btn.disabled = false;
+    btn.textContent = 'Send message';
+  }
+</script>
 </body>
 </html>
