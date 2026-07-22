@@ -320,6 +320,9 @@
     }
     .sw-shirt:hover { box-shadow: 0 40px 100px rgba(0,0,0,.8), 0 0 0 1px rgba(200,169,80,.2); }
 
+    /* rows must never widen their parent */
+    .dscreen, .desktop-main { min-width: 0; max-width: 100%; overflow-x: hidden; }
+    #d-related-wrap { max-width: 100%; overflow: hidden; }
     .shirt-row {
       display: flex;
       flex-wrap: nowrap;
@@ -331,6 +334,9 @@
       -webkit-overflow-scrolling: touch;
       scroll-behavior: smooth;
       scroll-snap-type: x proximity;
+      /* never let the row stretch the page itself */
+      max-width: 100%;
+      min-width: 0;
     }
     .shirt-row::-webkit-scrollbar { display: none; }
     .shirt-row > * { scroll-snap-align: start; }
