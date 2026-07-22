@@ -94,7 +94,7 @@
       --gold-dim: #9a7e3a;
       --gold-light: #e8c96a;
       --white: #f5f0e8;
-      --grey: #2a2820;
+      --grey: #16140f;
       --grey-mid: #4a4640;
       --text-muted: #888070;
       --sidebar-w: 240px;
@@ -433,35 +433,65 @@
       max-width: calc(100% - 16px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       text-shadow: 0 1px 4px rgba(0,0,0,.9);
     }
-    /* list view: photo left, details right, items stacked under each other */
+    /* list view: large photo left, full details right, items stacked under each other */
     .shirt-grid.list-view {
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 14px;
     }
     .shirt-grid.list-view .shirt-card {
       flex-direction: row;
       align-items: stretch;
+      background: #14120e;
+      border: 1px solid #201e18;
     }
     .shirt-grid.list-view .shirt-card-img {
-      flex: 0 0 150px;
-      width: 150px;
+      flex: 0 0 240px;
+      width: 240px;
       aspect-ratio: 3/4;
+      background: #100e0b;
     }
+    .shirt-grid.list-view .shirt-card-img img { background: #100e0b; padding: 12px; }
     .shirt-grid.list-view .shirt-card-body {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 20px 24px;
+      padding: 26px 30px;
+      min-width: 0;
     }
-    .shirt-grid.list-view .shirt-card-club { font-size: 11px; margin-bottom: 6px; }
-    .shirt-grid.list-view .shirt-card-title { font-size: 17px; margin-bottom: 8px; }
-    .shirt-grid.list-view .shirt-card-size { font-size: 12px; margin-bottom: 10px; }
-    .shirt-grid.list-view .shirt-card-price { font-size: 19px; }
-    .shirt-grid.list-view .shirt-card-footer { margin-top: 10px; }
+    .shirt-grid.list-view .shirt-card-club {
+      font-size: 11px; letter-spacing: 2px; margin-bottom: 8px;
+    }
+    .shirt-grid.list-view .shirt-card-title {
+      font-size: 21px; line-height: 1.25; margin-bottom: 12px;
+    }
+    .shirt-grid.list-view .shirt-card-size { display: none; }
+    .shirt-grid.list-view .shirt-card-price { font-size: 22px; }
+    .shirt-grid.list-view .shirt-card-footer { margin-top: 16px; }
+    /* the meta + description block only appears in list view */
+    .list-meta { display: none; }
+    .shirt-grid.list-view .list-meta {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
+    }
+    .list-meta span {
+      font-size: 10.5px; letter-spacing: 1.2px; text-transform: uppercase;
+      color: rgba(245,240,232,.62);
+      background: #1c1a15; border: 1px solid #262319;
+      padding: 5px 11px; border-radius: 2px;
+    }
+    .list-desc { display: none; }
+    .shirt-grid.list-view .list-desc {
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-size: 13.5px; line-height: 1.75; color: rgba(245,240,232,.55);
+      margin-bottom: 4px;
+    }
     @media (max-width: 700px) {
-      .shirt-grid.list-view .shirt-card-img { flex: 0 0 110px; width: 110px; }
-      .shirt-grid.list-view .shirt-card-body { padding: 14px 16px; }
+      .shirt-grid.list-view .shirt-card-img { flex: 0 0 130px; width: 130px; }
+      .shirt-grid.list-view .shirt-card-body { padding: 16px 18px; }
+      .shirt-grid.list-view .shirt-card-title { font-size: 16px; }
+      .shirt-grid.list-view .shirt-card-price { font-size: 18px; }
+      .shirt-grid.list-view .list-desc { -webkit-line-clamp: 2; font-size: 12.5px; }
     }
     /* sold shirts stay visible (good for Google) but are clearly marked */
     .shirt-card.is-sold .shirt-card-img img,
@@ -1455,7 +1485,7 @@
         Shop Collection
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
-      <button onclick="dGoTo('about')" style="background:none;border:none;color:rgba(245,240,232,.35);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Our Story</button>
+      <button onclick="dGoTo('about')" style="background:none;border:none;color:rgba(245,240,232,.85);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color .2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,.85)'">Our Story</button>
     </div>
   </div>
   <div id="cin-cue" style="position:absolute;bottom:36px;left:52px;display:flex;align-items:center;gap:12px;opacity:0;z-index:2">
@@ -2667,6 +2697,13 @@
             <div class="shirt-card-club">${s.club||''}</div>
             <div class="shirt-card-title">${s.title}</div>
             ${s.size ? `<div class="shirt-card-size">Size ${s.size}</div>` : ''}
+            <div class="list-meta">
+              ${s.size ? `<span>Size ${s.size}</span>` : ''}
+              ${s.season ? `<span>${s.season}</span>` : ''}
+              ${s.condition ? `<span>${s.condition}</span>` : ''}
+              ${catLabel(s) ? `<span>${catLabel(s)}</span>` : ''}
+            </div>
+            ${s.description ? `<div class="list-desc">${s.description}</div>` : ''}
             <div class="shirt-card-footer">
               <div class="shirt-card-price">€${parseFloat(s.price).toFixed(2)}</div>
               ${isSold ? '<span class="sold-badge">Sold</span>' : (inCart ? '<span class="sold-badge">In cart ✓</span>' : `<button class="add-btn" onclick="event.stopPropagation();quickAdd('${s.id}', event)">+</button>`)}
