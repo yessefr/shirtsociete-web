@@ -469,6 +469,73 @@
       letter-spacing: 3px; text-transform: uppercase; padding: 7px 18px; border-radius: 2px;
       -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); pointer-events: none; white-space: nowrap;
     }
+    /* ── specification table on the detail page ── */
+    .spec-table { margin: 22px 0 4px; }
+    .spec-row {
+      display: grid; grid-template-columns: 130px 1fr;
+      gap: 16px; align-items: baseline;
+      padding: 13px 2px; border-bottom: 1px solid #1a1815;
+    }
+    .spec-row:first-child { border-top: 1px solid #1a1815; }
+    .spec-key {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(245,240,232,.38);
+    }
+    .spec-val { font-size: 15px; color: var(--cream); }
+    @media (max-width: 700px) {
+      .spec-row { grid-template-columns: 105px 1fr; gap: 12px; }
+      .spec-val { font-size: 14px; }
+    }
+    /* ── trust bar on the detail page ── */
+    .trust-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 1px solid #1e1c17; border-radius: 3px;
+      margin-top: 22px; overflow: hidden;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 11px;
+      padding: 16px 18px; border-bottom: 1px solid #1e1c17;
+      font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(245,240,232,.78); font-weight: 500;
+    }
+    .trust-item:nth-child(odd) { border-right: 1px solid #1e1c17; }
+    .trust-item:nth-child(3), .trust-item:nth-child(4) { border-bottom: none; }
+    .trust-item svg { width: 19px; height: 19px; flex-shrink: 0; color: var(--gold); }
+
+    /* ── expandable info sections ── */
+    .detail-accordion { margin-top: 30px; }
+    .acc-label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(245,240,232,.35); margin-bottom: 14px;
+    }
+    .acc-item { border-top: 1px solid #1e1c17; cursor: pointer; }
+    .acc-item:last-child { border-bottom: 1px solid #1e1c17; }
+    .acc-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 17px 2px; font-size: 12px; font-weight: 600;
+      letter-spacing: 1.2px; text-transform: uppercase; color: var(--cream);
+      transition: color .2s;
+    }
+    .acc-item:hover .acc-head { color: var(--gold); }
+    .acc-chev { width: 16px; height: 16px; flex-shrink: 0; color: var(--gold); transition: transform .3s ease; }
+    .acc-item.open .acc-chev { transform: rotate(180deg); }
+    .acc-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height .35s ease, padding .35s ease;
+      padding: 0 2px;
+    }
+    .acc-item.open .acc-body { max-height: 400px; padding: 0 2px 18px; }
+    .acc-body p {
+      font-size: 13.5px; line-height: 1.8; color: rgba(245,240,232,.62);
+      margin: 0 0 12px;
+    }
+    .acc-body p:last-child { margin-bottom: 0; }
+    .acc-body a { color: var(--gold); }
+    @media (max-width: 700px) {
+      .trust-grid { grid-template-columns: 1fr; }
+      .trust-item:nth-child(odd) { border-right: none; }
+      .trust-item:nth-child(3) { border-bottom: 1px solid #1e1c17; }
+    }
     .shirt-grid {
       display: grid; padding: 24px 48px 48px;
       gap: 16px;
@@ -1669,7 +1736,77 @@
           <div id="d-detail-specs" class="detail-specs"></div>
           <p id="d-detail-desc" class="detail-desc"></p>
           <button id="d-detail-add-btn" class="detail-add-btn" onclick="addToCartFromDetail()">Add to Cart</button>
+
+          <!-- trust bar -->
+          <div class="trust-grid">
+            <div class="trust-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 3.5v6c0 5-3.4 9.3-8 10.5C7.4 20.8 4 16.5 4 11.5v-6L12 2z"/><polyline points="9 12 11 14 15 10"/></svg>
+              <span>100% Authentic</span>
+            </div>
+            <div class="trust-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="6" width="14" height="11" rx="1"/><path d="M15 9h4l3 3v5h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>
+              <span>Worldwide Shipping</span>
+            </div>
+            <div class="trust-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="9 14 4 9 9 4"/><path d="M4 9h11a5 5 0 015 5v1"/></svg>
+              <span>14 Day Returns</span>
+            </div>
+            <div class="trust-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="1.5"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+              <span>Secure Checkout</span>
+            </div>
+          </div>
+
+          <!-- expandable info -->
+          <div class="detail-accordion">
+            <div class="acc-label">Shipping, Returns &amp; More</div>
+            <div class="acc-item" onclick="toggleAcc(this)">
+              <div class="acc-head"><span>Shipping &amp; Returns</span>
+                <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="acc-body">
+                <p>Orders are processed within 2 business days. Within the Netherlands delivery takes 3 to 7 business days; international orders 7 to 21 business days. Shipping is calculated at checkout and is free on EU orders over €150.</p>
+                <p>You may return your shirt within 14 days of receiving it, unworn and unwashed with any tags attached. Email us first at info@shirtsociete.com so we can confirm the return address. See our <a href="/refund.html">Refund Policy</a> and <a href="/shipping.html">Shipping Policy</a>.</p>
+              </div>
+            </div>
+            <div class="acc-item" onclick="toggleAcc(this)">
+              <div class="acc-head"><span>Authenticity Guarantee</span>
+                <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="acc-body">
+                <p>Every shirt in our collection is checked by hand before it is listed. We verify the manufacturer tags, stitching, badge application and wash label against the year and edition it claims to be.</p>
+                <p>We only sell originals. If a piece is a reissue or a replica, that is stated clearly in the description. Any flaw, repair or sign of wear is photographed and mentioned.</p>
+              </div>
+            </div>
+            <div class="acc-item" onclick="toggleAcc(this)">
+              <div class="acc-head"><span>Washing Instructions</span>
+                <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="acc-body">
+                <p>These shirts are decades old, so treat them gently. Wash inside out at 30°C on a delicate cycle, with a mild detergent and no bleach or fabric softener.</p>
+                <p>Never tumble dry and never iron directly on a print or badge. Dry flat, away from direct sunlight, and store on a padded hanger.</p>
+              </div>
+            </div>
+            <div class="acc-item" onclick="toggleAcc(this)">
+              <div class="acc-head"><span>Size &amp; Fit</span>
+                <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="acc-body">
+                <p>The size shown is the size printed on the original label. Vintage sizing runs differently from modern sizing: shirts from the 80s and 90s are often boxier and shorter, while 2000s shirts tend to run slimmer.</p>
+                <p>If a shirt fits noticeably larger or smaller than its label suggests, we mention it in the description. Unsure about a specific piece? Message us and we will measure it for you.</p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+      <!-- more shirts from the same club -->
+      <div id="d-related-wrap" style="display:none;padding:0 48px 56px">
+        <div style="height:1px;background:#1a1815;margin-bottom:36px"></div>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px">
+          <div id="d-related-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white)"></div>
+          <span onclick="dGoTo('shop')" style="font-size:12px;color:var(--text-muted);cursor:pointer" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all →</span>
+        </div>
+        <div id="d-related-row" class="shirt-row"></div>
       </div>
     </div>
 
@@ -2181,7 +2318,7 @@
     } else if (mCurrentFilter !== 'all') {
       shirts = shirts.filter(s => s.category === mCurrentFilter);
     }
-    if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search) || (s.season||'').toLowerCase().includes(search));
+    if (search) { var terms = expandSearchTerms(search); shirts = shirts.filter(s => shirtMatchesSearch(s, terms)); }
     if (sizeFilter) shirts = shirts.filter(s => s.size === sizeFilter);
     if (priceFilter) {
       const [min, max] = priceFilter.split('-').map(Number);
@@ -2238,7 +2375,7 @@
 
   // horizontal scroll arrows for the homepage rows
   function initRowScrollers() {
-    ['d-featured-row','d-matchworn-row','d-national-row','d-clubs-row'].forEach(function(id) {
+    ['d-featured-row','d-matchworn-row','d-national-row','d-clubs-row','d-related-row'].forEach(function(id) {
       var row = document.getElementById(id);
       if (!row) return;
       var parent = row.parentElement;
@@ -2323,14 +2460,7 @@
   function renderDesktopRow(id, shirts) {
     const el = document.getElementById(id);
     if (!shirts.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:20px">Nothing here yet.</div>'; return; }
-    // pagination
-    const totalShirts = shirts.length;
-    const totalPages = Math.max(1, Math.ceil(totalShirts / SHOP_PER_PAGE));
-    if (shopPage > totalPages) shopPage = 1;
-    const pageShirts = shirts.slice((shopPage - 1) * SHOP_PER_PAGE, shopPage * SHOP_PER_PAGE);
-    renderPagination(totalShirts, totalPages);
-    el.className = 'shirt-grid' + (shopView === 'list' ? ' list-view' : '');
-    el.innerHTML = pageShirts.map((s, idx) => {
+    el.innerHTML = shirts.map((s, idx) => {
       const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
       const isLiked = wishlist.includes(s.id);
       const rowDelay = 'delay-' + ((idx % 4) + 1);
@@ -2451,6 +2581,90 @@
     wrap.innerHTML = html;
   }
 
+  // ── SEARCH SYNONYMS ──
+  // Lets people search in their own language: "holland" or "nederland" finds Netherlands,
+  // "duitsland" finds Germany, "spanje" finds Spain, and so on.
+  var SEARCH_SYNONYMS = {
+    'netherlands': ['holland','nederland','hollande','niederlande','oranje','dutch','nl'],
+    'germany':     ['duitsland','deutschland','allemagne','german','ger','brd'],
+    'spain':       ['spanje','espana','españa','espagne','spanien','spanish'],
+    'italy':       ['italie','italië','italia','italien','italian','azzurri'],
+    'france':      ['frankrijk','frankreich','francia','french'],
+    'england':     ['engeland','inglaterra','angleterre','english','uk','britain'],
+    'brazil':      ['brazilie','brazilië','brasil','brasilien','bresil','brazilian','selecao','seleção'],
+    'argentina':   ['argentinie','argentinië','argentinien','argentine','argentinian'],
+    'portugal':    ['portugese','portuguese','portogallo'],
+    'belgium':     ['belgie','belgië','belgien','belgique','belgian','duivels'],
+    'croatia':     ['kroatie','kroatië','kroatien','croatie','hrvatska'],
+    'denmark':     ['denemarken','danemark','danmark','danish'],
+    'sweden':      ['zweden','schweden','suede','sverige','swedish'],
+    'norway':      ['noorwegen','norwegen','norvege','norge'],
+    'poland':      ['polen','pologne','polska','polish'],
+    'austria':     ['oostenrijk','osterreich','österreich','autriche'],
+    'switzerland': ['zwitserland','schweiz','suisse','svizzera','swiss'],
+    'russia':      ['rusland','russland','russie','russian'],
+    'turkey':      ['turkije','turkei','türkei','turquie','turkiye'],
+    'greece':      ['griekenland','griechenland','grece','hellas'],
+    'ireland':     ['ierland','irland','irlande','irish'],
+    'scotland':    ['schotland','schottland','ecosse','scottish'],
+    'wales':       ['welsh','pays de galles'],
+    'japan':       ['japan','japon','nippon','japanese'],
+    'mexico':      ['mexique','mexiko','mexican'],
+    'usa':         ['united states','america','amerika','verenigde staten','us'],
+    'ac milan':    ['milan','milaan','mailand','rossoneri'],
+    'inter':       ['internazionale','inter milan','nerazzurri'],
+    'juventus':    ['juve','bianconeri'],
+    'bayern':      ['bayern munich','bayern munchen','bayern münchen','fcb'],
+    'real madrid': ['real','madrid','merengues','blancos'],
+    'barcelona':   ['barca','barça','fc barcelona','blaugrana'],
+    'manchester united': ['man utd','man united','manutd','red devils','united'],
+    'manchester city':   ['man city','mancity','city'],
+    'liverpool':   ['lfc','reds','the reds'],
+    'chelsea':     ['cfc','blues'],
+    'arsenal':     ['gunners','afc'],
+    'tottenham':   ['spurs','thfc'],
+    'ajax':        ['afc ajax','amsterdam'],
+    'feyenoord':   ['rotterdam'],
+    'psv':         ['psv eindhoven','eindhoven'],
+    'boca juniors':['boca','xeneizes'],
+    'river plate': ['river','millonarios'],
+    'atletico madrid': ['atletico','atlético','atleti','colchoneros'],
+    'borussia dortmund': ['dortmund','bvb'],
+    'real betis':  ['betis','verdiblancos'],
+    'eintracht braunschweig': ['braunschweig','eintracht']
+  };
+
+  // Turn what someone typed into a list of terms worth matching on
+  function expandSearchTerms(query) {
+    var q = (query || '').toLowerCase().trim();
+    if (!q) return [];
+    var terms = [q];
+    for (var canonical in SEARCH_SYNONYMS) {
+      var aliases = SEARCH_SYNONYMS[canonical];
+      // typed the official name → also match its aliases
+      if (canonical.indexOf(q) !== -1 || q.indexOf(canonical) !== -1) {
+        terms.push(canonical);
+        aliases.forEach(function(a) { terms.push(a); });
+      }
+      // typed an alias → also match the official name
+      aliases.forEach(function(a) {
+        if (a.indexOf(q) !== -1 || q.indexOf(a) !== -1) {
+          terms.push(canonical);
+          aliases.forEach(function(b) { terms.push(b); });
+        }
+      });
+    }
+    // de-duplicate
+    return terms.filter(function(t, i) { return terms.indexOf(t) === i; });
+  }
+
+  // Does this shirt match any of the expanded terms?
+  function shirtMatchesSearch(s, terms) {
+    if (!terms.length) return true;
+    var haystack = ((s.title || '') + ' ' + (s.club || '') + ' ' + (s.season || '') + ' ' + (s.category || '')).toLowerCase();
+    return terms.some(function(t) { return haystack.indexOf(t) !== -1; });
+  }
+
   function renderDesktopGrid() {
     const search = document.getElementById('d-search-input')?.value.toLowerCase() || '';
     const sizeFilter = document.getElementById('d-filter-size')?.value || '';
@@ -2463,7 +2677,7 @@
     } else if (dCurrentFilter !== 'all') {
       shirts = shirts.filter(s => s.category === dCurrentFilter);
     }
-    if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search) || (s.season||'').toLowerCase().includes(search));
+    if (search) { var terms = expandSearchTerms(search); shirts = shirts.filter(s => shirtMatchesSearch(s, terms)); }
     if (sizeFilter) shirts = shirts.filter(s => s.size === sizeFilter);
     if (priceFilter) {
       const [min, max] = priceFilter.split('-').map(Number);
@@ -2475,8 +2689,20 @@
     else if (sort === 'year-desc') shirts.sort((a,b) => parseInt(b.season||0) - parseInt(a.season||0));
     else if (sort === 'oldest') shirts.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
     const grid = document.getElementById('d-shirt-grid');
-    if (!shirts.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">No shirts found</div>'; return; }
-    grid.innerHTML = shirts.map((s, idx) => {
+    if (!shirts.length) {
+      grid.className = 'shirt-grid';
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">No shirts found</div>';
+      renderPagination(0, 1);
+      return;
+    }
+    // pagination
+    const totalShirts = shirts.length;
+    const totalPages = Math.max(1, Math.ceil(totalShirts / SHOP_PER_PAGE));
+    if (shopPage > totalPages) shopPage = 1;
+    const pageShirts = shirts.slice((shopPage - 1) * SHOP_PER_PAGE, shopPage * SHOP_PER_PAGE);
+    renderPagination(totalShirts, totalPages);
+    grid.className = 'shirt-grid' + (shopView === 'list' ? ' list-view' : '');
+    grid.innerHTML = pageShirts.map((s, idx) => {
       const inCart = cart.some(c => c.id === s.id);
       const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
       const isLiked = wishlist.includes(s.id);
@@ -2577,6 +2803,7 @@
       document.getElementById('d-detail-desc').textContent = shirt.description||'';
       document.getElementById('d-detail-specs').innerHTML = buildSpecs(shirt);
       document.getElementById('d-detail-thumbs').innerHTML = images.map((img,i) => `<img src="${img}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','d-detail-main-img')" loading="lazy">`).join('');
+      renderRelatedShirts(shirt);
       const btn = document.getElementById('d-detail-add-btn');
       const inCart = cart.some(c => c.id === shirt.id);
       var soldOut = shirt.available === false;
@@ -2588,13 +2815,58 @@
     }
   }
 
+  // expandable info sections on the detail page
+  function toggleAcc(el) {
+    if (!el) return;
+    var wasOpen = el.classList.contains('open');
+    var parent = el.parentElement;
+    if (parent) parent.querySelectorAll('.acc-item').forEach(function(i) { i.classList.remove('open'); });
+    if (!wasOpen) el.classList.add('open');
+  }
+
+  // more shirts from the same club (or category as a fallback)
+  function renderRelatedShirts(shirt) {
+    var wrap = document.getElementById('d-related-wrap');
+    var row = document.getElementById('d-related-row');
+    var title = document.getElementById('d-related-title');
+    if (!wrap || !row || !shirt) return;
+
+    var related = allShirts.filter(function(s) {
+      return s.id !== shirt.id && shirt.club && s.club === shirt.club;
+    });
+    var heading = 'More ' + (shirt.club || '') + ' shirts';
+
+    if (related.length < 4) {
+      var extra = allShirts.filter(function(s) {
+        return s.id !== shirt.id && s.category === shirt.category && related.indexOf(s) === -1;
+      });
+      if (!related.length) heading = 'You may also like';
+      related = related.concat(extra);
+    }
+    related = related.slice(0, 8);
+
+    if (!related.length) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+    title.textContent = heading;
+    renderDesktopRow('d-related-row', related);
+    setTimeout(initRowScrollers, 120);
+  }
+
   function buildSpecs(shirt) {
-    return [
-      shirt.size ? `<div class="spec-item"><div class="spec-label">Size</div><div class="spec-value">${shirt.size}</div></div>` : '',
-      shirt.season ? `<div class="spec-item"><div class="spec-label">Season</div><div class="spec-value">${shirt.season}</div></div>` : '',
-      shirt.condition ? `<div class="spec-item"><div class="spec-label">Condition</div><div class="spec-value">${shirt.condition}</div></div>` : '',
-      shirt.category ? `<div class="spec-item"><div class="spec-label">Category</div><div class="spec-value">${shirt.category.replace('_',' ')}</div></div>` : '',
-    ].join('');
+    var catName = shirt.category === 'national' ? 'National Team'
+                : shirt.category === 'match_worn' ? 'Match Worn'
+                : shirt.category === 'clubs' ? 'Club'
+                : (shirt.category || '').replace('_',' ');
+    var rows = [
+      ['Club', shirt.club],
+      ['Season', shirt.season],
+      ['Size', shirt.size],
+      ['Condition', shirt.condition],
+      ['Category', catName]
+    ];
+    return '<div class="spec-table">' + rows.filter(function(r) { return r[1]; }).map(function(r) {
+      return '<div class="spec-row"><div class="spec-key">' + r[0] + '</div><div class="spec-val">' + r[1] + '</div></div>';
+    }).join('') + '</div>';
   }
 
   function galleryNav(ctx, dir) {
@@ -2934,14 +3206,6 @@
       </select>
     </div>
     <div class="form-group"><label>Order Notes</label><textarea id="f-notes" placeholder="Any special requests..."></textarea></div>
-    <div class="form-section-label" style="margin-top:24px">Discount Code</div>
-    <div class="form-group">
-      <div style="display:flex;gap:8px">
-        <input type="text" id="cf-discount-input" placeholder="Enter code" style="flex:1;text-transform:uppercase">
-        <button type="button" id="cf-discount-btn" onclick="applyDiscountCode()" style="background:transparent;border:1px solid rgba(200,169,80,.45);color:var(--gold);border-radius:2px;padding:0 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Apply</button>
-      </div>
-      <div id="cf-discount-msg" style="display:none;margin-top:8px;font-size:12px"></div>
-    </div>
   `;
 
   function buildCheckoutForms() {
