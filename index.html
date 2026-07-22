@@ -80,7 +80,10 @@
   }
   </script>
   <title>Shirt Société | Vintage Football Shirts | Timeless, Original, Rare</title>
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_trim,c_pad,w_32,h_32,b_rgb:0a0905,f_png,q_100,dpr_2.0/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=4">
+  <link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_trim,c_pad,w_192,h_192,b_rgb:0a0905,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=4">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_trim,c_pad,w_180,h_180,b_rgb:0a0905,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=4">
+  <meta name="theme-color" content="#0a0905">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -340,7 +343,8 @@
     }
     .sm-card-img img {
       position: absolute; inset: 0;
-      width: 100%; height: 100%; object-fit: contain;
+      width: 100%; height: 100%;
+      object-fit: contain; object-position: center center;
       background: #1a1815; padding: 8px;
     }
     .sm-card-img .img-hover { opacity: 0; transition: opacity .3s; }
@@ -386,7 +390,9 @@
     }
     .shirt-card-img img {
       position: absolute; inset: 0;
-      width: 100%; height: 100%; object-fit: contain; padding: 8px; background: #1a1815;
+      width: 100%; height: 100%;
+      object-fit: contain; object-position: center center;
+      padding: 8px; background: #1a1815;
     }
     .shirt-card-img .img-hover { opacity: 0; transition: opacity .3s; }
     .shirt-card:hover .shirt-card-img .img-hover { opacity: 1; }
@@ -412,6 +418,22 @@
       max-width: calc(100% - 16px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       text-shadow: 0 1px 4px rgba(0,0,0,.9);
     }
+    /* photo-only view: just the shirts, no text */
+    .shirt-grid.photo-only .shirt-card-body { display: none; }
+    .shirt-grid.photo-only .shirt-cat-badge { display: none; }
+    .shirt-grid.photo-only { gap: 10px; }
+    /* sold shirts stay visible (good for Google) but are clearly marked */
+    .shirt-card.is-sold .shirt-card-img img,
+    .shirt-card-sm.is-sold .sm-card-img img { filter: grayscale(.55) brightness(.45); }
+    .shirt-card.is-sold, .shirt-card-sm.is-sold, .m-shirt-card.is-sold { opacity: .85; }
+    .m-shirt-card.is-sold .shirt-card-img img { filter: grayscale(.55) brightness(.45); }
+    .sold-overlay {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-8deg);
+      z-index: 4; background: rgba(10,9,5,.86); border: 1px solid rgba(200,169,80,.55);
+      color: var(--gold); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase; padding: 7px 18px; border-radius: 2px;
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); pointer-events: none; white-space: nowrap;
+    }
     .shirt-grid {
       display: grid; padding: 24px 48px 48px;
       gap: 16px;
@@ -428,11 +450,7 @@
     .shirt-card:hover {
       box-shadow: 0 14px 34px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,169,80,0.12);
     }
-    .shirt-card .img-hover {
-      position: absolute; top: 0; left: 0; width: 100%;
-      aspect-ratio: 3/4; object-fit: contain; background: #1a1815; padding: 8px;
-      opacity: 0; transition: opacity 0.3s;
-    }
+
     .shirt-card:hover .img-hover { opacity: 1; }
     .shirt-card .img-main { transition: opacity 0.3s; }
     .shirt-card:hover .img-main { opacity: 0; }
@@ -1138,8 +1156,8 @@
 <!-- MOBILE PROFILE -->
 <div id="screen-profile" class="screen">
   <!-- My Wardrobe (mobile) -->
-  <div style="position:relative;padding:36px 20px 20px;text-align:center;background:linear-gradient(180deg,#0b0a07,#060504);overflow:hidden;margin-bottom:8px">
-    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(40px,15vw,64px);line-height:.9;letter-spacing:-2px;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none">MY<br>WARDROBE</div>
+  <div id="m-prof-banner" style="position:relative;padding:36px 20px 20px;text-align:center;background:linear-gradient(180deg,#0b0a07,#060504);overflow:hidden;margin-bottom:8px">
+    <div id="m-prof-banner-text" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(40px,15vw,64px);line-height:.9;letter-spacing:-2px;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none;will-change:background-position">MY<br>WARDROBE</div>
     <div style="margin-top:12px;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(200,169,80,.5)">Your Collection</div>
   </div>
   <div id="m-wardrobe-row" style="display:flex;gap:14px;overflow-x:auto;padding:8px 20px 20px;scrollbar-width:none"></div>
@@ -1330,7 +1348,7 @@
         </div>
         <div style="line-height:1.2">
           <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf7d;font-weight:600">New Shirts Added</div>
-          <div style="font-size:15px;color:var(--white);font-weight:600">22 July · 17:00</div>
+          <div style="font-size:15px;color:var(--white);font-weight:600">View the latest</div>
         </div>
       </div>
     </div>
@@ -1478,47 +1496,6 @@
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(200,169,80,.25),transparent);margin:8px 0"></div>
 </div>
 
-<!-- SCENE 6: DROP BANNER -->
-<div id="cin-drop-banner" style="opacity:0;transform:translateY(40px)">
-  <div id="drop-banner" style="position:relative;border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:24px 52px;text-align:center;overflow:hidden">
-    <div id="dr-seethrough" style="position:absolute;inset:-15%;background:linear-gradient(135deg,#0a0905 0%,#141210 38%,#1c1917 50%,#141210 62%,#0a0905 100%);will-change:transform"></div>
-    <div style="position:absolute;inset:0;background:linear-gradient(112deg,transparent 32%,rgba(200,169,80,.09) 46%,rgba(255,250,240,.05) 50%,rgba(200,169,80,.09) 54%,transparent 68%);pointer-events:none"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 120% at 50% -10%,rgba(200,169,80,.10),transparent 60%);pointer-events:none"></div>
-    <div style="position:relative;z-index:2">
-    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:10px">
-      <div style="position:relative;width:14px;height:14px;flex-shrink:0">
-        <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;animation:pulseGlow 1.5s ease-in-out infinite;position:absolute"></div>
-        <div style="position:absolute;inset:-4px;border-radius:50%;background:rgba(76,175,125,.22);animation:pulseRing 1.5s ease-in-out infinite"></div>
-      </div>
-      <div id="db-eyebrow" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;opacity:0">New Shirts Added</div>
-    </div>
-    <div id="db-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(22px,2.6vw,34px);color:var(--white);margin-bottom:5px;opacity:0;transform:translateY(16px)">New Shirts Added!</div>
-    <div id="db-sub" style="font-size:13px;color:var(--text-muted);margin-bottom:24px;opacity:0">Wednesday 22 July 2026 &middot; 17:00 &middot; Vintage National &amp; Club Shirts &middot; 80s, 90s &amp; 00s</div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px">
-      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:10px 14px;min-width:54px">
-        <div id="drop-days" style="font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
-        <div style="font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Days</div>
-      </div>
-      <div style="font-size:28px;color:rgba(200,169,80,.2);padding-bottom:14px">:</div>
-      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:10px 14px;min-width:54px">
-        <div id="drop-hours" style="font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
-        <div style="font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Hours</div>
-      </div>
-      <div style="font-size:28px;color:rgba(200,169,80,.2);padding-bottom:14px">:</div>
-      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:10px 14px;min-width:54px">
-        <div id="drop-mins" style="font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
-        <div style="font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Mins</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding-top:20px;border-top:1px solid rgba(200,169,80,.1)">
-      <input type="email" id="drop-email-input" placeholder="your@email.com" style="background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:2px;padding:10px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:210px">
-      <button onclick="submitDropEmail()" id="drop-email-btn" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:10px 18px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;text-transform:uppercase">Notify Me</button>
-      <div id="drop-email-confirm" style="display:none;font-size:13px;color:var(--gold);font-weight:500">&#10003; You are on the list!</div>
-    </div>
-  </div>
-</div>
-</div>
-
 <!-- SCENE 7: FEATURED SHIRTS (from Supabase) -->
 <div id="cin-featured">
   <div style="padding:52px 52px 36px">
@@ -1616,8 +1593,17 @@
           <option value="year-desc">Year: New to Old</option>
         </select>
         <button onclick="resetFilters()" style="background:none;border:none;color:var(--text-muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 0;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">✕ Reset</button>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
+          <div id="d-view-photo" onclick="setShopView('photo')" title="Photos only" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #2e2c27;border-radius:2px;cursor:pointer;background:#1a1815;transition:all .2s">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </div>
+          <div id="d-view-detail" onclick="setShopView('detail')" title="With details" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:2px;cursor:pointer;background:#2a2620;transition:all .2s">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--gold)"><rect x="3" y="3" width="18" height="12"/><line x1="3" y1="18" x2="14" y2="18"/><line x1="3" y1="21" x2="10" y2="21"/></svg>
+          </div>
+        </div>
       </div>
       <div id="d-shirt-grid" class="shirt-grid"><div class="loading" style="grid-column:1/-1">Loading collection...</div></div>
+      <div id="d-pagination"></div>
     </div>
 
     <!-- DETAIL -->
@@ -1935,7 +1921,7 @@
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px">
             <div style="background:#1a1715;padding:28px 24px;border-radius:2px;border:1px solid #2a2820">
               <div style="font-size:48px;font-weight:700;color:var(--gold);line-height:1">1,400+</div>
-              <div style="font-size:12px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:8px">Followers</div>
+              <div style="font-size:12px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:8px">Instagram Followers</div>
             </div>
             <div style="background:#1a1715;padding:28px 24px;border-radius:2px;border:1px solid #2a2820">
               <div style="font-size:48px;font-weight:700;color:var(--gold);line-height:1">2025</div>
@@ -2007,8 +1993,8 @@
       Back
     </div>
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:500">Our Story</div>
-    <div style="position:relative;margin-bottom:20px;padding:36px 0;text-align:center;background:var(--black);border-radius:2px;overflow:hidden">
-      <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(38px,13vw,58px);line-height:.9;letter-spacing:-2px;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none">
+    <div id="m-about-banner" style="position:relative;margin-bottom:20px;padding:36px 0;text-align:center;background:var(--black);border-radius:2px;overflow:hidden">
+      <div id="m-about-banner-text" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(38px,13vw,58px);line-height:.9;letter-spacing:-2px;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none;will-change:background-position">
         OUR<br>STORY
       </div>
       <div style="margin-top:14px;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(200,169,80,.45)">Est. 2025 · Harderwijk</div>
@@ -2022,7 +2008,7 @@
       </div>
       <div style="background:var(--grey);padding:16px;border-radius:2px;text-align:center">
         <div style="font-size:24px;font-weight:600;color:var(--gold)">1,400+</div>
-        <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px">Followers</div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px">Instagram Followers</div>
       </div>
       <div style="background:var(--grey);padding:16px;border-radius:2px;text-align:center">
         <div style="font-size:24px;font-weight:600;color:var(--gold)">4+</div>
@@ -2081,7 +2067,7 @@
   // ── FETCH ──
   async function fetchShirts() {
     try {
-      const res = await fetch(`${dbHost}/rest/v1/shirts?select=*&available=eq.true&order=created_at.desc`, {
+      const res = await fetch(`${dbHost}/rest/v1/shirts?select=*&order=created_at.desc`, {
         headers: { 'apikey': dbToken, 'Authorization': `Bearer ${dbToken}` }
       });
       allShirts = await res.json();
@@ -2181,8 +2167,9 @@
       const inCart = cart.some(c => c.id === s.id);
       const isLiked = wishlist.includes(s.id);
       return `
-        <div class="m-shirt-card" onclick="openDetail('${s.id}','m')" style="position:relative">
+        <div class="m-shirt-card${s.available === false ? ' is-sold' : ''}" onclick="openDetail('${s.id}','m')" style="position:relative">
           <div class="shirt-card-img">
+            ${s.available === false ? '<div class="sold-overlay">Sold</div>' : ''}
             <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
             ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
             <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:6px;right:6px;width:28px;height:28px;z-index:3">
@@ -2210,14 +2197,14 @@
     const clubs = allShirts.filter(s => s.category === 'clubs');
     renderDesktopRow('d-featured-row', featured.length ? featured : allShirts.slice(0,6));
     renderDesktopRow('d-matchworn-row', matchWorn);
-    setTimeout(initRowScrollers, 100);
     renderDesktopRow('d-national-row', national);
     renderDesktopRow('d-clubs-row', clubs);
+    setTimeout(initRowScrollers, 150);
   }
 
   // horizontal scroll arrows for the homepage rows
   function initRowScrollers() {
-    ['d-featured-row','d-matchworn-row','d-national-row'].forEach(function(id) {
+    ['d-featured-row','d-matchworn-row','d-national-row','d-clubs-row'].forEach(function(id) {
       var row = document.getElementById(id);
       if (!row || row.dataset.scrollerReady) return;
       row.dataset.scrollerReady = '1';
@@ -2283,13 +2270,22 @@
   function renderDesktopRow(id, shirts) {
     const el = document.getElementById(id);
     if (!shirts.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:20px">Nothing here yet.</div>'; return; }
-    el.innerHTML = shirts.map((s, idx) => {
+    // pagination
+    const totalShirts = shirts.length;
+    const totalPages = Math.max(1, Math.ceil(totalShirts / SHOP_PER_PAGE));
+    if (shopPage > totalPages) shopPage = 1;
+    const pageShirts = shirts.slice((shopPage - 1) * SHOP_PER_PAGE, shopPage * SHOP_PER_PAGE);
+    renderPagination(totalShirts, totalPages);
+    el.className = 'shirt-grid' + (shopView === 'photo' ? ' photo-only' : '');
+    el.innerHTML = pageShirts.map((s, idx) => {
       const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
       const isLiked = wishlist.includes(s.id);
       const rowDelay = 'delay-' + ((idx % 4) + 1);
+      const isSold = s.available === false;
       return `
-      <div class="shirt-card-sm anim-ready fade-up ${rowDelay}" onclick="openDetail('${s.id}','d')">
+      <div class="shirt-card-sm anim-ready fade-up ${rowDelay}${isSold ? ' is-sold' : ''}" onclick="openDetail('${s.id}','d')">
         <div class="sm-card-img">
+          ${isSold ? '<div class="sold-overlay">Sold</div>' : ''}
           <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
           ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
           ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
@@ -2309,6 +2305,7 @@
 
   // ── DESKTOP SHOP ──
   function dSetFilter(filter, btn) {
+    shopPage = 1;
     dCurrentFilter = filter;
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     if (btn) { btn.classList.add('active'); }
@@ -2319,8 +2316,9 @@
     renderDesktopGrid();
   }
 
-  function dFilterShirts() { renderDesktopGrid(); }
+  function dFilterShirts() { shopPage = 1; renderDesktopGrid(); }
   function resetFilters() {
+    shopPage = 1;
     document.getElementById('d-filter-size').value = '';
     document.getElementById('d-filter-price').value = '';
     document.getElementById('d-sort').value = 'newest';
@@ -2339,6 +2337,60 @@
     else if (s.category === 'match_worn') cat = 'Match Worn';
     var yr = s.season || '';
     return (cat && yr) ? (cat + ' · ' + yr) : (cat || yr || '');
+  }
+
+  // ── SHOP: view mode + pagination ──
+  var shopView = 'detail';           // 'detail' = photo + info, 'photo' = photo only
+  var shopPage = 1;
+  var SHOP_PER_PAGE = 40;
+
+  function setShopView(mode) {
+    shopView = mode;
+    var pv = document.getElementById('d-view-photo');
+    var dv = document.getElementById('d-view-detail');
+    if (pv && dv) {
+      var on = 'border:1px solid var(--gold);background:#2a2620';
+      var off = 'border:1px solid #2e2c27;background:#1a1815';
+      pv.style.cssText = 'width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer;transition:all .2s;' + (mode === 'photo' ? on : off);
+      dv.style.cssText = 'width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer;transition:all .2s;' + (mode === 'detail' ? on : off);
+      var ps = pv.querySelector('svg'), ds = dv.querySelector('svg');
+      if (ps) ps.style.color = mode === 'photo' ? 'var(--gold)' : 'var(--text-muted)';
+      if (ds) ds.style.color = mode === 'detail' ? 'var(--gold)' : 'var(--text-muted)';
+    }
+    renderDesktopGrid();
+  }
+
+  function goToShopPage(p) {
+    shopPage = p;
+    renderDesktopGrid();
+    var grid = document.getElementById('d-shirt-grid');
+    if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function renderPagination(total, pages) {
+    var wrap = document.getElementById('d-pagination');
+    if (!wrap) return;
+    if (pages <= 1) { wrap.innerHTML = ''; return; }
+    var html = '<div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:32px 0 8px;flex-wrap:wrap">';
+    var btn = function(label, page, active, disabled) {
+      if (disabled) {
+        return '<span style="padding:9px 14px;font-size:12px;color:rgba(245,240,232,.2)">' + label + '</span>';
+      }
+      var style = active
+        ? 'background:var(--gold);color:var(--black);border:1px solid var(--gold);font-weight:700'
+        : 'background:#1a1815;color:var(--text-muted);border:1px solid #2e2c27';
+      return '<div onclick="goToShopPage(' + page + ')" style="' + style + ';padding:9px 14px;border-radius:2px;font-size:12px;cursor:pointer;min-width:38px;text-align:center;transition:all .2s">' + label + '</div>';
+    };
+    html += btn('‹', shopPage - 1, false, shopPage === 1);
+    var from = Math.max(1, shopPage - 2), to = Math.min(pages, shopPage + 2);
+    if (from > 1) { html += btn('1', 1, shopPage === 1, false); if (from > 2) html += '<span style="color:rgba(245,240,232,.25)">…</span>'; }
+    for (var p = from; p <= to; p++) html += btn(String(p), p, p === shopPage, false);
+    if (to < pages) { if (to < pages - 1) html += '<span style="color:rgba(245,240,232,.25)">…</span>'; html += btn(String(pages), pages, shopPage === pages, false); }
+    html += btn('›', shopPage + 1, false, shopPage === pages);
+    html += '</div>';
+    html += '<div style="text-align:center;font-size:11px;color:rgba(245,240,232,.35);padding-bottom:28px">Showing ' +
+            (((shopPage - 1) * SHOP_PER_PAGE) + 1) + '–' + Math.min(shopPage * SHOP_PER_PAGE, total) + ' of ' + total + ' shirts</div>';
+    wrap.innerHTML = html;
   }
 
   function renderDesktopGrid() {
@@ -2371,9 +2423,11 @@
       const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
       const isLiked = wishlist.includes(s.id);
       const delay = idx < 6 ? 'delay-' + ((idx % 5) + 1) : '';
+      const isSold = s.available === false;
       return `
-        <div class="shirt-card anim-ready scale-up ${delay}" onclick="openDetail('${s.id}','d')">
+        <div class="shirt-card anim-ready scale-up ${delay}${isSold ? ' is-sold' : ''}" onclick="openDetail('${s.id}','d')">
           <div class="shirt-card-img">
+            ${isSold ? '<div class="sold-overlay">Sold</div>' : ''}
             <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
             ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
             ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
@@ -2387,7 +2441,7 @@
             ${s.size ? `<div class="shirt-card-size">Size ${s.size}</div>` : ''}
             <div class="shirt-card-footer">
               <div class="shirt-card-price">€${parseFloat(s.price).toFixed(2)}</div>
-              ${inCart ? '<span class="sold-badge">In cart ✓</span>' : `<button class="add-btn" onclick="event.stopPropagation();quickAdd('${s.id}', event)">+</button>`}
+              ${isSold ? '<span class="sold-badge">Sold</span>' : (inCart ? '<span class="sold-badge">In cart ✓</span>' : `<button class="add-btn" onclick="event.stopPropagation();quickAdd('${s.id}', event)">+</button>`)}
             </div>
           </div>
         </div>`;
@@ -2447,8 +2501,11 @@
       document.getElementById('m-detail-thumbs').innerHTML = images.length > 1 ? images.map((img,i) => `<img src="${img}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','m-detail-main-img')" loading="lazy">`).join('') : '';
       const btn = document.getElementById('m-detail-add-btn');
       const inCart = cart.some(c => c.id === shirt.id);
-      btn.textContent = inCart ? 'Added to Cart ✓' : 'Add to Cart';
-      btn.disabled = inCart;
+      var soldOut = shirt.available === false;
+      btn.textContent = soldOut ? 'Sold' : (inCart ? 'Added to Cart ✓' : 'Add to Cart');
+      btn.disabled = soldOut || inCart;
+      btn.style.opacity = soldOut ? '.5' : '';
+      btn.style.cursor = soldOut ? 'not-allowed' : '';
       mGoTo('detail');
     } else {
       currentImages = images;
@@ -2464,8 +2521,11 @@
       document.getElementById('d-detail-thumbs').innerHTML = images.map((img,i) => `<img src="${img}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','d-detail-main-img')" loading="lazy">`).join('');
       const btn = document.getElementById('d-detail-add-btn');
       const inCart = cart.some(c => c.id === shirt.id);
-      btn.textContent = inCart ? 'Added to Cart ✓' : 'Add to Cart';
-      btn.disabled = inCart;
+      var soldOut = shirt.available === false;
+      btn.textContent = soldOut ? 'Sold' : (inCart ? 'Added to Cart ✓' : 'Add to Cart');
+      btn.disabled = soldOut || inCart;
+      btn.style.opacity = soldOut ? '.5' : '';
+      btn.style.cursor = soldOut ? 'not-allowed' : '';
       dGoTo('detail');
     }
   }
@@ -2609,6 +2669,47 @@
     }
     attach('d-detail-main-img');
     attach('m-detail-main-img');
+
+    // ── TOUCH swipe (phones/tablets) ──
+    function attachTouch(mainId) {
+      var main = document.getElementById(mainId);
+      if (!main) return;
+      var box = main.closest('.gallery-main') || main.parentElement;
+      if (!box) return;
+      var tStartX = 0, tStartY = 0, tMoved = false, horizontal = false;
+      box.addEventListener('touchstart', function(e) {
+        if (!e.touches || !e.touches.length) return;
+        tStartX = e.touches[0].clientX;
+        tStartY = e.touches[0].clientY;
+        tMoved = false; horizontal = false;
+      }, { passive: true });
+      box.addEventListener('touchmove', function(e) {
+        if (!e.touches || !e.touches.length) return;
+        var dx = e.touches[0].clientX - tStartX;
+        var dy = e.touches[0].clientY - tStartY;
+        if (Math.abs(dx) > 10 || Math.abs(dy) > 10) tMoved = true;
+        // only treat as a gallery swipe when it's clearly horizontal,
+        // so vertical page scrolling keeps working
+        if (Math.abs(dx) > Math.abs(dy) * 1.4 && Math.abs(dx) > 12) {
+          horizontal = true;
+          main.style.transform = 'translateX(' + (dx * 0.25) + 'px)';
+          if (e.cancelable) e.preventDefault();
+        }
+      }, { passive: false });
+      box.addEventListener('touchend', function(e) {
+        main.style.transition = 'transform .25s ease';
+        main.style.transform = 'translateX(0)';
+        setTimeout(function(){ main.style.transition = ''; }, 260);
+        if (!horizontal) return;
+        var endX = (e.changedTouches && e.changedTouches.length) ? e.changedTouches[0].clientX : tStartX;
+        var dx = endX - tStartX;
+        var ctx = mainId === 'm-detail-main-img' ? 'm' : 'd';
+        if (dx < -45) galleryNav(ctx, 1);
+        else if (dx > 45) galleryNav(ctx, -1);
+      }, { passive: true });
+    }
+    attachTouch('m-detail-main-img');
+    attachTouch('d-detail-main-img');
   })();
 
   function switchImg(el, src, mainId) {
@@ -3595,7 +3696,7 @@
         .to('#sw2', { scale: 1.06, opacity: 0, duration: 0.12, ease: 'power2.in' }, 0.96);
 
       // ── BANNERS REVEAL ──
-      ['#cin-event-banner','#cin-drop-banner'].forEach(function(id) {
+      ['#cin-event-banner'].forEach(function(id) {
         var el = document.querySelector(id);
         if (!el) return;
         gsap.to(el, {
@@ -3655,7 +3756,8 @@
             scrollTrigger: { trigger: '#prof-banner', start: 'top top', end: 'bottom top', scrub: 0.8, invalidateOnRefresh: true } });
       }
       // cart + saved see-through banners scrub
-      [['cart-banner-text','#cart-banner'], ['saved-banner-text','#saved-banner']].forEach(function(pair) {
+      [['cart-banner-text','#cart-banner'], ['saved-banner-text','#saved-banner'],
+       ['m-prof-banner-text','#m-prof-banner'], ['m-about-banner-text','#m-about-banner']].forEach(function(pair) {
         var el = document.getElementById(pair[0]);
         if (el) {
           gsap.fromTo(el,
