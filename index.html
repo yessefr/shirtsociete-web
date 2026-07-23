@@ -731,6 +731,65 @@
       .fair-strips { height: 420px; }
       .strip-open { left: 20px; right: 20px; bottom: 22px; padding-left: 12px; }
     }
+    /* ═══ NEW SHIRTS ADDED — video banner ═══ */
+    #cin-video-banner {
+      position: relative;
+      height: 420px;
+      margin: 20px 48px 8px;
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid rgba(200,169,80,.18);
+    }
+    #new-shirts-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(.55);
+    }
+    .vb-shade {
+      position: absolute; inset: 0;
+      background: linear-gradient(100deg, rgba(6,5,4,.88) 0%, rgba(6,5,4,.55) 45%, rgba(6,5,4,.15) 100%);
+    }
+    .vb-content {
+      position: absolute; left: 52px; top: 50%;
+      transform: translateY(-50%);
+      max-width: 60%;
+    }
+    .vb-eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 14px;
+    }
+    .vb-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #4caf7d;
+      animation: pulseGlow 1.5s ease-in-out infinite;
+    }
+    .vb-title {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: clamp(30px,4vw,54px); line-height: 1;
+      color: var(--cream); margin-bottom: 12px;
+      text-shadow: 0 2px 24px rgba(0,0,0,.8);
+    }
+    .vb-sub {
+      font-size: 14px; color: rgba(245,240,232,.7);
+      margin-bottom: 26px; max-width: 380px; line-height: 1.6;
+    }
+    .vb-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--gold); color: var(--black);
+      border: none; border-radius: 2px;
+      padding: 14px 26px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .vb-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,169,80,.3); }
+    @media (max-width: 900px) {
+      #cin-video-banner { height: 340px; margin: 16px 20px 8px; }
+      .vb-content { left: 24px; right: 24px; max-width: none; }
+      .vb-sub { font-size: 13px; margin-bottom: 20px; }
+    }
     .shirt-grid {
       display: grid; padding: 24px 48px 48px;
       gap: 16px;
@@ -822,6 +881,7 @@
       user-select: none; -webkit-user-drag: none;
     }
     #zoom-lightbox-img.zoomed { transition: none; cursor: crosshair; }
+    #zoom-lightbox-img.super { cursor: zoom-out; }
     #zoom-lightbox-img.zoomed { cursor: move; }
     .zoom-close {
       position: absolute; top: 24px; right: 28px;
@@ -1729,6 +1789,25 @@
 <!-- Divider between Next Event and New Shirts Added -->
 <div style="padding:0 48px">
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(200,169,80,.25),transparent);margin:8px 0"></div>
+</div>
+
+<!-- NEW SHIRTS ADDED — video banner -->
+<div id="cin-video-banner">
+  <video id="new-shirts-video" autoplay muted loop playsinline preload="metadata"
+    src="https://res.cloudinary.com/dinpfdojh/video/upload/v1784817412/animo-column-drift-1080p_fgjag8.mp4"></video>
+  <div class="vb-shade"></div>
+  <div class="vb-content">
+    <div class="vb-eyebrow">
+      <span class="vb-dot"></span>
+      Just In
+    </div>
+    <div class="vb-title">New Shirts Added!</div>
+    <div class="vb-sub">Fresh finds from the fairs, added to the collection</div>
+    <button class="vb-btn" onclick="dShopNewest()">
+      View the latest
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
 </div>
 
 <!-- SCENE 7: FEATURED SHIRTS (from Supabase) -->
@@ -3304,7 +3383,7 @@
     if (mainEl) mainEl.src = currentImages[currentImgIndex];
   }
   var zoomFitScale = 1;   // step 1: whole shirt fills the screen
-  var ZOOM_SUPER = 2.6;   // step 2: super zoom for badges, tags and stitching
+  var ZOOM_SUPER = 2.2;   // step 2: super zoom for badges, tags and stitching
 
   function toggleZoomLevel(e) {
     if (e) e.stopPropagation();
@@ -3316,7 +3395,8 @@
       // STEP 1 — fill the screen with the whole shirt
       var r = img.getBoundingClientRect();
       var fitScale = Math.min(window.innerWidth / r.width, window.innerHeight / r.height);
-      zoomFitScale = Math.max(1.35, Math.min(fitScale * 0.97, 3.2));
+      // go slightly BEYOND fitting the screen, so there is room to move around the shirt
+      zoomFitScale = Math.max(1.8, Math.min(fitScale * 1.25, 3.0));
       zoomLevel = zoomFitScale;
       zoomPanX = 0; zoomPanY = 0;
       img.classList.add('zoomed');
@@ -3344,23 +3424,50 @@
     var lb = document.getElementById('zoom-lightbox');
     var img = document.getElementById('zoom-lightbox-img');
     if (!img || !lb) return;
-    // While zoomed, the cursor position over the viewport maps linearly to the full
-    // extent of the scaled image, so you can inspect every corner without zooming out.
+
+    // Work out the image's UNSCALED on-screen size once, so panning maths stays correct
+    // at every zoom step. getBoundingClientRect() reports the scaled box, which is why
+    // the earlier version could not reach the edges of the shirt.
+    function baseSize() {
+      var prev = img.style.transform;
+      img.style.transition = 'none';
+      img.style.transform = 'none';
+      var r = img.getBoundingClientRect();
+      img.style.transform = prev;
+      // restore transition on the next frame
+      requestAnimationFrame(function() { img.style.transition = ''; });
+      return { w: r.width, h: r.height };
+    }
+
+    var cachedBase = null;
+    function getBase() {
+      if (!cachedBase || !cachedBase.w) cachedBase = baseSize();
+      return cachedBase;
+    }
+    img.addEventListener('load', function() { cachedBase = null; });
+    window.addEventListener('resize', function() { cachedBase = null; });
+
     lb.addEventListener('mousemove', function(e) {
       if (zoomLevel <= 1) return;
+      var b = getBase();
+      if (!b.w || !b.h) return;
+
       var vw = window.innerWidth, vh = window.innerHeight;
-      var px = e.clientX / vw - 0.5;   // -0.5 (left) .. 0.5 (right)
-      var py = e.clientY / vh - 0.5;   // -0.5 (top)  .. 0.5 (bottom)
-      var rect = img.getBoundingClientRect();
-      // unscaled size of the shown image
-      var baseW = rect.width / zoomLevel;
-      var baseH = rect.height / zoomLevel;
-      // total travel available in each axis (how far the scaled image can move)
-      var travelX = baseW * (zoomLevel - 1);
-      var travelY = baseH * (zoomLevel - 1);
-      // divide by zoomLevel because translate happens inside the scaled space
-      var tx = (-px * travelX) / zoomLevel;
-      var ty = (-py * travelY) / zoomLevel;
+      // cursor position across the whole window, 0 .. 1
+      var px = Math.min(1, Math.max(0, e.clientX / vw));
+      var py = Math.min(1, Math.max(0, e.clientY / vh));
+
+      // how far the scaled image overflows the window in each direction
+      var scaledW = b.w * zoomLevel;
+      var scaledH = b.h * zoomLevel;
+      var overflowX = Math.max(0, scaledW - vw);
+      var overflowY = Math.max(0, scaledH - vh);
+
+      // translate happens inside the scaled space, so divide by zoomLevel
+      var tx = ((0.5 - px) * overflowX) / zoomLevel;
+      var ty = ((0.5 - py) * overflowY) / zoomLevel;
+
+      zoomPanX = tx; zoomPanY = ty;
       img.style.transform = 'scale(' + zoomLevel + ') translate(' + tx + 'px,' + ty + 'px)';
     });
   })();
