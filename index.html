@@ -81,9 +81,9 @@
   }
   </script>
   <title>Shirt Société | Vintage Football Shirts | Timeless, Original, Rare</title>
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=9">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=10">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_180,h_180,b_rgb:0a0905,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=9">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_180,h_180,b_rgb:0a0905,f_png,q_100/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=10">
   <meta name="theme-color" content="#0a0905">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -707,33 +707,22 @@
       font-size: 12px; color: rgba(245,240,232,.75);
       letter-spacing: .5px; white-space: nowrap;
     }
-    /* open state — on hover, on focus, or the default open one */
-    .fair-strips:hover .fair-strip.is-open { flex-grow: 1; }
-    .fair-strip.is-open,
+    /* open only while the mouse is on that strip — everything closes when you leave */
     .fair-strip:hover,
     .fair-strip:focus-visible {
       flex-grow: 2.4;
     }
-    .fair-strips:hover .fair-strip:hover { flex-grow: 2.4; }
-    .fair-strip.is-open img,
     .fair-strip:hover img,
     .fair-strip:focus-visible img {
       filter: grayscale(0) brightness(.72);
       transform: scale(1);
     }
-    .fair-strip.is-open .strip-vertical,
     .fair-strip:hover .strip-vertical,
     .fair-strip:focus-visible .strip-vertical { opacity: 0; }
-    .fair-strip.is-open .strip-open,
     .fair-strip:hover .strip-open,
     .fair-strip:focus-visible .strip-open {
       opacity: 1; transform: translateY(0);
     }
-    /* when hovering another strip, the default-open one collapses again */
-    .fair-strips:hover .fair-strip.is-open:not(:hover) { flex-grow: 1; }
-    .fair-strips:hover .fair-strip.is-open:not(:hover) img { filter: grayscale(.35) brightness(.5); transform: scale(1.04); }
-    .fair-strips:hover .fair-strip.is-open:not(:hover) .strip-vertical { opacity: 1; }
-    .fair-strips:hover .fair-strip.is-open:not(:hover) .strip-open { opacity: 0; transform: translateY(14px); }
 
     @media (max-width: 1200px) {
       .fair-strips { height: 520px; }
@@ -2164,7 +2153,7 @@
             </div>
           </div>
 
-          <div class="fair-strip is-open" tabindex="0">
+          <div class="fair-strip" tabindex="0">
             <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg" alt="Frankfurt Vintage Fußballbörse" loading="lazy">
             <div class="strip-shade"></div>
             <div class="strip-vertical">Frankfurt</div>
@@ -2395,8 +2384,10 @@
       </div>
       <div style="margin-top:14px;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(200,169,80,.45)">Est. 2025 · Harderwijk</div>
     </div>
-    <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:16px">Shirt Société was founded by Yesse Fredriks out of a deep passion for football and the history behind the shirts that made the game. What started as a personal collection grew into a curated platform for collectors across Europe.</p>
-    <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:24px">Every shirt in our collection tells a story — from match worn pieces worn by legends to rare vintage originals from the golden era of European football.</p>
+    <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:28px;line-height:1.15;color:var(--white);margin-bottom:18px">A Collector's Eye,<br>A Curator's Touch</h2>
+    <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:16px">Shirt Société was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for collectors around the globe.</p>
+    <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:16px">From vintage clubs to match worn pieces worn by legends, every shirt in our collection has been hand-picked for its authenticity, rarity and history. We don't just sell shirts. We preserve football heritage.</p>
+    <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:24px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Hamburg (04.02.2026), Cologne (31.05.2026), Düsseldorf (13.06.2026) and most recently Frankfurt (04.07.2026), Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next stop: Leipzig, October 4th 2026.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
       <div style="background:var(--grey);padding:18px 16px;border-radius:2px;border:1px solid #2a2820;text-align:center">
         <div style="font-size:26px;font-weight:700;color:var(--gold);line-height:1">1,400+</div>
