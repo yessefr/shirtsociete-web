@@ -34,6 +34,8 @@
     .post-card{cursor:pointer;padding:40px;border-bottom:1px solid #1e1c17;border-right:1px solid #1e1c17;transition:background 0.2s;}
     .post-card:hover{background:rgba(255,255,255,0.02);}
     .post-card:nth-child(even){border-right:none;}
+    .post-card.no-image{padding-top:26px;border-top:2px solid var(--gold);}
+    .post-card.no-image .post-tag{margin-top:0;}
     .post-img{width:100%;margin-bottom:20px;border-radius:2px;overflow:hidden;background:#111009;}
     .post-img.landscape{aspect-ratio:16/9;}
     .post-img.portrait{aspect-ratio:3/4;}
@@ -198,8 +200,7 @@
   </div>
 </div>
 
-<div data-id="spot-a-fake" data-tag="Guide" data-date="July 2026" data-read="7 min read" data-orientation="portrait"
-  data-image="https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_8_n8kffa.jpg"
+<div data-id="spot-a-fake" data-tag="Guide" data-date="July 2026" data-read="7 min read" data-orientation="portrait" data-image=""
   data-title="How to Spot a Fake Vintage Football Shirt"
   data-excerpt="Replicas have become good enough to fool most buyers. These are the details that give them away, from wash tags to stitching.">
   <div class="body-content">
@@ -225,8 +226,7 @@
   </div>
 </div>
 
-<div data-id="caring-for-vintage" data-tag="Guide" data-date="July 2026" data-read="4 min read" data-orientation="portrait"
-  data-image="https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_1_dhzmjb.jpg"
+<div data-id="caring-for-vintage" data-tag="Guide" data-date="July 2026" data-read="4 min read" data-orientation="portrait" data-image=""
   data-title="How to Wash and Store Vintage Football Shirts"
   data-excerpt="A thirty year old shirt needs different care than a modern one. Here is how to keep yours in the condition you bought it.">
   <div class="body-content">
@@ -249,34 +249,6 @@
   <p>There is nothing wrong with wearing a vintage shirt, and most collectors do. Just wash it less often than a modern one, air it out between wears, and accept that some wear is part of its life. These shirts were made to be worn.</p>
   </div>
 </div>
-
-<div data-id="nineties-golden-era" data-tag="Story" data-date="July 2026" data-read="6 min read" data-orientation="portrait"
-  data-image="https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_3_unohzu.jpg"
-  data-title="Why the 90s Were the Golden Era of Football Shirts"
-  data-excerpt="Wild patterns, huge sponsors and designs that would never be approved today. What made the nineties so special, and why collectors chase them.">
-  <div class="body-content">
-  <h2>Designers Were Given Freedom</h2>
-  <p>In the early nineties, football shirt design was not yet controlled by global marketing departments. Local designers experimented, and the results were extraordinary: geometric explosions, abstract splatter prints, colours that had no business being on a football pitch.</p>
-  <p>Look at the goalkeeper shirts of that era, or Germany's 1994 home shirt with its bold diamond pattern. Nothing like it would get approved today, and that is exactly why collectors want them.</p>
-
-  <h2>The Fit Told a Story</h2>
-  <p>Nineties shirts were boxy, long and generous. That was the style, and it is why a vintage L often fits closer to a modern M. Players wore them loose, and the silhouette became part of how we remember those teams.</p>
-  <p>That fit has come back into fashion, which is one reason vintage shirts are now worn as everyday clothing rather than only kept in collections.</p>
-
-  <h2>Sponsors Became Icons</h2>
-  <p>Some sponsor logos are now inseparable from the clubs that wore them. Certain combinations of club, kit and sponsor define an entire period of football, and seeing that logo instantly places you in a specific season.</p>
-  <p>Modern shirts rotate sponsors frequently, which makes them harder to remember. A nineties shirt often carried the same sponsor for years, and that consistency built the association.</p>
-
-  <h2>They Marked Unrepeatable Moments</h2>
-  <p>The nineties gave us Italia 90, USA 94 and France 98. Those tournaments are burned into the memory of anyone who watched them, and the shirts are the physical link back to those matches.</p>
-  <p>A Brazil 1998 home shirt is not just polyester. It carries the memory of that team, that tournament and that final. That is what separates a vintage football shirt from ordinary secondhand clothing.</p>
-
-  <h2>Scarcity Did the Rest</h2>
-  <p>Shirts from that era were produced in far smaller numbers than today's, and most were worn, washed and eventually thrown away. What survives in good condition is genuinely rare, and it gets rarer every year.</p>
-  <p>That combination of bold design, cultural memory and real scarcity is why nineties shirts remain the most sought after pieces in the collecting world.</p>
-  </div>
-</div>
-
 <div data-id="match-worn-guide" data-tag="Guide" data-date="June 2026" data-read="5 min read" data-orientation="portrait"
   data-image="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg"
   data-title="What Is a Match Worn Football Shirt?"
@@ -378,15 +350,18 @@ function renderPosts() {
     card.className = "post-card";
     card.setAttribute("data-post-id", p.id);
 
-    var imgWrap = document.createElement("div");
-    imgWrap.className = "post-img " + (p.orientation || "landscape");
-    var img = document.createElement("img");
-    img.src = p.image;
-    img.alt = p.tag;
-    img.loading = "lazy";
-    imgWrap.appendChild(img);
-
-    card.appendChild(imgWrap);
+    if (p.image) {
+      var imgWrap = document.createElement("div");
+      imgWrap.className = "post-img " + (p.orientation || "landscape");
+      var img = document.createElement("img");
+      img.src = p.image;
+      img.alt = p.tag;
+      img.loading = "lazy";
+      imgWrap.appendChild(img);
+      card.appendChild(imgWrap);
+    } else {
+      card.classList.add("no-image");
+    }
     card.innerHTML += "<div class='post-tag'>" + p.tag + "</div>" +
       "<div class='post-title'>" + p.title + "</div>" +
       "<div class='post-excerpt'>" + p.excerpt + "</div>" +
@@ -427,13 +402,15 @@ function showPost(id) {
   meta.textContent = post.date + " - Shirt Societe - " + post.readTime;
   content.appendChild(meta);
 
-  var imgWrap = document.createElement("div");
-  imgWrap.className = "detail-img " + (post.orientation || "landscape");
-  var img = document.createElement("img");
-  img.src = post.image;
-  img.alt = post.tag;
-  imgWrap.appendChild(img);
-  content.appendChild(imgWrap);
+  if (post.image) {
+    var imgWrap = document.createElement("div");
+    imgWrap.className = "detail-img " + (post.orientation || "landscape");
+    var img = document.createElement("img");
+    img.src = post.image;
+    img.alt = post.tag;
+    imgWrap.appendChild(img);
+    content.appendChild(imgWrap);
+  }
 
   var body = document.createElement("div");
   body.className = "post-body";
