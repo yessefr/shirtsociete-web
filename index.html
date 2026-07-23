@@ -81,10 +81,14 @@
   }
   </script>
   <title>Shirt Société | Vintage Football Shirts | Timeless, Original, Rare</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_fit,w_64,h_64,f_png,q_100,dpr_2.0/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=6">
-  <link rel="icon" type="image/png" sizes="180x180" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_fit,w_180,h_180,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=6">
-  <link rel="icon" type="image/png" sizes="512x512" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_fit,w_512,h_512,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=6">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_180,h_180,b_rgb:0a0905,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=6">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_crop,g_center,w_0.72,h_0.72/c_fill,w_16,h_16,f_png,q_100,e_sharpen:120/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=8">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_crop,g_center,w_0.72,h_0.72/c_fill,w_32,h_32,f_png,q_100,e_sharpen:100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=8">
+  <link rel="icon" type="image/png" sizes="48x48" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_crop,g_center,w_0.72,h_0.72/c_fill,w_48,h_48,f_png,q_100,e_sharpen:80/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=8">
+  <link rel="icon" type="image/png" sizes="96x96" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_crop,g_center,w_0.72,h_0.72/c_fill,w_96,h_96,f_png,q_100,e_sharpen:60/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=8">
+  <link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_crop,g_center,w_0.72,h_0.72/c_fill,w_192,h_192,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=8">
+  <link rel="icon" type="image/png" sizes="512x512" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_crop,g_center,w_0.72,h_0.72/c_fill,w_512,h_512,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=8">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_crop,g_center,w_0.72,h_0.72/c_fill,w_180,h_180,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=8">
   <meta name="theme-color" content="#0a0905">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -614,6 +618,132 @@
       .foot-cols { grid-template-columns: 1fr; gap: 26px; }
       .foot-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
     }
+    /* mobile fair cards — swipeable row */
+    .m-fair-row {
+      display: flex; gap: 10px; overflow-x: auto; margin-bottom: 26px;
+      padding-bottom: 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+    }
+    .m-fair-row::-webkit-scrollbar { display: none; }
+    .m-fair-card {
+      position: relative; flex: 0 0 62%; aspect-ratio: 4/5;
+      border-radius: 3px; overflow: hidden; scroll-snap-align: start;
+    }
+    .m-fair-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.62); }
+    .m-fair-info {
+      position: absolute; left: 14px; right: 14px; bottom: 14px;
+      border-left: 2px solid var(--gold); padding-left: 11px;
+    }
+    .m-fair-city {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: 22px; line-height: 1; color: var(--cream);
+      text-shadow: 0 2px 12px rgba(0,0,0,.9);
+    }
+    .m-fair-date {
+      font-size: 11px; color: rgba(245,240,232,.75); margin-top: 5px;
+    }
+    /* ═══ EXPANDING FAIR STRIPS (Our Story) ═══ */
+    .fair-strips {
+      display: flex;
+      gap: 4px;
+      height: 460px;
+      margin-bottom: 48px;
+      overflow: hidden;
+      border-radius: 3px;
+    }
+    .fair-strip {
+      position: relative;
+      flex: 1 1 0;
+      min-width: 0;
+      overflow: hidden;
+      cursor: pointer;
+      outline: none;
+      transition: flex-grow .55s cubic-bezier(.16,1,.3,1);
+    }
+    .fair-strip img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: grayscale(.35) brightness(.5);
+      transition: filter .55s ease, transform .8s cubic-bezier(.16,1,.3,1);
+      transform: scale(1.04);
+    }
+    .strip-shade {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(6,5,4,.15) 0%, rgba(6,5,4,.35) 45%, rgba(6,5,4,.85) 100%);
+      transition: opacity .5s ease;
+    }
+    /* vertical label, shown when the strip is closed */
+    .strip-vertical {
+      position: absolute; left: 50%; bottom: 26px;
+      transform: translateX(-50%) rotate(180deg);
+      writing-mode: vertical-rl;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 5px; text-transform: uppercase;
+      color: var(--cream);
+      white-space: nowrap;
+      text-shadow: 0 2px 12px rgba(0,0,0,.9);
+      transition: opacity .3s ease;
+      z-index: 2;
+    }
+    /* horizontal detail, shown when the strip opens */
+    .strip-open {
+      position: absolute; left: 30px; bottom: 30px; right: 30px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .45s ease .12s, transform .5s cubic-bezier(.16,1,.3,1) .12s;
+      z-index: 2;
+      border-left: 2px solid var(--gold);
+      padding-left: 16px;
+    }
+    .strip-country {
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 6px; font-weight: 600;
+    }
+    .strip-city {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: clamp(26px,2.6vw,40px); line-height: 1;
+      color: var(--cream); margin-bottom: 8px;
+      text-shadow: 0 2px 16px rgba(0,0,0,.8);
+      white-space: nowrap;
+    }
+    .strip-date {
+      font-size: 12px; color: rgba(245,240,232,.75);
+      letter-spacing: .5px; white-space: nowrap;
+    }
+    /* open state — on hover, on focus, or the default open one */
+    .fair-strips:hover .fair-strip.is-open { flex-grow: 1; }
+    .fair-strip.is-open,
+    .fair-strip:hover,
+    .fair-strip:focus-visible {
+      flex-grow: 3.2;
+    }
+    .fair-strips:hover .fair-strip:hover { flex-grow: 3.2; }
+    .fair-strip.is-open img,
+    .fair-strip:hover img,
+    .fair-strip:focus-visible img {
+      filter: grayscale(0) brightness(.72);
+      transform: scale(1);
+    }
+    .fair-strip.is-open .strip-vertical,
+    .fair-strip:hover .strip-vertical,
+    .fair-strip:focus-visible .strip-vertical { opacity: 0; }
+    .fair-strip.is-open .strip-open,
+    .fair-strip:hover .strip-open,
+    .fair-strip:focus-visible .strip-open {
+      opacity: 1; transform: translateY(0);
+    }
+    /* when hovering another strip, the default-open one collapses again */
+    .fair-strips:hover .fair-strip.is-open:not(:hover) { flex-grow: 1; }
+    .fair-strips:hover .fair-strip.is-open:not(:hover) img { filter: grayscale(.35) brightness(.5); transform: scale(1.04); }
+    .fair-strips:hover .fair-strip.is-open:not(:hover) .strip-vertical { opacity: 1; }
+    .fair-strips:hover .fair-strip.is-open:not(:hover) .strip-open { opacity: 0; transform: translateY(14px); }
+
+    @media (max-width: 900px) {
+      .fair-strips { height: 380px; }
+      .strip-open { left: 20px; right: 20px; bottom: 22px; padding-left: 12px; }
+    }
     .shirt-grid {
       display: grid; padding: 24px 48px 48px;
       gap: 16px;
@@ -1134,26 +1264,7 @@
   <div class="m-hero">
     <div class="m-hero-bg"></div>
     <!-- compact pills -->
-    <div style="position:absolute;top:16px;right:16px;z-index:3;display:flex;flex-direction:column;gap:8px">
-      <div onclick="mGoTo('about')" style="display:flex;align-items:center;gap:8px;background:rgba(10,9,5,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(200,169,80,.3);border-radius:100px;padding:6px 12px 6px 9px;cursor:pointer">
-        <div style="position:relative;width:6px;height:6px;flex-shrink:0">
-          <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
-        </div>
-        <div style="line-height:1.15">
-          <div style="font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600">Next Event</div>
-          <div style="font-size:10px;color:var(--white);font-weight:600">Leipzig · 4 Oct</div>
-        </div>
-      </div>
-      <div onclick="mShopNew()" style="display:flex;align-items:center;gap:8px;background:rgba(10,9,5,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(76,175,125,.35);border-radius:100px;padding:6px 12px 6px 9px;cursor:pointer">
-        <div style="position:relative;width:6px;height:6px;flex-shrink:0">
-          <div style="width:6px;height:6px;border-radius:50%;background:#4caf7d;position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
-        </div>
-        <div style="line-height:1.15">
-          <div style="font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:#4caf7d;font-weight:600">New Shirts Added</div>
-          <div style="font-size:10px;color:var(--white);font-weight:600">22 July · 17:00</div>
-        </div>
-      </div>
-    </div>
+    
     <div class="m-hero-eyebrow">Est. 2025 · Harderwijk, NL</div>
     <h1 class="m-hero-title">Vintage<br>football<br><span>history.</span></h1>
     <p class="m-hero-sub">Authenticity. Heritage. Curated Vintage &amp; Match Worn Football Shirts</p>
@@ -1197,42 +1308,11 @@
   </div>
 
   <!-- Drop banner (mobile) -->
-  <div style="background:linear-gradient(135deg,rgba(200,169,80,.1),rgba(200,169,80,.03));border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:28px 20px;text-align:center">
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px">
-      <div style="position:relative;width:10px;height:10px;flex-shrink:0">
-        <div style="width:10px;height:10px;border-radius:50%;background:#4caf7d;position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
-        <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(76,175,125,.25);animation:pulseRing 1.5s ease-in-out infinite"></div>
-      </div>
-      <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600">New Shirts Added</div>
-    </div>
-    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);margin-bottom:6px">New Shirts Added!</div>
-    <div style="font-size:11px;color:var(--text-muted);margin-bottom:18px;line-height:1.6">Wednesday 22 July 2026 · 17:00<br>Vintage National &amp; Club Shirts · 80s, 90s &amp; 00s</div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:18px">
-      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:10px 14px;min-width:56px">
-        <div id="m-drop-days" style="font-size:26px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
-        <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px">Days</div>
-      </div>
-      <div style="font-size:20px;color:rgba(200,169,80,.2);padding-bottom:10px">:</div>
-      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:10px 14px;min-width:56px">
-        <div id="m-drop-hours" style="font-size:26px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
-        <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px">Hours</div>
-      </div>
-      <div style="font-size:20px;color:rgba(200,169,80,.2);padding-bottom:10px">:</div>
-      <div style="text-align:center;background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:4px;padding:10px 14px;min-width:56px">
-        <div id="m-drop-mins" style="font-size:26px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
-        <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px">Mins</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:6px;justify-content:center">
-      <input type="email" id="m-drop-email-input" placeholder="your@email.com" style="background:rgba(0,0,0,.3);border:1px solid rgba(200,169,80,.2);border-radius:2px;padding:9px 12px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;flex:1;max-width:180px">
-      <button onclick="submitDropEmailMobile()" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.5px">Notify</button>
-    </div>
-    <div id="m-drop-email-confirm" style="display:none;font-size:12px;color:var(--gold);font-weight:500;margin-top:10px">✓ You are on the list!</div>
-  </div>
+  
   <div class="m-section-label">Featured Pieces</div>
   <div id="m-featured-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
   <div class="m-divider"></div>
-  <div class="m-section-label">Match Worn</div>
+  <div class="m-section-label">Match Worn/Issued</div>
   <div id="m-matchworn-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
   <div class="m-divider"></div>
   <div class="m-section-label">National Teams</div>
@@ -1251,7 +1331,7 @@
   <div class="m-filters">
     <button class="m-filter-btn active" onclick="mSetFilter('all',this)" id="m-filter-all">All</button>
     <button class="m-filter-btn" onclick="mSetFilter('new',this)" id="m-filter-new" style="border-color:rgba(76,175,125,.45)">New</button>
-    <button class="m-filter-btn" onclick="mSetFilter('match_worn',this)" id="m-filter-mw">Match Worn</button>
+    <button class="m-filter-btn" onclick="mSetFilter('match_worn',this)" id="m-filter-mw">Match Worn/Issued</button>
     <button class="m-filter-btn" onclick="mSetFilter('clubs',this)" id="m-filter-clubs">Clubs</button>
     <button class="m-filter-btn" onclick="mSetFilter('national',this)" id="m-filter-national">National</button>
   </div>
@@ -1403,7 +1483,7 @@
     Cart
   </div>
   <div class="tab" onclick="mGoTo('wishlist')" id="m-tab-wishlist">
-    <svg id="wishlist-tab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:12px;height:12px;opacity:0.2;transition:all 0.3s"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    <svg id="wishlist-tab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="transition:all 0.3s"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
     <span class="cart-badge" id="wishlist-badge" style="right:calc(50% - 20px)">0</span>
     Saved
   </div>
@@ -1458,7 +1538,7 @@
           <circle cx="12" cy="9.5" r="0.6" fill="currentColor" stroke="none"/>
           <circle cx="16" cy="11" r="0.6" fill="currentColor" stroke="none"/>
         </svg>
-        Match Worn
+        Match Worn/Issued
       </div>
       <div class="nav-item" onclick="dGoTo('shop');dSetFilter('clubs')" id="d-nav-clubs">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -1485,6 +1565,10 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
         Our Story
       </div>
+      <a class="nav-item" href="/faq.html" style="text-decoration:none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 015.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12" y2="17"/></svg>
+        FAQ
+      </a>
     </nav>
     <div class="sidebar-footer">
       <div style="margin-bottom:7px;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase">Contact</div>
@@ -1679,7 +1763,7 @@
     <div id="mw-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
       <div>
         <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Authentic &amp; Verified</div>
-        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Match Worn</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Match Worn/Issued</div>
       </div>
       <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
     </div>
@@ -1756,12 +1840,13 @@
       </div>
       <div class="foot-col">
         <div class="foot-head">Categories</div>
-        <a onclick="dGoTo('shop');dSetFilter('match_worn')">Match worn</a>
+        <a onclick="dGoTo('shop');dSetFilter('match_worn')">Match Worn/Issued</a>
         <a onclick="dGoTo('shop');dSetFilter('clubs')">Clubs</a>
         <a onclick="dGoTo('shop');dSetFilter('national')">National teams</a>
       </div>
       <div class="foot-col">
         <div class="foot-head">Help</div>
+        <a href="/faq.html">FAQ</a>
         <a href="/shipping.html">Shipping policy</a>
         <a href="/refund.html">Refund policy</a>
         <a href="/terms.html">Terms of service</a>
@@ -1813,7 +1898,7 @@
         </div>
         <button class="filter-btn active" onclick="dSetFilter('all',this)" id="d-filter-all">All</button>
         <button class="filter-btn" onclick="dSetFilter('new',this)" id="d-filter-new" style="border-color:rgba(76,175,125,.4)">New</button>
-        <button class="filter-btn" onclick="dSetFilter('match_worn',this)" id="d-filter-mw">Match Worn</button>
+        <button class="filter-btn" onclick="dSetFilter('match_worn',this)" id="d-filter-mw">Match Worn/Issued</button>
         <button class="filter-btn" onclick="dSetFilter('clubs',this)" id="d-filter-clubs">Clubs</button>
         <button class="filter-btn" onclick="dSetFilter('national',this)" id="d-filter-national">National</button>
       </div>
@@ -2046,14 +2131,51 @@
         <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500">On the Road</div>
         <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;margin-bottom:6px">At the Fairs</h2>
         <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:32px">Vintage Fußballbörse · Germany</div>
-        <!-- Photo collage - 3 equal photos -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg"
-            style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px" alt="Shirt Société at the fair">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg"
-            style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px" alt="Frankfurt Vintage Fußballbörse">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg"
-            style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px" alt="Düsseldorf">
+        <!-- Expanding fair strips (chronological) -->
+        <div class="fair-strips">
+          <div class="fair-strip" tabindex="0">
+            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg" alt="Hamburg Vintage Fußballbörse" loading="lazy">
+            <div class="strip-shade"></div>
+            <div class="strip-vertical">Hamburg</div>
+            <div class="strip-open">
+              <div class="strip-country">Germany</div>
+              <div class="strip-city">Hamburg</div>
+              <div class="strip-date">Vintage Fußballbörse · 04.02.2026</div>
+            </div>
+          </div>
+
+          <div class="fair-strip" tabindex="0">
+            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="Cologne Vintage Fußballbörse" loading="lazy">
+            <div class="strip-shade"></div>
+            <div class="strip-vertical">Cologne</div>
+            <div class="strip-open">
+              <div class="strip-country">Germany</div>
+              <div class="strip-city">Cologne</div>
+              <div class="strip-date">Vintage Fußballbörse · 31.05.2026</div>
+            </div>
+          </div>
+
+          <div class="fair-strip" tabindex="0">
+            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" alt="Düsseldorf Vintage Fußballbörse" loading="lazy">
+            <div class="strip-shade"></div>
+            <div class="strip-vertical">Düsseldorf</div>
+            <div class="strip-open">
+              <div class="strip-country">Germany</div>
+              <div class="strip-city">Düsseldorf</div>
+              <div class="strip-date">Vintage Fußballbörse · 13.06.2026</div>
+            </div>
+          </div>
+
+          <div class="fair-strip is-open" tabindex="0">
+            <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg" alt="Frankfurt Vintage Fußballbörse" loading="lazy">
+            <div class="strip-shade"></div>
+            <div class="strip-vertical">Frankfurt</div>
+            <div class="strip-open">
+              <div class="strip-country">Germany</div>
+              <div class="strip-city">Frankfurt</div>
+              <div class="strip-date">Vintage Fußballbörse · 04.07.2026</div>
+            </div>
+          </div>
         </div>
 
         <!-- Horizontal Timeline -->
@@ -2301,6 +2423,91 @@
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
       @shirtsociete on Instagram
     </a>
+
+    <!-- At the Fairs -->
+    <div style="margin-top:38px;padding-top:30px;border-top:1px solid #1e1c17">
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);margin-bottom:5px">At the Fairs</div>
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:18px">Vintage Fußballbörse · Germany</div>
+      <p style="font-size:13.5px;line-height:1.85;color:#b0a898;margin-bottom:14px">
+        You will find us at the vintage football fairs across Germany, where collectors and dealers from all over Europe come together. It is where the rarest pieces change hands and where the stories behind them are told.
+      </p>
+      <p style="font-size:13.5px;line-height:1.85;color:#b0a898;margin-bottom:22px">
+        So far we have exhibited in Hamburg, Cologne, Düsseldorf and Frankfurt. Leipzig is next.
+      </p>
+
+      <div class="m-fair-row">
+        <div class="m-fair-card">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg" alt="Hamburg Vintage Fußballbörse" loading="lazy">
+          <div class="m-fair-info">
+            <div class="m-fair-city">Hamburg</div>
+            <div class="m-fair-date">04.02.2026</div>
+          </div>
+        </div>
+        <div class="m-fair-card">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="Cologne Vintage Fußballbörse" loading="lazy">
+          <div class="m-fair-info">
+            <div class="m-fair-city">Cologne</div>
+            <div class="m-fair-date">31.05.2026</div>
+          </div>
+        </div>
+        <div class="m-fair-card">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" alt="Düsseldorf Vintage Fußballbörse" loading="lazy">
+          <div class="m-fair-info">
+            <div class="m-fair-city">Düsseldorf</div>
+            <div class="m-fair-date">13.06.2026</div>
+          </div>
+        </div>
+        <div class="m-fair-card">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg" alt="Frankfurt Vintage Fußballbörse" loading="lazy">
+          <div class="m-fair-info">
+            <div class="m-fair-city">Frankfurt</div>
+            <div class="m-fair-date">04.07.2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- collapsible explainer -->
+      <div style="background:#111009;border:1px solid #1e1c17;border-left:3px solid var(--gold);border-radius:2px;padding:16px 18px;margin-bottom:26px">
+        <div onclick="var b=document.getElementById('m-vfb-body');var ic=document.getElementById('m-vfb-ic');var open=b.style.display!=='none';b.style.display=open?'none':'block';ic.style.transform=open?'rotate(0deg)':'rotate(45deg)';" style="display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer">
+          <div style="font-size:13.5px;font-weight:600;color:var(--white)">What is Vintage Fußballbörse?</div>
+          <div id="m-vfb-ic" style="flex-shrink:0;width:20px;height:20px;border-radius:50%;border:1px solid rgba(200,169,80,.5);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-style:italic;font-family:'Playfair Display',serif;transition:transform .25s">i</div>
+        </div>
+        <p id="m-vfb-body" style="display:none;font-size:13px;color:#b0a898;line-height:1.8;margin-top:12px">
+          Vintage Fußballbörse is Germany's most established vintage football fair, held several times a year across major cities. Each edition brings together <span style="color:var(--gold);font-weight:600">over 1,000 collectors</span> from across Europe. Rare match worn shirts, vintage originals and club memorabilia change hands, and stories are shared. Shirt Société attends as a regular exhibitor.
+        </p>
+      </div>
+
+      <!-- timeline -->
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">The Journey</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:14px 16px">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">04.02.2026 · 🇩🇪</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white)">Hamburg</div>
+          <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
+        </div>
+        <div style="background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:14px 16px">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">31.05.2026 · 🇩🇪</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white)">Cologne</div>
+          <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
+        </div>
+        <div style="background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:14px 16px">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">13.06.2026 · 🇩🇪</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white)">Düsseldorf</div>
+          <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
+        </div>
+        <div style="background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:14px 16px">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">04.07.2026 · 🇩🇪</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white)">Frankfurt</div>
+          <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
+        </div>
+        <div style="background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:14px 16px;opacity:.6">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">04.10.2026 · 🇩🇪</div>
+          <div style="font-size:17px;font-weight:700;color:var(--white)">Leipzig</div>
+          <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
+          <a href="https://www.instagram.com/p/Da-wkVJjOm1/?img_index=1" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-size:11px;font-style:italic;letter-spacing:1px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.4);padding-bottom:2px">to be continued →</a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2477,7 +2684,16 @@
     renderDesktopRow('d-clubs-row', clubs);
     setTimeout(initRowScrollers, 150);
     setTimeout(initRowScrollers, 600);
+    // if the visitor arrived on a shirt link, open that shirt
+    setTimeout(function() { if (typeof openShirtFromUrl === 'function') openShirtFromUrl(); }, 250);
   }
+
+  window.addEventListener('popstate', function() {
+    var params = new URLSearchParams(window.location.search);
+    if (!params.get('shirt')) {
+      if (window.innerWidth >= 768) dGoTo('shop'); else mGoTo('shop');
+    }
+  });
 
   window.addEventListener('load', function() { setTimeout(initRowScrollers, 800); });
 
@@ -2625,7 +2841,7 @@
     var cat = '';
     if (s.category === 'national') cat = 'National Team';
     else if (s.category === 'clubs') cat = 'Club';
-    else if (s.category === 'match_worn') cat = 'Match Worn';
+    else if (s.category === 'match_worn') cat = 'Match Worn/Issued';
     var yr = s.season || '';
     return (cat && yr) ? (cat + ' · ' + yr) : (cat || yr || '');
   }
@@ -2879,12 +3095,67 @@
     } catch (e) {}
   }
 
+  // ── PER-SHIRT URLs (shareable + indexable by Google) ──
+  function shirtSlug(s) {
+    return (s.title || 'shirt').toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+
+  function shirtUrl(s) {
+    return 'https://shirtsociete.com/?shirt=' + s.id + '&name=' + shirtSlug(s);
+  }
+
+  // put the shirt in the address bar so it can be copied, shared and indexed
+  function pushShirtUrl(shirt) {
+    try {
+      var url = '/?shirt=' + shirt.id + '&name=' + shirtSlug(shirt);
+      history.pushState({ shirt: shirt.id }, '', url);
+      document.title = shirt.title + ' | Shirt Société';
+      var md = document.querySelector('meta[name="description"]');
+      if (md) md.setAttribute('content',
+        shirt.title + (shirt.club ? ' — ' + shirt.club : '') +
+        (shirt.size ? ', size ' + shirt.size : '') +
+        '. Original vintage football shirt at Shirt Société.');
+      // keep the social preview in step
+      var ogt = document.querySelector('meta[property="og:title"]');
+      if (ogt) ogt.setAttribute('content', shirt.title + ' | Shirt Société');
+      var ogi = document.querySelector('meta[property="og:image"]');
+      if (ogi && getImg(shirt)) ogi.setAttribute('content', getImg(shirt));
+      var ogu = document.querySelector('meta[property="og:url"]');
+      if (ogu) ogu.setAttribute('content', shirtUrl(shirt));
+    } catch (e) {}
+  }
+
+  function restoreDefaultMeta() {
+    try {
+      history.pushState({}, '', '/');
+      document.title = 'Shirt Société | Vintage Football Shirts | Timeless, Original, Rare';
+    } catch (e) {}
+  }
+
+  // if someone lands on a shirt URL, open that shirt straight away
+  function openShirtFromUrl() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var id = params.get('shirt');
+      if (!id) return false;
+      var shirt = allShirts.find(function(s) { return String(s.id) === String(id); });
+      if (!shirt) return false;
+      if (window.innerWidth >= 768) { dGoTo('shop'); openDetail(shirt.id, 'd'); }
+      else { mGoTo('shop'); openDetail(shirt.id, 'm'); }
+      return true;
+    } catch (e) { return false; }
+  }
+
   function openDetail(id, ctx) {
     const shirt = allShirts.find(s => s.id === id);
     if (!shirt) return;
     currentShirt = shirt;
     const images = shirt.images && shirt.images.length ? shirt.images : [getImg(shirt)];
     injectProductSchema(shirt, images);
+    pushShirtUrl(shirt);
 
     if (ctx === 'm') {
       currentImages = images;
@@ -2976,7 +3247,7 @@
 
   function buildSpecs(shirt) {
     var catName = shirt.category === 'national' ? 'National Team'
-                : shirt.category === 'match_worn' ? 'Match Worn'
+                : shirt.category === 'match_worn' ? 'Match Worn/Issued'
                 : shirt.category === 'clubs' ? 'Club'
                 : (shirt.category || '').replace('_',' ');
     var rows = [
