@@ -47,7 +47,8 @@
   <meta property="og:description" content="Curated vintage and match worn football shirts from the golden era of European football. Sourced across Europe by a true collector.">
   <meta property="og:image" content="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png">
   <meta property="og:locale" content="en_GB">
-  <meta property="og:site_name" content="Shirt Société">
+  <meta property="og:site_name" content="ShirtSociété">
+  <meta name="application-name" content="ShirtSociété">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
@@ -555,6 +556,64 @@
     }
     .acc-body p:last-child { margin-bottom: 0; }
     .acc-body a { color: var(--gold); }
+    /* ═══ SITE FOOTER ═══ */
+    #site-footer {
+      background: #0d0b08;
+      border-top: 1px solid #1a1815;
+      padding: 56px 52px 28px;
+      margin-top: 40px;
+    }
+    .foot-inner { max-width: 1200px; margin: 0 auto; }
+    .foot-cols {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      padding-bottom: 40px;
+    }
+    .foot-head {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700;
+      font-size: 17px; color: var(--cream); margin-bottom: 16px;
+    }
+    .foot-col a {
+      display: block; color: rgba(245,240,232,.5);
+      font-size: 12.5px; line-height: 2.1;
+      text-decoration: none; cursor: pointer; transition: color .2s;
+    }
+    .foot-col a:hover { color: var(--gold); }
+    .foot-note {
+      margin-top: 12px; font-size: 11px; line-height: 1.7;
+      color: rgba(245,240,232,.3);
+    }
+    .foot-pay {
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      padding: 24px 0; border-top: 1px solid #1a1815;
+    }
+    .foot-pay-label {
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(245,240,232,.3);
+    }
+    .foot-pay-icons { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pay-chip {
+      font-size: 9.5px; letter-spacing: 1px; font-weight: 600;
+      color: rgba(245,240,232,.55);
+      background: #16140f; border: 1px solid #221f18;
+      padding: 7px 12px; border-radius: 3px; white-space: nowrap;
+    }
+    .foot-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+      padding-top: 22px; border-top: 1px solid #1a1815;
+      font-size: 11px; color: rgba(245,240,232,.32);
+    }
+    .foot-tagline { font-style: italic; letter-spacing: 1px; }
+    @media (max-width: 900px) {
+      #site-footer { padding: 44px 24px 24px; }
+      .foot-cols { grid-template-columns: 1fr 1fr; gap: 30px; }
+    }
+    @media (max-width: 520px) {
+      .foot-cols { grid-template-columns: 1fr; gap: 26px; }
+      .foot-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
     .shirt-grid {
       display: grid; padding: 24px 48px 48px;
       gap: 16px;
@@ -638,7 +697,7 @@
     }
     #zoom-lightbox.open { display: flex; }
     #zoom-lightbox-img {
-      max-width: 92vw; max-height: 88vh;
+      max-width: 96vw; max-height: 94vh;
       object-fit: contain;
       transition: transform .25s ease-out;
       transform-origin: center center;
@@ -1017,6 +1076,15 @@
   </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "ShirtSociété",
+  "alternateName": ["Shirt Société", "ShirtSociete", "Shirt Societe"],
+  "url": "https://shirtsociete.com/"
+}
+</script>
 </head>
 <body>
 
@@ -1352,7 +1420,7 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-logo" onclick="dGoTo('home')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/f_auto,q_auto:best,w_400,dpr_2.0/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png" alt="Shirt Société">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=2" alt="Shirt Société">
     </div>
     <nav style="margin-top:8px">
       <div class="nav-section-label">Navigation</div>
@@ -1538,34 +1606,6 @@
   </section>
 </div>
 
-<!-- SCENE 4: SHIRT SWEEP -->
-<div id="cin-sweep-pin" style="position:relative;height:600vh">
-  <section id="cin-s-sweep" style="position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--black)">
-
-    <div id="swbg0" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
-    <div id="swbg1" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
-    <div id="swbg2" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,transparent 0%,transparent 28%,rgba(10,9,5,.8) 100%),linear-gradient(180deg,rgba(10,9,5,.8) 0%,transparent 18%,transparent 78%,rgba(10,9,5,.95) 100%);pointer-events:none;z-index:6"></div>
-
-    <!-- 4 shirts stacked, GSAP moves each one -->
-    <div id="sw0" class="sw-shirt" onclick="dShopCategory('clubs')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg">
-      <div class="sw-info"><div class="sw-name">Club Classics</div></div>
-    </div>
-    <div id="sw1" class="sw-shirt" onclick="dShopCategory('national')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg">
-      <div class="sw-info"><div class="sw-name">National Teams</div></div>
-    </div>
-    <div id="sw2" class="sw-shirt" onclick="dGoTo('about')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg">
-      <div class="sw-info"><div class="sw-cat-lg">Our Story</div><div class="sw-name">Who We Are</div></div>
-    </div>
-    <div id="sw-prog" style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,169,80,.06);z-index:8">
-      <div id="sw-fill" style="height:100%;background:var(--gold);width:0"></div>
-    </div>
-  </section>
-</div>
-
 <!-- SCENE 5: NEXT EVENT BANNER -->
 <div id="cin-event-banner" style="opacity:0;transform:translateY(40px)">
   <div style="position:relative;border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:34px 52px;overflow:hidden">
@@ -1672,6 +1712,90 @@
     <div id="d-clubs-row" class="shirt-row"></div>
   </div>
 </div>
+
+<!-- SCENE 4: SHIRT SWEEP -->
+<div id="cin-sweep-pin" style="position:relative;height:600vh">
+  <section id="cin-s-sweep" style="position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--black)">
+
+    <div id="swbg0" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+    <div id="swbg1" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+    <div id="swbg2" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,transparent 0%,transparent 28%,rgba(10,9,5,.8) 100%),linear-gradient(180deg,rgba(10,9,5,.8) 0%,transparent 18%,transparent 78%,rgba(10,9,5,.95) 100%);pointer-events:none;z-index:6"></div>
+
+    <!-- 4 shirts stacked, GSAP moves each one -->
+    <div id="sw0" class="sw-shirt" onclick="dShopCategory('clubs')">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg">
+      <div class="sw-info"><div class="sw-name">Club Classics</div></div>
+    </div>
+    <div id="sw1" class="sw-shirt" onclick="dShopCategory('national')">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg">
+      <div class="sw-info"><div class="sw-name">National Teams</div></div>
+    </div>
+    <div id="sw2" class="sw-shirt" onclick="dGoTo('about')">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg">
+      <div class="sw-info"><div class="sw-cat-lg">Our Story</div><div class="sw-name">Who We Are</div></div>
+    </div>
+    <div id="sw-prog" style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,169,80,.06);z-index:8">
+      <div id="sw-fill" style="height:100%;background:var(--gold);width:0"></div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ═══ SITE FOOTER ═══ -->
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-cols">
+      <div class="foot-col">
+        <div class="foot-head">Quick Links</div>
+        <a onclick="dGoTo('shop')">Shop all shirts</a>
+        <a onclick="dGoTo('about')">Our story</a>
+        <a href="/blog.html">Blog</a>
+        <a onclick="dGoTo('wishlist')">Saved</a>
+        <a onclick="dGoTo('profile')">My wardrobe</a>
+      </div>
+      <div class="foot-col">
+        <div class="foot-head">Categories</div>
+        <a onclick="dGoTo('shop');dSetFilter('match_worn')">Match worn</a>
+        <a onclick="dGoTo('shop');dSetFilter('clubs')">Clubs</a>
+        <a onclick="dGoTo('shop');dSetFilter('national')">National teams</a>
+      </div>
+      <div class="foot-col">
+        <div class="foot-head">Help</div>
+        <a href="/shipping.html">Shipping policy</a>
+        <a href="/refund.html">Refund policy</a>
+        <a href="/terms.html">Terms of service</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="#" onclick="ssOpenCookieSettings();return false;">Cookie preferences</a>
+      </div>
+      <div class="foot-col">
+        <div class="foot-head">Contact</div>
+        <a href="#" onclick="openContactModal();return false;">info@shirtsociete.com</a>
+        <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a>
+        <div class="foot-note">Harderwijk, Netherlands<br>KvK 97828408</div>
+      </div>
+    </div>
+
+    <div class="foot-pay">
+      <span class="foot-pay-label">We accept</span>
+      <div class="foot-pay-icons">
+        <span class="pay-chip">iDEAL</span>
+        <span class="pay-chip">Bancontact</span>
+        <span class="pay-chip">VISA</span>
+        <span class="pay-chip">Mastercard</span>
+        <span class="pay-chip">Maestro</span>
+        <span class="pay-chip">PayPal</span>
+        <span class="pay-chip">Klarna</span>
+        <span class="pay-chip">Apple&nbsp;Pay</span>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>&copy; 2026 Shirt Société</span>
+      <span class="foot-tagline">Timeless. Original. Rare.</span>
+    </div>
+  </div>
+</footer>
 
 </div><!-- end cin-home -->
     </div>
@@ -2919,8 +3043,15 @@
   function toggleZoomLevel(e) {
     if (e) e.stopPropagation();
     var img = document.getElementById('zoom-lightbox-img');
+    if (!img) return;
     if (zoomLevel === 1) {
-      zoomLevel = 2.6;
+      // Fill the screen with the WHOLE shirt in one click: work out how much the
+      // image can grow before it hits the edge of the window, instead of a fixed zoom.
+      var r = img.getBoundingClientRect();
+      var fitScale = Math.min(window.innerWidth / r.width, window.innerHeight / r.height);
+      // a little breathing room so nothing touches the very edge
+      zoomLevel = Math.max(1.35, Math.min(fitScale * 0.97, 3.2));
+      zoomPanX = 0; zoomPanY = 0;
       img.classList.add('zoomed');
     } else {
       zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
