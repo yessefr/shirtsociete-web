@@ -649,6 +649,7 @@
     .fair-strip {
       position: relative;
       flex: 1 1 0;
+      cursor: pointer;
       min-width: 0;
       overflow: hidden;
       cursor: pointer;
@@ -703,6 +704,12 @@
       text-shadow: 0 2px 16px rgba(0,0,0,.8);
       white-space: nowrap;
     }
+    .strip-cue {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 12px;
+      font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--gold); opacity: .85;
+    }
     .strip-date {
       font-size: 12px; color: rgba(245,240,232,.75);
       letter-spacing: .5px; white-space: nowrap;
@@ -731,29 +738,33 @@
       .fair-strips { height: 420px; }
       .strip-open { left: 20px; right: 20px; bottom: 22px; padding-left: 12px; }
     }
-    /* ═══ NEW SHIRTS ADDED — video banner ═══ */
+    /* ═══ NEW SHIRTS ADDED — video section ═══ */
     #cin-video-banner {
       position: relative;
-      height: 420px;
-      margin: 20px 48px 8px;
-      border-radius: 3px;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      align-items: center;
+      gap: 44px;
+      margin: 28px 48px 16px;
+      padding: 0;
+    }
+    .vb-video-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
       overflow: hidden;
-      border: 1px solid rgba(200,169,80,.18);
+      border-radius: 3px;
+      background: #0d0b08;
+      border: 1px solid rgba(200,169,80,.15);
     }
     #new-shirts-video {
-      position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
-      filter: brightness(.55);
-    }
-    .vb-shade {
-      position: absolute; inset: 0;
-      background: linear-gradient(100deg, rgba(6,5,4,.88) 0%, rgba(6,5,4,.55) 45%, rgba(6,5,4,.15) 100%);
+      display: block;
+      filter: none;
     }
     .vb-content {
-      position: absolute; left: 52px; top: 50%;
-      transform: translateY(-50%);
-      max-width: 60%;
+      max-width: 460px;
     }
     .vb-eyebrow {
       display: inline-flex; align-items: center; gap: 9px;
@@ -767,9 +778,8 @@
     }
     .vb-title {
       font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
-      font-size: clamp(30px,4vw,54px); line-height: 1;
-      color: var(--cream); margin-bottom: 12px;
-      text-shadow: 0 2px 24px rgba(0,0,0,.8);
+      font-size: clamp(30px,3.6vw,50px); line-height: 1.02;
+      color: var(--cream); margin-bottom: 14px;
     }
     .vb-sub {
       font-size: 14px; color: rgba(245,240,232,.7);
@@ -785,9 +795,10 @@
       transition: transform .2s, box-shadow .2s;
     }
     .vb-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,169,80,.3); }
-    @media (max-width: 900px) {
-      #cin-video-banner { height: 340px; margin: 16px 20px 8px; }
-      .vb-content { left: 24px; right: 24px; max-width: none; }
+    @media (max-width: 1100px) {
+      #cin-video-banner { grid-template-columns: 1fr; gap: 26px; margin: 24px 24px 12px; }
+      .vb-video-wrap { max-width: 520px; }
+      .vb-content { max-width: none; }
       .vb-sub { font-size: 13px; margin-bottom: 20px; }
     }
     .shirt-grid {
@@ -1793,9 +1804,10 @@
 
 <!-- NEW SHIRTS ADDED — video banner -->
 <div id="cin-video-banner">
-  <video id="new-shirts-video" autoplay muted loop playsinline preload="metadata"
-    src="https://res.cloudinary.com/dinpfdojh/video/upload/v1784817412/animo-column-drift-1080p_fgjag8.mp4"></video>
-  <div class="vb-shade"></div>
+  <div class="vb-video-wrap">
+    <video id="new-shirts-video" autoplay muted loop playsinline preload="auto"
+      src="https://res.cloudinary.com/dinpfdojh/video/upload/v1784817412/animo-column-drift-1080p_fgjag8.mp4"></video>
+  </div>
   <div class="vb-content">
     <div class="vb-eyebrow">
       <span class="vb-dot"></span>
@@ -2199,7 +2211,7 @@
         <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:32px">Vintage Fußballbörse · Germany</div>
         <!-- Expanding fair strips (chronological) -->
         <div class="fair-strips">
-          <div class="fair-strip" tabindex="0">
+          <div class="fair-strip" tabindex="0" onclick="openEventGallery('hamburg')">
             <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg" alt="Hamburg Vintage Fußballbörse" loading="lazy">
             <div class="strip-shade"></div>
             <div class="strip-vertical">Hamburg</div>
@@ -2207,10 +2219,11 @@
               <div class="strip-country">Germany</div>
               <div class="strip-city">Hamburg</div>
               <div class="strip-date">Vintage Fußballbörse · 04.02.2026</div>
+              <div class="strip-cue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>View impressions</div>
             </div>
           </div>
 
-          <div class="fair-strip" tabindex="0">
+          <div class="fair-strip" tabindex="0" onclick="openEventGallery('cologne')">
             <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="Cologne Vintage Fußballbörse" loading="lazy">
             <div class="strip-shade"></div>
             <div class="strip-vertical">Cologne</div>
@@ -2218,10 +2231,11 @@
               <div class="strip-country">Germany</div>
               <div class="strip-city">Cologne</div>
               <div class="strip-date">Vintage Fußballbörse · 31.05.2026</div>
+              <div class="strip-cue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>View impressions</div>
             </div>
           </div>
 
-          <div class="fair-strip" tabindex="0">
+          <div class="fair-strip" tabindex="0" onclick="openEventGallery('dusseldorf')">
             <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" alt="Düsseldorf Vintage Fußballbörse" loading="lazy">
             <div class="strip-shade"></div>
             <div class="strip-vertical">Düsseldorf</div>
@@ -2229,10 +2243,11 @@
               <div class="strip-country">Germany</div>
               <div class="strip-city">Düsseldorf</div>
               <div class="strip-date">Vintage Fußballbörse · 13.06.2026</div>
+              <div class="strip-cue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>View impressions</div>
             </div>
           </div>
 
-          <div class="fair-strip" tabindex="0">
+          <div class="fair-strip" tabindex="0" onclick="openEventGallery('frankfurt')">
             <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg" alt="Frankfurt Vintage Fußballbörse" loading="lazy">
             <div class="strip-shade"></div>
             <div class="strip-vertical">Frankfurt</div>
@@ -2240,6 +2255,7 @@
               <div class="strip-country">Germany</div>
               <div class="strip-city">Frankfurt</div>
               <div class="strip-date">Vintage Fußballbörse · 04.07.2026</div>
+              <div class="strip-cue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>View impressions</div>
             </div>
           </div>
         </div>
@@ -2289,64 +2305,40 @@
               <!-- Hamburg -->
               <div style="text-align:center">
                 <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px;cursor:pointer;transition:border-color 0.2s"
-                  onmouseover="this.style.borderColor='#4caf7d'" onmouseout="this.style.borderColor='#252320'"
-                  onclick="openEventGallery('hamburg')">
+                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">04.02 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Hamburg</div>
-                  <div style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
-                  <div style="font-size:11px;color:#4caf7d;display:flex;align-items:center;justify-content:center;gap:4px;opacity:0.8">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                    View impressions
-                  </div>
+                  <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
                 </div>
               </div>
 
               <!-- Cologne -->
               <div style="text-align:center">
                 <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px;cursor:pointer;transition:border-color 0.2s"
-                  onmouseover="this.style.borderColor='#4caf7d'" onmouseout="this.style.borderColor='#252320'"
-                  onclick="openEventGallery('cologne')">
+                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">31.05 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Cologne</div>
-                  <div style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
-                  <div style="font-size:11px;color:#4caf7d;display:flex;align-items:center;justify-content:center;gap:4px;opacity:0.8">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                    View impressions
-                  </div>
+                  <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
                 </div>
               </div>
 
               <!-- Düsseldorf -->
               <div style="text-align:center">
                 <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px;cursor:pointer;transition:border-color 0.2s"
-                  onmouseover="this.style.borderColor='#4caf7d'" onmouseout="this.style.borderColor='#252320'"
-                  onclick="openEventGallery('dusseldorf')">
+                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">13.06 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Düsseldorf</div>
-                  <div style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Pop-up event</div>
-                  <div style="font-size:11px;color:#4caf7d;display:flex;align-items:center;justify-content:center;gap:4px;opacity:0.8">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                    View impressions
-                  </div>
+                  <div style="font-size:13px;color:var(--text-muted)">Pop-up event</div>
                 </div>
               </div>
 
               <!-- Frankfurt -->
               <div style="text-align:center">
                 <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px;cursor:pointer;transition:border-color 0.2s"
-                  onmouseover="this.style.borderColor='#4caf7d'" onmouseout="this.style.borderColor='#252320'"
-                  onclick="openEventGallery('frankfurt')">
+                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">04.07 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Frankfurt</div>
-                  <div style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Vintage Fußballbörse</div>
-                  <div style="font-size:11px;color:#4caf7d;display:flex;align-items:center;justify-content:center;gap:4px;opacity:0.8">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                    View impressions
-                  </div>
+                  <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
                 </div>
               </div>
 
@@ -2503,28 +2495,28 @@
       </p>
 
       <div class="m-fair-row">
-        <div class="m-fair-card">
+        <div class="m-fair-card" onclick="openEventGallery('hamburg')">
           <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg" alt="Hamburg Vintage Fußballbörse" loading="lazy">
           <div class="m-fair-info">
             <div class="m-fair-city">Hamburg</div>
             <div class="m-fair-date">04.02.2026</div>
           </div>
         </div>
-        <div class="m-fair-card">
+        <div class="m-fair-card" onclick="openEventGallery('cologne')">
           <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="Cologne Vintage Fußballbörse" loading="lazy">
           <div class="m-fair-info">
             <div class="m-fair-city">Cologne</div>
             <div class="m-fair-date">31.05.2026</div>
           </div>
         </div>
-        <div class="m-fair-card">
+        <div class="m-fair-card" onclick="openEventGallery('dusseldorf')">
           <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" alt="Düsseldorf Vintage Fußballbörse" loading="lazy">
           <div class="m-fair-info">
             <div class="m-fair-city">Düsseldorf</div>
             <div class="m-fair-date">13.06.2026</div>
           </div>
         </div>
-        <div class="m-fair-card">
+        <div class="m-fair-card" onclick="openEventGallery('frankfurt')">
           <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg" alt="Frankfurt Vintage Fußballbörse" loading="lazy">
           <div class="m-fair-info">
             <div class="m-fair-city">Frankfurt</div>
