@@ -624,7 +624,7 @@
       position: relative; flex: 0 0 62%; aspect-ratio: 4/5;
       border-radius: 3px; overflow: hidden; scroll-snap-align: start;
     }
-    .m-fair-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.62); }
+    .m-fair-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.85); }
     .m-fair-info {
       position: absolute; left: 14px; right: 14px; bottom: 14px;
       border-left: 2px solid var(--gold); padding-left: 11px;
@@ -659,13 +659,13 @@
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
-      filter: grayscale(.35) brightness(.5);
+      filter: grayscale(.18) brightness(.78);
       transition: filter .55s ease, transform .8s cubic-bezier(.16,1,.3,1);
       transform: scale(1.04);
     }
     .strip-shade {
       position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(6,5,4,.15) 0%, rgba(6,5,4,.35) 45%, rgba(6,5,4,.85) 100%);
+      background: linear-gradient(180deg, rgba(6,5,4,0) 0%, rgba(6,5,4,.12) 45%, rgba(6,5,4,.72) 100%);
       transition: opacity .5s ease;
     }
     /* vertical label, shown when the strip is closed */
@@ -714,7 +714,7 @@
     }
     .fair-strip:hover img,
     .fair-strip:focus-visible img {
-      filter: grayscale(0) brightness(.72);
+      filter: grayscale(0) brightness(1);
       transform: scale(1);
     }
     .fair-strip:hover .strip-vertical,
@@ -1601,7 +1601,7 @@
         </div>
         <div style="line-height:1.2">
           <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600">Next Event</div>
-          <div style="font-size:15px;color:var(--white);font-weight:600">Leipzig · 4 Oct</div>
+          <div style="font-size:15px;color:var(--white);font-weight:600">Leipzig · 4 Oct 2026</div>
         </div>
       </div>
       <div onclick="dShopNewest()" style="display:flex;align-items:center;gap:10px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(76,175,125,.3);border-radius:100px;padding:11px 22px 11px 16px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(76,175,125,.7)'" onmouseout="this.style.borderColor='rgba(76,175,125,.3)'">
@@ -3273,7 +3273,9 @@
     img.src = currentImages[currentImgIndex];
     zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
     img.style.transform = 'scale(1)';
-    img.classList.remove('zoomed');
+    img.classList.remove('zoomed', 'super');
+    var _h = document.getElementById('zoom-hint');
+    if (_h) _h.textContent = 'Click the image to zoom';
     updateZoomCounter();
     lb.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -3291,7 +3293,9 @@
     var img = document.getElementById('zoom-lightbox-img');
     zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
     img.style.transform = 'scale(1)';
-    img.classList.remove('zoomed');
+    img.classList.remove('zoomed', 'super');
+    var _h = document.getElementById('zoom-hint');
+    if (_h) _h.textContent = 'Click the image to zoom';
     img.src = currentImages[currentImgIndex];
     updateZoomCounter();
     // sync main detail image too
@@ -3299,22 +3303,34 @@
     var mainEl = document.getElementById(mainId);
     if (mainEl) mainEl.src = currentImages[currentImgIndex];
   }
+  var zoomFitScale = 1;   // step 1: whole shirt fills the screen
+  var ZOOM_SUPER = 2.6;   // step 2: super zoom for badges, tags and stitching
+
   function toggleZoomLevel(e) {
     if (e) e.stopPropagation();
     var img = document.getElementById('zoom-lightbox-img');
     if (!img) return;
+    var hint = document.getElementById('zoom-hint');
+
     if (zoomLevel === 1) {
-      // Fill the screen with the WHOLE shirt in one click: work out how much the
-      // image can grow before it hits the edge of the window, instead of a fixed zoom.
+      // STEP 1 — fill the screen with the whole shirt
       var r = img.getBoundingClientRect();
       var fitScale = Math.min(window.innerWidth / r.width, window.innerHeight / r.height);
-      // a little breathing room so nothing touches the very edge
-      zoomLevel = Math.max(1.35, Math.min(fitScale * 0.97, 3.2));
+      zoomFitScale = Math.max(1.35, Math.min(fitScale * 0.97, 3.2));
+      zoomLevel = zoomFitScale;
       zoomPanX = 0; zoomPanY = 0;
       img.classList.add('zoomed');
+      if (hint) hint.textContent = 'Click again for detail zoom';
+    } else if (Math.abs(zoomLevel - zoomFitScale) < 0.01) {
+      // STEP 2 — super zoom, for inspecting badges and labels up close
+      zoomLevel = zoomFitScale * ZOOM_SUPER;
+      img.classList.add('zoomed', 'super');
+      if (hint) hint.textContent = 'Move the mouse to explore · click to reset';
     } else {
+      // back to normal
       zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
-      img.classList.remove('zoomed');
+      img.classList.remove('zoomed', 'super');
+      if (hint) hint.textContent = 'Click the image to zoom';
     }
     img.style.transform = 'scale(' + zoomLevel + ') translate(' + zoomPanX + 'px,' + zoomPanY + 'px)';
   }
@@ -4957,6 +4973,7 @@
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
   </div>
   <img id="zoom-lightbox-img" src="" alt="" onclick="toggleZoomLevel(event)">
+  <div id="zoom-hint" style="position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,.45);pointer-events:none;z-index:5;text-align:center;white-space:nowrap">Click the image to zoom</div>
   <div class="zoom-nav next" onclick="zoomNav(event,1)">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
   </div>
