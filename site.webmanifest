@@ -8,19 +8,19 @@
   "theme_color": "#0a0905",
   "icons": [
     {
-      "src": "https://res.cloudinary.com/dinpfdojh/image/upload/c_crop,g_center,w_0.72,h_0.72/c_fill,w_192,h_192,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png",
+      "src": "https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_192,h_192,b_rgb:0a0905,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://res.cloudinary.com/dinpfdojh/image/upload/c_crop,g_center,w_0.72,h_0.72/c_fill,w_512,h_512,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png",
+      "src": "https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_512,h_512,b_rgb:0a0905,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://res.cloudinary.com/dinpfdojh/image/upload/c_crop,g_center,w_0.72,h_0.72/c_pad,w_512,h_512,b_rgb:0a0905,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png",
+      "src": "https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_512,h_512,b_rgb:0a0905,f_png,q_100/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
