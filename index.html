@@ -99,6 +99,7 @@
       --grey-mid: #4a4640;
       --text-muted: #888070;
       --sidebar-w: 240px;
+      --topbar-h: 72px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -153,50 +154,93 @@
     .desktop-layout {
       display: none;
       min-height: 100vh;
+      flex-direction: column;
     }
 
-    /* Sidebar */
-    .sidebar {
-      width: var(--sidebar-w); flex-shrink: 0;
-      position: fixed; top: 0; left: 0; bottom: 0;
-      background: #0a0905; border-right: 1px solid #1e1c17;
-      display: flex; flex-direction: column; z-index: 100; overflow-y: auto;
-      scrollbar-width: none; -ms-overflow-style: none;
+    /* ─── TOP BAR (replaces sidebar on laptop) ─── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--topbar-h); z-index: 100;
+      background: rgba(10,9,5,0.92);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      border-bottom: 1px solid #1e1c17;
+      display: flex; align-items: center;
+      padding: 0 32px; gap: 24px;
+      transition: transform 0.35s ease;
     }
-    .sidebar::-webkit-scrollbar { display: none; }
-    .sidebar-logo {
-      padding: 20px 20px 16px; border-bottom: 1px solid #1e1c17;
-      cursor: pointer; transition: opacity 0.2s;
-      background: #0a0905;
-    }
-    .sidebar-logo:hover { opacity: 0.85; }
-    .sidebar-logo img { display: block; width: auto; max-width: 100%; max-height: 110px; margin: 0 auto; object-fit: contain; }
+    /* hidden when scrolling down, shown when scrolling up */
+    .topbar.hidden { transform: translateY(-100%); }
 
+    .topbar-logo {
+      flex-shrink: 0; cursor: pointer; transition: opacity 0.2s;
+      display: flex; align-items: center;
+    }
+    .topbar-logo:hover { opacity: 0.85; }
+    .topbar-logo img { display: block; height: 48px; width: auto; object-fit: contain; }
+
+    /* nav + icons pushed to the right */
+    .topbar-nav {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .topbar-actions {
+      display: flex; align-items: center; gap: 6px;
+      padding-left: 18px; margin-left: 8px;
+      border-left: 1px solid #1e1c17;
+    }
+
+    /* text nav items in the bar */
     .nav-item {
-      display: flex; align-items: center; gap: 9px;
-      padding: 6px 20px; color: var(--text-muted); cursor: pointer;
-      font-size: 12.5px; font-weight: 500; transition: all 0.2s;
-      border-left: 3px solid transparent;
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 12px; color: var(--text-muted); cursor: pointer;
+      font-size: 13px; font-weight: 500; transition: color 0.2s;
+      border-radius: 8px; white-space: nowrap;
     }
     .nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
-    .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.03); }
-    .nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(200,169,80,0.05); }
-    .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
-    .nav-section-label {
-      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-      color: #3a3830; font-weight: 500;
-      margin: 16px 0 6px; padding: 0 20px;
-    }
-    .nav-section-label:first-child { margin-top: 4px; }
-    .sidebar-footer {
-      margin-top: auto; padding: 18px 20px 14px; border-top: 1px solid #1e1c17;
-      font-size: 10.5px; color: var(--text-muted); line-height: 1.4;
-    }
-    .sidebar-footer a { color: var(--gold); text-decoration: none; }
+    .nav-item:hover { color: var(--white); }
+    .nav-item.active { color: var(--gold); }
+    /* in the bar, hide the little SVG on text links to keep it clean; keep text */
+    .topbar-nav .nav-item svg { display: none; }
 
-    /* Main content area */
+    /* icon-only action buttons on the right (Saved, Cart, Wardrobe, Search) */
+    .topbar-actions .nav-item {
+      position: relative; padding: 9px; border-radius: 10px;
+    }
+    .topbar-actions .nav-item svg { display: block; width: 20px; height: 20px; }
+    .topbar-actions .nav-item span.icon-badge {
+      position: absolute; top: 2px; right: 2px;
+      min-width: 16px; height: 16px; padding: 0 4px;
+      border-radius: 8px; font-size: 10px; font-weight: 700;
+      display: none; align-items: center; justify-content: center;
+      line-height: 16px;
+    }
+    .topbar-actions .nav-item span.icon-badge.visible { display: flex; }
+
+    .nav-section-label { display: none; }
+
+    /* Main content area — full width, offset for the fixed bar */
     .desktop-main {
-      margin-left: var(--sidebar-w); flex: 1; min-height: 100vh;
+      flex: 1; min-height: 100vh;
+      padding-top: var(--topbar-h);
+    }
+
+    /* ─── DESKTOP PAGE FOOTER (moved out of the old sidebar) ─── */
+    .desktop-footer {
+      border-top: 1px solid #1e1c17; background: #0a0905;
+      padding: 40px 52px 32px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+      font-size: 12px; color: var(--text-muted); line-height: 1.7;
+    }
+    .desktop-footer .foot-head {
+      color: var(--gold); font-size: 10px; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .desktop-footer a { color: var(--text-muted); text-decoration: none; transition: color .2s; }
+    .desktop-footer a:hover { color: var(--gold); }
+    .desktop-footer .foot-bottom {
+      grid-column: 1 / -1; border-top: 1px solid #1e1c17;
+      padding-top: 16px; margin-top: 4px;
+      font-size: 10.5px; color: rgba(245,240,232,.35);
     }
 
     /* Desktop screens */
@@ -1492,103 +1536,40 @@
      DESKTOP LAYOUT
 ══════════════════════════════════════════ -->
 <div class="desktop-layout">
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar-logo" onclick="dGoTo('home')">
+  <!-- Top bar -->
+  <header class="topbar" id="d-topbar">
+    <div class="topbar-logo" onclick="dGoTo('home')">
       <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=2" alt="Shirt Société">
     </div>
-    <nav style="margin-top:8px">
-      <div class="nav-section-label">Navigation</div>
-      <div class="nav-item active" onclick="dGoTo('home')" id="d-nav-home">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        Home
-      </div>
-      <div class="nav-item" onclick="dGoTo('shop')" id="d-nav-shop">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-8.42H6"/></svg>
-        Shop
-        <span id="d-shirt-count" style="margin-left:auto;background:#1e1c17;padding:2px 8px;border-radius:10px;font-size:11px;color:var(--text-muted)"></span>
-      </div>
-      <div class="nav-item" onclick="dGoTo('wishlist')" id="d-nav-wishlist">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-        Saved
-        <span id="d-wishlist-count" style="margin-left:auto;background:var(--grey-light,#3a3830);color:var(--text-muted);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
-      </div>
-      <div class="nav-item" onclick="dGoTo('cart')" id="d-nav-cart">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Cart
-        <span id="d-cart-count" style="margin-left:auto;background:var(--gold);color:var(--black);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
-      </div>
-      <div class="nav-item" onclick="dGoTo('profile')" id="d-nav-profile">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        My Wardrobe
-        <span id="d-wardrobe-count" style="margin-left:auto;background:var(--gold);color:var(--black);padding:2px 8px;border-radius:10px;font-size:11px;display:none"></span>
-      </div>
 
-      <div class="nav-section-label">Categories</div>
-      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('match_worn')" id="d-nav-mw">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
-          <path d="M12 2L3.5 5.5v5.8C3.5 16.8 7.2 21.2 12 22.5c4.8-1.3 8.5-5.7 8.5-11.2V5.5L12 2z"/>
-          <path d="M8 15h8M7.5 11l1.5 3h6l1.5-3-2 1.5-2.5-3-2.5 3L7.5 11z" stroke-width="1.3"/>
-          <circle cx="8" cy="11" r="0.6" fill="currentColor" stroke="none"/>
-          <circle cx="12" cy="9.5" r="0.6" fill="currentColor" stroke="none"/>
-          <circle cx="16" cy="11" r="0.6" fill="currentColor" stroke="none"/>
-        </svg>
-        Match Worn/Issued
-      </div>
-      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('clubs')" id="d-nav-clubs">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path d="M12 2L4 5v6c0 5.5 3.5 9.7 8 11 4.5-1.3 8-5.5 8-11V5L12 2z" stroke-linejoin="round"/>
-          <path d="M12 7l1.2 2.5H16l-2.2 1.6.8 2.6L12 12.2 9.4 13.7l.8-2.6L8 9.5h2.8L12 7z" fill="currentColor" stroke="none"/>
-        </svg>
-        Clubs
-      </div>
-      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('national')" id="d-nav-national">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <line x1="4" y1="2" x2="4" y2="22" stroke-linecap="round"/>
-          <path d="M4 4 Q10 3 14 5 Q18 7 20 5 Q18 9 14 9 Q10 9 4 10 Z" fill="currentColor" stroke="none" opacity="0.85"/>
-          <path d="M4 7 Q9 6 13 7.5 Q17 9 19 7.5" stroke-width="1" opacity="0.4"/>
-        </svg>
-        National Teams
-      </div>
+    <nav class="topbar-nav">
+      <div class="nav-item active" onclick="dGoTo('home')" id="d-nav-home">Home</div>
+      <div class="nav-item" onclick="dGoTo('shop')" id="d-nav-shop">Shop</div>
+      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('match_worn')" id="d-nav-mw">Match Worn</div>
+      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('clubs')" id="d-nav-clubs">Clubs</div>
+      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('national')" id="d-nav-national">National Teams</div>
+      <a class="nav-item" href="/blog.html">Blog</a>
+      <div class="nav-item" onclick="dGoTo('about')" id="d-nav-about">Our Story</div>
 
-      <div class="nav-section-label">More</div>
-      <a class="nav-item" href="/blog.html" style="text-decoration:none">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        Blog
-      </a>
-      <div class="nav-item" onclick="dGoTo('about')" id="d-nav-about">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-        Our Story
+      <div class="topbar-actions">
+        <div class="nav-item" onclick="dGoTo('wishlist')" id="d-nav-wishlist" title="Saved">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          <span class="icon-badge" id="d-wishlist-count" style="background:var(--grey-light,#3a3830);color:var(--text-muted)"></span>
+        </div>
+        <div class="nav-item" onclick="dGoTo('cart')" id="d-nav-cart" title="Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="icon-badge" id="d-cart-count" style="background:var(--gold);color:var(--black)"></span>
+        </div>
+        <div class="nav-item" onclick="dGoTo('profile')" id="d-nav-profile" title="My Wardrobe">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="icon-badge" id="d-wardrobe-count" style="background:var(--gold);color:var(--black)"></span>
+        </div>
+        <div class="nav-item" onclick="dGoTo('shop');setTimeout(function(){var i=document.getElementById('d-search-input');if(i){i.focus();i.scrollIntoView({behavior:'smooth',block:'center'});}},60)" title="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
       </div>
-      <a class="nav-item" href="/faq.html" style="text-decoration:none">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 015.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12" y2="17"/></svg>
-        FAQ
-      </a>
     </nav>
-    <div class="sidebar-footer">
-      <div style="margin-bottom:7px;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase">Contact</div>
-      <div style="font-size:11.5px;line-height:1.85;margin-bottom:14px">
-        <a href="#" onclick="openContactModal();return false;" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">info@shirtsociete.com</a><br>
-        <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">@shirtsociete</a>
-      </div>
-      <div style="margin-bottom:7px;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase">Legal</div>
-      <div style="font-size:11.5px;line-height:1.85">
-        <div onclick="ssTogglePolicies()" style="display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--text-muted);cursor:pointer;transition:color .2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">
-          <span>Policies</span>
-          <svg id="pol-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transition:transform .25s;flex-shrink:0"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div id="pol-list" style="display:none;padding:4px 0 4px 12px;border-left:1px solid rgba(200,169,80,.2);margin:4px 0 6px">
-          <a href="/refund.html" style="color:var(--text-muted);text-decoration:none;font-size:11px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Refund policy</a><br>
-          <a href="/privacy.html" style="color:var(--text-muted);text-decoration:none;font-size:11px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Privacy policy</a><br>
-          <a href="/shipping.html" style="color:var(--text-muted);text-decoration:none;font-size:11px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Shipping policy</a>
-        </div>
-        <a href="/terms.html" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Terms of service</a><br>
-        <a href="/legal.html" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Legal notice</a><br>
-        <a href="#" onclick="ssOpenCookieSettings();return false;" style="color:var(--text-muted);text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Cookie preferences</a>
-      </div>
-      <div style="margin-top:12px;font-size:10.5px;color:rgba(245,240,232,.35)">© 2026 Shirt Société</div>
-    </div>
-  </aside>
+  </header>
 
   <!-- Desktop Main -->
   <main class="desktop-main">
@@ -2355,6 +2336,32 @@
       </div>
     </div>
 
+    <!-- Desktop footer (moved out of former sidebar) -->
+    <footer class="desktop-footer">
+      <div>
+        <div class="foot-head">Contact</div>
+        <a href="#" onclick="openContactModal();return false;">info@shirtsociete.com</a><br>
+        <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a>
+      </div>
+      <div>
+        <div class="foot-head">Shop</div>
+        <a href="#" onclick="dGoTo('shop');return false;">All Products</a><br>
+        <a href="#" onclick="dGoTo('shop');dSetFilter('match_worn');return false;">Match Worn/Issued</a><br>
+        <a href="#" onclick="dGoTo('shop');dSetFilter('clubs');return false;">Clubs</a><br>
+        <a href="#" onclick="dGoTo('shop');dSetFilter('national');return false;">National Teams</a>
+      </div>
+      <div>
+        <div class="foot-head">Legal</div>
+        <a href="/refund.html">Refund policy</a><br>
+        <a href="/privacy.html">Privacy policy</a><br>
+        <a href="/shipping.html">Shipping policy</a><br>
+        <a href="/terms.html">Terms of service</a><br>
+        <a href="/legal.html">Legal notice</a><br>
+        <a href="#" onclick="ssOpenCookieSettings();return false;">Cookie preferences</a>
+      </div>
+      <div class="foot-bottom">© 2026 Shirt Société</div>
+    </footer>
+
   </main>
 </div>
 
@@ -2549,7 +2556,7 @@
     renderDesktopHome();
     renderDesktopGrid();
     renderWishlist();
-    document.getElementById('d-shirt-count').textContent = allShirts.length;
+    var dsc = document.getElementById('d-shirt-count'); if (dsc) dsc.textContent = allShirts.length;
   }
 
   // ── MOBILE HOME ──
@@ -3511,7 +3518,7 @@
     document.getElementById('cart-badge').textContent = count;
     document.getElementById('cart-badge').classList.toggle('visible', count > 0);
     const dc = document.getElementById('d-cart-count');
-    dc.textContent = count; dc.style.display = count > 0 ? 'inline' : 'none';
+    dc.textContent = count; dc.classList.toggle('visible', count > 0);
   }
 
   function getCartTotal() { return cart.reduce((s, i) => s + parseFloat(i.price), 0); }
@@ -3919,7 +3926,7 @@
     const db = document.getElementById('d-wishlist-count');
     const icon = document.getElementById('wishlist-tab-icon');
     if (mb) { mb.textContent = count; mb.classList.toggle('visible', count > 0); }
-    if (db) { db.textContent = count; db.style.display = count > 0 ? 'inline' : 'none'; }
+    if (db) { db.textContent = count; db.classList.toggle('visible', count > 0); }
     if (icon) {
       if (count > 0) {
         icon.style.width = '22px'; icon.style.height = '22px';
@@ -4879,7 +4886,7 @@
   function updateWardrobeBadge() {
     var n = getWardrobe().length;
     var b = document.getElementById('d-wardrobe-count');
-    if (b) { b.textContent = n; b.style.display = n ? 'inline' : 'none'; }
+    if (b) { b.textContent = n; b.classList.toggle('visible', n > 0); }
   }
 
   var wardrobeIntroPlayed = false;
@@ -5246,6 +5253,26 @@
     btn.disabled = false;
     btn.textContent = 'Send message';
   }
+
+  // ── Topbar: hide on scroll down, show on scroll up (laptop) ──
+  (function(){
+    var bar = document.getElementById('d-topbar');
+    if (!bar) return;
+    var lastY = window.scrollY || 0;
+    var ticking = false;
+    function onScroll(){
+      var y = window.scrollY || 0;
+      // always show near the very top
+      if (y < 80) { bar.classList.remove('hidden'); }
+      else if (y > lastY + 6) { bar.classList.add('hidden'); }   // scrolling down
+      else if (y < lastY - 6) { bar.classList.remove('hidden'); } // scrolling up
+      lastY = y;
+      ticking = false;
+    }
+    window.addEventListener('scroll', function(){
+      if (!ticking) { window.requestAnimationFrame(onScroll); ticking = true; }
+    }, { passive: true });
+  })();
 </script>
 </body>
 </html>
