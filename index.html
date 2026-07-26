@@ -685,7 +685,7 @@
     .fair-strips {
       display: flex;
       gap: 4px;
-      height: 620px;
+      height: 440px;
       margin-bottom: 48px;
       overflow: hidden;
       border-radius: 3px;
@@ -833,7 +833,9 @@
 
     .detail-layout {
       display: grid; grid-template-columns: 1fr 1fr;
-      gap: 48px; padding: 32px 48px 48px;
+      gap: 40px; padding: 28px 48px 48px;
+      max-width: 1040px; margin: 0 auto;
+      align-items: start;
     }
 
     /* Gallery */
@@ -865,7 +867,7 @@
     }
     #zoom-lightbox.open { display: flex; }
     #zoom-lightbox-img {
-      max-width: 96vw; max-height: 94vh;
+      max-width: 98vw; max-height: 96vh;
       object-fit: contain;
       transition: transform .25s ease-out;
       transform-origin: center center;
@@ -930,15 +932,15 @@
     .detail-title {
       font-family: 'Playfair Display', serif;
       font-style: italic; font-weight: 900;
-      font-size: 36px; line-height: 1.2; margin-bottom: 6px;
+      font-size: 28px; line-height: 1.2; margin-bottom: 6px;
     }
-    .detail-club { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
-    .detail-price { font-size: 36px; color: var(--gold); font-weight: 500; margin-bottom: 24px; }
-    .detail-specs { margin-bottom: 24px; }
+    .detail-club { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+    .detail-price { font-size: 28px; color: var(--gold); font-weight: 500; margin-bottom: 22px; }
+    .detail-specs { margin-bottom: 22px; }
     .spec-item { background: var(--grey); padding: 14px; border-radius: 2px; }
     .spec-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
-    .spec-value { font-size: 15px; font-weight: 500; }
-    .detail-desc { font-size: 15px; line-height: 1.8; color: #b0a898; margin-bottom: 28px; }
+    .spec-value { font-size: 14px; font-weight: 500; }
+    .detail-desc { font-size: 14px; line-height: 1.75; color: #b0a898; margin-bottom: 26px; }
     .detail-add-btn {
       width: 100%; padding: 18px;
       background: var(--gold); color: var(--black);
@@ -3299,7 +3301,7 @@
     if (mainEl) mainEl.src = currentImages[currentImgIndex];
   }
   var zoomFitScale = 1;   // step 1: whole shirt fills the screen
-  var ZOOM_SUPER = 2.2;   // step 2: super zoom for badges, tags and stitching
+  var ZOOM_SUPER = 2.8;   // step 2: super zoom for badges, tags and stitching
 
   function toggleZoomLevel(e) {
     if (e) e.stopPropagation();
@@ -3312,7 +3314,7 @@
       var r = img.getBoundingClientRect();
       var fitScale = Math.min(window.innerWidth / r.width, window.innerHeight / r.height);
       // go slightly BEYOND fitting the screen, so there is room to move around the shirt
-      zoomFitScale = Math.max(1.8, Math.min(fitScale * 1.25, 3.0));
+      zoomFitScale = Math.max(2.0, Math.min(fitScale * 1.35, 3.6));
       zoomLevel = zoomFitScale;
       zoomPanX = 0; zoomPanY = 0;
       img.classList.add('zoomed');
@@ -4951,7 +4953,6 @@
   }
 
   function initProfile() {
-    playWardrobeIntro();
     renderWardrobe();
     renderMobileWardrobe();
     loadProfileDetails();
@@ -5134,7 +5135,7 @@
 
 <!-- My Wardrobe intro video (plays once per session) -->
 <div id="wardrobe-intro" style="position:fixed;inset:0;z-index:9200;background:#060504;display:none;align-items:center;justify-content:center;overflow:hidden">
-  <video id="wardrobe-intro-video" playsinline muted preload="auto"
+  <video id="wardrobe-intro-video" playsinline muted preload="none"
     style="width:100%;height:100%;object-fit:cover"
     src="https://res.cloudinary.com/dinpfdojh/video/upload/v1784635503/openart-video_1784557449812_135b9230_1784557449840_13ecf9c3_bxe8ra.mp4"></video>
   <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 40%,rgba(4,3,2,.55) 100%)"></div>
