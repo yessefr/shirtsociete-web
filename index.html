@@ -2199,28 +2199,6 @@
       </div>
     </div>
 
-    <!-- ARCHIVE DETAIL MODAL -->
-    <div id="archive-detail-modal" style="position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:24px;overflow-y:auto">
-      <div style="background:#0d0b07;border:1px solid #1e1c17;border-radius:6px;max-width:920px;width:100%;max-height:92vh;overflow-y:auto;position:relative">
-        <button onclick="closeArchiveDetail()" style="position:absolute;top:14px;right:14px;z-index:5;background:rgba(0,0,0,.5);border:1px solid #2a2820;color:var(--cream);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center">×</button>
-        <div class="archive-detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0">
-          <div style="background:#0a0905;padding:24px;display:flex;flex-direction:column;gap:12px">
-            <div style="position:relative;background:#111;border-radius:3px;overflow:hidden;cursor:zoom-in" onclick="openArchiveZoom()">
-              <img id="ad-main-img" src="" alt="" style="width:100%;height:auto;display:block">
-            </div>
-            <div id="ad-thumbs" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-          </div>
-          <div style="padding:32px 30px">
-            <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Shirt Société Archive</div>
-            <h2 id="ad-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;line-height:1.2;margin-bottom:6px"></h2>
-            <div id="ad-club" style="font-size:13px;color:var(--text-muted);margin-bottom:4px"></div>
-            <div id="ad-season" style="font-size:13px;color:var(--text-muted);margin-bottom:18px"></div>
-            <p id="ad-story" style="font-size:14px;line-height:1.75;color:#b0a898;margin-bottom:8px"></p>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- ABOUT -->
     <div class="dscreen" id="d-screen-about">
       <!-- Hero: see-through SHIRT SOCIÉTÉ banner -->
@@ -5394,6 +5372,28 @@
     <div style="margin-top:14px;width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
   </div>
   <div id="wardrobe-intro-skip" style="position:absolute;bottom:30px;right:34px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.55);cursor:pointer;z-index:3;padding:8px 16px;border:1px solid rgba(245,240,232,.2);border-radius:2px">Skip</div>
+</div>
+
+<!-- ═══ ARCHIVE DETAIL MODAL (top-level, works on mobile too) ═══ -->
+<div id="archive-detail-modal" style="position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:24px;overflow-y:auto">
+  <div style="background:#0d0b07;border:1px solid #1e1c17;border-radius:6px;max-width:920px;width:100%;max-height:92vh;overflow:hidden;position:relative;display:flex;flex-direction:column">
+    <button onclick="closeArchiveDetail()" style="position:absolute;top:14px;right:14px;z-index:5;background:rgba(0,0,0,.5);border:1px solid #2a2820;color:var(--cream);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center">×</button>
+    <div class="archive-detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0;overflow-y:auto">
+      <div style="background:#0a0905;padding:24px;display:flex;flex-direction:column;gap:12px">
+        <div style="position:relative;background:#111;border-radius:3px;overflow:hidden;cursor:zoom-in;max-height:78vh" onclick="openArchiveZoom()">
+          <img id="ad-main-img" src="" alt="" style="width:100%;height:100%;max-height:78vh;object-fit:contain;display:block">
+        </div>
+        <div id="ad-thumbs" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+      </div>
+      <div style="padding:32px 30px">
+        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Shirt Société Archive</div>
+        <h2 id="ad-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;line-height:1.2;margin-bottom:6px"></h2>
+        <div id="ad-club" style="font-size:13px;color:var(--text-muted);margin-bottom:4px"></div>
+        <div id="ad-season" style="font-size:13px;color:var(--text-muted);margin-bottom:18px"></div>
+        <p id="ad-story" style="font-size:14px;line-height:1.75;color:#b0a898;margin-bottom:8px"></p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ═══ CONTACT MODAL ═══ -->
