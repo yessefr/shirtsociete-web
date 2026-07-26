@@ -3226,10 +3226,69 @@
     } catch (e) {}
   }
 
+  // ── ARCHIVE SEO ──
+  function setArchiveMeta() {
+    try {
+      history.pushState({ screen: 'archive' }, '', '/?p=archive');
+      document.title = 'The Shirt Société Archive | Rare & Match Worn Football Shirts';
+      var desc = 'The private Shirt Société Archive: rare spec variants, match worn and match issued football shirts including Netherlands 1988, Xavi Simons, Matthijs de Ligt, Rafael van der Vaart and Tijjani Reijnders.';
+      var md = document.querySelector('meta[name="description"]');
+      if (md) md.setAttribute('content', desc);
+      var ogt = document.querySelector('meta[property="og:title"]');
+      if (ogt) ogt.setAttribute('content', 'The Shirt Société Archive');
+      var ogd = document.querySelector('meta[property="og:description"]');
+      if (ogd) ogd.setAttribute('content', desc);
+      var ogu = document.querySelector('meta[property="og:url"]');
+      if (ogu) ogu.setAttribute('content', 'https://shirtsociete.com/?p=archive');
+    } catch (e) {}
+  }
+  // Inject a CollectionPage + ItemList schema for the archive shirts
+  function injectArchiveSchema(items) {
+    try {
+      var old = document.getElementById('archive-jsonld');
+      if (old) old.remove();
+      if (!items || !items.length) return;
+      var list = items.map(function(s, i) {
+        return {
+          "@type": "ListItem",
+          "position": i + 1,
+          "item": {
+            "@type": "Product",
+            "name": s.title || '',
+            "brand": s.club || 'Football',
+            "category": "Football Shirt",
+            "image": (s.images && s.images[0]) ? s.images[0] : undefined,
+            "description": s.description || ''
+          }
+        };
+      });
+      var data = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "The Shirt Société Archive",
+        "description": "Private collection of rare, match worn and match issued football shirts.",
+        "url": "https://shirtsociete.com/?p=archive",
+        "isPartOf": { "@type": "WebSite", "name": "Shirt Société", "url": "https://shirtsociete.com/" },
+        "mainEntity": { "@type": "ItemList", "itemListElement": list }
+      };
+      var sc = document.createElement('script');
+      sc.type = 'application/ld+json';
+      sc.id = 'archive-jsonld';
+      sc.textContent = JSON.stringify(data);
+      document.head.appendChild(sc);
+    } catch (e) {}
+  }
+
   // if someone lands on a shirt URL, open that shirt straight away
   function openShirtFromUrl() {
     try {
       var params = new URLSearchParams(window.location.search);
+      // deep link to the archive page
+      if (params.get('p') === 'archive') {
+        if (window.innerWidth >= 768) dGoTo('archive');
+        else mGoTo('archive');
+        return true;
+      }
       var id = params.get('shirt');
       if (!id) return false;
       var shirt = allShirts.find(function(s) { return String(s.id) === String(id); });
@@ -3961,6 +4020,7 @@
     if (screen === 'wishlist') renderWishlist();
     if (screen === 'profile') initProfile();
     if (screen === 'archive') renderArchive();
+    else if (screen === 'home' || screen === 'shop') { if (typeof restoreDefaultMeta === 'function') restoreDefaultMeta(); }
     if (screen === 'shop' && typeof ssMaybeShowCookies === 'function') ssMaybeShowCookies();
     // screens are hidden at boot, so ScrollTrigger must re-measure once one becomes visible
     if (typeof ScrollTrigger !== 'undefined') {
@@ -3994,17 +4054,21 @@
   function renderArchive() {
     var grid = document.getElementById('d-archive-grid');
     if (!grid) return;
+    setArchiveMeta();
     fetchArchive(function(items){
       if (items === null) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Could not load the archive right now.</div>'; return; }
       paintArchive(items);
+      injectArchiveSchema(items);
     });
   }
   function renderMobileArchive() {
     var grid = document.getElementById('m-archive-grid');
     if (!grid) return;
+    setArchiveMeta();
     fetchArchive(function(items){
       if (items === null) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Could not load the archive right now.</div>'; return; }
       if (!items.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">The archive is being catalogued. Check back soon.</div>'; return; }
+      injectArchiveSchema(items);
       grid.innerHTML = items.map(function(s){
         var imgs = (s.images && s.images.length) ? s.images : [];
         var main = imgs[0] || '';
@@ -4072,6 +4136,12 @@
     }).join('');
     document.getElementById('archive-detail-modal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
+    // per-shirt SEO title/description (deep-linkable)
+    try {
+      document.title = (item.title || 'Archive shirt') + ' | Shirt Société Archive';
+      var md = document.querySelector('meta[name="description"]');
+      if (md) md.setAttribute('content', (item.description || item.title || '') + ' — from the Shirt Société Archive.');
+    } catch (e) {}
   }
   function archiveSwitchImg(i) {
     if (!currentImages[i]) return;
@@ -4084,6 +4154,8 @@
   function closeArchiveDetail() {
     document.getElementById('archive-detail-modal').style.display = 'none';
     document.body.style.overflow = '';
+    // back to the archive-level meta
+    setArchiveMeta();
   }
   var archiveZoomReturn = false;
   function openArchiveZoom() {
