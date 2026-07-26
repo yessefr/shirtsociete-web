@@ -218,6 +218,16 @@
 
     .nav-section-label { display: none; }
 
+    /* subtle archive filter pills */
+    .arch-filter {
+      background: transparent; border: 1px solid #26241d;
+      color: var(--text-muted); padding: 7px 16px; border-radius: 100px;
+      font-size: 12px; font-weight: 500; cursor: pointer;
+      transition: all .2s; letter-spacing: .3px;
+    }
+    .arch-filter:hover { color: var(--cream); border-color: #3a372f; }
+    .arch-filter.active { color: var(--gold); border-color: rgba(200,169,80,.5); background: rgba(200,169,80,.06); }
+
     /* ─── Shop dropdown ─── */
     .nav-dropdown {
       position: relative;
@@ -1395,7 +1405,7 @@
   <div class="m-section-label">Featured Pieces</div>
   <div id="m-featured-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
   <div class="m-divider"></div>
-  <div class="m-section-label">Match Worn/Issued</div>
+  <div class="m-section-label">Match Worn / Issued</div>
   <div id="m-matchworn-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
   <div class="m-divider"></div>
   <div class="m-section-label">National Teams</div>
@@ -1414,7 +1424,7 @@
   <div class="m-filters">
     <button class="m-filter-btn active" onclick="mSetFilter('all',this)" id="m-filter-all">All</button>
     <button class="m-filter-btn" onclick="mSetFilter('new',this)" id="m-filter-new" style="border-color:rgba(76,175,125,.45)">New</button>
-    <button class="m-filter-btn" onclick="mSetFilter('match_worn',this)" id="m-filter-mw">Match Worn/Issued</button>
+    <button class="m-filter-btn" onclick="mSetFilter('match_worn',this)" id="m-filter-mw">Match Worn / Issued</button>
     <button class="m-filter-btn" onclick="mSetFilter('clubs',this)" id="m-filter-clubs">Clubs</button>
     <button class="m-filter-btn" onclick="mSetFilter('national',this)" id="m-filter-national">National</button>
   </div>
@@ -1573,6 +1583,7 @@
       </button>
     </div>
   </div>
+  <div id="m-archive-filters" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:16px 20px 0"></div>
   <div id="m-archive-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 20px 24px">
     <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Loading archive...</div>
   </div>
@@ -1621,7 +1632,7 @@
         <a class="nav-item" href="/?p=shop" onclick="dGoTo('shop');return false;" id="d-nav-shop">Shop</a>
         <div class="nav-dropdown-menu">
           <a class="nav-item" href="/?p=shop" onclick="dGoTo('shop');dSetFilter('all');return false;">All Shirts</a>
-          <a class="nav-item" href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" id="d-nav-mw">Match Worn</a>
+          <a class="nav-item" href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" id="d-nav-mw">Match Worn / Issued</a>
           <a class="nav-item" href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;" id="d-nav-clubs">Clubs</a>
           <a class="nav-item" href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;" id="d-nav-national">National Teams</a>
         </div>
@@ -1820,7 +1831,7 @@
     <div id="mw-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
       <div>
         <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Authentic &amp; Verified</div>
-        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Match Worn/Issued</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Match Worn / Issued</div>
       </div>
       <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
     </div>
@@ -1897,7 +1908,7 @@
       </div>
       <div class="foot-col">
         <div class="foot-head">Categories</div>
-        <a onclick="dGoTo('shop');dSetFilter('match_worn')">Match Worn/Issued</a>
+        <a onclick="dGoTo('shop');dSetFilter('match_worn')">Match Worn / Issued</a>
         <a onclick="dGoTo('shop');dSetFilter('clubs')">Clubs</a>
         <a onclick="dGoTo('shop');dSetFilter('national')">National teams</a>
       </div>
@@ -1955,7 +1966,7 @@
         </div>
         <button class="filter-btn active" onclick="dSetFilter('all',this)" id="d-filter-all">All</button>
         <button class="filter-btn" onclick="dSetFilter('new',this)" id="d-filter-new" style="border-color:rgba(76,175,125,.4)">New</button>
-        <button class="filter-btn" onclick="dSetFilter('match_worn',this)" id="d-filter-mw">Match Worn/Issued</button>
+        <button class="filter-btn" onclick="dSetFilter('match_worn',this)" id="d-filter-mw">Match Worn / Issued</button>
         <button class="filter-btn" onclick="dSetFilter('clubs',this)" id="d-filter-clubs">Clubs</button>
         <button class="filter-btn" onclick="dSetFilter('national',this)" id="d-filter-national">National</button>
       </div>
@@ -2194,7 +2205,8 @@
           </button>
         </div>
       </section>
-      <div style="padding:36px 52px 64px">
+      <div style="padding:28px 52px 64px">
+        <div id="d-archive-filters" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px"></div>
         <div id="d-archive-grid" class="shirt-grid">
           <div class="loading" style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Loading archive...</div>
         </div>
@@ -2456,7 +2468,7 @@
       <div>
         <div class="foot-head">Shop</div>
         <a href="#" onclick="dGoTo('shop');return false;">All Products</a><br>
-        <a href="#" onclick="dGoTo('shop');dSetFilter('match_worn');return false;">Match Worn/Issued</a><br>
+        <a href="#" onclick="dGoTo('shop');dSetFilter('match_worn');return false;">Match Worn / Issued</a><br>
         <a href="#" onclick="dGoTo('shop');dSetFilter('clubs');return false;">Clubs</a><br>
         <a href="#" onclick="dGoTo('shop');dSetFilter('national');return false;">National Teams</a>
       </div>
@@ -2934,7 +2946,7 @@
     var cat = '';
     if (s.category === 'national') cat = 'National Team';
     else if (s.category === 'clubs') cat = 'Club';
-    else if (s.category === 'match_worn') cat = 'Match Worn/Issued';
+    else if (s.category === 'match_worn') cat = 'Match Worn / Issued';
     var yr = s.season || '';
     return (cat && yr) ? (cat + ' · ' + yr) : (cat || yr || '');
   }
@@ -3419,7 +3431,7 @@
 
   function buildSpecs(shirt) {
     var catName = shirt.category === 'national' ? 'National Team'
-                : shirt.category === 'match_worn' ? 'Match Worn/Issued'
+                : shirt.category === 'match_worn' ? 'Match Worn / Issued'
                 : shirt.category === 'clubs' ? 'Club'
                 : (shirt.category || '').replace('_',' ');
     var rows = [
@@ -4116,12 +4128,67 @@
         cb(null);
       });
   }
+  // ── Archive filtering (subtle: All / Clubs / National / by period) ──
+  var archiveFilter = { type: 'all' };
+  // known national sides so we can split club vs national from the club field
+  var NATIONAL_TEAMS = ['netherlands','holland','germany','west germany','brazil','argentina','france','italy','england','spain','portugal','belgium','croatia','uruguay','japan','usa','mexico','nigeria','cameroon','denmark','sweden','ireland'];
+  function archiveIsNational(s) {
+    var c = (s.club || '').toLowerCase();
+    for (var i = 0; i < NATIONAL_TEAMS.length; i++) { if (c.indexOf(NATIONAL_TEAMS[i]) !== -1) return true; }
+    return false;
+  }
+  function archiveDecade(s) {
+    var m = (String(s.season || '')).match(/(19|20)\d{2}/);
+    if (!m) return null;
+    var y = parseInt(m[0], 10);
+    return (Math.floor(y / 10) * 10) + 's'; // e.g. 1980 -> "1980s"
+  }
+  function archiveMatchesFilter(s) {
+    var f = archiveFilter;
+    if (f.type === 'all') return true;
+    if (f.type === 'clubs') return !archiveIsNational(s);
+    if (f.type === 'national') return archiveIsNational(s);
+    if (f.type === 'decade') return archiveDecade(s) === f.value;
+    return true;
+  }
+  function buildArchiveFilters(items) {
+    var wrap = document.getElementById('d-archive-filters');
+    if (!wrap) return;
+    var hasClub = items.some(function(s){ return !archiveIsNational(s); });
+    var hasNat = items.some(function(s){ return archiveIsNational(s); });
+    var decades = {};
+    items.forEach(function(s){ var d = archiveDecade(s); if (d) decades[d] = true; });
+    var decadeList = Object.keys(decades).sort();
+    var btns = [];
+    btns.push(mkArchFilter('All Shirts', 'all', null));
+    if (hasClub) btns.push(mkArchFilter('Clubs', 'clubs', null));
+    if (hasNat) btns.push(mkArchFilter('National', 'national', null));
+    decadeList.forEach(function(d){ btns.push(mkArchFilter(d, 'decade', d)); });
+    wrap.innerHTML = btns.join('');
+  }
+  function mkArchFilter(label, type, value) {
+    var active = (archiveFilter.type === type && (type !== 'decade' || archiveFilter.value === value));
+    var onclick = "setArchiveFilter('" + type + "'," + (value ? "'" + value + "'" : 'null') + ")";
+    return '<button class="arch-filter' + (active ? ' active' : '') + '" onclick="' + onclick + '">' + label + '</button>';
+  }
+  function setArchiveFilter(type, value) {
+    archiveFilter = { type: type, value: value };
+    if (archiveItems) {
+      buildArchiveFilters(archiveItems);
+      paintArchive(archiveItems);
+      // also refresh mobile grid if present
+      var mg = document.getElementById('m-archive-grid');
+      if (mg && mg.offsetParent !== null) renderMobileArchive();
+    }
+  }
+
   function renderArchive() {
     var grid = document.getElementById('d-archive-grid');
     if (!grid) return;
     setArchiveMeta();
     fetchArchive(function(items){
       if (items === null) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Could not load the archive right now.</div>'; return; }
+      buildArchiveFilters(items);
       paintArchive(items);
       injectArchiveSchema(items);
     });
@@ -4130,10 +4197,24 @@
     var grid = document.getElementById('m-archive-grid');
     if (!grid) return;
     setArchiveMeta();
-    fetchArchive(function(items){
-      if (items === null) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Could not load the archive right now.</div>'; return; }
-      if (!items.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">The archive is being catalogued. Check back soon.</div>'; return; }
-      injectArchiveSchema(items);
+    fetchArchive(function(allItems){
+      if (allItems === null) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Could not load the archive right now.</div>'; return; }
+      if (!allItems.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">The archive is being catalogued. Check back soon.</div>'; return; }
+      injectArchiveSchema(allItems);
+      // build mobile filter pills
+      var mwrap = document.getElementById('m-archive-filters');
+      if (mwrap) {
+        var hasClub = allItems.some(function(s){ return !archiveIsNational(s); });
+        var hasNat = allItems.some(function(s){ return archiveIsNational(s); });
+        var decades = {}; allItems.forEach(function(s){ var d = archiveDecade(s); if (d) decades[d] = true; });
+        var btns = [mkArchFilter('All', 'all', null)];
+        if (hasClub) btns.push(mkArchFilter('Clubs', 'clubs', null));
+        if (hasNat) btns.push(mkArchFilter('National', 'national', null));
+        Object.keys(decades).sort().forEach(function(d){ btns.push(mkArchFilter(d, 'decade', d)); });
+        mwrap.innerHTML = btns.join('');
+      }
+      var items = allItems.filter(archiveMatchesFilter);
+      if (!items.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No shirts in this category.</div>'; return; }
       grid.innerHTML = items.map(function(s){
         var imgs = (s.images && s.images.length) ? s.images : [];
         var main = imgs[0] || '';
@@ -4151,11 +4232,16 @@
       }).join('');
     });
   }
-  function paintArchive(items) {
+  function paintArchive(allItems) {
     var grid = document.getElementById('d-archive-grid');
     if (!grid) return;
-    if (!items.length) {
+    var items = allItems.filter(archiveMatchesFilter);
+    if (!allItems.length) {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">The archive is being catalogued. Check back soon.</div>';
+      return;
+    }
+    if (!items.length) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">No shirts in this category.</div>';
       return;
     }
     grid.innerHTML = items.map(function(s, idx){
