@@ -721,7 +721,7 @@
     .fair-strips {
       display: flex;
       gap: 4px;
-      height: 440px;
+      height: 360px;
       margin-bottom: 48px;
       overflow: hidden;
       border-radius: 3px;
@@ -802,7 +802,7 @@
     }
     /* row grows taller when any strip is hovered — favours the portrait photos */
     .fair-strips:hover {
-      height: 600px;
+      height: 660px;
     }
     .fair-strip:hover img,
     .fair-strip:focus-visible img {
@@ -1468,6 +1468,7 @@
     <div id="m-detail-price" style="font-size:28px;color:var(--gold);font-weight:500;margin-bottom:20px"></div>
     <div id="m-detail-specs" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px"></div>
     <p id="m-detail-desc" style="font-size:14px;line-height:1.7;color:#b0a898;margin-bottom:24px"></p>
+    <div id="m-detail-measurements" style="margin-bottom:24px"></div>
     <button id="m-detail-add-btn" style="width:100%;padding:16px;background:var(--gold);color:var(--black);border:none;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:1px;text-transform:uppercase" onclick="addToCartFromDetail()">Add to Cart</button>
   </div>
 </div>
@@ -2022,6 +2023,7 @@
           <div id="d-detail-price" class="detail-price"></div>
           <div id="d-detail-specs" class="detail-specs"></div>
           <p id="d-detail-desc" class="detail-desc"></p>
+          <div id="d-detail-measurements"></div>
           <button id="d-detail-add-btn" class="detail-add-btn" onclick="addToCartFromDetail()">Add to Cart</button>
 
           <!-- expandable info -->
@@ -3318,6 +3320,7 @@
       document.getElementById('m-detail-price').textContent = `€${parseFloat(shirt.price).toFixed(2)}`;
       document.getElementById('m-detail-desc').textContent = shirt.description||'';
       document.getElementById('m-detail-specs').innerHTML = buildSpecs(shirt);
+      document.getElementById('m-detail-measurements').innerHTML = buildMeasurements(shirt);
       document.getElementById('m-detail-thumbs').innerHTML = images.length > 1 ? images.map((img,i) => `<img src="${img}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','m-detail-main-img')" loading="lazy">`).join('') : '';
       const btn = document.getElementById('m-detail-add-btn');
       const inCart = cart.some(c => c.id === shirt.id);
@@ -3338,6 +3341,7 @@
       document.getElementById('d-detail-price').textContent = `€${parseFloat(shirt.price).toFixed(2)}`;
       document.getElementById('d-detail-desc').textContent = shirt.description||'';
       document.getElementById('d-detail-specs').innerHTML = buildSpecs(shirt);
+      document.getElementById('d-detail-measurements').innerHTML = buildMeasurements(shirt);
       document.getElementById('d-detail-thumbs').innerHTML = images.map((img,i) => `<img src="${img}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','d-detail-main-img')" loading="lazy">`).join('');
       renderRelatedShirts(shirt);
       const btn = document.getElementById('d-detail-add-btn');
@@ -3410,6 +3414,49 @@
     return '<div class="spec-table">' + rows.filter(function(r) { return r[1]; }).map(function(r) {
       return '<div class="spec-row"><div class="spec-key">' + r[0] + '</div><div class="spec-val">' + r[1] + '</div></div>';
     }).join('') + '</div>';
+  }
+
+  // Measurements block: a small football-shirt diagram with length/width arrows.
+  // Only shows if the shirt has length_cm and/or width_cm filled in the database.
+  function buildMeasurements(shirt) {
+    var L = shirt.length_cm, W = shirt.width_cm;
+    var hasL = (L !== null && L !== undefined && L !== '' && !isNaN(parseFloat(L)));
+    var hasW = (W !== null && W !== undefined && W !== '' && !isNaN(parseFloat(W)));
+    if (!hasL && !hasW) return '';
+    var lTxt = hasL ? (parseFloat(L) + ' cm') : '—';
+    var wTxt = hasW ? (parseFloat(W) + ' cm') : '—';
+    return ''
+      + '<div style="border-top:1px solid #1e1c17;padding-top:18px;margin-bottom:8px">'
+      +   '<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Measurements</div>'
+      +   '<div style="display:flex;align-items:center;gap:20px">'
+      +     '<div style="position:relative;flex-shrink:0">'
+      +       measurementSvg()
+      +     '</div>'
+      +     '<div style="display:flex;flex-direction:column;gap:10px">'
+      +       '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:52px">Width</span><span style="font-size:15px;font-weight:500;color:var(--cream)">' + wTxt + '</span></div>'
+      +       '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:52px">Length</span><span style="font-size:15px;font-weight:500;color:var(--cream)">' + lTxt + '</span></div>'
+      +       '<div style="font-size:10px;color:var(--text-muted);line-height:1.5;max-width:180px">Laid flat, measured pit to pit (width) and collar to hem (length).</div>'
+      +     '</div>'
+      +   '</div>'
+      + '</div>';
+  }
+  // Small SVG of a football shirt with width (horizontal) and length (vertical) arrows.
+  function measurementSvg() {
+    return ''
+      + '<svg width="120" height="130" viewBox="0 0 120 130" fill="none" xmlns="http://www.w3.org/2000/svg">'
+      +   '<path d="M42 16 L22 26 L14 44 L26 52 L34 46 L34 112 L86 112 L86 46 L94 52 L106 44 L98 26 L78 16 '
+      +         'C74 24 66 28 60 28 C54 28 46 24 42 16 Z" fill="#1a1813" stroke="#3a372f" stroke-width="1.5" stroke-linejoin="round"/>'
+      // width arrow (horizontal, across the chest)
+      +   '<line x1="36" y1="70" x2="84" y2="70" stroke="var(--gold)" stroke-width="1.5"/>'
+      +   '<polyline points="40,66 36,70 40,74" fill="none" stroke="var(--gold)" stroke-width="1.5"/>'
+      +   '<polyline points="80,66 84,70 80,74" fill="none" stroke="var(--gold)" stroke-width="1.5"/>'
+      +   '<text x="60" y="66" fill="var(--gold)" font-size="9" font-family="DM Sans,sans-serif" text-anchor="middle" font-weight="600">WIDTH</text>'
+      // length arrow (vertical, down the body)
+      +   '<line x1="60" y1="48" x2="60" y2="106" stroke="var(--gold)" stroke-width="1.5"/>'
+      +   '<polyline points="56,52 60,48 64,52" fill="none" stroke="var(--gold)" stroke-width="1.5"/>'
+      +   '<polyline points="56,102 60,106 64,102" fill="none" stroke="var(--gold)" stroke-width="1.5"/>'
+      +   '<text x="60" y="90" fill="var(--gold)" font-size="9" font-family="DM Sans,sans-serif" text-anchor="middle" font-weight="600" transform="rotate(90 60 88)">LENGTH</text>'
+      + '</svg>';
   }
 
   function galleryNav(ctx, dir) {
