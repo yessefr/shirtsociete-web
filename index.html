@@ -1089,6 +1089,7 @@
       .mobile-header { display: flex; }
       .screen { display: none; }
       .screen.active { display: flex; }
+      .archive-detail-grid { grid-template-columns: 1fr !important; }
 
       /* Mobile hero */
       .m-hero {
@@ -1528,6 +1529,10 @@
       <span>Shop the Collection</span>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </div>
+    <div class="profile-item" onclick="mGoTo('archive')">
+      <span>The Shirt Société Archive</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
     <a class="profile-item" href="/blog.html" style="text-decoration:none;color:var(--white)">
       <span>Blog</span>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
@@ -1546,6 +1551,29 @@
     </a>
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px;border-top:1px solid #1e1c17;margin-top:8px">Contact</div>
     <div class="profile-item"><span>info@shirtsociete.com</span></div>
+  </div>
+</div>
+
+<!-- MOBILE ARCHIVE -->
+<div id="screen-archive" class="screen" style="padding-bottom:90px">
+  <div style="padding:28px 20px 20px;text-align:center;border-bottom:1px solid #1e1c17">
+    <div style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500">Private Collection</div>
+    <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;line-height:1.05;margin-bottom:14px">The Shirt Société Archive</h1>
+    <p style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.75;color:#9a938a;margin-bottom:12px">What drives us are beautiful football shirts. Some shirts simply mean too much to let go: rare specs, match worn jerseys and personal grails that tell the story of the game we love.</p>
+    <p style="font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.7;color:#7f786f;margin-bottom:18px">Want to see more photos, ask a question, or make an offer? Reach out any time via Instagram or email.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:var(--gold);padding:10px 16px;border-radius:100px;font-size:12px;font-weight:500;text-decoration:none">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        @shirtsociete
+      </a>
+      <button onclick="openContactModal()" style="display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid #2a2820;color:var(--cream);padding:10px 16px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Send a message
+      </button>
+    </div>
+  </div>
+  <div id="m-archive-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 20px 24px">
+    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Loading archive...</div>
   </div>
 </div>
 
@@ -2145,14 +2173,50 @@
 
     <!-- SHIRT SOCIÉTÉ ARCHIVE (private collection, not for sale) -->
     <div class="dscreen" id="d-screen-archive">
-      <section style="padding:56px 52px 28px;border-bottom:1px solid #1e1c17;text-align:center">
+      <section style="padding:56px 52px 40px;border-bottom:1px solid #1e1c17;text-align:center">
         <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:500">Private Collection</div>
-        <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(32px,4vw,52px);line-height:1.05;margin-bottom:14px">The Shirt Société Archive</h1>
-        <p style="max-width:560px;margin:0 auto;font-size:14px;font-weight:300;line-height:1.8;color:rgba(245,240,232,.55)">Shirts from our own archive — personal grails, not for sale. A look at the pieces behind the passion.</p>
+        <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(32px,4vw,52px);line-height:1.05;margin-bottom:22px">The Shirt Société Archive</h1>
+        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:#9a938a">What drives us are beautiful football shirts. Some shirts simply mean too much to let go: rare specs, match worn jerseys and personal grails that tell the story of the game we love.</p>
+        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:#9a938a">The Shirt Société Archive brings these pieces together in one place, the shirts we are most proud to have owned. This collection will keep growing as we do, and every so often one of these shirts may find a new home with the right collector.</p>
+        <p style="max-width:600px;margin:0 auto 30px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.75;color:#7f786f">Want to see more photos, ask a question, or make an offer? Reach out any time via Instagram or email.</p>
+
+        <div style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:500">Contact</div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:var(--gold);padding:11px 20px;border-radius:100px;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s" onmouseover="this.style.background='rgba(200,169,80,.18)'" onmouseout="this.style.background='rgba(200,169,80,.1)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @shirtsociete
+          </a>
+          <button onclick="openContactModal()" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid #2a2820;color:var(--cream);padding:11px 20px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.5)'" onmouseout="this.style.borderColor='#2a2820'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Send a message
+          </button>
+        </div>
       </section>
       <div style="padding:36px 52px 64px">
         <div id="d-archive-grid" class="shirt-grid">
           <div class="loading" style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Loading archive...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARCHIVE DETAIL MODAL -->
+    <div id="archive-detail-modal" style="position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:24px;overflow-y:auto">
+      <div style="background:#0d0b07;border:1px solid #1e1c17;border-radius:6px;max-width:920px;width:100%;max-height:92vh;overflow-y:auto;position:relative">
+        <button onclick="closeArchiveDetail()" style="position:absolute;top:14px;right:14px;z-index:5;background:rgba(0,0,0,.5);border:1px solid #2a2820;color:var(--cream);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center">×</button>
+        <div class="archive-detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+          <div style="background:#0a0905;padding:24px;display:flex;flex-direction:column;gap:12px">
+            <div style="position:relative;background:#111;border-radius:3px;overflow:hidden;cursor:zoom-in" onclick="openArchiveZoom()">
+              <img id="ad-main-img" src="" alt="" style="width:100%;height:auto;display:block">
+            </div>
+            <div id="ad-thumbs" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+          </div>
+          <div style="padding:32px 30px">
+            <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Shirt Société Archive</div>
+            <h2 id="ad-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;line-height:1.2;margin-bottom:6px"></h2>
+            <div id="ad-club" style="font-size:13px;color:var(--text-muted);margin-bottom:4px"></div>
+            <div id="ad-season" style="font-size:13px;color:var(--text-muted);margin-bottom:18px"></div>
+            <p id="ad-story" style="font-size:14px;line-height:1.75;color:#b0a898;margin-bottom:8px"></p>
+          </div>
         </div>
       </div>
     </div>
@@ -3333,6 +3397,7 @@
     var img = document.getElementById('zoom-lightbox-img');
     img.src = currentImages[currentImgIndex];
     zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
+    img.style.transformOrigin = 'center center';
     img.style.transform = 'scale(1)';
     img.classList.remove('zoomed', 'super');
     var _h = document.getElementById('zoom-hint');
@@ -3346,6 +3411,12 @@
     if (e && e.target.id === 'zoom-lightbox-img' && zoomLevel > 1) return;
     document.getElementById('zoom-lightbox').classList.remove('open');
     document.body.style.overflow = '';
+    // if we opened the zoom from the archive detail, bring that back
+    if (archiveZoomReturn) {
+      archiveZoomReturn = false;
+      var adm = document.getElementById('archive-detail-modal');
+      if (adm) { adm.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+    }
   }
   function zoomNav(e, dir) {
     if (e) e.stopPropagation();
@@ -3353,6 +3424,7 @@
     currentImgIndex = (currentImgIndex + dir + currentImages.length) % currentImages.length;
     var img = document.getElementById('zoom-lightbox-img');
     zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
+    img.style.transformOrigin = 'center center';
     img.style.transform = 'scale(1)';
     img.classList.remove('zoomed', 'super');
     var _h = document.getElementById('zoom-hint');
@@ -3364,8 +3436,21 @@
     var mainEl = document.getElementById(mainId);
     if (mainEl) mainEl.src = currentImages[currentImgIndex];
   }
-  var zoomFitScale = 1;   // step 1: whole shirt fills the screen
-  var ZOOM_SUPER = 2.8;   // step 2: super zoom for badges, tags and stitching
+  var zoomFitScale = 1;   // single zoom level
+
+  // Set the zoom origin to the cursor position over the IMAGE, then scale.
+  // Using transform-origin avoids all the object-fit / translate math and
+  // reliably zooms toward wherever the mouse is.
+  function setZoomOrigin(e) {
+    var img = document.getElementById('zoom-lightbox-img');
+    if (!img) return;
+    var r = img.getBoundingClientRect();
+    var px = ((e.clientX - r.left) / r.width) * 100;
+    var py = ((e.clientY - r.top) / r.height) * 100;
+    px = Math.min(100, Math.max(0, px));
+    py = Math.min(100, Math.max(0, py));
+    img.style.transformOrigin = px + '% ' + py + '%';
+  }
 
   function toggleZoomLevel(e) {
     if (e) e.stopPropagation();
@@ -3374,83 +3459,37 @@
     var hint = document.getElementById('zoom-hint');
 
     if (zoomLevel === 1) {
-      // STEP 1 — fill the screen with the whole shirt
-      var r = img.getBoundingClientRect();
-      var fitScale = Math.min(window.innerWidth / r.width, window.innerHeight / r.height);
-      // go slightly BEYOND fitting the screen, so there is room to move around the shirt
-      zoomFitScale = Math.max(2.0, Math.min(fitScale * 1.35, 3.6));
+      // zoom IN — single level, toward wherever the cursor clicked
+      zoomFitScale = 2.6;
       zoomLevel = zoomFitScale;
-      zoomPanX = 0; zoomPanY = 0;
+      if (e && typeof e.clientX === 'number') setZoomOrigin(e);
+      else img.style.transformOrigin = 'center center';
       img.classList.add('zoomed');
-      if (hint) hint.textContent = 'Click again for detail zoom';
-    } else if (Math.abs(zoomLevel - zoomFitScale) < 0.01) {
-      // STEP 2 — super zoom, for inspecting badges and labels up close
-      zoomLevel = zoomFitScale * ZOOM_SUPER;
-      img.classList.add('zoomed', 'super');
+      img.style.transform = 'scale(' + zoomLevel + ')';
       if (hint) hint.textContent = 'Move the mouse to explore · click to reset';
     } else {
       // back to normal
-      zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
+      zoomLevel = 1;
       img.classList.remove('zoomed', 'super');
+      img.style.transformOrigin = 'center center';
+      img.style.transform = 'scale(1)';
       if (hint) hint.textContent = 'Click the image to zoom';
     }
-    img.style.transform = 'scale(' + zoomLevel + ') translate(' + zoomPanX + 'px,' + zoomPanY + 'px)';
   }
   function updateZoomCounter() {
     var c = document.getElementById('zoom-counter');
     if (c) c.textContent = (currentImgIndex + 1) + ' / ' + currentImages.length;
   }
 
-  // Pan the zoomed image with mouse move
+  // While zoomed, follow the cursor by moving the transform-origin.
   (function initZoomPan() {
     var lb = document.getElementById('zoom-lightbox');
     var img = document.getElementById('zoom-lightbox-img');
     if (!img || !lb) return;
-
-    // Work out the image's UNSCALED on-screen size once, so panning maths stays correct
-    // at every zoom step. getBoundingClientRect() reports the scaled box, which is why
-    // the earlier version could not reach the edges of the shirt.
-    function baseSize() {
-      var prev = img.style.transform;
-      img.style.transition = 'none';
-      img.style.transform = 'none';
-      var r = img.getBoundingClientRect();
-      img.style.transform = prev;
-      // restore transition on the next frame
-      requestAnimationFrame(function() { img.style.transition = ''; });
-      return { w: r.width, h: r.height };
-    }
-
-    var cachedBase = null;
-    function getBase() {
-      if (!cachedBase || !cachedBase.w) cachedBase = baseSize();
-      return cachedBase;
-    }
-    img.addEventListener('load', function() { cachedBase = null; });
-    window.addEventListener('resize', function() { cachedBase = null; });
-
     lb.addEventListener('mousemove', function(e) {
       if (zoomLevel <= 1) return;
-      var b = getBase();
-      if (!b.w || !b.h) return;
-
-      var vw = window.innerWidth, vh = window.innerHeight;
-      // cursor position across the whole window, 0 .. 1
-      var px = Math.min(1, Math.max(0, e.clientX / vw));
-      var py = Math.min(1, Math.max(0, e.clientY / vh));
-
-      // how far the scaled image overflows the window in each direction
-      var scaledW = b.w * zoomLevel;
-      var scaledH = b.h * zoomLevel;
-      var overflowX = Math.max(0, scaledW - vw);
-      var overflowY = Math.max(0, scaledH - vh);
-
-      // translate happens inside the scaled space, so divide by zoomLevel
-      var tx = ((0.5 - px) * overflowX) / zoomLevel;
-      var ty = ((0.5 - py) * overflowY) / zoomLevel;
-
-      zoomPanX = tx; zoomPanY = ty;
-      img.style.transform = 'scale(' + zoomLevel + ') translate(' + tx + 'px,' + ty + 'px)';
+      setZoomOrigin(e);
+      img.style.transform = 'scale(' + zoomLevel + ')';
     });
   })();
 
@@ -3865,6 +3904,7 @@
     const tab = document.getElementById('m-tab-'+screen);
     if (tab) tab.classList.add('active');
     if (screen === 'about') document.getElementById('m-tab-profile').classList.add('active');
+    if (screen === 'archive') { var mtp = document.getElementById('m-tab-profile'); if (mtp) mtp.classList.add('active'); renderMobileArchive(); }
     if (screen === 'wishlist') { document.getElementById('m-tab-wishlist').classList.add('active'); renderWishlist(); }
     window.scrollTo(0,0);
     if (screen === 'profile') initProfile();
@@ -3954,11 +3994,9 @@
   // ── SHIRT SOCIÉTÉ ARCHIVE (private collection) ──
   var archiveItems = null;      // cached fetch
   var archiveLoading = false;
-  function renderArchive() {
-    var grid = document.getElementById('d-archive-grid');
-    if (!grid) return;
-    if (archiveItems) { paintArchive(archiveItems); return; }
-    if (archiveLoading) return;
+  function fetchArchive(cb) {
+    if (archiveItems) { cb(archiveItems); return; }
+    if (archiveLoading) { setTimeout(function(){ fetchArchive(cb); }, 200); return; }
     archiveLoading = true;
     fetch(dbHost + '/rest/v1/my_collection?select=*&order=created_at.desc', {
       headers: { 'apikey': dbToken, 'Authorization': 'Bearer ' + dbToken }
@@ -3967,13 +4005,44 @@
       .then(function(data){
         archiveItems = Array.isArray(data) ? data : [];
         archiveLoading = false;
-        paintArchive(archiveItems);
+        cb(archiveItems);
       })
       .catch(function(err){
         archiveLoading = false;
         console.error('Archive fetch error:', err);
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Could not load the archive right now.</div>';
+        cb(null);
       });
+  }
+  function renderArchive() {
+    var grid = document.getElementById('d-archive-grid');
+    if (!grid) return;
+    fetchArchive(function(items){
+      if (items === null) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Could not load the archive right now.</div>'; return; }
+      paintArchive(items);
+    });
+  }
+  function renderMobileArchive() {
+    var grid = document.getElementById('m-archive-grid');
+    if (!grid) return;
+    fetchArchive(function(items){
+      if (items === null) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Could not load the archive right now.</div>'; return; }
+      if (!items.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">The archive is being catalogued. Check back soon.</div>'; return; }
+      grid.innerHTML = items.map(function(s){
+        var imgs = (s.images && s.images.length) ? s.images : [];
+        var main = imgs[0] || '';
+        return ''
+          + '<div onclick="openArchiveItem(\'' + s.id + '\')" style="cursor:pointer">'
+          +   '<div style="position:relative;aspect-ratio:3/4;background:#111;border-radius:3px;overflow:hidden">'
+          +     '<img src="' + main + '" alt="' + (s.title||'') + '" loading="lazy" style="width:100%;height:100%;object-fit:cover">'
+          +     '<div style="position:absolute;top:8px;left:8px;background:rgba(10,9,5,.8);color:var(--gold);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px">Archive</div>'
+          +   '</div>'
+          +   '<div style="padding:8px 2px 4px">'
+          +     '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">' + (s.club||'') + '</div>'
+          +     '<div style="font-size:12px;font-weight:500;line-height:1.3">' + (s.title||'') + '</div>'
+          +   '</div>'
+          + '</div>';
+      }).join('');
+    });
   }
   function paintArchive(items) {
     var grid = document.getElementById('d-archive-grid');
@@ -4002,15 +4071,58 @@
         + '</div>';
     }).join('');
   }
+  var currentArchiveItem = null;
   function openArchiveItem(id) {
     if (!archiveItems) return;
     var item = archiveItems.find(function(s){ return String(s.id) === String(id); });
     if (!item) return;
+    currentArchiveItem = item;
     var imgs = (item.images && item.images.length) ? item.images : [];
-    if (!imgs.length) return;
     currentImages = imgs;
     currentImgIndex = 0;
+    document.getElementById('ad-title').textContent = item.title || '';
+    var clubEl = document.getElementById('ad-club');
+    clubEl.textContent = item.club || '';
+    clubEl.style.display = item.club ? 'block' : 'none';
+    var seasonEl = document.getElementById('ad-season');
+    seasonEl.textContent = item.season || '';
+    seasonEl.style.display = item.season ? 'block' : 'none';
+    document.getElementById('ad-story').textContent = item.description || '';
+    document.getElementById('ad-main-img').src = imgs[0] || '';
+    document.getElementById('ad-thumbs').innerHTML = imgs.map(function(img, i){
+      return '<img src="' + img + '" onclick="archiveSwitchImg(' + i + ')" style="width:56px;height:56px;object-fit:cover;border-radius:2px;cursor:pointer;border:1px solid ' + (i===0?'var(--gold)':'#2a2820') + '" data-ai="' + i + '">';
+    }).join('');
+    document.getElementById('archive-detail-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function archiveSwitchImg(i) {
+    if (!currentImages[i]) return;
+    currentImgIndex = i;
+    document.getElementById('ad-main-img').src = currentImages[i];
+    document.querySelectorAll('#ad-thumbs img').forEach(function(t){
+      t.style.borderColor = (parseInt(t.getAttribute('data-ai')) === i) ? 'var(--gold)' : '#2a2820';
+    });
+  }
+  function closeArchiveDetail() {
+    document.getElementById('archive-detail-modal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  var archiveZoomReturn = false;
+  function openArchiveZoom() {
+    // reuse the full zoom lightbox with the current archive images
+    if (!currentImages.length) return;
+    // hide the detail modal so the higher z-index lightbox is usable,
+    // and remember to bring the detail back when zoom closes
+    archiveZoomReturn = true;
+    document.getElementById('archive-detail-modal').style.display = 'none';
     openZoom();
+  }
+  function openArchiveEnquiry() {
+    var title = currentArchiveItem ? (currentArchiveItem.title || '') : '';
+    closeArchiveDetail();
+    openContactModal();
+    var subj = document.getElementById('cf-subject');
+    if (subj) subj.value = title ? ('Archive enquiry: ' + title) : 'Archive enquiry';
   }
 
   // Navigate to shop pre-filtered by category (used by cinematic sweep cards)
@@ -5332,6 +5444,13 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeContactModal();
   });
+  (function() {
+    var am = document.getElementById('archive-detail-modal');
+    if (am) am.addEventListener('click', function(e) { if (e.target === am) closeArchiveDetail(); });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { var m = document.getElementById('archive-detail-modal'); if (m && m.style.display === 'flex') closeArchiveDetail(); }
+    });
+  })();
   (function() {
     var m = document.getElementById('contact-modal');
     if (m) m.addEventListener('click', function(e) { if (e.target === m) closeContactModal(); });
