@@ -3230,20 +3230,24 @@
       if (ogi && getImg(shirt)) ogi.setAttribute('content', getImg(shirt));
       var ogu = document.querySelector('meta[property="og:url"]');
       if (ogu) ogu.setAttribute('content', shirtUrl(shirt));
+      if (typeof updateCanonical === 'function') updateCanonical('/?shirt=' + shirt.id);
     } catch (e) {}
   }
 
   function restoreDefaultMeta() {
     try {
-      history.pushState({}, '', '/');
+      history.replaceState({}, '', '/');
       document.title = 'Shirt Société | Vintage Football Shirts | Timeless, Original, Rare';
+      var md = document.querySelector('meta[name="description"]');
+      if (md) md.setAttribute('content', 'Shirt Société — curated vintage & match worn football shirts. Timeless, original, rare.');
+      if (typeof updateCanonical === 'function') updateCanonical('/');
     } catch (e) {}
   }
 
   // ── ARCHIVE SEO ──
   function setArchiveMeta() {
     try {
-      history.pushState({ screen: 'archive' }, '', '/?p=archive');
+      history.replaceState({ screen: 'archive' }, '', '/?p=archive');
       document.title = 'The Shirt Société Archive | Rare & Match Worn Football Shirts';
       var desc = 'The private Shirt Société Archive: rare spec variants, match worn and match issued football shirts including Netherlands 1988, Xavi Simons, Matthijs de Ligt, Rafael van der Vaart and Tijjani Reijnders.';
       var md = document.querySelector('meta[name="description"]');
@@ -3252,8 +3256,7 @@
       if (ogt) ogt.setAttribute('content', 'The Shirt Société Archive');
       var ogd = document.querySelector('meta[property="og:description"]');
       if (ogd) ogd.setAttribute('content', desc);
-      var ogu = document.querySelector('meta[property="og:url"]');
-      if (ogu) ogu.setAttribute('content', 'https://shirtsociete.com/?p=archive');
+      if (typeof updateCanonical === 'function') updateCanonical('/?p=archive');
     } catch (e) {}
   }
   // Inject a CollectionPage + ItemList schema for the archive shirts
@@ -4683,10 +4686,32 @@
   updateDropCountdown();
   setInterval(updateDropCountdown, 1000);
 
-  // ── URL ROUTING ──
+  // ── URL ROUTING (query-param based, SEO-clean) ──
+  function screenToUrl(screen, id) {
+    if (id) return '/?shirt=' + encodeURIComponent(id);
+    if (!screen || screen === 'home') return '/';
+    if (screen === 'shop') return '/?p=shop';
+    if (screen === 'archive') return '/?p=archive';
+    if (screen === 'about') return '/?p=about';
+    // other screens (cart, wishlist, profile, checkout, detail) stay on a clean param
+    return '/?p=' + screen;
+  }
   function updateURL(screen, id) {
-    const hash = id ? `#${screen}/${id}` : `#${screen}`;
-    history.pushState({ screen, id }, '', hash);
+    var url = screenToUrl(screen, id);
+    // strip any leftover hash so we never get "/?p=archive#about"
+    history.pushState({ screen: screen, id: id }, '', url);
+    updateCanonical(url);
+  }
+  // Keep <link rel="canonical"> in sync so Google consolidates all variants
+  function updateCanonical(pathAndQuery) {
+    try {
+      var abs = 'https://shirtsociete.com' + (pathAndQuery || '/');
+      var link = document.querySelector('link[rel="canonical"]');
+      if (!link) { link = document.createElement('link'); link.setAttribute('rel','canonical'); document.head.appendChild(link); }
+      link.setAttribute('href', abs);
+      var ogu = document.querySelector('meta[property="og:url"]');
+      if (ogu) ogu.setAttribute('content', abs);
+    } catch (e) {}
   }
 
   function handlePopState(e) {
@@ -4718,14 +4743,19 @@
     updateURL(screen);
   };
 
-  // On load, check hash
+  // On load: support BOTH the new ?p= params and any old #hash links,
+  // then rewrite the URL clean (removes a legacy #shop / #about).
   function initFromHash() {
-    const hash = window.location.hash.replace('#', '');
-    if (!hash) return;
-    const [screen, id] = hash.split('/');
+    // new system handles ?p= and ?shirt= via openShirtFromUrl (called elsewhere)
+    var hash = window.location.hash.replace('#', '');
+    if (!hash) { updateCanonical(window.location.pathname + window.location.search); return; }
+    var parts = hash.split('/');
+    var screen = parts[0], id = parts[1];
     if (screen && screen !== 'home') {
       if (window.innerWidth >= 768) dGoTo(screen);
       else mGoTo(screen);
+      // replace the old hash URL with the clean query-param version
+      try { history.replaceState({ screen: screen }, '', screenToUrl(screen, id)); } catch (e) {}
     }
   }
 
