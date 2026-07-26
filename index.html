@@ -1615,22 +1615,22 @@
     </div>
 
     <nav class="topbar-nav">
-      <div class="nav-item active" onclick="dGoTo('home')" id="d-nav-home">Home</div>
+      <a class="nav-item active" href="/" onclick="dGoTo('home');return false;" id="d-nav-home">Home</a>
 
       <div class="nav-dropdown">
-        <div class="nav-item" onclick="dGoTo('shop')" id="d-nav-shop">Shop</div>
+        <a class="nav-item" href="/?p=shop" onclick="dGoTo('shop');return false;" id="d-nav-shop">Shop</a>
         <div class="nav-dropdown-menu">
-          <div class="nav-item" onclick="dGoTo('shop');dSetFilter('all')">All Shirts</div>
-          <div class="nav-item" onclick="dGoTo('shop');dSetFilter('match_worn')" id="d-nav-mw">Match Worn</div>
-          <div class="nav-item" onclick="dGoTo('shop');dSetFilter('clubs')" id="d-nav-clubs">Clubs</div>
-          <div class="nav-item" onclick="dGoTo('shop');dSetFilter('national')" id="d-nav-national">National Teams</div>
+          <a class="nav-item" href="/?p=shop" onclick="dGoTo('shop');dSetFilter('all');return false;">All Shirts</a>
+          <a class="nav-item" href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" id="d-nav-mw">Match Worn</a>
+          <a class="nav-item" href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;" id="d-nav-clubs">Clubs</a>
+          <a class="nav-item" href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;" id="d-nav-national">National Teams</a>
         </div>
       </div>
 
-      <div class="nav-item" onclick="dShopNewest()" id="d-nav-new">New Added</div>
-      <div class="nav-item" onclick="dGoTo('archive')" id="d-nav-archive">Shirt Société Archive</div>
+      <a class="nav-item" href="/?p=shop&sort=new" onclick="dShopNewest();return false;" id="d-nav-new">New Added</a>
+      <a class="nav-item" href="/?p=archive" onclick="dGoTo('archive');return false;" id="d-nav-archive">Shirt Société Archive</a>
       <a class="nav-item" href="/blog.html">Blog</a>
-      <div class="nav-item" onclick="dGoTo('about')" id="d-nav-about">Our Story</div>
+      <a class="nav-item" href="/?p=about" onclick="dGoTo('about');return false;" id="d-nav-about">Our Story</a>
 
       <div class="topbar-actions">
         <div class="nav-item" onclick="dGoTo('wishlist')" id="d-nav-wishlist" title="Saved">
@@ -3285,10 +3285,28 @@
   function openShirtFromUrl() {
     try {
       var params = new URLSearchParams(window.location.search);
-      // deep link to the archive page
-      if (params.get('p') === 'archive') {
-        if (window.innerWidth >= 768) dGoTo('archive');
-        else mGoTo('archive');
+      var page = params.get('p');
+      // deep link to a main section
+      if (page === 'archive') {
+        if (window.innerWidth >= 768) dGoTo('archive'); else mGoTo('archive');
+        return true;
+      }
+      if (page === 'about') {
+        if (window.innerWidth >= 768) dGoTo('about'); else mGoTo('about');
+        return true;
+      }
+      if (page === 'shop') {
+        var cat = params.get('cat');
+        var sort = params.get('sort');
+        if (window.innerWidth >= 768) {
+          dGoTo('shop');
+          if (sort === 'new') { dShopNewest(); }
+          else if (cat) { dSetFilter(cat); }
+        } else {
+          mGoTo('shop');
+          if (sort === 'new') { mShopNew(); }
+          else if (cat) { mShopCategory(cat); }
+        }
         return true;
       }
       var id = params.get('shirt');
