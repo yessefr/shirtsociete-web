@@ -218,6 +218,42 @@
 
     .nav-section-label { display: none; }
 
+    /* ─── Shop dropdown ─── */
+    .nav-dropdown {
+      position: relative;
+    }
+    .nav-dropdown > .nav-item::after {
+      content: ""; display: inline-block;
+      width: 6px; height: 6px; margin-left: 3px;
+      border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg) translateY(-2px);
+      transition: transform .2s; opacity: .7;
+    }
+    .nav-dropdown:hover > .nav-item::after { transform: rotate(45deg) translateY(0); }
+    .nav-dropdown-menu {
+      position: absolute; top: 100%; left: 0;
+      min-width: 200px; padding: 8px;
+      background: rgba(10,9,5,0.97);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      border: 1px solid #1e1c17; border-radius: 10px;
+      box-shadow: 0 12px 34px rgba(0,0,0,.5);
+      opacity: 0; visibility: hidden; transform: translateY(6px);
+      transition: opacity .18s ease, transform .18s ease, visibility .18s;
+      z-index: 120;
+    }
+    /* small hover bridge so the menu doesn't close in the gap */
+    .nav-dropdown::before {
+      content: ""; position: absolute; top: 100%; left: 0; right: 0; height: 12px;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu {
+      opacity: 1; visibility: visible; transform: translateY(4px);
+    }
+    .nav-dropdown-menu .nav-item {
+      width: 100%; padding: 10px 14px; border-radius: 6px; font-size: 13px;
+    }
+    .nav-dropdown-menu .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--white); }
+
     /* Main content area — full width, offset for the fixed bar */
     .desktop-main {
       flex: 1; min-height: 100vh;
@@ -689,6 +725,7 @@
       margin-bottom: 48px;
       overflow: hidden;
       border-radius: 3px;
+      transition: height .55s cubic-bezier(.16,1,.3,1);
     }
     .fair-strip {
       position: relative;
@@ -761,7 +798,11 @@
     /* open only while the mouse is on that strip — everything closes when you leave */
     .fair-strip:hover,
     .fair-strip:focus-visible {
-      flex-grow: 2.4;
+      flex-grow: 1.9;
+    }
+    /* row grows taller when any strip is hovered — favours the portrait photos */
+    .fair-strips:hover {
+      height: 600px;
     }
     .fair-strip:hover img,
     .fair-strip:focus-visible img {
@@ -1546,10 +1587,19 @@
 
     <nav class="topbar-nav">
       <div class="nav-item active" onclick="dGoTo('home')" id="d-nav-home">Home</div>
-      <div class="nav-item" onclick="dGoTo('shop')" id="d-nav-shop">Shop</div>
-      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('match_worn')" id="d-nav-mw">Match Worn</div>
-      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('clubs')" id="d-nav-clubs">Clubs</div>
-      <div class="nav-item" onclick="dGoTo('shop');dSetFilter('national')" id="d-nav-national">National Teams</div>
+
+      <div class="nav-dropdown">
+        <div class="nav-item" onclick="dGoTo('shop')" id="d-nav-shop">Shop</div>
+        <div class="nav-dropdown-menu">
+          <div class="nav-item" onclick="dGoTo('shop');dSetFilter('all')">All Shirts</div>
+          <div class="nav-item" onclick="dGoTo('shop');dSetFilter('match_worn')" id="d-nav-mw">Match Worn</div>
+          <div class="nav-item" onclick="dGoTo('shop');dSetFilter('clubs')" id="d-nav-clubs">Clubs</div>
+          <div class="nav-item" onclick="dGoTo('shop');dSetFilter('national')" id="d-nav-national">National Teams</div>
+        </div>
+      </div>
+
+      <div class="nav-item" onclick="dShopNewest()" id="d-nav-new">New Added</div>
+      <div class="nav-item" onclick="dGoTo('archive')" id="d-nav-archive">Shirt Société Archive</div>
       <a class="nav-item" href="/blog.html">Blog</a>
       <div class="nav-item" onclick="dGoTo('about')" id="d-nav-about">Our Story</div>
 
@@ -2089,6 +2139,20 @@
               <div style="font-size:13px;color:var(--text-muted)">No orders yet.</div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHIRT SOCIÉTÉ ARCHIVE (private collection, not for sale) -->
+    <div class="dscreen" id="d-screen-archive">
+      <section style="padding:56px 52px 28px;border-bottom:1px solid #1e1c17;text-align:center">
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:500">Private Collection</div>
+        <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(32px,4vw,52px);line-height:1.05;margin-bottom:14px">The Shirt Société Archive</h1>
+        <p style="max-width:560px;margin:0 auto;font-size:14px;font-weight:300;line-height:1.8;color:rgba(245,240,232,.55)">Shirts from our own archive — personal grails, not for sale. A look at the pieces behind the passion.</p>
+      </section>
+      <div style="padding:36px 52px 64px">
+        <div id="d-archive-grid" class="shirt-grid">
+          <div class="loading" style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Loading archive...</div>
         </div>
       </div>
     </div>
@@ -3866,9 +3930,11 @@
 
   // ── DESKTOP NAV ──
   function dGoTo(screen) {
+    var target = document.getElementById('d-screen-'+screen);
+    if (!target) return;
     document.querySelectorAll('.dscreen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById('d-screen-'+screen).classList.add('active');
+    target.classList.add('active');
     const nav = document.getElementById('d-nav-'+screen);
     if (nav) nav.classList.add('active');
     window.scrollTo(0,0);
@@ -3876,6 +3942,7 @@
     if (screen === 'checkout') buildCheckoutForms();
     if (screen === 'wishlist') renderWishlist();
     if (screen === 'profile') initProfile();
+    if (screen === 'archive') renderArchive();
     if (screen === 'shop' && typeof ssMaybeShowCookies === 'function') ssMaybeShowCookies();
     // screens are hidden at boot, so ScrollTrigger must re-measure once one becomes visible
     if (typeof ScrollTrigger !== 'undefined') {
@@ -3883,6 +3950,69 @@
     }
   }
   function dGoBack() { dGoTo(dPrevScreen); }
+
+  // ── SHIRT SOCIÉTÉ ARCHIVE (private collection) ──
+  var archiveItems = null;      // cached fetch
+  var archiveLoading = false;
+  function renderArchive() {
+    var grid = document.getElementById('d-archive-grid');
+    if (!grid) return;
+    if (archiveItems) { paintArchive(archiveItems); return; }
+    if (archiveLoading) return;
+    archiveLoading = true;
+    fetch(dbHost + '/rest/v1/my_collection?select=*&order=created_at.desc', {
+      headers: { 'apikey': dbToken, 'Authorization': 'Bearer ' + dbToken }
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        archiveItems = Array.isArray(data) ? data : [];
+        archiveLoading = false;
+        paintArchive(archiveItems);
+      })
+      .catch(function(err){
+        archiveLoading = false;
+        console.error('Archive fetch error:', err);
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Could not load the archive right now.</div>';
+      });
+  }
+  function paintArchive(items) {
+    var grid = document.getElementById('d-archive-grid');
+    if (!grid) return;
+    if (!items.length) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">The archive is being catalogued. Check back soon.</div>';
+      return;
+    }
+    grid.innerHTML = items.map(function(s, idx){
+      var imgs = (s.images && s.images.length) ? s.images : [];
+      var main = imgs[0] || '';
+      var img2 = imgs.length > 1 ? imgs[1] : null;
+      var delay = idx < 6 ? 'delay-' + ((idx % 5) + 1) : '';
+      return ''
+        + '<div class="shirt-card anim-ready scale-up ' + delay + '" onclick="openArchiveItem(\'' + s.id + '\')">'
+        +   '<div class="shirt-card-img">'
+        +     '<img class="img-main" src="' + main + '" alt="' + (s.title||'') + '" loading="lazy">'
+        +     (img2 ? '<img class="img-hover" src="' + img2 + '" alt="' + (s.title||'') + '" loading="lazy">' : '')
+        +     '<div class="shirt-cat-badge">Archive</div>'
+        +   '</div>'
+        +   '<div class="shirt-card-body">'
+        +     '<div class="shirt-card-club">' + (s.club||'') + '</div>'
+        +     '<div class="shirt-card-title">' + (s.title||'') + '</div>'
+        +     (s.season ? '<div class="shirt-card-size">' + s.season + '</div>' : '')
+        +   '</div>'
+        + '</div>';
+    }).join('');
+  }
+  function openArchiveItem(id) {
+    if (!archiveItems) return;
+    var item = archiveItems.find(function(s){ return String(s.id) === String(id); });
+    if (!item) return;
+    var imgs = (item.images && item.images.length) ? item.images : [];
+    if (!imgs.length) return;
+    currentImages = imgs;
+    currentImgIndex = 0;
+    openZoom();
+  }
+
   // Navigate to shop pre-filtered by category (used by cinematic sweep cards)
   function dShopCategory(cat) {
     dGoTo('shop');
@@ -3931,12 +4061,12 @@
     if (db) { db.textContent = count; db.classList.toggle('visible', count > 0); }
     if (icon) {
       if (count > 0) {
-        icon.style.width = '22px'; icon.style.height = '22px';
+        icon.style.width = '26px'; icon.style.height = '26px';
         icon.style.opacity = '1';
         icon.style.color = 'var(--gold)';
       } else {
-        icon.style.width = '12px'; icon.style.height = '12px';
-        icon.style.opacity = '0.2';
+        icon.style.width = '22px'; icon.style.height = '22px';
+        icon.style.opacity = '0.55';
         icon.style.color = 'currentColor';
       }
     }
