@@ -526,6 +526,30 @@
           <label class="form-label">Image 6 — Extra photo (Cloudinary URL)</label>
           <input type="text" class="form-input" id="m-image6" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
         </div>
+        <div class="form-group full">
+          <label class="form-label">Image 7 — Extra photo (Cloudinary URL)</label>
+          <input type="text" class="form-input" id="m-image7" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Image 8 — Extra photo (Cloudinary URL)</label>
+          <input type="text" class="form-input" id="m-image8" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Image 9 — Extra photo (Cloudinary URL)</label>
+          <input type="text" class="form-input" id="m-image9" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Image 10 — Extra photo (Cloudinary URL)</label>
+          <input type="text" class="form-input" id="m-image10" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Image 11 — Extra photo (Cloudinary URL)</label>
+          <input type="text" class="form-input" id="m-image11" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Image 12 — Extra photo (Cloudinary URL)</label>
+          <input type="text" class="form-input" id="m-image12" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+        </div>
         <input type="hidden" id="m-existing-images" value="[]">
         <div class="form-group full">
           <label class="form-label">Description</label>
@@ -745,19 +769,12 @@
     document.getElementById('m-length').value = (shirt?.length_cm ?? '') === null ? '' : (shirt?.length_cm ?? '');
     document.getElementById('m-width').value = (shirt?.width_cm ?? '') === null ? '' : (shirt?.width_cm ?? '');
     document.getElementById('m-condition').value = shirt?.condition || '';
-    const imgEl = document.getElementById('m-image');
-    const img2El = document.getElementById('m-image2');
-    const img3El = document.getElementById('m-image3');
     const existEl = document.getElementById('m-existing-images');
-    if (imgEl) imgEl.value = shirt?.images?.[0] || '';
-    if (img2El) img2El.value = shirt?.images?.[1] || '';
-    if (img3El) img3El.value = shirt?.images?.[2] || '';
-    var img4El = document.getElementById('m-image4');
-    var img5El = document.getElementById('m-image5');
-    var img6El = document.getElementById('m-image6');
-    if (img4El) img4El.value = shirt?.images?.[3] || '';
-    if (img5El) img5El.value = shirt?.images?.[4] || '';
-    if (img6El) img6El.value = shirt?.images?.[5] || '';
+    for (var gi = 1; gi <= 12; gi++) {
+      var fid = gi === 1 ? 'm-image' : 'm-image' + gi;
+      var el = document.getElementById(fid);
+      if (el) el.value = (shirt?.images?.[gi - 1]) || '';
+    }
     if (existEl) existEl.value = JSON.stringify(shirt?.images || []);
     document.getElementById('m-description').value = shirt?.description || '';
     document.getElementById('m-available').value = shirt ? String(shirt.available) : 'true';
@@ -767,10 +784,10 @@
 
   function closeShirtModal() {
     document.getElementById('shirt-modal').classList.remove('open');
-    ['m-image','m-image2','m-image3','m-image4','m-image5','m-image6'].forEach(function(id) {
-      var el = document.getElementById(id);
+    for (var gi = 1; gi <= 12; gi++) {
+      var el = document.getElementById(gi === 1 ? 'm-image' : 'm-image' + gi);
       if (el) el.value = '';
-    });
+    }
     var ex = document.getElementById('m-existing-images');
     if (ex) ex.value = '[]';
   }
@@ -1100,13 +1117,12 @@
       condition: document.getElementById('m-condition').value || null,
       description: document.getElementById('m-description').value.trim() || null,
       images: (function() {
-        var img1 = (document.getElementById('m-image') || {}).value || '';
-        var img2 = (document.getElementById('m-image2') || {}).value || '';
-        var img3 = (document.getElementById('m-image3') || {}).value || '';
-        var img4 = (document.getElementById('m-image4') || {}).value || '';
-        var img5 = (document.getElementById('m-image5') || {}).value || '';
-        var img6 = (document.getElementById('m-image6') || {}).value || '';
-        var imgs = [img1.trim(), img2.trim(), img3.trim(), img4.trim(), img5.trim(), img6.trim()].filter(function(u) { return u; });
+        var imgs = [];
+        for (var gi = 1; gi <= 12; gi++) {
+          var el = document.getElementById(gi === 1 ? 'm-image' : 'm-image' + gi);
+          var v = (el && el.value ? el.value.trim() : '');
+          if (v) imgs.push(v);
+        }
         if (imgs.length > 0) return imgs;
         try { return JSON.parse((document.getElementById('m-existing-images') || {}).value || '[]'); } catch(e) { return []; }
       })(),
