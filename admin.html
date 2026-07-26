@@ -485,6 +485,14 @@
           <input type="text" class="form-input" id="m-season" placeholder="2008-2009">
         </div>
         <div class="form-group">
+          <label class="form-label">Length (cm)</label>
+          <input type="number" step="0.1" class="form-input" id="m-length" placeholder="72">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Width (cm)</label>
+          <input type="number" step="0.1" class="form-input" id="m-width" placeholder="52">
+        </div>
+        <div class="form-group">
           <label class="form-label">Condition</label>
           <select class="form-select" id="m-condition">
             <option value="">Select...</option>
@@ -734,6 +742,8 @@
     document.getElementById('m-price').value = shirt?.price || '';
     document.getElementById('m-size').value = shirt?.size || '';
     document.getElementById('m-season').value = shirt?.season || '';
+    document.getElementById('m-length').value = (shirt?.length_cm ?? '') === null ? '' : (shirt?.length_cm ?? '');
+    document.getElementById('m-width').value = (shirt?.width_cm ?? '') === null ? '' : (shirt?.width_cm ?? '');
     document.getElementById('m-condition').value = shirt?.condition || '';
     const imgEl = document.getElementById('m-image');
     const img2El = document.getElementById('m-image2');
@@ -1085,6 +1095,8 @@
       price: parseFloat(price),
       size: document.getElementById('m-size').value || null,
       season: document.getElementById('m-season').value.trim() || null,
+      length_cm: (function(){ var v = document.getElementById('m-length').value; return v === '' ? null : parseFloat(v); })(),
+      width_cm: (function(){ var v = document.getElementById('m-width').value; return v === '' ? null : parseFloat(v); })(),
       condition: document.getElementById('m-condition').value || null,
       description: document.getElementById('m-description').value.trim() || null,
       images: (function() {
