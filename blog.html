@@ -30,12 +30,14 @@
     .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500;}
     .blog-h1{font-family:"Playfair Display",serif;font-style:italic;font-weight:900;font-size:48px;line-height:1.1;margin-bottom:12px;}
     .blog-sub{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:var(--text-muted);}
-    .posts-grid{display:grid;grid-template-columns:repeat(2,1fr);}
-    .post-card{cursor:pointer;padding:40px;border-bottom:1px solid #1e1c17;border-right:1px solid #1e1c17;transition:background 0.2s;}
+    .posts-grid{display:flex;flex-direction:column;}
+    .post-card{cursor:pointer;padding:32px 40px;border-bottom:1px solid #1e1c17;transition:background 0.2s;display:flex;gap:28px;align-items:flex-start;}
     .post-card:hover{background:rgba(255,255,255,0.02);}
-    .post-card:nth-child(even){border-right:none;}
     .post-card.no-image{padding-top:26px;border-top:2px solid var(--gold);}
     .post-card.no-image .post-tag{margin-top:0;}
+    .post-card .post-img{flex:0 0 240px;margin-bottom:0;max-height:170px;}
+    .post-card .post-img.portrait{aspect-ratio:4/3;}
+    .post-card .post-body-text{flex:1;min-width:0;}
     .post-img{width:100%;margin-bottom:20px;border-radius:2px;overflow:hidden;background:#111009;}
     .post-img.landscape{aspect-ratio:16/9;}
     .post-img.portrait{aspect-ratio:3/4;}
@@ -75,7 +77,8 @@
       .sidebar{display:none;} .main{margin-left:0;}
       .blog-header{padding:24px 20px;} .blog-h1{font-size:28px;}
       .posts-grid{grid-template-columns:1fr;}
-      .post-card{padding:24px 20px;border-right:none;}
+      .post-card{padding:24px 20px;border-right:none;flex-direction:column;gap:16px;}
+      .post-card .post-img{flex:none;width:100%;max-height:200px;}
       .detail-wrap{padding:24px 20px;} .detail-title{font-size:26px;}
       .mob-header{display:flex;}
     }
@@ -321,6 +324,35 @@
     <p>Collections built with intention hold and grow in value. Consider all shirts from a specific club across decades, national team shirts from a single tournament year, or a defined era such as 1988 to 1998. At Shirt Societe we are happy to help source specific pieces. Reach out on Instagram or by email.</p>
   </div>
 </div>
+
+<div data-id="vintage-vs-retro" data-tag="Guide" data-date="July 2026" data-read="5 min read" data-orientation="portrait" data-image=""
+  data-title="Vintage vs. Retro Football Shirts: What's the Difference?"
+  data-excerpt="Vintage or retro, and which should you buy? A clear, no-nonsense guide to the difference, and why it matters for your money.">
+  <div class="body-content">
+    <p>If you have started looking into classic football shirts, you have probably seen the words vintage and retro used as if they mean the same thing. They do not, and knowing the difference will save you money and disappointment. Here is a clear guide.</p>
+
+    <h2>Vintage: the original article</h2>
+    <p>A vintage football shirt is an original from its era. If it is a Netherlands 1988 shirt, a vintage one was actually made and sold around 1988. It is the real thing: original fabric, original badge, original production. Age, rarity and condition all drive its value, and no two are quite alike.</p>
+    <p>Vintage shirts are what serious collectors chase. They carry genuine history, they are finite in number, and the best examples only get harder to find over time.</p>
+
+    <h2>Retro: a modern reproduction</h2>
+    <p>A retro shirt is a newly manufactured reproduction of an old design. It looks like the classic, but it was made recently. Retro shirts are usually cheaper, easy to buy in your size, and perfectly good if you just want the look of a legendary kit to wear.</p>
+    <p>There is nothing wrong with retro. It is simply a different thing. The mistake is paying vintage prices for a retro shirt, or assuming a reproduction will hold value the way an original does. It generally will not.</p>
+
+    <h2>So which should you buy?</h2>
+    <ul>
+      <li><strong>Want to wear it casually and not worry about it?</strong> A retro shirt is ideal, affordable and available in modern sizes.</li>
+      <li><strong>Want a genuine piece of football history that holds its value?</strong> Go vintage. You are buying the original, and originals are what appreciate.</li>
+      <li><strong>Want the ultimate version?</strong> That is match worn, an original shirt actually worn by a player in a game. It is the rarest and most collectible category of all.</li>
+    </ul>
+
+    <h2>How to tell them apart</h2>
+    <p>Vintage shirts show their age honestly: period correct fabric, manufacturing details true to the era, and often small signs of wear. Retro reproductions tend to use modern fabric and finishing, and the tags will usually give away a recent production date. When in doubt, ask the seller directly, and buy from someone who deals in originals and will tell you plainly which is which.</p>
+
+    <h2>Buy originals with confidence</h2>
+    <p>At Shirt Societe we specialise in original vintage and match worn shirts, not reproductions. Every shirt is sourced and described honestly, so you always know exactly what you are getting. Not sure whether a shirt is right for you? Message us any time on Instagram or by email.</p>
+  </div>
+</div>
 </div><!-- end post-data -->
 
 <script>
@@ -362,11 +394,13 @@ function renderPosts() {
     } else {
       card.classList.add("no-image");
     }
-    card.innerHTML += "<div class='post-tag'>" + p.tag + "</div>" +
+    card.innerHTML += "<div class='post-body-text'>" +
+      "<div class='post-tag'>" + p.tag + "</div>" +
       "<div class='post-title'>" + p.title + "</div>" +
       "<div class='post-excerpt'>" + p.excerpt + "</div>" +
       "<div class='post-meta'>" + p.date + " &middot; " + p.readTime + "</div>" +
-      "<div class='read-more'>Read more &rarr;</div>";
+      "<div class='read-more'>Read more &rarr;</div>" +
+      "</div>";
 
     card.onclick = (function(id) { return function() { showPost(id); }; })(p.id);
     grid.appendChild(card);
