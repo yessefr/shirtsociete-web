@@ -1,0 +1,9 @@
+# Shirt Société — robots.txt
+User-agent: *
+Allow: /
+
+# Keep the admin panel out of search results
+Disallow: /admin.html
+
+# Sitemap location
+Sitemap: https://shirtsociete.com/sitemap.xml
