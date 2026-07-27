@@ -352,10 +352,16 @@
           <div class="page-title">Shirts</div>
           <div class="page-subtitle">Manage your inventory</div>
         </div>
-        <button class="btn btn-primary" onclick="openShirtModal()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Add Shirt
-        </button>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-secondary" onclick="generateSitemap()" id="sitemap-btn" title="Maakt een sitemap.xml met alle shirts, zodat Google ze kan vinden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            Genereer sitemap
+          </button>
+          <button class="btn btn-primary" onclick="openShirtModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Shirt
+          </button>
+        </div>
       </div>
       <div class="toolbar">
         <div class="search-box">
@@ -589,6 +595,31 @@
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeOrderModal()">Close</button>
       <button class="btn btn-primary" onclick="saveOrderChanges()" id="order-save-btn">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- SITEMAP MODAL -->
+<div class="modal-overlay" id="sitemap-modal">
+  <div class="modal" style="max-width:760px">
+    <div class="modal-header">
+      <div class="modal-title">Sitemap.xml</div>
+      <button class="modal-close" onclick="document.getElementById('sitemap-modal').classList.remove('open')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:rgba(200,169,80,0.06);border:1px solid rgba(200,169,80,0.25);border-radius:3px;padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.7;color:var(--text-muted)">
+        <strong style="color:var(--gold)">Wat doe je hiermee?</strong><br>
+        1. Klik op <em>Kopieer</em> hieronder.<br>
+        2. Ga naar GitHub → <code>shirtsociete-web</code> → <code>sitemap.xml</code> → potlood.<br>
+        3. Selecteer alles, plak dit eroverheen, commit.<br>
+        4. Search Console → Sitemaps → opnieuw indienen (of wacht tot Google langskomt).
+      </div>
+      <div id="sitemap-summary" style="font-size:13px;color:var(--text-muted);margin-bottom:12px"></div>
+      <textarea id="sitemap-output" readonly style="width:100%;height:300px;background:var(--black);border:1px solid var(--grey-light);color:var(--white);font-family:monospace;font-size:11px;padding:12px;border-radius:2px;outline:none;resize:vertical"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="document.getElementById('sitemap-modal').classList.remove('open')">Sluiten</button>
+      <button class="btn btn-primary" onclick="copySitemap()" id="sitemap-copy-btn">Kopieer</button>
     </div>
   </div>
 </div>
@@ -1445,6 +1476,100 @@
       showToast('Error sending emails', 'error');
     }
     btn.disabled = false; btn.textContent = 'Send Drop Live Email';
+  }
+
+  // ── SITEMAP GENERATOR ──
+  // Bouwt een sitemap.xml met alle vaste pagina's + een eigen URL per shirt,
+  // zodat Google elk shirt kan vinden. De URL's zijn identiek aan wat de site
+  // zelf genereert (zie shirtUrl/shirtSlug in index.html).
+  function ssShirtSlug(s) {
+    return (s.title || 'shirt').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')   // é->e, ü->u, ø->o
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+  function xmlEscape(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  function generateSitemap() {
+    if (!allShirts || !allShirts.length) {
+      showToast('Shirts nog niet geladen — probeer zo opnieuw', 'error');
+      return;
+    }
+    var base = 'https://shirtsociete.com';
+    var today = new Date().toISOString().split('T')[0];
+    var lines = [];
+    lines.push('<?xml version="1.0" encoding="UTF-8"?>');
+    lines.push('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+
+    function addUrl(loc, changefreq, priority) {
+      lines.push('  <url>');
+      lines.push('    <loc>' + xmlEscape(loc) + '</loc>');
+      lines.push('    <lastmod>' + today + '</lastmod>');
+      lines.push('    <changefreq>' + changefreq + '</changefreq>');
+      lines.push('    <priority>' + priority + '</priority>');
+      lines.push('  </url>');
+    }
+
+    // vaste pagina's
+    addUrl(base + '/', 'daily', '1.0');
+    addUrl(base + '/?p=shop', 'daily', '0.9');
+    addUrl(base + '/?p=shop&cat=match_worn', 'weekly', '0.8');
+    addUrl(base + '/?p=shop&cat=clubs', 'weekly', '0.8');
+    addUrl(base + '/?p=shop&cat=national', 'weekly', '0.8');
+    addUrl(base + '/?p=archive', 'weekly', '0.8');
+    addUrl(base + '/?p=about', 'monthly', '0.6');
+    addUrl(base + '/blog.html', 'weekly', '0.7');
+    addUrl(base + '/faq.html', 'monthly', '0.5');
+    addUrl(base + '/shipping.html', 'yearly', '0.3');
+    addUrl(base + '/refund.html', 'yearly', '0.3');
+    addUrl(base + '/privacy.html', 'yearly', '0.3');
+    addUrl(base + '/terms.html', 'yearly', '0.3');
+    addUrl(base + '/legal.html', 'yearly', '0.3');
+
+    // één URL per shirt
+    var live = 0, sold = 0;
+    allShirts.forEach(function(s) {
+      if (!s || !s.id) return;
+      var url = base + '/?shirt=' + s.id + '&name=' + ssShirtSlug(s);
+      if (s.available === false) {
+        addUrl(url, 'monthly', '0.3');   // verkocht: blijft indexeerbaar, lage prioriteit
+        sold++;
+      } else {
+        addUrl(url, 'weekly', '0.8');    // te koop: hoge prioriteit
+        live++;
+      }
+    });
+
+    lines.push('</urlset>');
+    var xml = lines.join('\n');
+
+    document.getElementById('sitemap-output').value = xml;
+    document.getElementById('sitemap-summary').innerHTML =
+      '<strong style="color:var(--white)">' + (live + sold + 14) + ' URL\'s</strong> — ' +
+      '14 vaste pagina\'s, <span style="color:var(--green)">' + live + ' shirts te koop</span>' +
+      (sold ? ', ' + sold + ' verkocht' : '') + '.';
+    document.getElementById('sitemap-modal').classList.add('open');
+  }
+  function copySitemap() {
+    var ta = document.getElementById('sitemap-output');
+    ta.select();
+    try {
+      navigator.clipboard.writeText(ta.value).then(function() {
+        showToast('Sitemap gekopieerd', 'success');
+      }, function() {
+        document.execCommand('copy');
+        showToast('Sitemap gekopieerd', 'success');
+      });
+    } catch (e) {
+      document.execCommand('copy');
+      showToast('Sitemap gekopieerd', 'success');
+    }
   }
 
   // ── INIT ──
