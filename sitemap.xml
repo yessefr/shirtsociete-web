@@ -1,65 +1,207 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- Homepage -->
   <url>
     <loc>https://shirtsociete.com/</loc>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <!-- Main sections (single-page app screens, deep-linkable) -->
   <url>
     <loc>https://shirtsociete.com/?p=shop</loc>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://shirtsociete.com/?p=shop&amp;cat=match_worn</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?p=shop&amp;cat=clubs</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?p=shop&amp;cat=national</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://shirtsociete.com/?p=archive</loc>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/?p=about</loc>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-
-  <!-- Standalone pages -->
   <url>
     <loc>https://shirtsociete.com/blog.html</loc>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/faq.html</loc>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/shipping.html</loc>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/refund.html</loc>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/privacy.html</loc>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/terms.html</loc>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/legal.html</loc>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
+  <url>
+    <loc>https://shirtsociete.com/?shirt=85bd60c0-bf7b-4c34-abfa-e826cc3e9716&amp;name=bayern-munchen-jerome-boateng-2016-cl-match-worn</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=5c7fb672-674f-4244-b116-67f8c28b39f1&amp;name=fiorentina-1992-banned-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=c5fc781b-4c5c-4a04-9cc8-78542d35f806&amp;name=monchengladbach-1999-2000-match-worn-hausweiler</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=e8507490-8b53-43a0-a646-5a1d61166d90&amp;name=bayern-munchen-josip-stanisic-2021-match-worn</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=6f7cf3c0-63f3-4553-a64f-e719641408ff&amp;name=manchester-united-2005-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=2b061b96-2580-4b01-8ebb-8bbb92c81545&amp;name=ac-milan-1990-91-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=8123f8f1-ec0a-4c18-a926-d49127800fec&amp;name=germany-1994-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=b9f27d9a-bc08-49ef-a459-a99f8d1ea48b&amp;name=netherlands-2004-away-heitinga</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=0d04c27d-587c-4317-bc36-e26c253c5cfe&amp;name=brazil-2004-home-ronaldo</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=0b17abb9-c983-46b4-92be-d2844aef3ca7&amp;name=eintracht-braunschweig-1987-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=784f380c-0e6d-489e-9bd5-05ae2cfdc522&amp;name=atletico-madrid-1992-93-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=c08a8a75-5db8-4f59-b770-e0bf0769d820&amp;name=brazil-1998-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=53db2b32-1d2c-403c-b246-467dbe8ef6b0&amp;name=boca-juniors-2001-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=f129547f-0f5e-4a82-a050-f24fdba23408&amp;name=brazil-2004-home-ronaldinho-longsleeve</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=2e45cdd5-9cb4-410e-b591-ad206b1da593&amp;name=real-betis-1988-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=e922e166-2166-4344-bc59-0ab1382c15f4&amp;name=france-1992-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=d218d0f9-0c9c-4b29-9df8-f8d567277c05&amp;name=manchester-united-1991-cup-winners-cup</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=45c3f019-e994-4501-ab5a-a34f959e33da&amp;name=brazil-1998-away</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=4945137a-d9d7-4974-8148-0307769c20ad&amp;name=france-2000-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/?shirt=08024edb-fa2e-4a0e-97e1-47eccc8706d3&amp;name=manchester-city-1988-89-home</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
