@@ -1711,11 +1711,11 @@
       Authenticity. Heritage. Curated Vintage &amp; Match Worn Football Shirts
     </p>
     <div id="cin-btns" style="display:flex;align-items:center;gap:20px;opacity:0;transform:translateY(10px)">
-      <button onclick="dGoTo('shop')" style="display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--black);border:none;padding:14px 26px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase">
+      <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--black);border:none;padding:14px 26px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none">
         Shop Collection
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </button>
-      <button onclick="dGoTo('about')" style="background:none;border:none;color:rgba(245,240,232,.85);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color .2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,.85)'">Our Story</button>
+      </a>
+      <a href="/?p=about" onclick="dGoTo('about');return false;" style="background:none;border:none;color:rgba(245,240,232,.85);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color .2s;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,.85)'">Our Story</a>
     </div>
   </div>
   <div id="cin-cue" style="position:absolute;bottom:36px;left:52px;display:flex;align-items:center;gap:12px;opacity:0;z-index:2">
@@ -1820,7 +1820,7 @@
         <div id="feat-eyebrow" style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">The Collection</div>
         <div id="feat-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Featured Pieces</div>
       </div>
-      <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
+      <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all shirts &rarr;</a>
     </div>
     <div id="d-featured-row" class="shirt-row"></div>
   </div>
@@ -1833,7 +1833,7 @@
         <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Authentic &amp; Verified</div>
         <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Match Worn / Issued</div>
       </div>
-      <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
+      <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" style="font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all match worn &rarr;</a>
     </div>
     <div id="d-matchworn-row" class="shirt-row"></div>
   </div>
@@ -1846,7 +1846,7 @@
         <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">World Cup Countries</div>
         <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">National Sides</div>
       </div>
-      <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
+      <a href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;" style="font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all national teams &rarr;</a>
     </div>
     <div id="d-national-row" class="shirt-row"></div>
   </div>
@@ -1859,7 +1859,7 @@
         <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Club Heritage</div>
         <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Club Shirts</div>
       </div>
-      <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="dGoTo('shop')" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all &rarr;</span>
+      <a href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;" style="font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all club shirts &rarr;</a>
     </div>
     <div id="d-clubs-row" class="shirt-row"></div>
   </div>
@@ -1900,17 +1900,20 @@
     <div class="foot-cols">
       <div class="foot-col">
         <div class="foot-head">Quick Links</div>
-        <a onclick="dGoTo('shop')">Shop all shirts</a>
-        <a onclick="dGoTo('about')">Our story</a>
+        <a href="/?p=shop" onclick="dGoTo('shop');return false;">Shop all shirts</a>
+        <a href="/?p=archive" onclick="dGoTo('archive');return false;">The Shirt Société Archive</a>
+        <a href="/?p=about" onclick="dGoTo('about');return false;">Our story</a>
         <a href="/blog.html">Blog</a>
-        <a onclick="dGoTo('wishlist')">Saved</a>
-        <a onclick="dGoTo('profile')">My wardrobe</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/?p=wishlist" onclick="dGoTo('wishlist');return false;">Saved</a>
+        <a href="/?p=profile" onclick="dGoTo('profile');return false;">My wardrobe</a>
       </div>
       <div class="foot-col">
         <div class="foot-head">Categories</div>
-        <a onclick="dGoTo('shop');dSetFilter('match_worn')">Match Worn / Issued</a>
-        <a onclick="dGoTo('shop');dSetFilter('clubs')">Clubs</a>
-        <a onclick="dGoTo('shop');dSetFilter('national')">National teams</a>
+        <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;">Match Worn / Issued</a>
+        <a href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;">Clubs</a>
+        <a href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;">National teams</a>
+        <a href="/?p=shop&sort=new" onclick="dShopNewest();return false;">New added</a>
       </div>
       <div class="foot-col">
         <div class="foot-head">Help</div>
@@ -2066,7 +2069,7 @@
         <div style="height:1px;background:#1a1815;margin-bottom:36px"></div>
         <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px">
           <div id="d-related-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white)"></div>
-          <span onclick="dGoTo('shop')" style="font-size:12px;color:var(--text-muted);cursor:pointer" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all →</span>
+          <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="font-size:12px;color:var(--text-muted);cursor:pointer;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all →</a>
         </div>
         <div id="d-related-row" class="shirt-row"></div>
       </div>
@@ -2190,7 +2193,7 @@
         <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:500">Private Collection</div>
         <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(32px,4vw,52px);line-height:1.05;margin-bottom:22px">The Shirt Société Archive</h1>
         <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:#9a938a">What drives us are beautiful football shirts. Some shirts simply mean too much to let go: rare specs, match worn jerseys and personal grails that tell the story of the game we love.</p>
-        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:#9a938a">The Shirt Société Archive brings these pieces together in one place, the shirts we are most proud to have owned. This collection will keep growing as we do, and every so often one of these shirts may find a new home with the right collector.</p>
+        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:#9a938a">The Shirt Société Archive brings these pieces together in one place, the shirts we are most proud to have owned. This collection will keep growing as we do, and every so often one of these shirts may find a new home with the right collector. Looking for a shirt you can buy today? Browse <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.35)">the full collection</a> or our <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.35)">match worn shirts</a>.</p>
         <p style="max-width:600px;margin:0 auto 30px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.75;color:#7f786f">Want to see more photos, ask a question, or make an offer? Reach out any time via Instagram or email.</p>
 
         <div style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:500">Contact</div>
@@ -2450,7 +2453,7 @@
       <div class="anim-about scale-in" style="padding:64px;background:#0d0b08;border-top:1px solid #1e1c17;text-align:center">
         <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:40px;margin-bottom:12px">Authenticity. Heritage. <span style="color:var(--gold)">Football History.</span></div>
         <p style="font-size:15px;color:var(--text-muted);margin-bottom:32px">Find your next piece of football history in our collection.</p>
-        <button class="btn-primary" onclick="dGoTo('shop')" style="margin-right:16px">Shop the Collection</button>
+        <a href="/?p=shop" onclick="dGoTo('shop');return false;" class="btn-primary" style="margin-right:16px;text-decoration:none">Shop the Collection</a>
         <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--gold);color:var(--gold);padding:14px 28px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
           Follow on Instagram
@@ -2467,10 +2470,10 @@
       </div>
       <div>
         <div class="foot-head">Shop</div>
-        <a href="#" onclick="dGoTo('shop');return false;">All Products</a><br>
-        <a href="#" onclick="dGoTo('shop');dSetFilter('match_worn');return false;">Match Worn / Issued</a><br>
-        <a href="#" onclick="dGoTo('shop');dSetFilter('clubs');return false;">Clubs</a><br>
-        <a href="#" onclick="dGoTo('shop');dSetFilter('national');return false;">National Teams</a>
+        <a href="/?p=shop" onclick="dGoTo('shop');return false;">All Products</a><br>
+        <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;">Match Worn / Issued</a><br>
+        <a href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;">Clubs</a><br>
+        <a href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;">National Teams</a>
       </div>
       <div>
         <div class="foot-head">Legal</div>
@@ -3203,6 +3206,7 @@
   // ── PER-SHIRT URLs (shareable + indexable by Google) ──
   function shirtSlug(s) {
     return (s.title || 'shirt').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')   // é->e, ü->u, ø->o
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
       .slice(0, 60);
