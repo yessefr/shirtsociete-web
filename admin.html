@@ -1525,6 +1525,15 @@
     addUrl(base + '/?p=archive', 'weekly', '0.8');
     addUrl(base + '/?p=about', 'monthly', '0.6');
     addUrl(base + '/blog.html', 'weekly', '0.7');
+
+    // losse blogartikelen (elk heeft nu een eigen deelbare URL)
+    var BLOG_POSTS = ['netherlands-88','spot-a-fake','caring-for-vintage','match-worn-guide',
+      'vintage-fussballborse','how-to-collect','vintage-vs-retro','fiorentina-1992-banned',
+      'bayern-match-worn-guide','what-is-a-coa','vintage-shirt-sizing','vintage-shirts-investment',
+      'buying-vintage-netherlands','how-we-source-shirts'];
+    BLOG_POSTS.forEach(function(slug) {
+      addUrl(base + '/blog.html?post=' + slug, 'monthly', '0.6');
+    });
     addUrl(base + '/faq.html', 'monthly', '0.5');
     addUrl(base + '/shipping.html', 'yearly', '0.3');
     addUrl(base + '/refund.html', 'yearly', '0.3');
@@ -1551,8 +1560,8 @@
 
     document.getElementById('sitemap-output').value = xml;
     document.getElementById('sitemap-summary').innerHTML =
-      '<strong style="color:var(--white)">' + (live + sold + 14) + ' URL\'s</strong> — ' +
-      '14 vaste pagina\'s, <span style="color:var(--green)">' + live + ' shirts te koop</span>' +
+      '<strong style="color:var(--white)">' + (live + sold + 14 + BLOG_POSTS.length) + ' URL\'s</strong> — ' +
+      '14 vaste pagina\'s, ' + BLOG_POSTS.length + ' blogartikelen, <span style="color:var(--green)">' + live + ' shirts te koop</span>' +
       (sold ? ', ' + sold + ' verkocht' : '') + '.';
     document.getElementById('sitemap-modal').classList.add('open');
   }
