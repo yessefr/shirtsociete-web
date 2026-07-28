@@ -2905,7 +2905,7 @@
       if (s.season) meta.push(s.season);
       if (s.size) meta.push('Size ' + s.size);
       if (s.condition) meta.push(s.condition);
-      var href = '/?shirt=' + s.id + '&name=' + shirtSlug(s);
+      var href = shirtPath(s);
       return ''
         + '<a class="la-card" href="' + href + '" onclick="openDetail(\'' + s.id + '\',\'d\');return false;">'
         +   '<div class="la-img">'
@@ -3376,21 +3376,29 @@
 
   // ── PER-SHIRT URLs (shareable + indexable by Google) ──
   function shirtSlug(s) {
-    return (s.title || 'shirt').toLowerCase()
+    var parts = (s.title || 'shirt');
+    if (s.size) parts += ' size ' + s.size;
+    return parts.toLowerCase()
       .normalize('NFD').replace(/[\u0300-\u036f]/g, '')   // é->e, ü->u, ø->o
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
-      .slice(0, 60);
+      .slice(0, 70);
   }
 
+  // Leesbaar pad: /#/products/netherlands-1988-home-shirt-size-l
+  // De id blijft erin verwerkt zodat we het shirt betrouwbaar terugvinden,
+  // ook als twee shirts dezelfde titel zouden hebben.
+  function shirtPath(s) {
+    return '/#/products/' + shirtSlug(s) + '-' + s.id;
+  }
   function shirtUrl(s) {
-    return 'https://shirtsociete.com/?shirt=' + s.id + '&name=' + shirtSlug(s);
+    return 'https://shirtsociete.com' + shirtPath(s);
   }
 
   // put the shirt in the address bar so it can be copied, shared and indexed
   function pushShirtUrl(shirt) {
     try {
-      var url = '/?shirt=' + shirt.id + '&name=' + shirtSlug(shirt);
+      var url = shirtPath(shirt);
       history.pushState({ shirt: shirt.id }, '', url);
       document.title = shirt.title + ' | Shirt Société';
       var md = document.querySelector('meta[name="description"]');
@@ -3405,7 +3413,7 @@
       if (ogi && getImg(shirt)) ogi.setAttribute('content', getImg(shirt));
       var ogu = document.querySelector('meta[property="og:url"]');
       if (ogu) ogu.setAttribute('content', shirtUrl(shirt));
-      if (typeof updateCanonical === 'function') updateCanonical('/?shirt=' + shirt.id);
+      if (typeof updateCanonical === 'function') updateCanonical(shirtPath(shirt));
     } catch (e) {}
   }
 
@@ -3476,6 +3484,18 @@
   // if someone lands on a shirt URL, open that shirt straight away
   function openShirtFromUrl() {
     try {
+      // Nieuw leesbaar pad: /#/products/<slug>-<id>
+      var hash = window.location.hash || '';
+      var pm = hash.match(/#\/products\/(.+?)-([0-9a-fA-F-]+)$/);
+      if (pm) {
+        var pid = pm[2];
+        var pshirt = allShirts.find(function(s) { return String(s.id) === String(pid); });
+        if (pshirt) {
+          if (window.innerWidth >= 768) { dGoTo('shop'); openDetail(pshirt.id, 'd'); }
+          else { mGoTo('shop'); openDetail(pshirt.id, 'm'); }
+          return true;
+        }
+      }
       var params = new URLSearchParams(window.location.search);
       var page = params.get('p');
       // deep link to a main section
@@ -3501,12 +3521,14 @@
         }
         return true;
       }
+      // Oude ?shirt= links blijven werken, en worden netjes omgezet
       var id = params.get('shirt');
       if (!id) return false;
       var shirt = allShirts.find(function(s) { return String(s.id) === String(id); });
       if (!shirt) return false;
       if (window.innerWidth >= 768) { dGoTo('shop'); openDetail(shirt.id, 'd'); }
       else { mGoTo('shop'); openDetail(shirt.id, 'm'); }
+      if (history.replaceState) history.replaceState({ shirt: shirt.id }, '', shirtPath(shirt));
       return true;
     } catch (e) { return false; }
   }
@@ -4879,16 +4901,26 @@
 
   // ── URL ROUTING (query-param based, SEO-clean) ──
   function screenToUrl(screen, id) {
+    // detailscherm: gebruik de leesbare /#/products/... URL van het huidige shirt
+    if (screen === 'detail') {
+      if (typeof currentShirt !== 'undefined' && currentShirt && typeof shirtPath === 'function') {
+        return shirtPath(currentShirt);
+      }
+      // geen shirt bekend: laat de bestaande URL met rust
+      return window.location.pathname + window.location.search + window.location.hash;
+    }
     if (id) return '/?shirt=' + encodeURIComponent(id);
     if (!screen || screen === 'home') return '/';
     if (screen === 'shop') return '/?p=shop';
     if (screen === 'archive') return '/?p=archive';
     if (screen === 'about') return '/?p=about';
-    // other screens (cart, wishlist, profile, checkout, detail) stay on a clean param
+    // other screens (cart, wishlist, profile, checkout) stay on a clean param
     return '/?p=' + screen;
   }
   function updateURL(screen, id) {
     var url = screenToUrl(screen, id);
+    // detail heeft zijn URL al via pushShirtUrl gezet; niet nog eens pushen
+    if (screen === 'detail') { updateCanonical(url); return; }
     // strip any leftover hash so we never get "/?p=archive#about"
     history.pushState({ screen: screen, id: id }, '', url);
     updateCanonical(url);
