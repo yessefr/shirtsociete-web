@@ -300,7 +300,7 @@
       <li>Conversations with knowledgeable people who share the same passion for the game</li>
     </ul>
     <h2>Shirt Société at the Fair</h2>
-    <p>Shirt Société has been a regular exhibitor since 2025, attending editions in Hamburg, Cologne and Dusseldorf. We will be at <strong>Frankfurt on July 4th, 2026</strong>. Come and find our stand.</p>
+    <p>Shirt Société has been a regular exhibitor since 2025, attending editions in Hamburg, Cologne, Dusseldorf and Frankfurt. Our next stand is at Leipzig on October 4th, 2026. Come and find us there.</p>
     <blockquote>Come and say hello. We would love to meet fellow collectors.</blockquote>
     <p>Follow the fair on Instagram at <strong>@vintagefussball</strong> for updates on upcoming dates and locations.</p>
   </div>
@@ -619,7 +619,7 @@ function renderPosts() {
   var grid = document.getElementById("posts-grid");
   for (var i = 0; i < posts.length; i++) {
     var p = posts[i];
-    // anchor in plaats van div, zodat Google elk artikel als echte link volgt
+    // anchor instead of div, so Google follows each article as a real link
     var card = document.createElement("a");
     card.className = "post-card";
     card.setAttribute("data-post-id", p.id);
@@ -695,7 +695,7 @@ function showPost(id) {
   content.appendChild(body);
 
   window.scrollTo(0, 0);
-  // eigen, deelbare URL per artikel (geen #hash, want die ziet Google als dezelfde pagina)
+  // own shareable URL per article (no #hash, which Google treats as the same page)
   if (history.pushState) history.pushState({post: id}, "", "/blog.html?post=" + id);
   setPostMeta(post, id);
   if (typeof gtag !== "undefined") gtag("event", "view_item", {item_id: id, item_name: post.title});
