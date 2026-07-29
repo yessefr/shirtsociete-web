@@ -353,9 +353,9 @@
           <div class="page-subtitle">Manage your inventory</div>
         </div>
         <div style="display:flex;gap:10px">
-          <button class="btn btn-secondary" onclick="generateSitemap()" id="sitemap-btn" title="Maakt een sitemap.xml met alle shirts, zodat Google ze kan vinden">
+          <button class="btn btn-secondary" onclick="generateSitemap()" id="sitemap-btn" title="Builds a sitemap.xml with every shirt so Google can find them">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-            Genereer sitemap
+            Generate sitemap
           </button>
           <button class="btn btn-primary" onclick="openShirtModal()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -508,6 +508,48 @@
             <option>Fair</option>
           </select>
         </div>
+
+        <div class="form-group full" style="border-top:1px solid #2a2820;margin-top:8px;padding-top:16px">
+          <label class="form-label" style="color:#c8a950;font-size:13px;letter-spacing:1px;text-transform:uppercase">Match Worn details <span style="color:#888070;text-transform:none;letter-spacing:0">— only for match worn / issued shirts. Empty fields are not shown.</span></label>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Match</label>
+          <input type="text" class="form-input" id="m-mw_match" placeholder="Bayern München vs Energie Cottbus">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input type="text" class="form-input" id="m-mw_date" placeholder="17 December 2023">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Competition</label>
+          <input type="text" class="form-input" id="m-mw_competition" placeholder="Bundesliga">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Type</label>
+          <select class="form-select" id="m-mw_type">
+            <option value="">Select...</option>
+            <option>Match Worn</option>
+            <option>Match Issued</option>
+            <option>Player Issue</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Product code / tag</label>
+          <input type="text" class="form-input" id="m-mw_code" placeholder="optional">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Provenance</label>
+          <input type="text" class="form-input" id="m-mw_provenance" placeholder="e.g. via player, auction house, club">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">COA (type / uitgever)</label>
+          <input type="text" class="form-input" id="m-mw_coa" placeholder="e.g. COA from the club / auction house">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Photomatch</label>
+          <input type="text" class="form-input" id="m-mw_photomatch" placeholder="e.g. Yes, see photo 3 — or leave empty">
+        </div>
+
         <div class="form-group full">
           <label class="form-label">Image 1 — Main photo (Cloudinary URL)</label>
           <input type="text" class="form-input" id="m-image" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
@@ -608,18 +650,18 @@
     </div>
     <div class="modal-body">
       <div style="background:rgba(200,169,80,0.06);border:1px solid rgba(200,169,80,0.25);border-radius:3px;padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.7;color:var(--text-muted)">
-        <strong style="color:var(--gold)">Wat doe je hiermee?</strong><br>
-        1. Klik op <em>Kopieer</em> hieronder.<br>
-        2. Ga naar GitHub → <code>shirtsociete-web</code> → <code>sitemap.xml</code> → potlood.<br>
-        3. Selecteer alles, plak dit eroverheen, commit.<br>
-        4. Search Console → Sitemaps → opnieuw indienen (of wacht tot Google langskomt).
+        <strong style="color:var(--gold)">What to do with this</strong><br>
+        1. Klik op <em>Copy</em> hieronder.<br>
+        2. Go to GitHub → <code>shirtsociete-web</code> → <code>sitemap.xml</code> → pencil.<br>
+        3. Select all, paste this over it, commit.<br>
+        4. Search Console → Sitemaps → resubmit (or wait for Google to crawl).
       </div>
       <div id="sitemap-summary" style="font-size:13px;color:var(--text-muted);margin-bottom:12px"></div>
       <textarea id="sitemap-output" readonly style="width:100%;height:300px;background:var(--black);border:1px solid var(--grey-light);color:var(--white);font-family:monospace;font-size:11px;padding:12px;border-radius:2px;outline:none;resize:vertical"></textarea>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="document.getElementById('sitemap-modal').classList.remove('open')">Sluiten</button>
-      <button class="btn btn-primary" onclick="copySitemap()" id="sitemap-copy-btn">Kopieer</button>
+      <button class="btn btn-secondary" onclick="document.getElementById('sitemap-modal').classList.remove('open')">Close</button>
+      <button class="btn btn-primary" onclick="copySitemap()" id="sitemap-copy-btn">Copy</button>
     </div>
   </div>
 </div>
@@ -808,6 +850,11 @@
     }
     if (existEl) existEl.value = JSON.stringify(shirt?.images || []);
     document.getElementById('m-description').value = shirt?.description || '';
+    // match worn details
+    ['mw_match','mw_date','mw_competition','mw_type','mw_provenance','mw_coa','mw_code','mw_photomatch'].forEach(function(f) {
+      var el = document.getElementById('m-' + f);
+      if (el) el.value = (shirt && shirt[f]) ? shirt[f] : '';
+    });
     document.getElementById('m-available').value = shirt ? String(shirt.available) : 'true';
     document.getElementById('m-featured').value = shirt ? String(shirt.featured) : 'false';
     document.getElementById('shirt-modal').classList.add('open');
@@ -1146,6 +1193,14 @@
       length_cm: (function(){ var v = document.getElementById('m-length').value; return v === '' ? null : parseFloat(v); })(),
       width_cm: (function(){ var v = document.getElementById('m-width').value; return v === '' ? null : parseFloat(v); })(),
       condition: document.getElementById('m-condition').value || null,
+      mw_match: document.getElementById('m-mw_match').value.trim() || null,
+      mw_date: document.getElementById('m-mw_date').value.trim() || null,
+      mw_competition: document.getElementById('m-mw_competition').value.trim() || null,
+      mw_type: document.getElementById('m-mw_type').value || null,
+      mw_provenance: document.getElementById('m-mw_provenance').value.trim() || null,
+      mw_coa: document.getElementById('m-mw_coa').value.trim() || null,
+      mw_code: document.getElementById('m-mw_code').value.trim() || null,
+      mw_photomatch: document.getElementById('m-mw_photomatch').value.trim() || null,
       description: document.getElementById('m-description').value.trim() || null,
       images: (function() {
         var imgs = [];
@@ -1479,15 +1534,17 @@
   }
 
   // ── SITEMAP GENERATOR ──
-  // Bouwt een sitemap.xml met alle vaste pagina's + een eigen URL per shirt,
-  // zodat Google elk shirt kan vinden. De URL's zijn identiek aan wat de site
-  // zelf genereert (zie shirtUrl/shirtSlug in index.html).
+  // Builds a sitemap.xml with all fixed pages + one URL per shirt,
+  // so Google can find every shirt. The URLs are identical to what the site
+  // generates itself (see shirtUrl/shirtSlug in index.html).
   function ssShirtSlug(s) {
-    return (s.title || 'shirt').toLowerCase()
+    var parts = (s.title || 'shirt');
+    if (s.size) parts += ' size ' + s.size;
+    return parts.toLowerCase()
       .normalize('NFD').replace(/[\u0300-\u036f]/g, '')   // é->e, ü->u, ø->o
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
-      .slice(0, 60);
+      .slice(0, 70);
   }
   function xmlEscape(str) {
     return String(str)
@@ -1516,7 +1573,7 @@
       lines.push('  </url>');
     }
 
-    // vaste pagina's
+    // fixed pages
     addUrl(base + '/', 'daily', '1.0');
     addUrl(base + '/?p=shop', 'daily', '0.9');
     addUrl(base + '/?p=shop&cat=match_worn', 'weekly', '0.8');
@@ -1526,7 +1583,7 @@
     addUrl(base + '/?p=about', 'monthly', '0.6');
     addUrl(base + '/blog.html', 'weekly', '0.7');
 
-    // losse blogartikelen (elk heeft nu een eigen deelbare URL)
+    // individual blog articles (each has its own shareable URL)
     var BLOG_POSTS = ['netherlands-88','spot-a-fake','caring-for-vintage','match-worn-guide',
       'vintage-fussballborse','how-to-collect','vintage-vs-retro','fiorentina-1992-banned',
       'bayern-match-worn-guide','what-is-a-coa','vintage-shirt-sizing','vintage-shirts-investment',
@@ -1541,13 +1598,13 @@
     addUrl(base + '/terms.html', 'yearly', '0.3');
     addUrl(base + '/legal.html', 'yearly', '0.3');
 
-    // één URL per shirt
+    // one URL per shirt
     var live = 0, sold = 0;
     allShirts.forEach(function(s) {
       if (!s || !s.id) return;
-      var url = base + '/?shirt=' + s.id + '&name=' + ssShirtSlug(s);
+      var url = base + '/#/products/' + ssShirtSlug(s) + '-' + s.id;
       if (s.available === false) {
-        addUrl(url, 'monthly', '0.3');   // verkocht: blijft indexeerbaar, lage prioriteit
+        addUrl(url, 'monthly', '0.3');   // sold: stays indexable, low priority
         sold++;
       } else {
         addUrl(url, 'weekly', '0.8');    // te koop: hoge prioriteit
@@ -1561,8 +1618,8 @@
     document.getElementById('sitemap-output').value = xml;
     document.getElementById('sitemap-summary').innerHTML =
       '<strong style="color:var(--white)">' + (live + sold + 14 + BLOG_POSTS.length) + ' URL\'s</strong> — ' +
-      '14 vaste pagina\'s, ' + BLOG_POSTS.length + ' blogartikelen, <span style="color:var(--green)">' + live + ' shirts te koop</span>' +
-      (sold ? ', ' + sold + ' verkocht' : '') + '.';
+      '14 fixed pages, ' + BLOG_POSTS.length + ' blog articles, <span style="color:var(--green)">' + live + ' shirts for sale</span>' +
+      (sold ? ', ' + sold + ' sold' : '') + '.';
     document.getElementById('sitemap-modal').classList.add('open');
   }
   function copySitemap() {
@@ -1570,14 +1627,14 @@
     ta.select();
     try {
       navigator.clipboard.writeText(ta.value).then(function() {
-        showToast('Sitemap gekopieerd', 'success');
+        showToast('Sitemap copied', 'success');
       }, function() {
         document.execCommand('copy');
-        showToast('Sitemap gekopieerd', 'success');
+        showToast('Sitemap copied', 'success');
       });
     } catch (e) {
       document.execCommand('copy');
-      showToast('Sitemap gekopieerd', 'success');
+      showToast('Sitemap copied', 'success');
     }
   }
 
