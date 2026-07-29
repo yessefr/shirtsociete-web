@@ -353,6 +353,10 @@
           <div class="page-subtitle">Manage your inventory</div>
         </div>
         <div style="display:flex;gap:10px">
+          <button class="btn btn-secondary" onclick="generateProductPages()" id="pages-btn" title="Builds a real /products/ page for each shirt, so Google indexes them fully">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Generate product pages
+          </button>
           <button class="btn btn-secondary" onclick="generateSitemap()" id="sitemap-btn" title="Builds a sitemap.xml with every shirt so Google can find them">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
             Generate sitemap
@@ -536,6 +540,22 @@
         <div class="form-group">
           <label class="form-label">Product code / tag</label>
           <input type="text" class="form-input" id="m-mw_code" placeholder="optional">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Adidas player size code</label>
+          <select class="form-select" id="m-mw_sizecode">
+            <option value="">Select...</option>
+            <option value="4">4 (S)</option>
+            <option value="5">5 (S/M)</option>
+            <option value="6">6 (M)</option>
+            <option value="7">7 (M/L)</option>
+            <option value="8">8 (L)</option>
+            <option value="9">9 (L/XL)</option>
+            <option value="10">10 (XL)</option>
+            <option value="11">11 (XL/XXL)</option>
+            <option value="12">12 (XXL)</option>
+            <option value="13">13 (XXL/3XL)</option>
+          </select>
         </div>
         <div class="form-group full">
           <label class="form-label">Provenance</label>
@@ -851,7 +871,7 @@
     if (existEl) existEl.value = JSON.stringify(shirt?.images || []);
     document.getElementById('m-description').value = shirt?.description || '';
     // match worn details
-    ['mw_match','mw_date','mw_competition','mw_type','mw_provenance','mw_coa','mw_code','mw_photomatch'].forEach(function(f) {
+    ['mw_match','mw_date','mw_competition','mw_type','mw_provenance','mw_coa','mw_code','mw_photomatch','mw_sizecode'].forEach(function(f) {
       var el = document.getElementById('m-' + f);
       if (el) el.value = (shirt && shirt[f]) ? shirt[f] : '';
     });
@@ -1200,6 +1220,7 @@
       mw_provenance: document.getElementById('m-mw_provenance').value.trim() || null,
       mw_coa: document.getElementById('m-mw_coa').value.trim() || null,
       mw_code: document.getElementById('m-mw_code').value.trim() || null,
+      mw_sizecode: document.getElementById('m-mw_sizecode').value || null,
       mw_photomatch: document.getElementById('m-mw_photomatch').value.trim() || null,
       description: document.getElementById('m-description').value.trim() || null,
       images: (function() {
@@ -1587,7 +1608,7 @@
     var BLOG_POSTS = ['netherlands-88','spot-a-fake','caring-for-vintage','match-worn-guide',
       'vintage-fussballborse','how-to-collect','vintage-vs-retro','fiorentina-1992-banned',
       'bayern-match-worn-guide','what-is-a-coa','vintage-shirt-sizing','vintage-shirts-investment',
-      'buying-vintage-netherlands','how-we-source-shirts'];
+      'buying-vintage-netherlands','how-we-source-shirts','adidas-size-codes'];
     BLOG_POSTS.forEach(function(slug) {
       addUrl(base + '/blog.html?post=' + slug, 'monthly', '0.6');
     });
@@ -1602,7 +1623,7 @@
     var live = 0, sold = 0;
     allShirts.forEach(function(s) {
       if (!s || !s.id) return;
-      var url = base + '/#/products/' + ssShirtSlug(s) + '-' + s.id;
+      var url = base + '/products/' + ssShirtSlug(s) + '/';
       if (s.available === false) {
         addUrl(url, 'monthly', '0.3');   // sold: stays indexable, low priority
         sold++;
@@ -1635,6 +1656,147 @@
     } catch (e) {
       document.execCommand('copy');
       showToast('Sitemap copied', 'success');
+    }
+  }
+
+  // ── PRODUCT PAGE GENERATOR ──
+  // Builds a real, standalone /products/<slug>/index.html for every shirt,
+  // with everything in the source (title, h1, price, description, images,
+  // canonical, Open Graph, Product schema) so Google indexes each shirt fully
+  // without needing JavaScript. Downloads them as a single ZIP you drop into
+  // the repo root.
+  function htmlEscape(str) {
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function buildProductPage(s) {
+    var base = 'https://shirtsociete.com';
+    var slug = ssShirtSlug(s);
+    var url = base + '/products/' + slug + '/';
+    var img = (s.images && s.images[0]) ? s.images[0] : '';
+    var price = (s.price != null) ? parseFloat(s.price).toFixed(2) : '';
+    var avail = (s.available === false) ? 'SoldOut' : 'InStock';
+    var cat = s.category === 'match_worn' ? 'Match Worn / Issued'
+            : s.category === 'national' ? 'International' : 'Club';
+    var metaDesc = (s.description ? String(s.description).replace(/\s+/g, ' ').trim().slice(0, 155)
+                   : (s.title + ' — original vintage football shirt at Shirt Société.'));
+
+    // provenance rows (only the filled ones)
+    var provRows = [
+      ['Match', s.mw_match], ['Date', s.mw_date], ['Competition', s.mw_competition],
+      ['Type', s.mw_type], ['Provenance', s.mw_provenance], ['Certificate', s.mw_coa],
+      ['Product code', s.mw_code], ['Photomatch', s.mw_photomatch]
+    ].filter(function(r) { return r[1] && String(r[1]).trim(); });
+    var provHtml = provRows.length
+      ? '<section class="prov"><h2>Provenance &amp; authenticity</h2><dl>' +
+        provRows.map(function(r) {
+          return '<dt>' + htmlEscape(r[0]) + '</dt><dd>' + htmlEscape(r[1]) + '</dd>';
+        }).join('') + '</dl></section>'
+      : '';
+
+    // measurements
+    var meas = '';
+    if (s.length_cm || s.width_cm) {
+      meas = '<section class="meas"><h2>Measurements</h2><ul>' +
+        (s.width_cm ? '<li>Width (pit to pit): ' + htmlEscape(s.width_cm) + ' cm</li>' : '') +
+        (s.length_cm ? '<li>Length (collar to hem): ' + htmlEscape(s.length_cm) + ' cm</li>' : '') +
+        '</ul></section>';
+    }
+
+    // all images with alt text
+    var gallery = (s.images || []).map(function(im, i) {
+      return '<img src="' + htmlEscape(im) + '" alt="' + htmlEscape(s.title + (i ? ' — photo ' + (i + 1) : '')) + '" loading="' + (i ? 'lazy' : 'eager') + '">';
+    }).join('\n      ');
+
+    var schema = {
+      "@context": "https://schema.org/", "@type": "Product",
+      "name": s.title || '', "image": s.images || [],
+      "description": metaDesc,
+      "category": "Football Shirt",
+      "brand": { "@type": "Brand", "name": s.club || 'Shirt Société' },
+      "offers": {
+        "@type": "Offer", "url": url, "priceCurrency": "EUR",
+        "price": price, "availability": "https://schema.org/" + avail,
+        "itemCondition": "https://schema.org/UsedCondition",
+        "seller": { "@type": "Organization", "name": "Shirt Société" }
+      }
+    };
+
+    return '<!DOCTYPE html>\n'
+      + '<html lang="en">\n<head>\n'
+      + '<meta charset="UTF-8">\n'
+      + '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
+      + '<title>' + htmlEscape(s.title) + ' | Shirt Société</title>\n'
+      + '<meta name="description" content="' + htmlEscape(metaDesc) + '">\n'
+      + '<link rel="canonical" href="' + url + '">\n'
+      + '<meta property="og:type" content="product">\n'
+      + '<meta property="og:site_name" content="Shirt Société">\n'
+      + '<meta property="og:title" content="' + htmlEscape(s.title) + '">\n'
+      + '<meta property="og:description" content="' + htmlEscape(metaDesc) + '">\n'
+      + '<meta property="og:url" content="' + url + '">\n'
+      + (img ? '<meta property="og:image" content="' + htmlEscape(img) + '">\n' : '')
+      + '<meta property="product:price:amount" content="' + price + '">\n'
+      + '<meta property="product:price:currency" content="EUR">\n'
+      + '<meta name="twitter:card" content="summary_large_image">\n'
+      + '<script type="application/ld+json">' + JSON.stringify(schema) + '<\/script>\n'
+      + '<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0905;color:#f5f0e8;font-family:system-ui,-apple-system,"DM Sans",sans-serif;line-height:1.7}a{color:#c8a950}.wrap{max-width:1000px;margin:0 auto;padding:32px 24px 80px}.back{font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:#c8a950;display:inline-block;margin-bottom:32px}.cat{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c8a950;margin-bottom:8px}h1{font-size:32px;font-weight:700;line-height:1.15;margin-bottom:8px}.club{color:#888070;margin-bottom:20px}.price{font-size:26px;color:#c8a950;margin-bottom:24px}.specs{list-style:none;margin:0 0 24px}.specs li{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid #1e1c17}.specs b{min-width:120px;color:#888070;font-weight:400;text-transform:uppercase;font-size:12px;letter-spacing:1px}.desc{margin:24px 0;white-space:pre-line}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:32px}.gallery img{width:100%;border-radius:3px;background:#15130f}h2{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#c8a950;margin:28px 0 12px}.prov dl,.meas ul{border-top:1px solid #1e1c17}.prov dt{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#888070;margin-top:12px}.prov dd{margin:2px 0 10px;padding-bottom:10px;border-bottom:1px solid #15130f}.meas li{list-style:none;padding:8px 0;border-bottom:1px solid #15130f}.cta{display:inline-block;background:#c8a950;color:#0a0905;padding:14px 28px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px;margin-top:8px}.note{font-size:12px;color:#888070;margin-top:32px}</style>\n'
+      + '</head>\n<body>\n'
+      + '<div class="wrap">\n'
+      + '  <a class="back" href="/">&larr; Shirt Société</a>\n'
+      + (gallery ? '  <div class="gallery">\n      ' + gallery + '\n  </div>\n' : '')
+      + '  <div class="cat">' + htmlEscape(cat) + '</div>\n'
+      + '  <h1>' + htmlEscape(s.title) + '</h1>\n'
+      + '  <div class="club">' + htmlEscape(s.club || '') + '</div>\n'
+      + '  <div class="price">&euro;' + price + (s.available === false ? ' &middot; <span style="color:#888070;font-size:16px">Sold</span>' : '') + '</div>\n'
+      + '  <ul class="specs">\n'
+      + (s.season ? '    <li><b>Season</b> ' + htmlEscape(s.season) + '</li>\n' : '')
+      + (function(){
+          var szMap = {'4':'S','5':'S/M','6':'M','7':'M/L','8':'L','9':'L/XL','10':'XL','11':'XL/XXL','12':'XXL','13':'XXL/3XL'};
+          var sz = s.size || (s.mw_sizecode ? (szMap[String(s.mw_sizecode)] || '') : '');
+          if (s.mw_sizecode) sz = (sz ? sz : '') + ' (code ' + s.mw_sizecode + ')';
+          return sz.trim() ? '    <li><b>Size</b> ' + htmlEscape(sz.trim()) + '</li>\n' : '';
+        })()
+      + (s.condition ? '    <li><b>Condition</b> ' + htmlEscape(s.condition) + '</li>\n' : '')
+      + '    <li><b>Category</b> ' + htmlEscape(cat) + '</li>\n'
+      + '    <li><b>Availability</b> ' + (s.available === false ? 'Sold' : 'Available') + '</li>\n'
+      + '  </ul>\n'
+      + (s.description ? '  <div class="desc">' + htmlEscape(s.description) + '</div>\n' : '')
+      + provHtml + meas
+      + '  <a class="cta" href="/#/products/' + slug + '-' + s.id + '">View in shop &amp; buy &rarr;</a>\n'
+      + '  <p class="note">This is a single, unique shirt. Once sold it will not return. Questions? Email info@shirtsociete.com.</p>\n'
+      + '</div>\n</body>\n</html>';
+  }
+
+  function generateProductPages() {
+    if (!allShirts || !allShirts.length) {
+      showToast('Shirts not loaded yet — try again', 'error');
+      return;
+    }
+    function build() {
+      var zip = new JSZip();
+      var folder = zip.folder('products');
+      allShirts.forEach(function(s) {
+        if (!s || !s.id) return;
+        var slug = ssShirtSlug(s);
+        folder.folder(slug).file('index.html', buildProductPage(s));
+      });
+      zip.generateAsync({ type: 'blob' }).then(function(blob) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'products.zip';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        showToast(allShirts.length + ' product pages generated', 'success');
+      });
+    }
+    if (typeof JSZip === 'undefined') {
+      var sc = document.createElement('script');
+      sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+      sc.onload = build;
+      sc.onerror = function() { showToast('Could not load ZIP library (check connection)', 'error'); };
+      document.head.appendChild(sc);
+    } else {
+      build();
     }
   }
 
