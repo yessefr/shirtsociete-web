@@ -1563,11 +1563,17 @@
     if (s.size && !new RegExp('\\bsize\\s*' + s.size + '\\b', 'i').test(parts) && !new RegExp('\\b' + s.size + '\\b', 'i').test(parts.replace(/\d{4}/g, ''))) {
       parts += ' size ' + s.size;
     }
-    return parts.toLowerCase()
+    var out = parts.toLowerCase()
       .normalize('NFD').replace(/[\u0300-\u036f]/g, '')   // é->e, ü->u, ø->o
       .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .slice(0, 70);
+      .replace(/^-+|-+$/g, '');
+    // cut at a word boundary near 90 chars, never mid-word (avoids "...-boaten")
+    if (out.length > 90) {
+      out = out.slice(0, 90);
+      var cut = out.lastIndexOf('-');
+      if (cut > 40) out = out.slice(0, cut);
+    }
+    return out.replace(/-+$/, '');
   }
   function xmlEscape(str) {
     return String(str)
