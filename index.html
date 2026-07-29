@@ -1351,7 +1351,7 @@
 
 <!-- MOBILE HOME -->
 <div id="screen-home" class="screen active">
-  <!-- Frankfurt countdown banner mobile -->
+  <!-- Next-event countdown banner mobile -->
   <div style="background:linear-gradient(135deg,rgba(200,169,80,0.1),rgba(200,169,80,0.03));border-bottom:1px solid rgba(200,169,80,0.2);padding:14px 20px">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
       <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
@@ -1770,7 +1770,7 @@
   </div>
 </section>
 
-<!-- LATEST ADDITIONS — direct onder de hero, zodat bezoekers meteen shirts zien -->
+<!-- LATEST ADDITIONS — right under the hero so visitors see shirts immediately -->
 <section id="latest-additions" style="padding:56px 52px;border-bottom:1px solid #1e1c17;background:#0a0905">
   <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:12px">
     <div>
@@ -2723,16 +2723,6 @@
   const dbHost = 'https://hzwmjbsfmdkmaoikezoc.supabase.co';
   const dbToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6d21qYnNmbWRrbWFvaWtlem9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTczNDIsImV4cCI6MjA5MzEzMzM0Mn0.5-ToRrtP3bhkN_qmSMmLM5YXQgE5kWoE0wVpsksqIMs';
 
-  // ── FAIR DAY REDIRECT ──
-  (function() {
-    var now = new Date();
-    var fairStart = new Date("2026-07-04T08:00:00+02:00");
-    var fairEnd = new Date("2026-07-04T23:59:00+02:00");
-    if (now >= fairStart && now <= fairEnd) {
-      window.location.href = "/beurs.html";
-    }
-  })();
-
   // ── STATE ──
   let allShirts = [];
   let cart = JSON.parse(localStorage.getItem('ss_cart') || '[]');
@@ -3076,14 +3066,14 @@
     renderDesktopGrid();
   }
 
-  // Decennium uit het seizoenveld halen ("1990/91", "2004", "1999-2000" -> "1990s")
+  // Extract the decade from the season field ("1990/91", "2004", "1999-2000" -> "1990s")
   function shirtDecade(s) {
     var m = String(s.season || '').match(/(19|20)\d{2}/);
     if (!m) return null;
     return (Math.floor(parseInt(m[0], 10) / 10) * 10) + 's';
   }
 
-  // Vult de decennium- en conditiefilters met wat er echt in de voorraad zit
+  // Populate the decade and condition filters from what is actually in stock
   function buildShopFilterOptions() {
     var decEl = document.getElementById('d-filter-decade');
     var condEl = document.getElementById('d-filter-condition');
@@ -3386,8 +3376,8 @@
   }
 
   // Leesbaar pad: /#/products/netherlands-1988-home-shirt-size-l
-  // De id blijft erin verwerkt zodat we het shirt betrouwbaar terugvinden,
-  // ook als twee shirts dezelfde titel zouden hebben.
+  // The id stays embedded so we can reliably find the shirt back,
+  // even if two shirts were to share the same title.
   function shirtPath(s) {
     return '/#/products/' + shirtSlug(s) + '-' + s.id;
   }
@@ -3552,7 +3542,7 @@
       document.getElementById('m-detail-price').textContent = `€${parseFloat(shirt.price).toFixed(2)}`;
       document.getElementById('m-detail-desc').textContent = shirt.description||'';
       document.getElementById('m-detail-specs').innerHTML = buildSpecs(shirt);
-      document.getElementById('m-detail-measurements').innerHTML = buildMeasurements(shirt);
+      document.getElementById('m-detail-measurements').innerHTML = buildProvenance(shirt) + buildMeasurements(shirt);
       document.getElementById('m-detail-thumbs').innerHTML = images.length > 1 ? images.map((img,i) => `<img src="${img}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','m-detail-main-img')" loading="lazy">`).join('') : '';
       const btn = document.getElementById('m-detail-add-btn');
       const inCart = cart.some(c => c.id === shirt.id);
@@ -3573,7 +3563,7 @@
       document.getElementById('d-detail-price').textContent = `€${parseFloat(shirt.price).toFixed(2)}`;
       document.getElementById('d-detail-desc').textContent = shirt.description||'';
       document.getElementById('d-detail-specs').innerHTML = buildSpecs(shirt);
-      document.getElementById('d-detail-measurements').innerHTML = buildMeasurements(shirt);
+      document.getElementById('d-detail-measurements').innerHTML = buildProvenance(shirt) + buildMeasurements(shirt);
       document.getElementById('d-detail-thumbs').innerHTML = images.map((img,i) => `<img src="${img}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','d-detail-main-img')" loading="lazy">`).join('');
       renderRelatedShirts(shirt);
       const btn = document.getElementById('d-detail-add-btn');
@@ -3650,6 +3640,31 @@
 
   // Measurements block: a small football-shirt diagram with length/width arrows.
   // Only shows if the shirt has length_cm and/or width_cm filled in the database.
+  function buildProvenance(shirt) {
+    var rows = [
+      ['Match', shirt.mw_match],
+      ['Date', shirt.mw_date],
+      ['Competition', shirt.mw_competition],
+      ['Type', shirt.mw_type],
+      ['Provenance', shirt.mw_provenance],
+      ['Certificate', shirt.mw_coa],
+      ['Product code', shirt.mw_code],
+      ['Photomatch', shirt.mw_photomatch]
+    ].filter(function(r) { return r[1] && String(r[1]).trim(); });
+    if (!rows.length) return '';
+    return ''
+      + '<div style="border-top:1px solid #1e1c17;padding-top:18px;margin-bottom:8px">'
+      +   '<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Provenance &amp; authenticity</div>'
+      +   '<div style="font-size:11px;color:var(--text-muted);line-height:1.6;margin-bottom:14px">The documented history of this shirt. This is what separates a genuine match worn piece from a retail version.</div>'
+      +   rows.map(function(r) {
+            return '<div style="display:flex;gap:14px;padding:8px 0;border-bottom:1px solid #15130f">'
+              + '<span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:110px;flex-shrink:0">' + r[0] + '</span>'
+              + '<span style="font-size:14px;color:var(--cream);line-height:1.5">' + String(r[1]) + '</span>'
+              + '</div>';
+          }).join('')
+      + '</div>';
+  }
+
   function buildMeasurements(shirt) {
     var L = shirt.length_cm, W = shirt.width_cm;
     var hasL = (L !== null && L !== undefined && L !== '' && !isNaN(parseFloat(L)));
