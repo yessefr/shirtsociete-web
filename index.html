@@ -3405,10 +3405,10 @@
       var ogi = document.querySelector('meta[property="og:image"]');
       if (ogi && getImg(shirt)) ogi.setAttribute('content', getImg(shirt));
       // point search engines and social to the real /products/ page
-      var realUrl = 'https://shirtsociete.com/products/' + shirtSlug(shirt) + '.html';
+      var realUrl = 'https://shirtsociete.com/' + shirtSlug(shirt) + '.html';
       var ogu = document.querySelector('meta[property="og:url"]');
       if (ogu) ogu.setAttribute('content', realUrl);
-      if (typeof updateCanonical === 'function') updateCanonical('/products/' + shirtSlug(shirt) + '.html');
+      if (typeof updateCanonical === 'function') updateCanonical('/' + shirtSlug(shirt) + '.html');
     } catch (e) {}
   }
 
