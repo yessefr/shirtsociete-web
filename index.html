@@ -3367,7 +3367,10 @@
   // ── PER-SHIRT URLs (shareable + indexable by Google) ──
   function shirtSlug(s) {
     var parts = (s.title || 'shirt');
-    if (s.size) parts += ' size ' + s.size;
+    // only add the size if the title doesn't already mention it (avoids "...-size-xl-size-xl")
+    if (s.size && !new RegExp('\\bsize\\s*' + s.size + '\\b', 'i').test(parts) && !new RegExp('\\b' + s.size + '\\b', 'i').test(parts.replace(/\d{4}/g, ''))) {
+      parts += ' size ' + s.size;
+    }
     return parts.toLowerCase()
       .normalize('NFD').replace(/[\u0300-\u036f]/g, '')   // é->e, ü->u, ø->o
       .replace(/[^a-z0-9]+/g, '-')
