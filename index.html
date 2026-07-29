@@ -1417,7 +1417,7 @@
     <div onclick="mShopCategory('national')" style="position:relative;height:180px;border-radius:3px;overflow:hidden;cursor:pointer">
       <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top">
       <div style="position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,9,5,.9))"></div>
-      <div style="position:absolute;bottom:16px;left:16px;font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);text-shadow:0 2px 16px rgba(0,0,0,.7)">National Teams</div>
+      <div style="position:absolute;bottom:16px;left:16px;font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);text-shadow:0 2px 16px rgba(0,0,0,.7)">International Shirts</div>
     </div>
     <div onclick="mGoTo('about')" style="position:relative;height:180px;border-radius:3px;overflow:hidden;cursor:pointer">
       <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top">
@@ -1437,7 +1437,7 @@
   <div class="m-section-label">Match Worn / Issued</div>
   <div id="m-matchworn-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
   <div class="m-divider"></div>
-  <div class="m-section-label">National Teams</div>
+  <div class="m-section-label">International Shirts</div>
   <div id="m-national-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
   <div class="m-divider"></div>
   <div class="m-section-label">Club Shirts</div>
@@ -1680,7 +1680,7 @@
           <a class="nav-item" href="/?p=shop" onclick="dGoTo('shop');dSetFilter('all');return false;">All Shirts</a>
           <a class="nav-item" href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" id="d-nav-mw">Match Worn / Issued</a>
           <a class="nav-item" href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;" id="d-nav-clubs">Clubs</a>
-          <a class="nav-item" href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;" id="d-nav-national">National Teams</a>
+          <a class="nav-item" href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;" id="d-nav-national">International Shirts</a>
         </div>
       </div>
 
@@ -1903,7 +1903,7 @@
   <div style="padding:48px 52px 36px">
     <div id="nat-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
       <div>
-        <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">World Cup Countries</div>
+        <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">International Shirts</div>
         <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">National Sides</div>
       </div>
       <a href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;" style="font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all national teams &rarr;</a>
@@ -1941,7 +1941,7 @@
     </div>
     <div id="sw1" class="sw-shirt" onclick="dShopCategory('national')">
       <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg">
-      <div class="sw-info"><div class="sw-name">National Teams</div></div>
+      <div class="sw-info"><div class="sw-name">International Shirts</div></div>
     </div>
     <div id="sw2" class="sw-shirt" onclick="dGoTo('about')">
       <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg">
@@ -2563,7 +2563,7 @@
         <a href="/?p=shop" onclick="dGoTo('shop');return false;">All Products</a><br>
         <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;">Match Worn / Issued</a><br>
         <a href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;">Clubs</a><br>
-        <a href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;">National Teams</a>
+        <a href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;">International Shirts</a>
       </div>
       <div>
         <div class="foot-head">Legal</div>
@@ -3401,9 +3401,11 @@
       if (ogt) ogt.setAttribute('content', shirt.title + ' | Shirt Société');
       var ogi = document.querySelector('meta[property="og:image"]');
       if (ogi && getImg(shirt)) ogi.setAttribute('content', getImg(shirt));
+      // point search engines and social to the real /products/ page
+      var realUrl = 'https://shirtsociete.com/products/' + shirtSlug(shirt) + '/';
       var ogu = document.querySelector('meta[property="og:url"]');
-      if (ogu) ogu.setAttribute('content', shirtUrl(shirt));
-      if (typeof updateCanonical === 'function') updateCanonical(shirtPath(shirt));
+      if (ogu) ogu.setAttribute('content', realUrl);
+      if (typeof updateCanonical === 'function') updateCanonical('/products/' + shirtSlug(shirt) + '/');
     } catch (e) {}
   }
 
@@ -3621,15 +3623,32 @@
     [60, 250, 700].forEach(function(ms) { setTimeout(initRowScrollers, ms); });
   }
 
+  // Turns an Adidas numeric size code into its collector size label.
+  function sizeCodeLabel(code) {
+    var map = {'4':'S','5':'S/M','6':'M','7':'M/L','8':'L','9':'L/XL','10':'XL','11':'XL/XXL','12':'XXL','13':'XXL/3XL'};
+    return map[String(code)] || null;
+  }
+  // Builds the size string, adding the Adidas code for match worn shirts.
+  function sizeDisplay(shirt) {
+    var base = shirt.size || '';
+    if (shirt.mw_sizecode) {
+      var lbl = sizeCodeLabel(shirt.mw_sizecode);
+      // e.g. "L/XL (code 9)" — if the plain size is missing, lead with the code label
+      if (base) return base + ' (code ' + shirt.mw_sizecode + ')';
+      if (lbl) return lbl + ' (code ' + shirt.mw_sizecode + ')';
+      return 'Code ' + shirt.mw_sizecode;
+    }
+    return base;
+  }
   function buildSpecs(shirt) {
-    var catName = shirt.category === 'national' ? 'National Team'
+    var catName = shirt.category === 'national' ? 'International'
                 : shirt.category === 'match_worn' ? 'Match Worn / Issued'
                 : shirt.category === 'clubs' ? 'Club'
                 : (shirt.category || '').replace('_',' ');
     var rows = [
       ['Club', shirt.club],
       ['Season', shirt.season],
-      ['Size', shirt.size],
+      ['Size', sizeDisplay(shirt)],
       ['Condition', shirt.condition],
       ['Category', catName]
     ];
