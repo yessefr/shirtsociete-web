@@ -3378,11 +3378,11 @@
       .slice(0, 70);
   }
 
-  // Leesbaar pad: /#/products/netherlands-1988-home-shirt-size-l
-  // The id stays embedded so we can reliably find the shirt back,
-  // even if two shirts were to share the same title.
+  // Real shareable page: /bayern-munchen-2020-21-....html
+  // This is the same URL as the static product page in the repo root,
+  // so the address bar, shared links and the canonical all match.
   function shirtPath(s) {
-    return '/#/products/' + shirtSlug(s) + '-' + s.id;
+    return '/' + shirtSlug(s) + '.html';
   }
   function shirtUrl(s) {
     return 'https://shirtsociete.com' + shirtPath(s);
@@ -3404,11 +3404,9 @@
       if (ogt) ogt.setAttribute('content', shirt.title + ' | Shirt Société');
       var ogi = document.querySelector('meta[property="og:image"]');
       if (ogi && getImg(shirt)) ogi.setAttribute('content', getImg(shirt));
-      // point search engines and social to the real /products/ page
-      var realUrl = 'https://shirtsociete.com/' + shirtSlug(shirt) + '.html';
       var ogu = document.querySelector('meta[property="og:url"]');
-      if (ogu) ogu.setAttribute('content', realUrl);
-      if (typeof updateCanonical === 'function') updateCanonical('/' + shirtSlug(shirt) + '.html');
+      if (ogu) ogu.setAttribute('content', 'https://shirtsociete.com' + url);
+      if (typeof updateCanonical === 'function') updateCanonical(url);
     } catch (e) {}
   }
 
@@ -3479,7 +3477,19 @@
   // if someone lands on a shirt URL, open that shirt straight away
   function openShirtFromUrl() {
     try {
-      // Nieuw leesbaar pad: /#/products/<slug>-<id>
+      // Real product path: /<slug>.html — match it back to a shirt by slug
+      var path = window.location.pathname || '';
+      var slugMatch = path.match(/^\/(.+)\.html$/);
+      if (slugMatch) {
+        var wantSlug = slugMatch[1];
+        var bySlug = allShirts.find(function(s) { return shirtSlug(s) === wantSlug; });
+        if (bySlug) {
+          if (window.innerWidth >= 768) { dGoTo('shop'); openDetail(bySlug.id, 'd'); }
+          else { mGoTo('shop'); openDetail(bySlug.id, 'm'); }
+          return true;
+        }
+      }
+      // Old hash links /#/products/<slug>-<id> still work and get upgraded
       var hash = window.location.hash || '';
       var pm = hash.match(/#\/products\/(.+?)-([0-9a-fA-F-]+)$/);
       if (pm) {
@@ -3488,6 +3498,8 @@
         if (pshirt) {
           if (window.innerWidth >= 768) { dGoTo('shop'); openDetail(pshirt.id, 'd'); }
           else { mGoTo('shop'); openDetail(pshirt.id, 'm'); }
+          // upgrade the old hash link to the clean real URL
+          if (history.replaceState) history.replaceState({ shirt: pshirt.id }, '', shirtPath(pshirt));
           return true;
         }
       }
