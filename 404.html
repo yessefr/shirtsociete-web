@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shirt Société</title>
+  <script>
+    // GitHub Pages 404 handler for the single-page app.
+    // When a /products/...html (or any app URL) is refreshed or shared and the
+    // static file isn't found, we send the visitor to the app root and hand it
+    // the original path so it can open the right shirt instead of showing a 404.
+    (function () {
+      var path = window.location.pathname || '/';
+      var search = window.location.search || '';
+      var hash = window.location.hash || '';
+      // remember where the visitor wanted to go
+      try { sessionStorage.setItem('ss_redirect', path + search + hash); } catch (e) {}
+      // a product/archive page: let the app resolve it by slug
+      if (/^\/products\//.test(path)) {
+        window.location.replace('/?ssr=' + encodeURIComponent(path) + search + hash);
+      } else {
+        window.location.replace('/');
+      }
+    })();
+  </script>
+  <style>
+    html,body{background:#0a0905;color:#f5f0e8;margin:0;height:100%;
+      font-family:system-ui,-apple-system,sans-serif}
+    .wrap{display:flex;align-items:center;justify-content:center;height:100%;text-align:center}
+    a{color:#c8a950}
+  </style>
+</head>
+<body>
+  <div class="wrap"><div>
+    <p>Loading…</p>
+    <p><a href="/">Return to Shirt Société</a></p>
+  </div></div>
+</body>
+</html>
