@@ -2299,7 +2299,17 @@
         </div>
       </section>
       <div style="padding:28px 52px 64px">
-        <div id="d-archive-filters" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap">
+          <div id="d-archive-filters" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            <div id="d-arch-view-grid" onclick="setArchiveView('grid')" title="Grid view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:2px;cursor:pointer;background:#2a2620;transition:all .2s">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <div id="d-arch-view-list" onclick="setArchiveView('list')" title="List view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #2e2c27;border-radius:2px;cursor:pointer;background:#1a1815;transition:all .2s">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </div>
+          </div>
+        </div>
         <div id="d-archive-grid" class="shirt-grid">
           <div class="loading" style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Loading archive...</div>
         </div>
@@ -4473,6 +4483,7 @@
     var grid = document.getElementById('d-archive-grid');
     if (!grid) return;
     setArchiveMeta();
+    try { var sv = localStorage.getItem('ss_archive_view'); if (sv) setArchiveView(sv); } catch (e) {}
     fetchArchive(function(items){
       if (items === null) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Could not load the archive right now.</div>'; return; }
       buildArchiveFilters(items);
@@ -4519,6 +4530,20 @@
       }).join('');
     });
   }
+  var archiveView = 'grid';
+  function setArchiveView(mode) {
+    archiveView = mode;
+    var gv = document.getElementById('d-arch-view-grid');
+    var lv = document.getElementById('d-arch-view-list');
+    var base = 'width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer;transition:all .2s;';
+    var on = 'border:1px solid var(--gold);background:#2a2620';
+    var off = 'border:1px solid #2e2c27;background:#1a1815';
+    if (gv) { gv.style.cssText = base + (mode === 'grid' ? on : off); var gs = gv.querySelector('svg'); if (gs) gs.style.stroke = mode === 'grid' ? 'var(--gold)' : 'var(--text-muted)'; }
+    if (lv) { lv.style.cssText = base + (mode === 'list' ? on : off); var ls = lv.querySelector('svg'); if (ls) ls.style.stroke = mode === 'list' ? 'var(--gold)' : 'var(--text-muted)'; }
+    var grid = document.getElementById('d-archive-grid');
+    if (grid) grid.className = 'shirt-grid' + (mode === 'list' ? ' list-view' : '');
+    try { localStorage.setItem('ss_archive_view', mode); } catch (e) {}
+  }
   function paintArchive(allItems) {
     var grid = document.getElementById('d-archive-grid');
     if (!grid) return;
@@ -4550,6 +4575,8 @@
         +   '</div>'
         + '</div>';
     }).join('');
+    // keep whichever view (grid/list) is active after repaint
+    grid.className = 'shirt-grid' + (archiveView === 'list' ? ' list-view' : '');
   }
   var currentArchiveItem = null;
   function openArchiveItem(id) {
@@ -5933,14 +5960,14 @@
 <div id="archive-detail-modal" style="position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:24px;overflow-y:auto">
   <div style="background:#0d0b07;border:1px solid #1e1c17;border-radius:6px;max-width:920px;width:100%;max-height:92vh;overflow:hidden;position:relative;display:flex;flex-direction:column">
     <button onclick="closeArchiveDetail()" style="position:absolute;top:14px;right:14px;z-index:5;background:rgba(0,0,0,.5);border:1px solid #2a2820;color:var(--cream);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center">×</button>
-    <div class="archive-detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0;overflow-y:auto">
+    <div class="archive-detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0">
       <div style="background:#0a0905;padding:24px;display:flex;flex-direction:column;gap:12px">
         <div style="position:relative;background:#111;border-radius:3px;overflow:hidden;cursor:zoom-in;max-height:78vh" onclick="openArchiveZoom()">
           <img id="ad-main-img" src="" alt="" style="width:100%;height:100%;max-height:78vh;object-fit:contain;display:block">
         </div>
         <div id="ad-thumbs" style="display:flex;gap:8px;flex-wrap:wrap"></div>
       </div>
-      <div style="padding:32px 30px">
+      <div style="padding:32px 30px;overflow-y:auto;max-height:92vh">
         <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Shirt Société Archive</div>
         <h2 id="ad-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;line-height:1.2;margin-bottom:6px"></h2>
         <div id="ad-club" style="font-size:13px;color:var(--text-muted);margin-bottom:4px"></div>
