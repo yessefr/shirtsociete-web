@@ -3485,6 +3485,22 @@
     try {
       // Real product path: /<slug>.html — match it back to a shirt by slug
       var path = window.location.pathname || '';
+      // Archive product path: /products/archive/<slug>.html
+      var archMatch = path.match(/^\/products\/archive\/(.+)\.html$/);
+      if (archMatch) {
+        var aslug = archMatch[1];
+        var openArch = function() {
+          var found = (archiveItems || []).find(function(s){ return shirtSlug(s) === aslug; });
+          if (found) {
+            if (window.innerWidth >= 768) dGoTo('archive'); else mGoTo('archive');
+            openArchiveItem(found.id);
+            return true;
+          }
+          return false;
+        };
+        if (archiveItems && archiveItems.length) { if (openArch()) return true; }
+        else if (typeof fetchArchive === 'function') { fetchArchive(function(){ openArch(); }); return true; }
+      }
       var slugMatch = path.match(/^\/products\/(.+)\.html$/);
       if (slugMatch) {
         var wantSlug = slugMatch[1];
@@ -4384,7 +4400,7 @@
     if (archiveItems) { cb(archiveItems); return; }
     if (archiveLoading) { setTimeout(function(){ fetchArchive(cb); }, 200); return; }
     archiveLoading = true;
-    fetch(dbHost + '/rest/v1/my_collection?select=*&order=created_at.desc', {
+    fetch(dbHost + '/rest/v1/my_collection?select=*&order=sort_order.asc.nullslast,created_at.desc', {
       headers: { 'apikey': dbToken, 'Authorization': 'Bearer ' + dbToken }
     })
       .then(function(r){ return r.json(); })
@@ -4558,11 +4574,18 @@
     }).join('');
     document.getElementById('archive-detail-modal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
-    // per-shirt SEO title/description (deep-linkable)
+    // per-shirt SEO title/description + real shareable URL (deep-linkable)
     try {
       document.title = (item.title || 'Archive shirt') + ' | Shirt Société Archive';
       var md = document.querySelector('meta[name="description"]');
       if (md) md.setAttribute('content', (item.description || item.title || '') + ' — from the Shirt Société Archive.');
+      var aurl = '/products/archive/' + shirtSlug(item) + '.html';
+      if (history.pushState) history.pushState({ archive: item.id }, '', aurl);
+      var ogu = document.querySelector('meta[property="og:url"]');
+      if (ogu) ogu.setAttribute('content', 'https://shirtsociete.com' + aurl);
+      var ogi = document.querySelector('meta[property="og:image"]');
+      if (ogi && imgs[0]) ogi.setAttribute('content', imgs[0]);
+      if (typeof updateCanonical === 'function') updateCanonical(aurl);
     } catch (e) {}
   }
   function archiveSwitchImg(i) {
