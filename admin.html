@@ -353,6 +353,10 @@
           <div class="page-subtitle">Manage your inventory</div>
         </div>
         <div style="display:flex;gap:10px">
+          <button class="btn btn-secondary" onclick="checkProductPages()" id="check-btn" title="Checks every live product page matches its shirt (catches wrong-product URLs)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            Check pages
+          </button>
           <button class="btn btn-secondary" onclick="generateProductPages()" id="pages-btn" title="Builds a real /products/ page for each shirt, so Google indexes them fully">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Generate product pages
@@ -758,12 +762,17 @@
     updateDashboard();
   }
 
+  let allArchive = [];
   async function loadShirts() {
     try {
       allShirts = await sbFetch('shirts', '?select=*&order=created_at.desc');
       renderShirts();
       document.getElementById('shirts-count').textContent = allShirts.length;
     } catch (err) { showToast('Error loading shirts', 'error'); }
+    // also load archive shirts (my_collection) so the page generator can include them
+    try {
+      allArchive = await sbFetch('my_collection', '?select=*&order=created_at.desc');
+    } catch (err) { allArchive = []; }
   }
 
   async function loadOrders() {
@@ -1641,13 +1650,21 @@
       }
     });
 
+    // archive shirts (my_collection) — real /products/archive/ pages
+    var archN = 0;
+    (allArchive || []).forEach(function(s) {
+      if (!s || !s.id) return;
+      addUrl(base + '/products/archive/' + ssShirtSlug(s) + '.html', 'monthly', '0.5');
+      archN++;
+    });
+
     lines.push('</urlset>');
     var xml = lines.join('\n');
 
     document.getElementById('sitemap-output').value = xml;
     document.getElementById('sitemap-summary').innerHTML =
-      '<strong style="color:var(--white)">' + (live + sold + 14 + BLOG_POSTS.length) + ' URL\'s</strong> — ' +
-      '14 fixed pages, ' + BLOG_POSTS.length + ' blog articles, <span style="color:var(--green)">' + live + ' shirts for sale</span>' +
+      '<strong style="color:var(--white)">' + (live + sold + 14 + BLOG_POSTS.length + archN) + ' URL\'s</strong> — ' +
+      '14 fixed pages, ' + BLOG_POSTS.length + ' blog articles, ' + archN + ' archive, <span style="color:var(--green)">' + live + ' shirts for sale</span>' +
       (sold ? ', ' + sold + ' sold' : '') + '.';
     document.getElementById('sitemap-modal').classList.add('open');
   }
@@ -1776,6 +1793,54 @@
       + '</div>\n</body>\n</html>';
   }
 
+  // Archive shirts are NOT for sale, so no price/offer — use a lighter page
+  // with schema.org "Thing" (Google requires offers on Product, not on Thing).
+  function buildArchivePage(s) {
+    var base = 'https://shirtsociete.com';
+    var slug = ssShirtSlug(s);
+    var url = base + '/products/archive/' + slug + '.html';
+    var img = (s.images && s.images[0]) ? s.images[0] : '';
+    var metaDesc = (s.description ? String(s.description).replace(/\s+/g, ' ').trim().slice(0, 155)
+                   : (s.title + ' — from the Shirt Société private archive.'));
+    var gallery = (s.images || []).map(function(im, i) {
+      return '<img src="' + htmlEscape(im) + '" alt="' + htmlEscape(s.title + (i ? ' — photo ' + (i + 1) : '')) + '" loading="' + (i ? 'lazy' : 'eager') + '">';
+    }).join('\n      ');
+    var schema = {
+      "@context": "https://schema.org/", "@type": "Thing",
+      "name": s.title || '', "image": s.images || [],
+      "description": metaDesc, "url": url
+    };
+    return '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
+      + '<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
+      + '<title>' + htmlEscape(s.title) + ' | Shirt Société Archive</title>\n'
+      + '<meta name="description" content="' + htmlEscape(metaDesc) + '">\n'
+      + '<link rel="canonical" href="' + url + '">\n'
+      + '<meta property="og:type" content="website">\n'
+      + '<meta property="og:site_name" content="Shirt Société">\n'
+      + '<meta property="og:title" content="' + htmlEscape(s.title) + '">\n'
+      + '<meta property="og:description" content="' + htmlEscape(metaDesc) + '">\n'
+      + '<meta property="og:url" content="' + url + '">\n'
+      + (img ? '<meta property="og:image" content="' + htmlEscape(img) + '">\n' : '')
+      + '<meta name="twitter:card" content="summary_large_image">\n'
+      + '<script type="application/ld+json">' + JSON.stringify(schema) + '<\/script>\n'
+      + '<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0905;color:#f5f0e8;font-family:system-ui,-apple-system,"DM Sans",sans-serif;line-height:1.7}a{color:#c8a950}.wrap{max-width:1000px;margin:0 auto;padding:32px 24px 80px}.back{font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:#c8a950;display:inline-block;margin-bottom:32px}.cat{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c8a950;margin-bottom:8px}h1{font-size:32px;font-weight:700;line-height:1.15;margin-bottom:8px}.club{color:#888070;margin-bottom:20px}.specs{list-style:none;margin:0 0 24px}.specs li{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid #1e1c17}.specs b{min-width:120px;color:#888070;font-weight:400;text-transform:uppercase;font-size:12px;letter-spacing:1px}.desc{margin:24px 0;white-space:pre-line}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:32px}.gallery img{width:100%;border-radius:3px;background:#15130f}.note{font-size:12px;color:#888070;margin-top:32px}.tag{display:inline-block;background:rgba(200,169,80,.1);color:#c8a950;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:2px;margin-bottom:20px}</style>\n'
+      + '</head>\n<body>\n<div class="wrap">\n'
+      + '  <a class="back" href="/?p=archive">&larr; Shirt Société Archive</a>\n'
+      + (gallery ? '  <div class="gallery">\n      ' + gallery + '\n  </div>\n' : '')
+      + '  <div class="tag">Private Archive · Not For Sale</div>\n'
+      + '  <div class="cat">Match Worn</div>\n'
+      + '  <h1>' + htmlEscape(s.title) + '</h1>\n'
+      + '  <div class="club">' + htmlEscape(s.club || '') + '</div>\n'
+      + '  <ul class="specs">\n'
+      + (s.club ? '    <li><b>Club</b> ' + htmlEscape(s.club) + '</li>\n' : '')
+      + (s.season ? '    <li><b>Season</b> ' + htmlEscape(s.season) + '</li>\n' : '')
+      + '  </ul>\n'
+      + (s.description ? '  <div class="desc">' + htmlEscape(s.description) + '</div>\n' : '')
+      + '  <a class="back" href="/?p=archive" style="margin-top:20px">View the full archive &rarr;</a>\n'
+      + '  <p class="note">Part of the Shirt Société private archive. These shirts are not for sale. Questions? Email info@shirtsociete.com.</p>\n'
+      + '</div>\n</body>\n</html>';
+  }
+
   function generateProductPages() {
     if (!allShirts || !allShirts.length) {
       showToast('Shirts not loaded yet — try again', 'error');
@@ -1789,12 +1854,21 @@
         var slug = ssShirtSlug(s);
         folder.file(slug + '.html', buildProductPage(s));
       });
+      // archive shirts go in products/archive/
+      var arch = folder.folder('archive');
+      var archCount = 0;
+      (allArchive || []).forEach(function(s) {
+        if (!s || !s.id) return;
+        var slug = ssShirtSlug(s);
+        arch.file(slug + '.html', buildArchivePage(s));
+        archCount++;
+      });
       zip.generateAsync({ type: 'blob' }).then(function(blob) {
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = 'products.zip';
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        showToast(allShirts.length + ' product pages generated', 'success');
+        showToast(allShirts.length + ' shop + ' + archCount + ' archive pages generated', 'success');
       });
     }
     if (typeof JSZip === 'undefined') {
@@ -1806,6 +1880,58 @@
     } else {
       build();
     }
+  }
+
+  // ── PRODUCT PAGE CHECKER ──
+  // Fetches every live /products/<slug>.html and checks that the page
+  // actually matches the shirt it should be (title + canonical). Flags
+  // any URL that shows the wrong product, a wrong canonical, or is missing.
+  async function checkProductPages() {
+    if (!allShirts || !allShirts.length) { showToast('Shirts not loaded yet', 'error'); return; }
+    showToast('Checking ' + allShirts.length + ' product pages...', 'success');
+    var base = 'https://shirtsociete.com';
+    var problems = [];
+    var okCount = 0;
+    for (var i = 0; i < allShirts.length; i++) {
+      var s = allShirts[i];
+      if (!s || !s.id) continue;
+      var slug = ssShirtSlug(s);
+      var url = base + '/products/' + slug + '.html';
+      try {
+        var res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) { problems.push('MISSING (' + res.status + '): ' + slug + '.html'); continue; }
+        var html = await res.text();
+        var titleM = html.match(/<title>([^<|]*)/);
+        var canonM = html.match(/canonical"\s+href="([^"]*)"/);
+        var pageTitle = titleM ? titleM[1].trim() : '';
+        var wantTitle = (s.title || '').trim();
+        var canonOk = canonM ? canonM[1].indexOf(slug) !== -1 : false;
+        // compare the first 30 chars of the title (ignoring accents/case)
+        var norm = function(t){ return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'').slice(0,30); };
+        if (norm(pageTitle) !== norm(wantTitle)) {
+          problems.push('WRONG PRODUCT: ' + slug + '.html shows "' + pageTitle.slice(0,40) + '" (expected "' + wantTitle.slice(0,40) + '")');
+        } else if (!canonOk) {
+          problems.push('WRONG CANONICAL: ' + slug + '.html');
+        } else {
+          okCount++;
+        }
+      } catch (e) {
+        problems.push('NOT REACHABLE: ' + slug + '.html');
+      }
+    }
+    var out = document.getElementById('sitemap-output');
+    var box = document.getElementById('sitemap-modal');
+    var summary = document.getElementById('sitemap-summary');
+    if (out && box) {
+      out.value = problems.length
+        ? problems.join('\n')
+        : 'All ' + okCount + ' product pages match their shirt. No problems found.';
+      if (summary) summary.innerHTML = problems.length
+        ? '<strong style="color:#e05a4d">' + problems.length + ' problem(s) found</strong> — ' + okCount + ' correct. Regenerate + re-upload the flagged pages.'
+        : '<strong style="color:var(--green)">All ' + okCount + ' pages correct.</strong>';
+      box.classList.add('open');
+    }
+    showToast(problems.length ? problems.length + ' problem(s) found' : 'All pages correct', problems.length ? 'error' : 'success');
   }
 
   // ── INIT ──
