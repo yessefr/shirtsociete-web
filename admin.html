@@ -726,7 +726,7 @@
       if (!res.ok || !data.access_token) throw new Error(data.error_description || 'Login failed');
 
       authToken = data.access_token;
-      sessionStorage.setItem('ss_admin_token', authToken);
+      localStorage.setItem('ss_admin_token', authToken);
       showAdmin();
     } catch (err) {
       errEl.textContent = err.message;
@@ -735,6 +735,7 @@
   }
 
   function doLogout() {
+    localStorage.removeItem('ss_admin_token');
     sessionStorage.removeItem('ss_admin_token');
     authToken = null;
     document.getElementById('login-screen').style.display = 'flex';
@@ -1935,7 +1936,7 @@
   }
 
   // ── INIT ──
-  const saved = sessionStorage.getItem('ss_admin_token');
+  const saved = localStorage.getItem('ss_admin_token');
   if (saved) { authToken = saved; showAdmin(); }
 </script>
 </body>
