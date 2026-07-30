@@ -81,9 +81,11 @@
   }
   </script>
   <title>Shirt Société | Vintage Football Shirts | Timeless, Original, Rare</title>
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=10">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_32,h_32,b_rgb:0a0905,f_png,q_100,e_sharpen:80/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=12">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_16,h_16,b_rgb:0a0905,f_png,q_100,e_sharpen:100/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=12">
+  <link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_192,h_192,b_rgb:0a0905,f_png,q_100/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=12">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_180,h_180,b_rgb:0a0905,f_png,q_100/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=10">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_180,h_180,b_rgb:0a0905,f_png,q_100/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=12">
   <meta name="theme-color" content="#0a0905">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1129,6 +1131,12 @@
       .screen { display: none; }
       .screen.active { display: flex; }
       .archive-detail-grid { grid-template-columns: 1fr !important; }
+      /* mobile archive detail: let the whole panel scroll, shrink the photo so the story is reachable */
+      #archive-detail-modal > div { max-height: 90vh !important; overflow-y: auto !important; }
+      .archive-detail-grid > div:first-child { padding: 16px !important; }
+      .archive-detail-grid > div:first-child > div:first-child { max-height: 60vh !important; }
+      #ad-main-img { max-height: 60vh !important; }
+      .archive-detail-grid > div:last-child { max-height: none !important; overflow: visible !important; padding: 20px !important; }
 
       /* Mobile hero */
       .m-hero {
@@ -1628,7 +1636,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </a>
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px;border-top:1px solid #1e1c17;margin-top:8px">Contact</div>
-    <div class="profile-item"><span>info@shirtsociete.com</span></div>
+    <div class="profile-item" onclick="openContactModal()" style="cursor:pointer"><span style="color:var(--gold)">info@shirtsociete.com</span></div>
   </div>
 </div>
 
@@ -4651,6 +4659,30 @@
       t.style.borderColor = (parseInt(t.getAttribute('data-ai')) === i) ? 'var(--gold)' : '#2a2820';
     });
   }
+  // swipe left/right on the archive photo to move between images
+  (function () {
+    var startX = null, startY = null;
+    function onStart(e) { var t = e.touches ? e.touches[0] : e; startX = t.clientX; startY = t.clientY; }
+    function onEnd(e) {
+      if (startX === null) return;
+      var t = e.changedTouches ? e.changedTouches[0] : e;
+      var dx = t.clientX - startX, dy = t.clientY - startY;
+      startX = startY = null;
+      if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return; // ignore taps/vertical scrolls
+      if (!currentImages || currentImages.length < 2) return;
+      var next = dx < 0 ? currentImgIndex + 1 : currentImgIndex - 1;
+      if (next < 0) next = currentImages.length - 1;
+      if (next >= currentImages.length) next = 0;
+      archiveSwitchImg(next);
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      var img = document.getElementById('ad-main-img');
+      if (!img) return;
+      var wrap = img.parentElement;
+      wrap.addEventListener('touchstart', onStart, { passive: true });
+      wrap.addEventListener('touchend', onEnd, { passive: true });
+    });
+  })();
   function closeArchiveDetail() {
     document.getElementById('archive-detail-modal').style.display = 'none';
     document.body.style.overflow = '';
