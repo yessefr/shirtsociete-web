@@ -3495,6 +3495,13 @@
     try {
       // Real product path: /<slug>.html — match it back to a shirt by slug
       var path = window.location.pathname || '';
+      // If we arrived via the 404 handler (?ssr=/products/...), use that path
+      // and clean the address bar back to the real product URL.
+      var ssrParam = new URLSearchParams(window.location.search).get('ssr');
+      if (ssrParam && /^\/products\//.test(ssrParam)) {
+        path = ssrParam.split('?')[0].split('#')[0];
+        if (history.replaceState) history.replaceState({}, '', ssrParam);
+      }
       // Archive product path: /products/archive/<slug>.html
       var archMatch = path.match(/^\/products\/archive\/(.+)\.html$/);
       if (archMatch) {
