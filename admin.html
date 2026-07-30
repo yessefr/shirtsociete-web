@@ -1631,7 +1631,7 @@
     var live = 0, sold = 0;
     allShirts.forEach(function(s) {
       if (!s || !s.id) return;
-      var url = base + '/' + ssShirtSlug(s) + '.html';
+      var url = base + '/products/' + ssShirtSlug(s) + '.html';
       if (s.available === false) {
         addUrl(url, 'monthly', '0.3');   // sold: stays indexable, low priority
         sold++;
@@ -1681,7 +1681,7 @@
   function buildProductPage(s) {
     var base = 'https://shirtsociete.com';
     var slug = ssShirtSlug(s);
-    var url = base + '/' + slug + '.html';
+    var url = base + '/products/' + slug + '.html';
     var img = (s.images && s.images[0]) ? s.images[0] : '';
     var price = (s.price != null) ? parseFloat(s.price).toFixed(2) : '';
     var avail = (s.available === false) ? 'SoldOut' : 'InStock';
