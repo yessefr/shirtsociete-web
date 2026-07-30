@@ -260,6 +260,7 @@
   <div class="login-box">
     <div class="login-logo">Shirt Société</div>
     <div class="login-sub">Admin Dashboard</div>
+    <div id="login-expired-note" style="display:none;background:rgba(200,169,80,.12);border:1px solid var(--gold);color:var(--gold);font-size:13px;padding:10px 14px;border-radius:2px;margin-bottom:16px">Your session expired. Please sign in again.</div>
     <label class="login-label">Email</label>
     <input type="email" class="login-input" id="login-email" placeholder="admin@shirtsociete.com">
     <label class="login-label">Password</label>
@@ -753,27 +754,45 @@
     const res = await fetch(`${SUPABASE.url}/rest/v1/${table}${query}`, {
       headers: { 'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}` }
     });
+    if (res.status === 401 || res.status === 403) {
+      // token expired (Supabase logins last ~1 hour) — send back to login
+      const err = new Error('AUTH_EXPIRED');
+      err.authExpired = true;
+      throw err;
+    }
     if (!res.ok) throw new Error(`Failed to fetch ${table}`);
     return res.json();
   }
 
+  function handleAuthExpired() {
+    try { localStorage.removeItem('ss_admin_token'); } catch (e) {}
+    authToken = null;
+    document.getElementById('admin-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    var note = document.getElementById('login-expired-note');
+    if (note) note.style.display = 'block';
+  }
+
   // ── LOAD ALL DATA ──
   async function loadAll() {
-    await Promise.all([loadShirts(), loadOrders(), loadCustomers()]);
-    updateDashboard();
+    try {
+      await Promise.all([loadShirts(), loadOrders(), loadCustomers()]);
+      updateDashboard();
+    } catch (err) {
+      if (err && err.authExpired) { handleAuthExpired(); return; }
+      showToast('Could not load data — please try again', 'error');
+    }
   }
 
   let allArchive = [];
   async function loadShirts() {
-    try {
-      allShirts = await sbFetch('shirts', '?select=*&order=created_at.desc');
-      renderShirts();
-      document.getElementById('shirts-count').textContent = allShirts.length;
-    } catch (err) { showToast('Error loading shirts', 'error'); }
-    // also load archive shirts (my_collection) so the page generator can include them
+    // let AUTH_EXPIRED bubble up to loadAll; only swallow other errors
+    allShirts = await sbFetch('shirts', '?select=*&order=created_at.desc');
+    renderShirts();
+    document.getElementById('shirts-count').textContent = allShirts.length;
     try {
       allArchive = await sbFetch('my_collection', '?select=*&order=created_at.desc');
-    } catch (err) { allArchive = []; }
+    } catch (err) { if (err && err.authExpired) throw err; allArchive = []; }
   }
 
   async function loadOrders() {
@@ -781,14 +800,14 @@
       allOrders = await sbFetch('orders', '?select=*&order=created_at.desc');
       renderOrders();
       document.getElementById('orders-count').textContent = allOrders.length;
-    } catch (err) { showToast('Error loading orders', 'error'); }
+    } catch (err) { if (err && err.authExpired) throw err; showToast('Error loading orders', 'error'); }
   }
 
   async function loadCustomers() {
     try {
       allCustomers = await sbFetch('customers', '?select=*&order=last_order_at.desc');
       renderCustomers();
-    } catch (err) { showToast('Error loading customers', 'error'); }
+    } catch (err) { if (err && err.authExpired) throw err; showToast('Error loading customers', 'error'); }
   }
 
   // ── DASHBOARD ──
