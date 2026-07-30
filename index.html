@@ -3388,7 +3388,7 @@
   // This is the same URL as the static product page in the repo root,
   // so the address bar, shared links and the canonical all match.
   function shirtPath(s) {
-    return '/' + shirtSlug(s) + '.html';
+    return '/products/' + shirtSlug(s) + '.html';
   }
   function shirtUrl(s) {
     return 'https://shirtsociete.com' + shirtPath(s);
@@ -3485,7 +3485,7 @@
     try {
       // Real product path: /<slug>.html — match it back to a shirt by slug
       var path = window.location.pathname || '';
-      var slugMatch = path.match(/^\/(.+)\.html$/);
+      var slugMatch = path.match(/^\/products\/(.+)\.html$/);
       if (slugMatch) {
         var wantSlug = slugMatch[1];
         var bySlug = allShirts.find(function(s) { return shirtSlug(s) === wantSlug; });
