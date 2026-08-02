@@ -90,6 +90,31 @@
 
     .main-content { margin-left: 220px; padding: 32px; min-height: 100vh; }
 
+    /* ── MOBILE ── keep the admin usable on phones */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: static; width: 100%; flex-direction: column;
+        border-right: none; border-bottom: 1px solid var(--grey-light);
+      }
+      .sidebar-logo { padding: 16px 18px; }
+      /* nav items in a horizontal scrolling row */
+      .sidebar nav { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .nav-item {
+        border-left: none; border-bottom: 3px solid transparent;
+        padding: 12px 16px; white-space: nowrap; flex-shrink: 0;
+      }
+      .nav-item.active { border-left-color: transparent; border-bottom-color: var(--gold); }
+      .nav-item svg { width: 16px; height: 16px; }
+      .sidebar-footer { margin-top: 0; padding: 12px 18px; }
+      .main-content { margin-left: 0; padding: 18px 14px; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 14px; margin-bottom: 22px; }
+      .page-header > div:last-child { width: 100%; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      /* let wide tables scroll sideways instead of breaking the layout */
+      .data-table, #recent-orders-table { display: block; overflow-x: auto; white-space: nowrap; }
+      .modal { width: 94vw !important; max-height: 90vh !important; }
+    }
+
     /* ── HEADER ── */
     .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
     .page-title { font-size: 24px; font-weight: 600; }
@@ -456,6 +481,39 @@
         </table>
       </div>
     </div>
+
+  <!-- MESSAGES TAB -->
+  <div class="tab-content" id="tab-messages">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Messages</div>
+        <div class="page-subtitle">Messages sent through the contact form on the site</div>
+      </div>
+      <span id="messages-count" style="color:#888070;font-size:14px"></span>
+    </div>
+    <div id="messages-list"><div class="loading">Loading...</div></div>
+  </div>
+
+  <!-- DROP SIGNUPS TAB -->
+  <div class="tab-content" id="tab-dropsignups">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Drop Signups</div>
+        <div class="page-subtitle">People who signed up to be notified when the drop goes live</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <a class="btn btn-secondary" href="https://shirtsociete.com/?p=home#drop-signup-section" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Open signup on site
+        </a>
+        <button class="btn btn-primary" onclick="sendDropLiveEmail()" id="send-drop-btn">Send Drop Live Email</button>
+      </div>
+    </div>
+    <div style="background:rgba(200,169,80,0.06);border:1px solid rgba(200,169,80,0.2);border-radius:2px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#888070">
+      <strong style="color:var(--gold)">Drop Live Email</strong> — sends everyone on the list a message that new shirts are now online. Only press this when the drop is actually live in the shop.
+    </div>
+    <div id="drop-signups-list"><div class="loading">Loading...</div></div>
+  </div>
 
   </div>
 </div>
@@ -2029,36 +2087,4 @@
   if (saved) { authToken = saved; showAdmin(); }
 </script>
 </body>
-</html>  <!-- DROP SIGNUPS TAB -->
-  <!-- MESSAGES TAB -->
-  <div class="tab-content" id="tab-messages">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
-      <h2 style="font-size:20px;font-weight:600">Messages</h2>
-      <span id="messages-count" style="color:#888070;font-size:14px"></span>
-    </div>
-    <div style="background:#1a1715;border:1px solid #2a2820;border-radius:2px;margin-bottom:16px;padding:16px;font-size:13px;color:#888070">
-      Messages people sent through the contact form on the site — name, email, subject and their message.
-    </div>
-    <div id="messages-list"><div class="loading">Loading...</div></div>
-  </div>
-
-  <!-- DROP SIGNUPS TAB -->
-  <div class="tab-content" id="tab-dropsignups">
-    <div class="page-header">
-      <div>
-        <div class="page-title">Drop Signups</div>
-        <div class="page-subtitle">People who signed up to be notified when the drop goes live</div>
-      </div>
-      <div style="display:flex;gap:10px">
-        <a class="btn btn-secondary" href="https://shirtsociete.com/?p=home#drop-signup-section" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Open signup on site
-        </a>
-        <button class="btn btn-primary" onclick="sendDropLiveEmail()" id="send-drop-btn">Send Drop Live Email</button>
-      </div>
-    </div>
-    <div style="background:rgba(200,169,80,0.06);border:1px solid rgba(200,169,80,0.2);border-radius:2px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#888070">
-      <strong style="color:var(--gold)">Drop Live Email</strong> — sends everyone on the list a message that new shirts are now online. Only press this when the drop is actually live in the shop.
-    </div>
-    <div id="drop-signups-list"><div class="loading-state"><div class="loading-spinner"></div><p>Loading...</p></div></div>
-  </div>
+</html>
