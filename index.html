@@ -5107,34 +5107,39 @@
       if (reveal) reveal.style.backgroundImage = "url('" + slide.getAttribute('data-reveal') + "')";
     });
 
-    var R = 180;               // spotlight radius (smaller than before)
+    var R = 180;               // spotlight radius in px
     var current = 0;
-    var tx = 50, ty = 42, cx = 50, cy = 42, raf = null;
+    // track position in pixels (not percent) so it stays correct when the window resizes / splits
+    var heroW = hero.offsetWidth, heroH = hero.offsetHeight;
+    var tx = heroW / 2, ty = heroH * 0.42, cx = tx, cy = ty, raf = null;
 
     function activeReveal() { return slides[current].querySelector('.cin-reveal'); }
     function setMask() {
-      var m = 'radial-gradient(circle ' + R + 'px at ' + cx.toFixed(1) + '% ' + cy.toFixed(1) + '%, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 42%, rgba(0,0,0,.35) 74%, rgba(0,0,0,0) 100%)';
+      var m = 'radial-gradient(circle ' + R + 'px at ' + cx.toFixed(0) + 'px ' + cy.toFixed(0) + 'px, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 42%, rgba(0,0,0,.35) 74%, rgba(0,0,0,0) 100%)';
       var r = activeReveal();
       if (r) { r.style.webkitMaskImage = m; r.style.maskImage = m; }
     }
     function loop() {
-      cx += (tx - cx) * 0.12;
-      cy += (ty - cy) * 0.12;
+      cx += (tx - cx) * 0.14;
+      cy += (ty - cy) * 0.14;
       setMask();
-      if (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) { raf = requestAnimationFrame(loop); }
+      if (Math.abs(tx - cx) > 0.5 || Math.abs(ty - cy) > 0.5) { raf = requestAnimationFrame(loop); }
       else { raf = null; }
     }
     hero.addEventListener('mousemove', function (e) {
       var rect = hero.getBoundingClientRect();
-      tx = ((e.clientX - rect.left) / rect.width) * 100;
-      ty = ((e.clientY - rect.top) / rect.height) * 100;
+      tx = e.clientX - rect.left;
+      ty = e.clientY - rect.top;
       var r = activeReveal();
       if (r) r.style.opacity = '1';
-      setMask();
       if (!raf) raf = requestAnimationFrame(loop);
     });
     hero.addEventListener('mouseleave', function () {
       slides.forEach(function (s) { var r = s.querySelector('.cin-reveal'); if (r) r.style.opacity = '0'; });
+    });
+    // keep dimensions fresh when the window is resized or split
+    window.addEventListener('resize', function () {
+      heroW = hero.offsetWidth; heroH = hero.offsetHeight;
     });
 
     // dots
