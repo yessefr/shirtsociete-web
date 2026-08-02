@@ -172,17 +172,17 @@
       padding: 0 32px; gap: 24px;
       transition: transform 0.35s ease, background 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease;
     }
-    /* subtle gradient so the links stay readable over a bright photo */
+    /* fully see-through over the hero — no dark tint at all */
     .topbar::before {
       content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-      background: linear-gradient(to bottom, rgba(6,5,4,0.30) 0%, rgba(6,5,4,0.08) 55%, rgba(6,5,4,0) 100%);
+      background: transparent;
       transition: opacity 0.35s ease; opacity: 1;
     }
-    /* once scrolled, give it a solid readable background */
+    /* when scrolled into the page, the bar becomes a bit more solid (less see-through) but never fully black */
     .topbar.scrolled {
-      background: rgba(10,9,5,0.92);
-      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-      border-bottom: 1px solid #1e1c17;
+      background: rgba(10,9,5,0.55);
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .topbar.scrolled::before { opacity: 0; }
     /* hidden when scrolling down, shown when scrolling up */
@@ -203,7 +203,7 @@
     .topbar-actions {
       display: flex; align-items: center; gap: 6px;
       padding-left: 18px; margin-left: 8px;
-      border-left: 1px solid #1e1c17;
+      border-left: 1px solid rgba(255,255,255,0.15);
     }
 
     /* text nav items in the bar */
@@ -216,6 +216,10 @@
     .nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
     .nav-item:hover { color: var(--white); }
     .nav-item.active { color: var(--gold); }
+    /* the bar is always see-through, so keep a soft shadow for legibility */
+    .topbar .nav-item,
+    .topbar-logo img,
+    .topbar-actions svg { text-shadow: 0 1px 6px rgba(0,0,0,0.6); filter: drop-shadow(0 1px 4px rgba(0,0,0,0.55)); }
     /* in the bar, hide the little SVG on text links to keep it clean; keep text */
     .topbar-nav .nav-item svg { display: none; }
 
@@ -310,11 +314,12 @@
     }
     .nav-dropdown-menu .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--white); }
 
-    /* Main content area — full width, offset for the fixed bar */
+    /* Main content area — full width; hero pages start at the very top under the fixed bar */
     .desktop-main {
       flex: 1; min-height: 100vh;
-      padding-top: var(--topbar-h);
     }
+    /* non-hero screens need to clear the fixed bar */
+    .desktop-main > .dscreen:not(#d-screen-home) { padding-top: var(--topbar-h); }
 
     /* ─── DESKTOP PAGE FOOTER (moved out of the old sidebar) ─── */
     .desktop-footer {
@@ -1721,7 +1726,7 @@
   <!-- Top bar -->
   <header class="topbar" id="d-topbar">
     <div class="topbar-logo" onclick="dGoTo('home')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=2" alt="Shirt Société">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=3" alt="Shirt Société">
     </div>
 
     <nav class="topbar-nav">
@@ -1771,9 +1776,9 @@
 <div id="cin-home">
 
 <!-- SCENE 1: HERO -->
-<section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;padding:0 52px;margin-top:calc(-1 * var(--topbar-h))">
+<section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;padding:0 52px">
     <!-- Compact event + drop pills (top of page) -->
-    <div id="cin-top-pills" style="position:absolute;top:24px;right:28px;z-index:5;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(-12px)">
+    <div id="cin-top-pills" style="position:absolute;top:92px;right:28px;z-index:5;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(-12px)">
       <div onclick="dGoTo('about')" style="display:flex;align-items:center;gap:10px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(200,169,80,.25);border-radius:100px;padding:11px 22px 11px 16px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.6)'" onmouseout="this.style.borderColor='rgba(200,169,80,.25)'">
         <div style="position:relative;width:10px;height:10px;flex-shrink:0">
           <div style="width:10px;height:10px;border-radius:50%;background:var(--gold);position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
@@ -3857,39 +3862,34 @@
     if (!hasL && !hasW) return '';
     var lTxt = hasL ? (parseFloat(L) + ' cm') : '—';
     var wTxt = hasW ? (parseFloat(W) + ' cm') : '—';
-    var did = 'meas-diagram-' + Math.random().toString(36).slice(2, 8);
     return ''
       + '<div style="border-top:1px solid #1e1c17;padding-top:18px;margin-bottom:8px">'
-      +   '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">'
-      +     '<span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)">Measurements</span>'
-      +     '<span onclick="(function(el){var d=document.getElementById(\'' + did + '\');d.style.display=d.style.display===\'block\'?\'none\':\'block\';})(this)" title="Show diagram" style="width:16px;height:16px;border-radius:50%;border:1px solid var(--gold);color:var(--gold);font-size:11px;font-style:italic;font-weight:600;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;flex-shrink:0">i</span>'
-      +   '</div>'
-      +   '<div style="display:flex;flex-direction:column;gap:10px">'
-      +     '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:56px">Length</span><span style="font-size:16px;font-weight:600;color:var(--cream)">' + lTxt + '</span></div>'
-      +     '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:56px">Width</span><span style="font-size:16px;font-weight:600;color:var(--cream)">' + wTxt + '</span></div>'
-      +     '<div style="font-size:11px;color:#9a9284;line-height:1.5;max-width:230px">Laid flat, measured collar to hem (length) and pit to pit (width).</div>'
-      +   '</div>'
-      +   '<div id="' + did + '" style="display:none;margin-top:16px">'
-      +     measurementSvg()
+      +   '<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Measurements</div>'
+      +   '<div style="display:flex;align-items:center;gap:22px">'
+      +     '<div style="flex-shrink:0">' + measurementSvg() + '</div>'
+      +     '<div style="display:flex;flex-direction:column;gap:10px">'
+      +       '<div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:56px">Length</span><span style="font-size:17px;font-weight:600;color:var(--cream)">' + lTxt + '</span></div>'
+      +       '<div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:56px">Width</span><span style="font-size:17px;font-weight:600;color:var(--cream)">' + wTxt + '</span></div>'
+      +       '<div style="font-size:11px;color:#9a9284;line-height:1.5;max-width:230px">Laid flat, measured collar to hem (length) and pit to pit (width).</div>'
+      +     '</div>'
       +   '</div>'
       + '</div>';
   }
   // Small SVG of a football shirt with length (vertical) and width (horizontal) arrows.
+  // Labels are shown next to the diagram, not inside it, so they stay readable.
   function measurementSvg() {
     return ''
-      + '<svg width="92" height="100" viewBox="0 0 120 130" fill="none" xmlns="http://www.w3.org/2000/svg">'
+      + '<svg width="96" height="104" viewBox="0 0 120 130" fill="none" xmlns="http://www.w3.org/2000/svg">'
       +   '<path d="M42 16 L22 26 L14 44 L26 52 L34 46 L34 112 L86 112 L86 46 L94 52 L106 44 L98 26 L78 16 '
       +         'C74 24 66 28 60 28 C54 28 46 24 42 16 Z" fill="#1a1813" stroke="#3a372f" stroke-width="1.5" stroke-linejoin="round"/>'
       // width arrow (horizontal, across the chest)
-      +   '<line x1="36" y1="72" x2="84" y2="72" stroke="var(--gold)" stroke-width="1.5"/>'
-      +   '<polyline points="40,68 36,72 40,76" fill="none" stroke="var(--gold)" stroke-width="1.5"/>'
-      +   '<polyline points="80,68 84,72 80,76" fill="none" stroke="var(--gold)" stroke-width="1.5"/>'
-      +   '<text x="60" y="64" fill="var(--gold)" font-size="11" font-family="DM Sans,sans-serif" text-anchor="middle" font-weight="700" stroke="#1a1813" stroke-width="2.5" paint-order="stroke">WIDTH</text>'
+      +   '<line x1="36" y1="72" x2="84" y2="72" stroke="var(--gold)" stroke-width="1.6"/>'
+      +   '<polyline points="40,68 36,72 40,76" fill="none" stroke="var(--gold)" stroke-width="1.6"/>'
+      +   '<polyline points="80,68 84,72 80,76" fill="none" stroke="var(--gold)" stroke-width="1.6"/>'
       // length arrow (vertical, down the body)
-      +   '<line x1="48" y1="50" x2="48" y2="106" stroke="var(--gold)" stroke-width="1.5"/>'
-      +   '<polyline points="44,54 48,50 52,54" fill="none" stroke="var(--gold)" stroke-width="1.5"/>'
-      +   '<polyline points="44,102 48,106 52,102" fill="none" stroke="var(--gold)" stroke-width="1.5"/>'
-      +   '<text x="48" y="82" fill="var(--gold)" font-size="11" font-family="DM Sans,sans-serif" text-anchor="middle" font-weight="700" stroke="#1a1813" stroke-width="2.5" paint-order="stroke" transform="rotate(90 48 80)">LENGTH</text>'
+      +   '<line x1="60" y1="50" x2="60" y2="106" stroke="var(--gold)" stroke-width="1.6"/>'
+      +   '<polyline points="56,54 60,50 64,54" fill="none" stroke="var(--gold)" stroke-width="1.6"/>'
+      +   '<polyline points="56,102 60,106 64,102" fill="none" stroke="var(--gold)" stroke-width="1.6"/>'
       + '</svg>';
   }
 
