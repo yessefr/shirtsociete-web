@@ -1581,19 +1581,24 @@
       const res = await fetch(`${SUPABASE.url}/rest/v1/drop_signups?select=*&order=created_at.desc`, {
         headers: { 'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}` }
       });
+      if (res.status === 401 || res.status === 403) { handleAuthExpired(); return; }
       const signups = await res.json();
       if (!Array.isArray(signups) || !signups.length) {
         el.innerHTML = '<div style="color:#888070;padding:32px 0;text-align:center">No signups yet.</div>';
         return;
       }
+      window._dropEmails = signups.map(s => s.email).join(', ');
       el.innerHTML = `
-        <div style="margin-bottom:16px;font-size:13px;color:#888070">${signups.length} signup${signups.length !== 1 ? 's' : ''}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap">
+          <div style="font-size:13px;color:#888070">${signups.length} signup${signups.length !== 1 ? 's' : ''}</div>
+          <button class="btn btn-secondary" onclick="copyDropEmails()" style="font-size:12px">Copy all email addresses</button>
+        </div>
         <table class="data-table">
           <thead><tr><th>Email</th><th>Drop</th><th>Date</th></tr></thead>
           <tbody>${signups.map(s => `
             <tr>
-              <td>${s.email}</td>
-              <td style="color:#888070">${s.drop || ''}</td>
+              <td>${esc(s.email)}</td>
+              <td style="color:#888070">${esc(s.drop || '')}</td>
               <td style="color:#888070">${new Date(s.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})}</td>
             </tr>`).join('')}
           </tbody>
@@ -1601,6 +1606,14 @@
     } catch(e) {
       el.innerHTML = '<div style="color:#e05555;padding:20px">Could not load signups. Make sure the drop_signups table exists in Supabase.</div>';
     }
+  }
+  function copyDropEmails() {
+    var t = window._dropEmails || '';
+    if (!t) { showToast('No emails to copy', 'error'); return; }
+    try {
+      navigator.clipboard.writeText(t).then(function(){ showToast('Email addresses copied', 'success'); },
+        function(){ showToast('Copy failed — select manually', 'error'); });
+    } catch (e) { showToast('Copy failed', 'error'); }
   }
 
   async function sendDropLiveEmail() {
@@ -1658,14 +1671,21 @@
     var today = new Date().toISOString().split('T')[0];
     var lines = [];
     lines.push('<?xml version="1.0" encoding="UTF-8"?>');
-    lines.push('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+    lines.push('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">');
 
-    function addUrl(loc, changefreq, priority) {
+    function addUrl(loc, changefreq, priority, images) {
       lines.push('  <url>');
       lines.push('    <loc>' + xmlEscape(loc) + '</loc>');
       lines.push('    <lastmod>' + today + '</lastmod>');
       lines.push('    <changefreq>' + changefreq + '</changefreq>');
       lines.push('    <priority>' + priority + '</priority>');
+      // image tags help these photos surface in Google Images
+      if (images && images.length) {
+        images.slice(0, 10).forEach(function(im) {
+          if (!im) return;
+          lines.push('    <image:image><image:loc>' + xmlEscape(im) + '</image:loc></image:image>');
+        });
+      }
       lines.push('  </url>');
     }
 
@@ -1699,11 +1719,12 @@
     allShirts.forEach(function(s) {
       if (!s || !s.id) return;
       var url = base + '/products/' + ssShirtSlug(s) + '.html';
+      var imgs = (s.images && s.images.length) ? s.images : [];
       if (s.available === false) {
-        addUrl(url, 'monthly', '0.3');   // sold: stays indexable, low priority
+        addUrl(url, 'monthly', '0.3', imgs);   // sold: stays indexable, low priority
         sold++;
       } else {
-        addUrl(url, 'weekly', '0.8');    // te koop: hoge prioriteit
+        addUrl(url, 'weekly', '0.8', imgs);    // for sale: high priority
         live++;
       }
     });
@@ -1712,7 +1733,8 @@
     var archN = 0;
     (allArchive || []).forEach(function(s) {
       if (!s || !s.id) return;
-      addUrl(base + '/products/archive/' + ssShirtSlug(s) + '.html', 'monthly', '0.5');
+      var aimgs = (s.images && s.images.length) ? s.images : [];
+      addUrl(base + '/products/archive/' + ssShirtSlug(s) + '.html', 'monthly', '0.5', aimgs);
       archN++;
     });
 
@@ -1805,6 +1827,15 @@
         "seller": { "@type": "Organization", "name": "Shirt Société" }
       }
     };
+    // breadcrumb so Google can show Home › Shop › <shirt> in results
+    var crumb = {
+      "@context": "https://schema.org/", "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": base + "/" },
+        { "@type": "ListItem", "position": 2, "name": "Shop", "item": base + "/?p=shop" },
+        { "@type": "ListItem", "position": 3, "name": s.title || '', "item": url }
+      ]
+    };
 
     return '<!DOCTYPE html>\n'
       + '<html lang="en">\n<head>\n'
@@ -1823,6 +1854,7 @@
       + '<meta property="product:price:currency" content="EUR">\n'
       + '<meta name="twitter:card" content="summary_large_image">\n'
       + '<script type="application/ld+json">' + JSON.stringify(schema) + '<\/script>\n'
+      + '<script type="application/ld+json">' + JSON.stringify(crumb) + '<\/script>\n'
       + '<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0905;color:#f5f0e8;font-family:system-ui,-apple-system,"DM Sans",sans-serif;line-height:1.7}a{color:#c8a950}.wrap{max-width:1000px;margin:0 auto;padding:32px 24px 80px}.back{font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:#c8a950;display:inline-block;margin-bottom:32px}.cat{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c8a950;margin-bottom:8px}h1{font-size:32px;font-weight:700;line-height:1.15;margin-bottom:8px}.club{color:#888070;margin-bottom:20px}.price{font-size:26px;color:#c8a950;margin-bottom:24px}.specs{list-style:none;margin:0 0 24px}.specs li{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid #1e1c17}.specs b{min-width:120px;color:#888070;font-weight:400;text-transform:uppercase;font-size:12px;letter-spacing:1px}.desc{margin:24px 0;white-space:pre-line}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:32px}.gallery img{width:100%;border-radius:3px;background:#15130f}h2{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#c8a950;margin:28px 0 12px}.prov dl,.meas ul{border-top:1px solid #1e1c17}.prov dt{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#888070;margin-top:12px}.prov dd{margin:2px 0 10px;padding-bottom:10px;border-bottom:1px solid #15130f}.meas li{list-style:none;padding:8px 0;border-bottom:1px solid #15130f}.cta{display:inline-block;background:#c8a950;color:#0a0905;padding:14px 28px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px;margin-top:8px}.note{font-size:12px;color:#888070;margin-top:32px}</style>\n'
       + '</head>\n<body>\n'
       + '<div class="wrap">\n'
@@ -1998,17 +2030,6 @@
 </script>
 </body>
 </html>  <!-- DROP SIGNUPS TAB -->
-  <div class="tab-content" id="tab-dropsignups">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
-      <h2 style="font-size:20px;font-weight:600">Drop Signups</h2>
-      <button class="btn btn-primary" onclick="sendDropLiveEmail()" id="send-drop-btn">Send Drop Live Email</button>
-    </div>
-    <div style="background:#1a1715;border:1px solid #2a2820;border-radius:2px;margin-bottom:16px;padding:16px;font-size:13px;color:#888070">
-      <strong style="color:var(--gold)">Drop Live Email</strong> — sends to all signups that the shirts are now online. Only send when drop is actually live on 6 July 12:00.
-    </div>
-    <div id="drop-signups-list"><div class="loading">Loading...</div></div>
-  </div>
-
   <!-- MESSAGES TAB -->
   <div class="tab-content" id="tab-messages">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
@@ -2021,8 +2042,6 @@
     <div id="messages-list"><div class="loading">Loading...</div></div>
   </div>
 
-
-
   <!-- DROP SIGNUPS TAB -->
   <div class="tab-content" id="tab-dropsignups">
     <div class="page-header">
@@ -2033,7 +2052,7 @@
       <button class="btn btn-primary" onclick="sendDropLiveEmail()" id="send-drop-btn">Send Drop Live Email</button>
     </div>
     <div style="background:rgba(200,169,80,0.06);border:1px solid rgba(200,169,80,0.2);border-radius:2px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#888070">
-      <strong style="color:var(--gold)">Drop Live Email</strong> — only press this on 6 July when the shirts are actually live in the shop.
+      <strong style="color:var(--gold)">Drop Live Email</strong> — sends everyone on the list a message that new shirts are now online. Only press this when the drop is actually live in the shop.
     </div>
     <div id="drop-signups-list"><div class="loading-state"><div class="loading-spinner"></div><p>Loading...</p></div></div>
   </div>
