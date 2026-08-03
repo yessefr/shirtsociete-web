@@ -645,6 +645,18 @@
           <input type="text" class="form-input" id="m-mw_included" placeholder="e.g. Original COA, purchase invoice">
         </div>
 
+        <!-- Visual photo order: drag the thumbnails to reorder -->
+        <div class="form-group full">
+          <label class="form-label" style="color:#c8a950;font-size:13px;letter-spacing:1px;text-transform:uppercase">Photo order
+            <span style="color:#888070;text-transform:none;letter-spacing:0;font-size:12px">— drag the photos to change the order. The first one is the main photo, the second shows on hover.</span>
+          </label>
+          <div id="m-photo-strip" style="display:flex;flex-wrap:wrap;gap:10px;padding:12px;background:#141210;border:1px solid #2a2820;border-radius:3px;min-height:60px"></div>
+          <div style="display:flex;gap:10px;margin-top:8px">
+            <button type="button" class="btn btn-secondary" style="font-size:12px" onclick="refreshPhotoStrip()">Refresh preview</button>
+            <span id="m-photo-count" style="font-size:12px;color:#888070;align-self:center"></span>
+          </div>
+        </div>
+
         <div class="form-group full">
           <label class="form-label">Image 1 — Main photo (Cloudinary URL)</label>
           <input type="text" class="form-input" id="m-image" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
@@ -950,6 +962,88 @@
 
   function filterShirtsTable() { renderShirts(); }
 
+  // ── PHOTO ORDER STRIP ──
+  // Shows all filled image URLs as thumbnails you can drag to reorder.
+  // After a drop the URLs are written back into the image fields in the new order.
+  function getPhotoFieldIds() {
+    var ids = ['m-image'];
+    for (var i = 2; i <= 12; i++) ids.push('m-image' + i);
+    return ids;
+  }
+  function readPhotoUrls() {
+    return getPhotoFieldIds().map(function(id) {
+      var el = document.getElementById(id);
+      return el ? el.value.trim() : '';
+    }).filter(function(v) { return v; });
+  }
+  function writePhotoUrls(urls) {
+    var ids = getPhotoFieldIds();
+    ids.forEach(function(id, i) {
+      var el = document.getElementById(id);
+      if (el) el.value = urls[i] || '';
+    });
+    // keep the hidden field in sync so saving uses the same order
+    var ex = document.getElementById('m-existing-images');
+    if (ex) ex.value = JSON.stringify(urls);
+  }
+  function refreshPhotoStrip() {
+    var strip = document.getElementById('m-photo-strip');
+    if (!strip) return;
+    var urls = readPhotoUrls();
+    var cnt = document.getElementById('m-photo-count');
+    if (cnt) cnt.textContent = urls.length ? urls.length + ' photo' + (urls.length === 1 ? '' : 's') : '';
+    if (!urls.length) {
+      strip.innerHTML = '<div style="color:#5a544a;font-size:12px;padding:10px">No photos yet — paste Cloudinary URLs in the fields below, then press Refresh preview.</div>';
+      return;
+    }
+    strip.innerHTML = urls.map(function(u, i) {
+      return '<div class="ph-item" draggable="true" data-idx="' + i + '" '
+        + 'style="position:relative;width:90px;cursor:grab;border:1px solid ' + (i === 0 ? '#c8a950' : '#2a2820') + ';border-radius:3px;overflow:hidden;background:#0d0b08">'
+        + '<img src="' + u + '" style="width:100%;height:110px;object-fit:contain;display:block;pointer-events:none" alt="">'
+        + '<div style="position:absolute;top:3px;left:3px;background:rgba(10,9,5,.85);color:' + (i === 0 ? '#c8a950' : '#b0a898') + ';font-size:10px;padding:2px 6px;border-radius:2px">'
+        + (i === 0 ? 'MAIN' : (i === 1 ? 'HOVER' : (i + 1))) + '</div>'
+        + '<div onclick="removePhotoAt(' + i + ')" title="Remove" style="position:absolute;top:3px;right:3px;background:rgba(10,9,5,.85);color:#e07a6a;font-size:12px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer">&times;</div>'
+        + '</div>';
+    }).join('');
+    enablePhotoDrag();
+  }
+  function removePhotoAt(i) {
+    var urls = readPhotoUrls();
+    urls.splice(i, 1);
+    writePhotoUrls(urls);
+    refreshPhotoStrip();
+  }
+  function enablePhotoDrag() {
+    var strip = document.getElementById('m-photo-strip');
+    if (!strip) return;
+    var dragIdx = null;
+    strip.querySelectorAll('.ph-item').forEach(function(el) {
+      el.addEventListener('dragstart', function(e) {
+        dragIdx = parseInt(el.getAttribute('data-idx'));
+        el.style.opacity = '.4';
+        try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragIdx)); } catch (err) {}
+      });
+      el.addEventListener('dragend', function() { el.style.opacity = '1'; });
+      el.addEventListener('dragover', function(e) { e.preventDefault(); el.style.borderColor = '#c8a950'; });
+      el.addEventListener('dragleave', function() {
+        el.style.borderColor = parseInt(el.getAttribute('data-idx')) === 0 ? '#c8a950' : '#2a2820';
+      });
+      el.addEventListener('drop', function(e) {
+        e.preventDefault();
+        var from = dragIdx;
+        if (from === null || isNaN(from)) { try { from = parseInt(e.dataTransfer.getData('text/plain')); } catch (err) { return; } }
+        var to = parseInt(el.getAttribute('data-idx'));
+        if (isNaN(from) || isNaN(to) || from === to) return;
+        var urls = readPhotoUrls();
+        var moved = urls.splice(from, 1)[0];
+        urls.splice(to, 0, moved);
+        writePhotoUrls(urls);
+        refreshPhotoStrip();
+        showToast('Photo order updated — press Save to keep it', 'success');
+      });
+    });
+  }
+
   function openShirtModal(shirt = null) {
     editingShirtId = shirt ? shirt.id : null;
     document.getElementById('shirt-modal-title').textContent = shirt ? 'Edit Shirt' : 'Add Shirt';
@@ -978,6 +1072,8 @@
     document.getElementById('m-available').value = shirt ? (shirt.is_draft ? 'draft' : String(shirt.available)) : 'draft';
     document.getElementById('m-featured').value = shirt ? String(shirt.featured) : 'false';
     document.getElementById('shirt-modal').classList.add('open');
+    // show the photos so they can be dragged into the right order
+    if (typeof refreshPhotoStrip === 'function') refreshPhotoStrip();
   }
 
   function closeShirtModal() {
