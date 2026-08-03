@@ -584,6 +584,10 @@
           <label class="form-label" style="color:#c8a950;font-size:13px;letter-spacing:1px;text-transform:uppercase">Match Worn details <span style="color:#888070;text-transform:none;letter-spacing:0">— only for match worn / issued shirts. Empty fields are not shown.</span></label>
         </div>
         <div class="form-group full">
+          <label class="form-label">Player</label>
+          <input type="text" class="form-input" id="m-mw_player" placeholder="Jérôme Boateng">
+        </div>
+        <div class="form-group full">
           <label class="form-label">Match</label>
           <input type="text" class="form-input" id="m-mw_match" placeholder="Bayern München vs Energie Cottbus">
         </div>
@@ -635,6 +639,10 @@
         <div class="form-group full">
           <label class="form-label">Photomatch</label>
           <input type="text" class="form-input" id="m-mw_photomatch" placeholder="e.g. Yes, see photo 3 — or leave empty">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Included with the shirt</label>
+          <input type="text" class="form-input" id="m-mw_included" placeholder="e.g. Original COA, purchase invoice">
         </div>
 
         <div class="form-group full">
@@ -963,7 +971,7 @@
     if (existEl) existEl.value = JSON.stringify(shirt?.images || []);
     document.getElementById('m-description').value = shirt?.description || '';
     // match worn details
-    ['mw_match','mw_date','mw_competition','mw_type','mw_provenance','mw_coa','mw_code','mw_photomatch','mw_sizecode'].forEach(function(f) {
+    ['mw_match','mw_player','mw_date','mw_competition','mw_type','mw_provenance','mw_coa','mw_code','mw_photomatch','mw_sizecode','mw_included'].forEach(function(f) {
       var el = document.getElementById('m-' + f);
       if (el) el.value = (shirt && shirt[f]) ? shirt[f] : '';
     });
@@ -1306,6 +1314,7 @@
       width_cm: (function(){ var v = document.getElementById('m-width').value; return v === '' ? null : parseFloat(v); })(),
       condition: document.getElementById('m-condition').value || null,
       mw_match: document.getElementById('m-mw_match').value.trim() || null,
+      mw_player: document.getElementById('m-mw_player').value.trim() || null,
       mw_date: document.getElementById('m-mw_date').value.trim() || null,
       mw_competition: document.getElementById('m-mw_competition').value.trim() || null,
       mw_type: document.getElementById('m-mw_type').value || null,
@@ -1314,6 +1323,7 @@
       mw_code: document.getElementById('m-mw_code').value.trim() || null,
       mw_sizecode: document.getElementById('m-mw_sizecode').value || null,
       mw_photomatch: document.getElementById('m-mw_photomatch').value.trim() || null,
+      mw_included: document.getElementById('m-mw_included').value.trim() || null,
       description: document.getElementById('m-description').value.trim() || null,
       images: (function() {
         var imgs = [];
@@ -1847,14 +1857,16 @@
     var metaDesc = (s.description ? String(s.description).replace(/\s+/g, ' ').trim().slice(0, 155)
                    : (s.title + ' — original vintage football shirt at Shirt Société.'));
 
-    // provenance rows (only the filled ones)
+    // provenance rows (only the filled ones) — full dossier order
     var provRows = [
+      ['Classification', s.mw_type], ['Player', s.mw_player],
       ['Match', s.mw_match], ['Date', s.mw_date], ['Competition', s.mw_competition],
-      ['Type', s.mw_type], ['Provenance', s.mw_provenance], ['Certificate', s.mw_coa],
-      ['Product code', s.mw_code], ['Photomatch', s.mw_photomatch]
+      ['Provenance', s.mw_provenance], ['Certificate (COA)', s.mw_coa],
+      ['Photomatch', s.mw_photomatch], ['Product code', s.mw_code],
+      ['Included', s.mw_included]
     ].filter(function(r) { return r[1] && String(r[1]).trim(); });
     var provHtml = provRows.length
-      ? '<section class="prov"><h2>Provenance &amp; authenticity</h2><dl>' +
+      ? '<section class="prov"><h2>Provenance &amp; authenticity dossier</h2><dl>' +
         provRows.map(function(r) {
           return '<dt>' + htmlEscape(r[0]) + '</dt><dd>' + htmlEscape(r[1]) + '</dd>';
         }).join('') + '</dl></section>'
