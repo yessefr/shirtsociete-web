@@ -896,8 +896,10 @@
   // ── DASHBOARD ──
   function updateDashboard() {
     const total = allShirts.length;
-    const available = allShirts.filter(s => s.available).length;
-    const sold = total - available;
+    const concepts = allShirts.filter(s => s.is_draft).length;
+    const available = allShirts.filter(s => s.available && !s.is_draft).length;
+    // concepts are not sold — they are simply not published yet
+    const sold = allShirts.filter(s => !s.available && !s.is_draft).length;
     const revenue = allOrders.filter(o => o.status === 'paid' || o.status === 'shipped' || o.status === 'delivered').reduce((s, o) => s + parseFloat(o.total), 0);
     const paid = allOrders.filter(o => o.status === 'paid').length;
     const pending = allOrders.filter(o => o.status === 'pending').length;
@@ -948,12 +950,12 @@
         <td><span class="badge badge-${s.category}">${s.category?.replace('_',' ') || '—'}</span></td>
         <td>${s.size || '—'}</td>
         <td style="color:var(--gold)">€${parseFloat(s.price).toFixed(2)}</td>
-        <td><span class="badge ${s.available ? 'badge-available' : 'badge-sold'}">${s.available ? 'Available' : 'Sold'}</span></td>
+        <td><span class="badge" style="${s.is_draft ? 'background:rgba(200,169,80,.14);color:#c8a950' : (s.available ? 'background:rgba(76,175,125,.15);color:#4caf7d' : 'background:rgba(224,90,77,.15);color:#e05a4d')}">${s.is_draft ? 'Concept' : (s.available ? 'Available' : 'Sold')}</span></td>
         <td>
           <div class="action-btns">
             <button class="btn btn-sm btn-secondary" onclick="editShirt('${s.id}')">Edit</button>
             <button class="btn btn-sm btn-danger" onclick="deleteShirt('${s.id}')">Delete</button>
-            ${s.available ? `<button class="btn btn-sm btn-secondary" onclick="markSold('${s.id}')">Mark Sold</button>` : ''}
+            ${s.is_draft ? `<button class="btn btn-sm btn-primary" onclick="publishShirt('${s.id}')">Publish</button>` : (s.available ? `<button class="btn btn-sm btn-secondary" onclick="markSold('${s.id}')">Mark Sold</button>` : '')}
           </div>
         </td>
       </tr>
@@ -1516,6 +1518,22 @@
     } catch (err) { showToast('Error', 'error'); }
   }
 
+  // Publish a concept shirt: make it visible and for sale in the shop
+  async function publishShirt(id) {
+    if (!confirm('Publish this shirt to the shop? It becomes visible to everyone.')) return;
+    try {
+      const r = await fetch(`${SUPABASE.url}/rest/v1/shirts?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { 'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+        body: JSON.stringify({ is_draft: false, available: true, sold_at: null })
+      });
+      if (!r.ok) { const e = await r.text(); throw new Error(e); }
+      showToast('Shirt published — remember to regenerate the product pages', 'success');
+      await loadShirts();
+      updateDashboard();
+    } catch (err) { showToast('Error publishing shirt', 'error'); }
+  }
+
   // ── ORDERS ──
   function renderOrders() {
     const search = document.getElementById('orders-tbody') ? '' : '';
@@ -1884,6 +1902,7 @@
     var live = 0, sold = 0;
     allShirts.forEach(function(s) {
       if (!s || !s.id) return;
+      if (s.is_draft) return;   // concepts are not public yet — keep them out of the sitemap
       var url = base + '/products/' + ssShirtSlug(s) + '.html';
       var imgs = (s.images && s.images.length) ? s.images : [];
       if (s.available === false) {
@@ -2183,6 +2202,7 @@
       var folder = zip.folder('products');
       allShirts.forEach(function(s) {
         if (!s || !s.id) return;
+        if (s.is_draft) return;   // concepts get no public page until you publish them
         var slug = ssShirtSlug(s);
         folder.file(slug + '.html', buildProductPage(s));
       });
@@ -2227,6 +2247,7 @@
     for (var i = 0; i < allShirts.length; i++) {
       var s = allShirts[i];
       if (!s || !s.id) continue;
+      if (s.is_draft) continue;   // concepts have no public page yet, so nothing to check
       var slug = ssShirtSlug(s);
       var url = base + '/products/' + slug + '.html';
       try {
