@@ -1915,7 +1915,7 @@
       + '<meta name="twitter:card" content="summary_large_image">\n'
       + '<script type="application/ld+json">' + JSON.stringify(schema) + '<\/script>\n'
       + '<script type="application/ld+json">' + JSON.stringify(crumb) + '<\/script>\n'
-      + '<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0905;color:#f5f0e8;font-family:system-ui,-apple-system,"DM Sans",sans-serif;line-height:1.7}a{color:#c8a950}.wrap{max-width:1000px;margin:0 auto;padding:32px 24px 80px}.back{font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:#c8a950;display:inline-block;margin-bottom:32px}.cat{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c8a950;margin-bottom:8px}h1{font-size:32px;font-weight:700;line-height:1.15;margin-bottom:8px}.club{color:#888070;margin-bottom:20px}.price{font-size:26px;color:#c8a950;margin-bottom:24px}.specs{list-style:none;margin:0 0 24px}.specs li{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid #1e1c17}.specs b{min-width:120px;color:#888070;font-weight:400;text-transform:uppercase;font-size:12px;letter-spacing:1px}.desc{margin:24px 0;white-space:pre-line}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:32px}.gallery img{width:100%;border-radius:3px;background:#15130f}h2{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#c8a950;margin:28px 0 12px}.prov dl,.meas ul{border-top:1px solid #1e1c17}.prov dt{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#888070;margin-top:12px}.prov dd{margin:2px 0 10px;padding-bottom:10px;border-bottom:1px solid #15130f}.meas li{list-style:none;padding:8px 0;border-bottom:1px solid #15130f}.cta{display:inline-block;background:#c8a950;color:#0a0905;padding:14px 28px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px;margin-top:8px}.note{font-size:12px;color:#888070;margin-top:32px}</style>\n'
+      + '<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0905;color:#f5f0e8;font-family:system-ui,-apple-system,"DM Sans",sans-serif;line-height:1.7}a{color:#c8a950}.wrap{max-width:1000px;margin:0 auto;padding:32px 24px 80px}.back{font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:#c8a950;display:inline-block;margin-bottom:32px}.cat{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c8a950;margin-bottom:8px}h1{font-size:32px;font-weight:700;line-height:1.15;margin-bottom:8px}.club{color:#888070;margin-bottom:20px}.price{font-size:26px;color:#c8a950;margin-bottom:24px}.specs{list-style:none;margin:0 0 24px}.specs li{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid #1e1c17}.specs b{min-width:120px;color:#888070;font-weight:400;text-transform:uppercase;font-size:12px;letter-spacing:1px}.desc{margin:24px 0;white-space:pre-line}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:32px}.gallery img{width:100%;border-radius:3px;background:#15130f}h2{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#c8a950;margin:28px 0 12px}.prov dl,.meas ul{border-top:1px solid #1e1c17}.prov dt{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#888070;margin-top:12px}.prov dd{margin:2px 0 10px;padding-bottom:10px;border-bottom:1px solid #15130f}.meas li{list-style:none;padding:8px 0;border-bottom:1px solid #15130f}.cta{display:inline-block;background:#c8a950;color:#0a0905;padding:15px 32px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:13px;margin:8px 10px 8px 0}.cta-alt{display:inline-block;background:transparent;color:#c8a950;border:1px solid #c8a950;padding:15px 32px;border-radius:2px;text-decoration:none;font-weight:600;letter-spacing:1px;text-transform:uppercase;font-size:13px;margin:8px 0}.soldbox{display:inline-block;background:#1a1813;color:#888070;padding:15px 32px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;font-size:13px;margin:8px 0}.shipbox{margin-top:28px;border-top:1px solid #1e1c17;padding-top:20px}.shipline{font-size:13px;color:#b0a898;line-height:1.6;margin-bottom:10px}.shipline strong{color:#c8a950;text-transform:uppercase;font-size:11px;letter-spacing:1px;display:block;margin-bottom:2px}.note{font-size:12px;color:#888070;margin-top:32px}</style>\n'
       + '</head>\n<body>\n'
       + '<div class="wrap">\n'
       + '  <a class="back" href="/">&larr; Shirt Société</a>\n'
@@ -1925,7 +1925,7 @@
       + '  <div class="club">' + htmlEscape(s.club || '') + '</div>\n'
       + '  <div class="price">&euro;' + price + (s.available === false ? ' &middot; <span style="color:#888070;font-size:16px">Sold</span>' : '') + '</div>\n'
       + '  <ul class="specs">\n'
-      + (s.season ? '    <li><b>Season</b> ' + htmlEscape(s.season) + '</li>\n' : '')
+      + (s.season ? '    <li><b>Season</b> ' + htmlEscape(String(s.season).replace(/^season\\s+/i,'')) + '</li>\n' : '')
       + (function(){
           var szMap = {'4':'S','5':'S/M','6':'M','7':'M/L','8':'L','9':'L/XL','10':'XL','11':'XL/XXL','12':'XXL','13':'XXL/3XL'};
           var sz = s.size || (s.mw_sizecode ? (szMap[String(s.mw_sizecode)] || '') : '');
@@ -1938,7 +1938,15 @@
       + '  </ul>\n'
       + (s.description ? '  <div class="desc">' + htmlEscape(s.description) + '</div>\n' : '')
       + provHtml + meas
-      + '  <a class="cta" href="/#/products/' + slug + '-' + s.id + '">View in shop &amp; buy &rarr;</a>\n'
+      + (s.available === false
+          ? '  <div class="soldbox">This shirt has been sold.</div>\n'
+          : '  <a class="cta" href="/products/' + slug + '.html?add=1">Add to cart &rarr;</a>\n'
+            + '  <a class="cta-alt" href="/products/' + slug + '.html">View in shop</a>\n')
+      + '  <div class="shipbox">'
+      +   '<div class="shipline"><strong>Shipping</strong> Fully tracked and insured, sent within 2 business days. Signature required for high-value orders.</div>'
+      +   '<div class="shipline"><strong>Returns</strong> 14-day returns on unworn shirts. Email us first so we can confirm the return address.</div>'
+      +   '<div class="shipline"><strong>Authenticity</strong> Every shirt is checked on labels, stitching, badges and wash tags. Any flaws are photographed and shown.</div>'
+      + '  </div>\n'
       + '  <p class="note">This is a single, unique shirt. Once sold it will not return. Questions? Email info@shirtsociete.com.</p>\n'
       + '</div>\n</body>\n</html>';
   }
@@ -1983,7 +1991,7 @@
       + '  <div class="club">' + htmlEscape(s.club || '') + '</div>\n'
       + '  <ul class="specs">\n'
       + (s.club ? '    <li><b>Club</b> ' + htmlEscape(s.club) + '</li>\n' : '')
-      + (s.season ? '    <li><b>Season</b> ' + htmlEscape(s.season) + '</li>\n' : '')
+      + (s.season ? '    <li><b>Season</b> ' + htmlEscape(String(s.season).replace(/^season\\s+/i,'')) + '</li>\n' : '')
       + '  </ul>\n'
       + (s.description ? '  <div class="desc">' + htmlEscape(s.description) + '</div>\n' : '')
       + '  <a class="back" href="/?p=archive" style="margin-top:20px">View the full archive &rarr;</a>\n'
