@@ -1801,17 +1801,28 @@
   }
 
   async function sendDropLiveEmail() {
-    if (!confirm('Send the drop live email to ALL signups? Only press this on 6 July when shirts are live.')) return;
+    if (!confirm('Send the drop live email to ALL signups?\n\nEveryone receives their own separate email — nobody sees the other addresses.\n\nOnly press this when the shirts are actually live in the shop.')) return;
     const btn = document.getElementById('send-drop-btn');
     btn.disabled = true; btn.textContent = 'Sending...';
     try {
-      const res = await fetch('https://shirtsociete.netlify.app/api/drop-notify', {
+      const res = await fetch('https://shirtsociete.netlify.app/api/drop-send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
-        body: JSON.stringify({ secret: 'ss-drop-2026' })
+        body: JSON.stringify({
+          secret: 'ss-drop-2026',
+          subject: 'The new drop is live',
+          heading: 'Ten new shirts are live',
+          lines: [
+            'Three match worn and player issue pieces, alongside seven vintage originals from the nineties.',
+            'Every shirt is one of one. When it is gone, it does not come back.'
+          ],
+          ctaText: 'Shop the drop',
+          ctaUrl: 'https://shirtsociete.com/?p=shop'
+        })
       });
       const data = await res.json();
-      showToast(`Sent to ${data.sent || 0} subscribers`, 'success');
+      if (data.error) throw new Error(data.error);
+      showToast('Sent ' + (data.sent || 0) + ' of ' + (data.total || 0) + ' emails', 'success');
     } catch(e) {
       showToast('Error sending emails', 'error');
     }
