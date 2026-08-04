@@ -1850,16 +1850,26 @@
     try {
       const res = await fetch('https://shirtsociete.netlify.app/api/drop-send', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      // Show what actually came back so problems are visible instead of hidden
+      const raw = await res.text();
+      let data = {};
+      try { data = JSON.parse(raw); } catch (e) {
+        console.error('Non-JSON reply from drop-send:', res.status, raw.slice(0, 300));
+        throw new Error('Server replied ' + res.status + ' (not JSON). Check the function is deployed.');
+      }
+      if (!res.ok || data.error) throw new Error(data.error || ('HTTP ' + res.status));
       showToast(payload.testEmail
         ? 'Test sent to ' + payload.testEmail
         : 'Sent ' + (data.sent || 0) + ' of ' + (data.total || 0) + ' emails', 'success');
+      if (data.failed && data.failed.length) {
+        console.warn('Failed addresses:', data.failed);
+      }
     } catch (e) {
-      showToast('Error sending email', 'error');
+      console.error('drop-send error:', e);
+      showToast('Email error: ' + (e.message || 'unknown'), 'error');
     }
     if (btn) { btn.disabled = false; btn.textContent = label; }
   }
