@@ -4532,7 +4532,7 @@
     if (archiveItems) { cb(archiveItems); return; }
     if (archiveLoading) { setTimeout(function(){ fetchArchive(cb); }, 200); return; }
     archiveLoading = true;
-    fetch(dbHost + '/rest/v1/my_collection?select=*&order=sort_order.asc.nullslast,created_at.desc', {
+    fetch(dbHost + '/rest/v1/my_collection?select=*&order=sort_order.asc.nullslast,club.asc,season.asc,created_at.desc', {
       headers: { 'apikey': dbToken, 'Authorization': 'Bearer ' + dbToken }
     })
       .then(function(r){ return r.json(); })
