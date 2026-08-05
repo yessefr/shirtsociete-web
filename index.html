@@ -4594,6 +4594,14 @@
     'nigeria': 'Nigeria', 'cameroon': 'Cameroon', 'denmark': 'Denmark',
     'sweden': 'Sweden', 'ireland': 'Ireland'
   };
+  // Top-flight league per country, used to label the "Clubs" sub-filter
+  // (e.g. show "Serie A" instead of "Italy" when browsing club shirts).
+  var COUNTRY_LEAGUE = {
+    'Netherlands': 'Eredivisie', 'Germany': 'Bundesliga', 'Italy': 'Serie A',
+    'Spain': 'La Liga', 'England': 'Premier League', 'France': 'Ligue 1',
+    'Portugal': 'Primeira Liga', 'Scotland': 'Scottish Premiership',
+    'Japan': 'J1 League', 'Argentina': 'Primera División', 'Brazil': 'Brasileirão'
+  };
   function archiveCountry(s) {
     var hay = ((s.club || '') + ' ' + (s.title || '')).toLowerCase();
     var key;
@@ -4640,9 +4648,11 @@
         return countries[b] - countries[a] || a.localeCompare(b);
       });
       if (list.length > 1) {
-        sub.push(mkArchFilter('All countries', f.group, null, !f.value));
+        var isClubs = f.group === 'clubs';
+        sub.push(mkArchFilter(isClubs ? 'All leagues' : 'All countries', f.group, null, !f.value));
         list.forEach(function(c){
-          sub.push(mkArchFilter(c + ' (' + countries[c] + ')', f.group, c, f.value === c));
+          var label = (isClubs && COUNTRY_LEAGUE[c]) ? COUNTRY_LEAGUE[c] : c;
+          sub.push(mkArchFilter(label + ' (' + countries[c] + ')', f.group, c, f.value === c));
         });
       }
     } else if (f.group === 'decade') {
@@ -4660,7 +4670,7 @@
       + (sub.length
           ? '<div style="display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:10px;padding-top:10px;border-top:1px solid #1e1c17">'
             + '<span style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#5a544a;align-self:center;margin-right:4px">'
-            + (f.group === 'decade' ? 'Decade' : 'Country') + '</span>'
+            + (f.group === 'decade' ? 'Decade' : (f.group === 'clubs' ? 'League' : 'Country')) + '</span>'
             + sub.join('') + '</div>'
           : '');
   }
