@@ -4562,12 +4562,57 @@
     var y = parseInt(m[0], 10);
     return (Math.floor(y / 10) * 10) + 's'; // e.g. 1980 -> "1980s"
   }
+  // Which country a shirt belongs to, based on the club or national side.
+  // Lets collectors browse the archive by country as well as by club or decade.
+  var CLUB_COUNTRY = {
+    'ajax': 'Netherlands', 'psv': 'Netherlands', 'feyenoord': 'Netherlands', 'az': 'Netherlands',
+    'utrecht': 'Netherlands', 'twente': 'Netherlands', 'vitesse': 'Netherlands',
+    'bayern': 'Germany', 'dortmund': 'Germany', 'borussia': 'Germany', 'schalke': 'Germany',
+    'hamburg': 'Germany', 'köln': 'Germany', 'koln': 'Germany', 'cologne': 'Germany',
+    '1860': 'Germany', 'stuttgart': 'Germany', 'leverkusen': 'Germany', 'frankfurt': 'Germany',
+    'milan': 'Italy', 'inter': 'Italy', 'juventus': 'Italy', 'roma': 'Italy', 'lazio': 'Italy',
+    'napoli': 'Italy', 'fiorentina': 'Italy', 'parma': 'Italy', 'sampdoria': 'Italy', 'monza': 'Italy',
+    'barcelona': 'Spain', 'real madrid': 'Spain', 'atletico': 'Spain', 'valencia': 'Spain', 'sevilla': 'Spain',
+    'liverpool': 'England', 'manchester': 'England', 'arsenal': 'England', 'chelsea': 'England',
+    'tottenham': 'England', 'everton': 'England', 'newcastle': 'England', 'leeds': 'England',
+    'monaco': 'France', 'marseille': 'France', 'paris': 'France', 'psg': 'France',
+    'saint-etienne': 'France', 'lyon': 'France', 'rocheteau': 'France',
+    'porto': 'Portugal', 'benfica': 'Portugal', 'sporting': 'Portugal',
+    'celtic': 'Scotland', 'rangers': 'Scotland',
+    'yokohama': 'Japan', 'marinos': 'Japan', 'nissan': 'Japan',
+    'boca': 'Argentina', 'river': 'Argentina',
+    'flamengo': 'Brazil', 'santos': 'Brazil', 'palmeiras': 'Brazil'
+  };
+  var NATION_COUNTRY = {
+    'netherlands': 'Netherlands', 'holland': 'Netherlands', 'oranje': 'Netherlands',
+    'germany': 'Germany', 'west germany': 'Germany', 'deutschland': 'Germany',
+    'italy': 'Italy', 'italia': 'Italy', 'spain': 'Spain', 'espana': 'Spain',
+    'england': 'England', 'france': 'France', 'portugal': 'Portugal',
+    'brazil': 'Brazil', 'brasil': 'Brazil', 'argentina': 'Argentina',
+    'belgium': 'Belgium', 'croatia': 'Croatia', 'uruguay': 'Uruguay',
+    'japan': 'Japan', 'usa': 'United States', 'mexico': 'Mexico',
+    'nigeria': 'Nigeria', 'cameroon': 'Cameroon', 'denmark': 'Denmark',
+    'sweden': 'Sweden', 'ireland': 'Ireland'
+  };
+  function archiveCountry(s) {
+    var hay = ((s.club || '') + ' ' + (s.title || '')).toLowerCase();
+    var key;
+    // national sides first — they are the clearest signal
+    for (key in NATION_COUNTRY) {
+      if (Object.prototype.hasOwnProperty.call(NATION_COUNTRY, key) && hay.indexOf(key) !== -1) return NATION_COUNTRY[key];
+    }
+    for (key in CLUB_COUNTRY) {
+      if (Object.prototype.hasOwnProperty.call(CLUB_COUNTRY, key) && hay.indexOf(key) !== -1) return CLUB_COUNTRY[key];
+    }
+    return null;
+  }
   function archiveMatchesFilter(s) {
     var f = archiveFilter;
     if (f.type === 'all') return true;
     if (f.type === 'clubs') return !archiveIsNational(s);
     if (f.type === 'national') return archiveIsNational(s);
     if (f.type === 'decade') return archiveDecade(s) === f.value;
+    if (f.type === 'country') return archiveCountry(s) === f.value;
     return true;
   }
   function buildArchiveFilters(items) {
@@ -4575,19 +4620,27 @@
     if (!wrap) return;
     var hasClub = items.some(function(s){ return !archiveIsNational(s); });
     var hasNat = items.some(function(s){ return archiveIsNational(s); });
-    var decades = {};
-    items.forEach(function(s){ var d = archiveDecade(s); if (d) decades[d] = true; });
+    var decades = {}, countries = {};
+    items.forEach(function(s){
+      var d = archiveDecade(s); if (d) decades[d] = true;
+      var c = archiveCountry(s); if (c) countries[c] = (countries[c] || 0) + 1;
+    });
     var decadeList = Object.keys(decades).sort();
+    // countries with the most shirts first, so the biggest groups lead
+    var countryList = Object.keys(countries).sort(function(a, b){
+      return countries[b] - countries[a] || a.localeCompare(b);
+    });
     var btns = [];
     btns.push(mkArchFilter('All Shirts', 'all', null));
     if (hasClub) btns.push(mkArchFilter('Clubs', 'clubs', null));
     if (hasNat) btns.push(mkArchFilter('National', 'national', null));
+    countryList.forEach(function(c){ btns.push(mkArchFilter(c, 'country', c)); });
     decadeList.forEach(function(d){ btns.push(mkArchFilter(d, 'decade', d)); });
     wrap.innerHTML = btns.join('');
   }
   function mkArchFilter(label, type, value) {
-    var active = (archiveFilter.type === type && (type !== 'decade' || archiveFilter.value === value));
-    var onclick = "setArchiveFilter('" + type + "'," + (value ? "'" + value + "'" : 'null') + ")";
+    var active = (archiveFilter.type === type && (type === 'all' || type === 'clubs' || type === 'national' || archiveFilter.value === value));
+    var onclick = "setArchiveFilter('" + type + "'," + (value ? "'" + value.replace(/'/g, "\\'") + "'" : 'null') + ")";
     return '<button class="arch-filter' + (active ? ' active' : '') + '" onclick="' + onclick + '">' + label + '</button>';
   }
   function setArchiveFilter(type, value) {
