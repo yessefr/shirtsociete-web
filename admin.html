@@ -2345,6 +2345,18 @@
       + (s.club ? '    <li><b>Club</b> ' + htmlEscape(s.club) + '</li>\n' : '')
       + (s.season ? '    <li><b>Season</b> ' + htmlEscape((function(v){v=String(v).trim();return /^season\b/i.test(v)?v.slice(6).trim():v;})(s.season)) + '</li>\n' : '')
       + '  </ul>\n'
+      // match details as their own clearly separated block
+      + (function(){
+          var rows = [
+            ['Classification', s.mw_type], ['Player', s.mw_player],
+            ['Match', s.mw_match], ['Date', s.mw_date], ['Competition', s.mw_competition],
+            ['Certificate', s.mw_coa], ['Included', s.mw_included]
+          ].filter(function(r){ return r[1] && String(r[1]).trim(); });
+          if (!rows.length) return '';
+          return '  <section class="prov"><h2>Match details</h2><dl>'
+            + rows.map(function(r){ return '<dt>' + htmlEscape(r[0]) + '</dt><dd>' + htmlEscape(r[1]) + '</dd>'; }).join('')
+            + '</dl></section>\n';
+        })()
       + (s.description ? '  <div class="desc">' + htmlEscape(s.description) + '</div>\n' : '')
       + '  <a class="back" href="/?p=archive" style="margin-top:20px">View the full archive &rarr;</a>\n'
       + '  <p class="note">Part of the Shirt Société private archive. These shirts are not for sale. Questions? Email info@shirtsociete.com.</p>\n'
