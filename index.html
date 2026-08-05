@@ -4548,7 +4548,7 @@
       });
   }
   // ── Archive filtering (subtle: All / Clubs / National / by period) ──
-  var archiveFilter = { type: 'all' };
+  var archiveFilter = { group: 'all', value: null };
   // known national sides so we can split club vs national from the club field
   var NATIONAL_TEAMS = ['netherlands','holland','germany','west germany','brazil','argentina','france','italy','england','spain','portugal','belgium','croatia','uruguay','japan','usa','mexico','nigeria','cameroon','denmark','sweden','ireland'];
   function archiveIsNational(s) {
@@ -4608,43 +4608,68 @@
   }
   function archiveMatchesFilter(s) {
     var f = archiveFilter;
-    if (f.type === 'all') return true;
-    if (f.type === 'clubs') return !archiveIsNational(s);
-    if (f.type === 'national') return archiveIsNational(s);
-    if (f.type === 'decade') return archiveDecade(s) === f.value;
-    if (f.type === 'country') return archiveCountry(s) === f.value;
+    if (f.group === 'clubs' && archiveIsNational(s)) return false;
+    if (f.group === 'national' && !archiveIsNational(s)) return false;
+    if (f.group === 'decade' && f.value && archiveDecade(s) !== f.value) return false;
+    if ((f.group === 'clubs' || f.group === 'national') && f.value && archiveCountry(s) !== f.value) return false;
     return true;
   }
   function buildArchiveFilters(items) {
     var wrap = document.getElementById('d-archive-filters');
     if (!wrap) return;
+    var f = archiveFilter;
     var hasClub = items.some(function(s){ return !archiveIsNational(s); });
-    var hasNat = items.some(function(s){ return archiveIsNational(s); });
-    var decades = {}, countries = {};
-    items.forEach(function(s){
-      var d = archiveDecade(s); if (d) decades[d] = true;
-      var c = archiveCountry(s); if (c) countries[c] = (countries[c] || 0) + 1;
-    });
-    var decadeList = Object.keys(decades).sort();
-    // countries with the most shirts first, so the biggest groups lead
-    var countryList = Object.keys(countries).sort(function(a, b){
-      return countries[b] - countries[a] || a.localeCompare(b);
-    });
-    var btns = [];
-    btns.push(mkArchFilter('All Shirts', 'all', null));
-    if (hasClub) btns.push(mkArchFilter('Clubs', 'clubs', null));
-    if (hasNat) btns.push(mkArchFilter('National', 'national', null));
-    countryList.forEach(function(c){ btns.push(mkArchFilter(c, 'country', c)); });
-    decadeList.forEach(function(d){ btns.push(mkArchFilter(d, 'decade', d)); });
-    wrap.innerHTML = btns.join('');
+    var hasNat  = items.some(function(s){ return archiveIsNational(s); });
+
+    // ── row 1: the main choice ──
+    var main = [];
+    main.push(mkArchFilter('All Shirts', 'all', null, f.group === 'all'));
+    if (hasClub) main.push(mkArchFilter('Clubs', 'clubs', null, f.group === 'clubs'));
+    if (hasNat)  main.push(mkArchFilter('National', 'national', null, f.group === 'national'));
+    main.push(mkArchFilter('By decade', 'decade', null, f.group === 'decade'));
+
+    // ── row 2: sub-filters that belong to the chosen group ──
+    var sub = [];
+    if (f.group === 'clubs' || f.group === 'national') {
+      var pool = items.filter(function(s){
+        return f.group === 'clubs' ? !archiveIsNational(s) : archiveIsNational(s);
+      });
+      var countries = {};
+      pool.forEach(function(s){ var c = archiveCountry(s); if (c) countries[c] = (countries[c] || 0) + 1; });
+      var list = Object.keys(countries).sort(function(a, b){
+        return countries[b] - countries[a] || a.localeCompare(b);
+      });
+      if (list.length > 1) {
+        sub.push(mkArchFilter('All countries', f.group, null, !f.value));
+        list.forEach(function(c){
+          sub.push(mkArchFilter(c + ' (' + countries[c] + ')', f.group, c, f.value === c));
+        });
+      }
+    } else if (f.group === 'decade') {
+      var decades = {};
+      items.forEach(function(s){ var d = archiveDecade(s); if (d) decades[d] = (decades[d] || 0) + 1; });
+      var dl = Object.keys(decades).sort();
+      if (dl.length) {
+        sub.push(mkArchFilter('All decades', 'decade', null, !f.value));
+        dl.forEach(function(d){ sub.push(mkArchFilter(d + ' (' + decades[d] + ')', 'decade', d, f.value === d)); });
+      }
+    }
+
+    wrap.innerHTML =
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;width:100%">' + main.join('') + '</div>'
+      + (sub.length
+          ? '<div style="display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:10px;padding-top:10px;border-top:1px solid #1e1c17">'
+            + '<span style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#5a544a;align-self:center;margin-right:4px">'
+            + (f.group === 'decade' ? 'Decade' : 'Country') + '</span>'
+            + sub.join('') + '</div>'
+          : '');
   }
-  function mkArchFilter(label, type, value) {
-    var active = (archiveFilter.type === type && (type === 'all' || type === 'clubs' || type === 'national' || archiveFilter.value === value));
-    var onclick = "setArchiveFilter('" + type + "'," + (value ? "'" + value.replace(/'/g, "\\'") + "'" : 'null') + ")";
+  function mkArchFilter(label, group, value, active) {
+    var onclick = "setArchiveFilter('" + group + "'," + (value ? "'" + String(value).replace(/'/g, "\\'") + "'" : 'null') + ")";
     return '<button class="arch-filter' + (active ? ' active' : '') + '" onclick="' + onclick + '">' + label + '</button>';
   }
-  function setArchiveFilter(type, value) {
-    archiveFilter = { type: type, value: value };
+  function setArchiveFilter(group, value) {
+    archiveFilter = { group: group, value: value };
     if (archiveItems) {
       buildArchiveFilters(archiveItems);
       paintArchive(archiveItems);
@@ -4770,6 +4795,30 @@
     seasonEl.textContent = item.season || '';
     seasonEl.style.display = item.season ? 'block' : 'none';
     document.getElementById('ad-story').textContent = item.description || '';
+    // Structured match details, shown as their own clear block above the story
+    (function () {
+      var box = document.getElementById('ad-match');
+      if (!box) return;
+      var rows = [
+        ['Classification', item.mw_type],
+        ['Player', item.mw_player],
+        ['Match', item.mw_match],
+        ['Date', item.mw_date],
+        ['Competition', item.mw_competition],
+        ['Certificate', item.mw_coa],
+        ['Included', item.mw_included]
+      ].filter(function (r) { return r[1] && String(r[1]).trim(); });
+      if (!rows.length) { box.style.display = 'none'; box.innerHTML = ''; return; }
+      box.style.display = 'block';
+      box.innerHTML =
+        '<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Match details</div>'
+        + rows.map(function (r) {
+            return '<div style="display:flex;gap:14px;padding:8px 0;border-bottom:1px solid #15130f">'
+              + '<span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:110px;flex-shrink:0">' + r[0] + '</span>'
+              + '<span style="font-size:14px;color:var(--cream);line-height:1.5">' + String(r[1]) + '</span>'
+              + '</div>';
+          }).join('');
+    })();
     document.getElementById('ad-main-img').src = imgs[0] || '';
     document.getElementById('ad-thumbs').innerHTML = imgs.map(function(img, i){
       return '<img src="' + img + '" onclick="archiveSwitchImg(' + i + ')" style="width:56px;height:56px;object-fit:cover;border-radius:2px;cursor:pointer;border:1px solid ' + (i===0?'var(--gold)':'#2a2820') + '" data-ai="' + i + '">';
@@ -6302,6 +6351,7 @@
         <h2 id="ad-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;line-height:1.2;margin-bottom:6px"></h2>
         <div id="ad-club" style="font-size:13px;color:var(--text-muted);margin-bottom:4px"></div>
         <div id="ad-season" style="font-size:13px;color:var(--text-muted);margin-bottom:18px"></div>
+        <div id="ad-match" style="display:none;border-top:1px solid #1e1c17;padding-top:16px;margin-bottom:20px"></div>
         <p id="ad-story" style="font-size:14px;line-height:1.75;color:#b0a898;margin-bottom:8px"></p>
       </div>
     </div>
