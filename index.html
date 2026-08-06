@@ -3567,6 +3567,27 @@
     } catch (e) {}
   }
 
+  // ── SHOP SEO ──
+  // Mirrors setArchiveMeta(). Without this, dGoTo('shop') fell through to
+  // restoreDefaultMeta(), which rewrote the address bar and canonical tag
+  // back to "/" — telling Google that /?p=shop's real URL is the homepage,
+  // so it was never indexed as its own page. Mobile never set any canonical
+  // for /?p=shop at all, so it kept the static default ("/") from <head>.
+  function setShopMeta() {
+    try {
+      history.replaceState({ screen: 'shop' }, '', '/?p=shop');
+      document.title = 'Shop All Shirts | Shirt Société — Vintage & Match Worn Football Shirts';
+      var desc = 'Browse the full Shirt Société shop: original vintage club shirts, international shirts and match worn / issued pieces. Each shirt is a single, unique item.';
+      var md = document.querySelector('meta[name="description"]');
+      if (md) md.setAttribute('content', desc);
+      var ogt = document.querySelector('meta[property="og:title"]');
+      if (ogt) ogt.setAttribute('content', 'Shop All Shirts | Shirt Société');
+      var ogd = document.querySelector('meta[property="og:description"]');
+      if (ogd) ogd.setAttribute('content', desc);
+      if (typeof updateCanonical === 'function') updateCanonical('/?p=shop');
+    } catch (e) {}
+  }
+
   // ── ARCHIVE SEO ──
   function setArchiveMeta() {
     try {
@@ -4448,6 +4469,8 @@
     window.scrollTo(0,0);
     if (screen === 'profile') initProfile();
     if (screen === 'shop' && typeof ssMaybeShowCookies === 'function') ssMaybeShowCookies();
+    if (screen === 'shop' && typeof setShopMeta === 'function') setShopMeta();
+    if (screen === 'home' && typeof restoreDefaultMeta === 'function') restoreDefaultMeta();
     if (screen === 'cart') renderMobileCart();
     if (screen === 'checkout') buildCheckoutForms();
       if (screen === 'profile') initProfile();
@@ -4536,7 +4559,8 @@
     if (screen === 'wishlist') renderWishlist();
     if (screen === 'profile') initProfile();
     if (screen === 'archive') renderArchive();
-    else if (screen === 'home' || screen === 'shop') { if (typeof restoreDefaultMeta === 'function') restoreDefaultMeta(); }
+    else if (screen === 'home') { if (typeof restoreDefaultMeta === 'function') restoreDefaultMeta(); }
+    else if (screen === 'shop') { if (typeof setShopMeta === 'function') setShopMeta(); }
     if (screen === 'shop' && typeof ssMaybeShowCookies === 'function') ssMaybeShowCookies();
     // screens are hidden at boot, so ScrollTrigger must re-measure once one becomes visible
     if (typeof ScrollTrigger !== 'undefined') {
