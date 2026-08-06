@@ -135,6 +135,16 @@
       display: none; align-items: center; justify-content: center;
     }
     .cart-badge.visible { display: flex; }
+    /* Floating "Drop Alerts" button — shown above the tab bar on every mobile screen */
+    .drop-alert-fab {
+      position: fixed; right: 16px; bottom: 80px; z-index: 210;
+      display: flex; align-items: center; gap: 7px;
+      background: linear-gradient(135deg, rgba(200,169,80,.95), rgba(176,141,62,.95));
+      color: var(--black); border: none; border-radius: 100px;
+      padding: 12px 18px; font-family: 'DM Sans', sans-serif;
+      font-size: 11.5px; font-weight: 700; letter-spacing: .5px;
+      box-shadow: 0 4px 14px rgba(200,169,80,.3); cursor: pointer;
+    }
 
     /* Mobile header */
     .mobile-header {
@@ -153,6 +163,7 @@
     /* ─── DESKTOP LAYOUT ─── */
     @media (min-width: 768px) {
       .tab-bar { display: none; }
+      .drop-alert-fab { display: none; }
       .mobile-header { display: none; }
       .screen { display: none !important; }
       .desktop-layout { display: flex !important; }
@@ -711,6 +722,30 @@
       margin-top: 40px;
     }
     .foot-inner { max-width: 1200px; margin: 0 auto; }
+    .foot-drop-cta {
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      flex-wrap: wrap;
+      background: linear-gradient(135deg, rgba(200,169,80,.14), rgba(200,169,80,.04));
+      border: 1px solid rgba(200,169,80,.28);
+      border-radius: 4px;
+      padding: 22px 28px;
+      margin-bottom: 40px;
+    }
+    .foot-drop-cta-head {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: 19px; color: var(--cream);
+    }
+    .foot-drop-cta-sub {
+      font-size: 12.5px; color: rgba(245,240,232,.5); margin-top: 4px;
+    }
+    .foot-drop-btn {
+      background: var(--gold); color: var(--black); border: none;
+      padding: 13px 26px; border-radius: 2px; white-space: nowrap;
+      font-family: 'DM Sans', sans-serif; font-size: 11.5px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .foot-drop-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(200,169,80,.3); }
     .foot-cols {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -1702,6 +1737,11 @@
 </div>
 
 <!-- MOBILE TAB BAR -->
+<button type="button" class="drop-alert-fab" onclick="openDropAlertModal()">
+  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 6 12 13 2 6"/></svg>
+  Drop Alerts
+</button>
+
 <nav class="tab-bar">
   <div class="tab active" onclick="mGoTo('home')" id="m-tab-home">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -2064,65 +2104,6 @@
   </div>
 </section>
 
-
-<!-- ═══ SITE FOOTER ═══ -->
-<footer id="site-footer">
-  <div class="foot-inner">
-    <div class="foot-cols">
-      <div class="foot-col">
-        <div class="foot-head">Quick Links</div>
-        <a href="/?p=shop" onclick="dGoTo('shop');return false;">Shop all shirts</a>
-        <a href="/?p=archive" onclick="dGoTo('archive');return false;">The Shirt Société Archive</a>
-        <a href="/?p=about" onclick="dGoTo('about');return false;">Our story</a>
-        <a href="/blog.html">Blog</a>
-        <a href="/faq.html">FAQ</a>
-        <a href="/?p=wishlist" onclick="dGoTo('wishlist');return false;">Saved</a>
-        <a href="/?p=profile" onclick="dGoTo('profile');return false;">My wardrobe</a>
-      </div>
-      <div class="foot-col">
-        <div class="foot-head">Categories</div>
-        <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;">Match Worn / Issued</a>
-        <a href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;">Clubs</a>
-        <a href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;">National teams</a>
-        <a href="/?p=shop&sort=new" onclick="dShopNewest();return false;">New added</a>
-      </div>
-      <div class="foot-col">
-        <div class="foot-head">Help</div>
-        <a href="/faq.html">FAQ</a>
-        <a href="/shipping.html">Shipping policy</a>
-        <a href="/refund.html">Refund policy</a>
-        <a href="/terms.html">Terms of service</a>
-        <a href="/privacy.html">Privacy policy</a>
-        <a href="#" onclick="ssOpenCookieSettings();return false;">Cookie preferences</a>
-      </div>
-      <div class="foot-col">
-        <div class="foot-head">Contact</div>
-        <a href="#" onclick="openContactModal();return false;">info@shirtsociete.com</a>
-        <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a>
-        <div class="foot-note">Harderwijk, Netherlands<br>KvK 97828408</div>
-      </div>
-    </div>
-
-    <div class="foot-pay">
-      <span class="foot-pay-label">We accept</span>
-      <div class="foot-pay-icons">
-        <span class="pay-chip">iDEAL</span>
-        <span class="pay-chip">Bancontact</span>
-        <span class="pay-chip">VISA</span>
-        <span class="pay-chip">Mastercard</span>
-        <span class="pay-chip">Maestro</span>
-        <span class="pay-chip">PayPal</span>
-        <span class="pay-chip">Klarna</span>
-        <span class="pay-chip">Apple&nbsp;Pay</span>
-      </div>
-    </div>
-
-    <div class="foot-bottom">
-      <span>&copy; 2026 Shirt Société</span>
-      <span class="foot-tagline">Timeless. Original. Rare.</span>
-    </div>
-  </div>
-</footer>
 
 </div><!-- end cin-home -->
     </div>
@@ -2667,34 +2648,73 @@
       </div>
     </div>
 
-    <!-- Desktop footer (moved out of former sidebar) -->
-    <footer class="desktop-footer">
-      <div>
-        <div class="foot-head">Contact</div>
-        <a href="#" onclick="openContactModal();return false;">info@shirtsociete.com</a><br>
-        <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a>
-      </div>
-      <div>
-        <div class="foot-head">Shop</div>
-        <a href="/products/">All shirts (full index)</a><br>
-        <a href="/?p=shop" onclick="dGoTo('shop');return false;">All Products</a><br>
-        <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;">Match Worn / Issued</a><br>
-        <a href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;">Clubs</a><br>
-        <a href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;">International Shirts</a>
-      </div>
-      <div>
-        <div class="foot-head">Legal</div>
-        <a href="/refund.html">Refund policy</a><br>
-        <a href="/privacy.html">Privacy policy</a><br>
-        <a href="/shipping.html">Shipping policy</a><br>
-        <a href="/terms.html">Terms of service</a><br>
-        <a href="/legal.html">Legal notice</a><br>
-        <a href="#" onclick="ssOpenCookieSettings();return false;">Cookie preferences</a>
-      </div>
-      <div class="foot-bottom">© 2026 Shirt Société</div>
-    </footer>
-
   </main>
+
+  <!-- ═══ SITE FOOTER — shared across every desktop screen ═══ -->
+  <footer id="site-footer">
+    <div class="foot-inner">
+      <div class="foot-drop-cta">
+        <div>
+          <div class="foot-drop-cta-head">Never miss a drop</div>
+          <div class="foot-drop-cta-sub">Get an email the moment new shirts go live.</div>
+        </div>
+        <button type="button" class="foot-drop-btn" onclick="openDropAlertModal()">Get Drop Alerts</button>
+      </div>
+
+      <div class="foot-cols">
+        <div class="foot-col">
+          <div class="foot-head">Quick Links</div>
+          <a href="/?p=shop" onclick="dGoTo('shop');return false;">Shop all shirts</a>
+          <a href="/products/">All shirts (full index)</a>
+          <a href="/?p=archive" onclick="dGoTo('archive');return false;">The Shirt Société Archive</a>
+          <a href="/?p=about" onclick="dGoTo('about');return false;">Our story</a>
+          <a href="/blog.html">Blog</a>
+        </div>
+        <div class="foot-col">
+          <div class="foot-head">Categories</div>
+          <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;">Match Worn / Issued</a>
+          <a href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;">Clubs</a>
+          <a href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;">International Shirts</a>
+          <a href="/?p=shop&sort=new" onclick="dShopNewest();return false;">New added</a>
+        </div>
+        <div class="foot-col">
+          <div class="foot-head">Legal</div>
+          <a href="/faq.html">FAQ</a>
+          <a href="/shipping.html">Shipping policy</a>
+          <a href="/refund.html">Refund policy</a>
+          <a href="/terms.html">Terms of service</a>
+          <a href="/privacy.html">Privacy policy</a>
+          <a href="/legal.html">Legal notice</a>
+          <a href="#" onclick="ssOpenCookieSettings();return false;">Cookie preferences</a>
+        </div>
+        <div class="foot-col">
+          <div class="foot-head">Contact</div>
+          <a href="#" onclick="openContactModal();return false;">info@shirtsociete.com</a>
+          <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a>
+          <div class="foot-note">Harderwijk, Netherlands<br>KvK 97828408</div>
+        </div>
+      </div>
+
+      <div class="foot-pay">
+        <span class="foot-pay-label">We accept</span>
+        <div class="foot-pay-icons">
+          <span class="pay-chip">iDEAL</span>
+          <span class="pay-chip">Bancontact</span>
+          <span class="pay-chip">VISA</span>
+          <span class="pay-chip">Mastercard</span>
+          <span class="pay-chip">Maestro</span>
+          <span class="pay-chip">PayPal</span>
+          <span class="pay-chip">Klarna</span>
+          <span class="pay-chip">Apple&nbsp;Pay</span>
+        </div>
+      </div>
+
+      <div class="foot-bottom">
+        <span>&copy; 2026 Shirt Société</span>
+        <span class="foot-tagline">Timeless. Original. Rare.</span>
+      </div>
+    </div>
+  </footer>
 </div>
 
 <!-- MOBILE ABOUT -->
@@ -6369,6 +6389,29 @@
 </div>
 
 <!-- ═══ CONTACT MODAL ═══ -->
+<div id="drop-alert-modal" style="position:fixed;inset:0;z-index:9600;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:24px;overflow-y:auto">
+  <div style="width:100%;max-width:460px;background:linear-gradient(180deg,#0d0b08,#080604);border:1px solid rgba(200,169,80,.28);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 28px 18px;border-bottom:1px solid rgba(200,169,80,.15)">
+      <div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Early Access</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;color:var(--cream);line-height:1.15">Be first to see new shirts</div>
+      </div>
+      <div onclick="closeDropAlertModal()" style="cursor:pointer;font-size:24px;line-height:1;color:rgba(245,240,232,.5);padding:0 4px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,.5)'">&times;</div>
+    </div>
+
+    <div style="padding:24px 28px 28px">
+      <p style="font-size:13px;color:rgba(245,240,232,.6);line-height:1.7;margin:0 0 20px">Every shirt we list is one of one. Leave your email and we will let you know when new vintage and match worn pieces go live, before they appear anywhere else.</p>
+
+      <div id="da-form" style="display:flex;gap:10px;flex-wrap:wrap">
+        <input id="da-email" type="email" placeholder="your@email.com" style="flex:1;min-width:200px;background:#131109;border:1px solid #22201a;border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='#22201a'" onkeydown="if(event.key==='Enter')submitDropAlertEmail()">
+        <button id="da-btn" onclick="submitDropAlertEmail()" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:13px 24px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Notify me</button>
+      </div>
+      <div id="da-confirm" style="display:none;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--gold);padding:4px 0">Thank you. We will be in touch when the next shirts go live.</div>
+      <p style="font-size:11px;color:rgba(245,240,232,.35);margin-top:16px;line-height:1.6">No spam, only new arrivals. Unsubscribe any time.</p>
+    </div>
+  </div>
+</div>
+
 <div id="contact-modal" style="position:fixed;inset:0;z-index:9600;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:24px;overflow-y:auto">
   <div style="width:100%;max-width:520px;background:linear-gradient(180deg,#0d0b08,#080604);border:1px solid rgba(200,169,80,.28);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);overflow:hidden">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 28px 18px;border-bottom:1px solid rgba(200,169,80,.15)">
@@ -6416,6 +6459,58 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeContactModal();
   });
+
+  // ── DROP ALERT MODAL (footer button + mobile floating button) ──
+  function openDropAlertModal() {
+    var m = document.getElementById('drop-alert-modal');
+    if (m) { m.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  }
+  function closeDropAlertModal() {
+    var m = document.getElementById('drop-alert-modal');
+    if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeDropAlertModal();
+  });
+  (function() {
+    var m = document.getElementById('drop-alert-modal');
+    if (m) m.addEventListener('click', function(e) { if (e.target === m) closeDropAlertModal(); });
+  })();
+  async function submitDropAlertEmail() {
+    var input = document.getElementById('da-email');
+    var btn = document.getElementById('da-btn');
+    var form = document.getElementById('da-form');
+    var confirm = document.getElementById('da-confirm');
+    if (!input || !input.value.trim() || !input.value.includes('@')) {
+      if (input) {
+        input.style.borderColor = '#e05555';
+        setTimeout(function(){ input.style.borderColor = '#22201a'; }, 2000);
+      }
+      return;
+    }
+    btn.disabled = true; btn.textContent = '...';
+    try {
+      var res = await fetch('https://shirtsociete.netlify.app/api/drop-signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: input.value.trim(), drop: 'Footer - drop alerts' })
+      });
+      var data = await res.json();
+      if (!res.ok) {
+        console.error('Signup error:', data);
+        btn.disabled = false; btn.textContent = 'Notify me';
+        if (typeof showToast === 'function') showToast('Something went wrong, please try again');
+        return;
+      }
+    } catch (e) {
+      console.error('Signup fetch error:', e);
+      btn.disabled = false; btn.textContent = 'Notify me';
+      if (typeof showToast === 'function') showToast('Something went wrong, please try again');
+      return;
+    }
+    if (form) form.style.display = 'none';
+    if (confirm) confirm.style.display = 'block';
+  }
   (function() {
     var am = document.getElementById('archive-detail-modal');
     if (am) am.addEventListener('click', function(e) { if (e.target === am) closeArchiveDetail(); });
