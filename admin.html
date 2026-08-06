@@ -2300,6 +2300,18 @@
       + '  </div>\n'
       + '</div>\n'
       + '<footer>Shirt Société &middot; Harderwijk, Netherlands &middot; <a href="/?p=about">Our Story</a> &middot; <a href="/shipping.html">Shipping</a> &middot; <a href="/refund.html">Returns</a></footer>\n'
+      // Google indexes everything above as-is — this only runs for real visitors.
+      // It hands off to the real shop app, which opens this exact shirt and then
+      // quietly puts the same clean URL back in the address bar, so a refresh (or a
+      // shared link) lands on the same interactive page you get by clicking a shirt.
+      + '<script>\n'
+      +   '(function(){\n'
+      +   '  try {\n'
+      +   '    if (window.self !== window.top) return;\n'
+      +   '    location.replace(\'/?shirt=\' + encodeURIComponent(' + JSON.stringify(String(s.id)) + '));\n'
+      +   '  } catch (e) {}\n'
+      +   '})();\n'
+      + '<\/script>\n'
       + '</body>\n</html>';
   }
 
