@@ -2119,7 +2119,7 @@
       + '</body>\n</html>';
   }
 
-  function buildProductPage(s) {
+  function buildProductPage(s, allShirts) {
     var base = 'https://shirtsociete.com';
     var slug = ssShirtSlug(s);
     var url = base + '/products/' + slug + '.html';
@@ -2159,6 +2159,33 @@
     var gallery = (s.images || []).map(function(im, i) {
       return '<img src="' + htmlEscape(im) + '" alt="' + htmlEscape(s.title + (i ? ' — photo ' + (i + 1) : '')) + '" loading="' + (i ? 'lazy' : 'eager') + '">';
     }).join('\n      ');
+
+    // Related shirts — real crawlable links to other product pages, so
+    // Google (and visitors) can reach every shirt from more than just the
+    // sitemap. Same club first, topped up with same-category shirts.
+    var relHtml = '';
+    if (allShirts && allShirts.length) {
+      var pool = allShirts.filter(function(o) {
+        return o && o.id !== s.id && !o.is_draft;
+      });
+      var sameClub = s.club ? pool.filter(function(o) { return o.club === s.club; }) : [];
+      var sameCat = pool.filter(function(o) { return o.category === s.category && sameClub.indexOf(o) === -1; });
+      var related = sameClub.concat(sameCat).slice(0, 4);
+      if (related.length) {
+        relHtml = '<section class="related"><h2>You might also like</h2><div class="related-grid">'
+          + related.map(function(o) {
+              var oSlug = ssShirtSlug(o);
+              var oImg = (o.images && o.images[0]) ? o.images[0] : '';
+              var oPrice = (o.price != null) ? parseFloat(o.price).toFixed(2) : '';
+              return '<a class="related-card" href="/products/' + oSlug + '.html">'
+                + (oImg ? '<img src="' + htmlEscape(oImg) + '" alt="' + htmlEscape(o.title || '') + '" loading="lazy">' : '')
+                + '<div class="rc-title">' + htmlEscape(o.title || '') + '</div>'
+                + (oPrice ? '<div class="rc-price">&euro;' + oPrice + '</div>' : '')
+                + '</a>';
+            }).join('')
+          + '</div></section>';
+      }
+    }
 
     var schema = {
       "@context": "https://schema.org/", "@type": "Product",
@@ -2247,6 +2274,15 @@
       +   '.shipline{font-size:13px;color:#b0a898;line-height:1.6;margin-bottom:12px}'
       +   '.shipline strong{color:var(--gold);text-transform:uppercase;font-size:10px;letter-spacing:1px;display:block;margin-bottom:2px}'
       +   '.note{font-size:12px;color:var(--muted);margin-top:28px}'
+      +   '.related{margin-top:54px;padding-top:36px;border-top:1px solid #1e1c17}'
+      +   '.related h2{margin-bottom:18px}'
+      +   '.related-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}'
+      +   '@media(max-width:900px){.related-grid{grid-template-columns:repeat(2,1fr)}}'
+      +   '.related-card{text-decoration:none;color:inherit;display:block}'
+      +   '.related-card img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:3px;background:#15130f;display:block;margin-bottom:8px;transition:opacity .2s}'
+      +   '.related-card:hover img{opacity:.82}'
+      +   '.related-card .rc-title{font-size:12.5px;line-height:1.4;color:var(--cream)}'
+      +   '.related-card .rc-price{font-size:12px;color:var(--gold);margin-top:3px}'
       +   'footer{border-top:1px solid #1e1c17;padding:28px 32px;text-align:center;font-size:12px;color:var(--muted)}'
       + '</style>\n'
       + '</head>\n<body>\n'
@@ -2298,6 +2334,7 @@
       + '      <p class="note">This is a single, unique shirt. Once sold it will not return. Questions? Email <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a>.</p>\n'
       + '    </div>\n'
       + '  </div>\n'
+      + relHtml
       + '</div>\n'
       + '<footer>Shirt Société &middot; Harderwijk, Netherlands &middot; <a href="/?p=about">Our Story</a> &middot; <a href="/shipping.html">Shipping</a> &middot; <a href="/refund.html">Returns</a></footer>\n'
       // Google indexes everything above as-is — this only runs for real visitors.
@@ -2317,7 +2354,7 @@
 
   // Archive shirts are NOT for sale, so no price/offer — use a lighter page
   // with schema.org "Thing" (Google requires offers on Product, not on Thing).
-  function buildArchivePage(s) {
+  function buildArchivePage(s, allArchive) {
     var base = 'https://shirtsociete.com';
     var slug = ssShirtSlug(s);
     var url = base + '/products/archive/' + slug + '.html';
@@ -2327,6 +2364,29 @@
     var gallery = (s.images || []).map(function(im, i) {
       return '<img src="' + htmlEscape(im) + '" alt="' + htmlEscape(s.title + (i ? ' — photo ' + (i + 1) : '')) + '" loading="' + (i ? 'lazy' : 'eager') + '">';
     }).join('\n      ');
+    // Related archive shirts — real links so Google can crawl deeper into the
+    // archive than the sitemap alone, and visitors find more to browse.
+    var relHtml = '';
+    if (allArchive && allArchive.length) {
+      var pool = allArchive.filter(function(o) { return o && o.id !== s.id; });
+      var sameClub = s.club ? pool.filter(function(o) { return o.club === s.club; }) : [];
+      var rest = pool.filter(function(o) { return sameClub.indexOf(o) === -1; });
+      var related = sameClub.concat(rest).slice(0, 4);
+      if (related.length) {
+        relHtml = '<section style="margin-top:44px;padding-top:28px;border-top:1px solid #1e1c17">'
+          + '<h2 style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#c8a950;margin-bottom:16px">More from the archive</h2>'
+          + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px">'
+          + related.map(function(o) {
+              var oSlug = ssShirtSlug(o);
+              var oImg = (o.images && o.images[0]) ? o.images[0] : '';
+              return '<a href="/products/archive/' + oSlug + '.html" style="text-decoration:none;color:inherit;display:block">'
+                + (oImg ? '<img src="' + htmlEscape(oImg) + '" alt="' + htmlEscape(o.title || '') + '" loading="lazy" style="width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:3px;background:#15130f;display:block;margin-bottom:8px">' : '')
+                + '<div style="font-size:12.5px;line-height:1.4;color:#f5f0e8">' + htmlEscape(o.title || '') + '</div>'
+                + '</a>';
+            }).join('')
+          + '</div></section>';
+      }
+    }
     var schema = {
       "@context": "https://schema.org/", "@type": "Thing",
       "name": s.title || '', "image": s.images || [],
@@ -2370,6 +2430,7 @@
             + '</dl></section>\n';
         })()
       + (s.description ? '  <div class="desc">' + htmlEscape(s.description) + '</div>\n' : '')
+      + relHtml
       + '  <a class="back" href="/?p=archive" style="margin-top:20px">View the full archive &rarr;</a>\n'
       + '  <p class="note">Part of the Shirt Société private archive. These shirts are not for sale. Questions? Email info@shirtsociete.com.</p>\n'
       + '</div>\n</body>\n</html>';
@@ -2388,7 +2449,7 @@
         if (!s || !s.id) return;
         if (s.is_draft) return;   // concepts get no public page until you publish them
         var slug = ssShirtSlug(s);
-        folder.file(slug + '.html', buildProductPage(s));
+        folder.file(slug + '.html', buildProductPage(s, allShirts));
         liveShirts.push(s);
       });
       // archive shirts go in products/archive/
@@ -2398,7 +2459,7 @@
       (allArchive || []).forEach(function(s) {
         if (!s || !s.id) return;
         var slug = ssShirtSlug(s);
-        arch.file(slug + '.html', buildArchivePage(s));
+        arch.file(slug + '.html', buildArchivePage(s, allArchive));
         archShirts.push(s);
         archCount++;
       });
