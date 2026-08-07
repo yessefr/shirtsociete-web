@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Apply saved theme before first paint, to avoid a flash of the wrong theme -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('ss-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
   <!-- Google Analytics — loaded ONLY after cookie consent (AVG/GDPR compliant) -->
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -91,7 +100,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_192,h_192,b_rgb:0a0905,f_png,q_100/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=12">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_180,h_180,b_rgb:0a0905,f_png,q_100/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=12">
-  <meta name="theme-color" content="#0a0905">
+  <meta name="theme-color" content="var(--black)">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -102,11 +111,54 @@
       --gold-dim: #9a7e3a;
       --gold-light: #e8c96a;
       --white: #f5f0e8;
+      --white-rgb: 245,240,232;
+      --cream: #f5f0e8;
       --grey: #16140f;
       --grey-mid: #4a4640;
       --text-muted: #888070;
+      --text-muted-2: #b0a898;
+      /* tiered dark surfaces + borders, consolidated from many near-black
+         one-off shades so the whole site can flip to a light theme */
+      --surf-1: #0d0b08;
+      --surf-2: #1a1815;
+      --line: #2a2820;
+      --line-soft: #3a372f;
+      /* fixed light color for text/icons that sit on top of photos or a
+         permanent dark scrim — these must NOT flip with the site theme,
+         since the photo behind them stays dark either way */
+      --on-photo: #f5f0e8;
+      --on-photo-rgb: 245,240,232;
+      /* fixed dark text color for use on the gold accent (buttons, badges) —
+         must stay dark in both themes, since --black itself becomes light
+         beige in light mode and would be unreadable on a gold background */
+      --ink: #0a0905;
       --sidebar-w: 240px;
       --topbar-h: 72px;
+    }
+
+    /* ── LIGHT (beige) THEME ── */
+    html[data-theme="light"] {
+      --black: #efe1c4;
+      --gold: #a1791f;
+      --gold-dim: #7d5c17;
+      --gold-light: #c79b34;
+      --white: #241d12;
+      --white-rgb: 36,29,18;
+      --cream: #241d12;
+      --grey: #e6d6b0;
+      --grey-mid: #cbb583;
+      --text-muted: #6b5f47;
+      --text-muted-2: #4f4531;
+      --surf-1: #e6d6b0;
+      --surf-2: #e0cea0;
+      --line: #cbb583;
+      --line-soft: #b8a06a;
+    }
+    html[data-theme="light"] .desktop-footer,
+    html[data-theme="light"] #site-footer,
+    html[data-theme="light"] #drop-alert-modal > div,
+    html[data-theme="light"] #contact-modal > div {
+      background: linear-gradient(180deg, var(--surf-2), var(--black));
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -115,8 +167,8 @@
     /* ─── MOBILE: tab bar layout ─── */
     .tab-bar {
       position: fixed; bottom: 0; left: 0; right: 0;
-      height: 64px; background: #0e0c08;
-      border-top: 1px solid #1e1c17;
+      height: 64px; background: var(--surf-1);
+      border-top: 1px solid var(--surf-2);
       display: flex; z-index: 200;
     }
     .tab {
@@ -129,7 +181,7 @@
     .tab svg { width: 22px; height: 22px; stroke-width: 1.5; }
     .cart-badge {
       position: absolute; top: 8px; right: calc(50% - 18px);
-      background: var(--gold); color: var(--black);
+      background: var(--gold); color:var(--ink);
       font-size: 9px; font-weight: 700;
       width: 16px; height: 16px; border-radius: 50%;
       display: none; align-items: center; justify-content: center;
@@ -140,7 +192,7 @@
       position: fixed; right: 16px; bottom: 80px; z-index: 210;
       display: flex; align-items: center; gap: 7px;
       background: linear-gradient(135deg, rgba(200,169,80,.95), rgba(176,141,62,.95));
-      color: var(--black); border: none; border-radius: 100px;
+      color:var(--ink); border: none; border-radius: 100px;
       padding: 12px 18px; font-family: 'DM Sans', sans-serif;
       font-size: 11.5px; font-weight: 700; letter-spacing: .5px;
       box-shadow: 0 4px 14px rgba(200,169,80,.3); cursor: pointer;
@@ -149,8 +201,8 @@
     /* Mobile header */
     .mobile-header {
       display: flex; padding: 16px 20px; text-align: center;
-      border-bottom: 1px solid #1e1c17;
-      position: sticky; top: 0; z-index: 100; background: #0a0905;
+      border-bottom: 1px solid var(--surf-2);
+      position: sticky; top: 0; z-index: 100; background: var(--black);
       justify-content: center; align-items: center;
     }
     .mobile-logo { cursor: pointer; }
@@ -222,12 +274,12 @@
     /* text nav items in the bar */
     .nav-item {
       display: flex; align-items: center; gap: 7px;
-      padding: 8px 12px; color: var(--text-muted); cursor: pointer;
+      padding: 8px 12px; color: rgba(var(--on-photo-rgb),.65); cursor: pointer;
       font-size: 13px; font-weight: 500; transition: color 0.2s;
       border-radius: 8px; white-space: nowrap; text-decoration: none;
     }
     .nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
-    .nav-item:hover { color: var(--white); }
+    .nav-item:hover { color: var(--on-photo); }
     .nav-item.active { color: var(--gold); }
     /* the bar is always see-through, so keep a soft shadow for legibility */
     .topbar .nav-item,
@@ -263,7 +315,7 @@
       transition: box-shadow .3s, transform .3s;
     }
     .la-card:hover { box-shadow: 0 14px 34px rgba(0,0,0,.5), 0 0 0 1px rgba(200,169,80,.14); transform: translateY(-2px); }
-    .la-img { position: relative; width: 100%; aspect-ratio: 3/4; background: #1a1815; overflow: hidden; }
+    .la-img { position: relative; width: 100%; aspect-ratio: 3/4; background: var(--surf-2); overflow: hidden; }
     .la-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 8px; }
     /* front/back crossfade on hover */
     .la-img-back { opacity: 0; transition: opacity .45s ease; }
@@ -288,12 +340,12 @@
 
     /* subtle archive filter pills */
     .arch-filter {
-      background: transparent; border: 1px solid #26241d;
+      background: transparent; border: 1px solid var(--line);
       color: var(--text-muted); padding: 7px 16px; border-radius: 100px;
       font-size: 12px; font-weight: 500; cursor: pointer;
       transition: all .2s; letter-spacing: .3px;
     }
-    .arch-filter:hover { color: var(--cream); border-color: #3a372f; }
+    .arch-filter:hover { color: var(--cream); border-color: var(--line-soft); }
     .arch-filter.active { color: var(--gold); border-color: rgba(200,169,80,.5); background: rgba(200,169,80,.06); }
 
     /* ─── Shop dropdown ─── */
@@ -313,7 +365,7 @@
       min-width: 200px; padding: 8px;
       background: rgba(10,9,5,0.97);
       -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-      border: 1px solid #1e1c17; border-radius: 10px;
+      border: 1px solid var(--surf-2); border-radius: 10px;
       box-shadow: 0 12px 34px rgba(0,0,0,.5);
       opacity: 0; visibility: hidden; transform: translateY(6px);
       transition: opacity .18s ease, transform .18s ease, visibility .18s;
@@ -330,7 +382,7 @@
     .nav-dropdown-menu .nav-item {
       width: 100%; padding: 10px 14px; border-radius: 6px; font-size: 13px;
     }
-    .nav-dropdown-menu .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--white); }
+    .nav-dropdown-menu .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--on-photo); }
 
     /* Main content area — full width; hero pages start at the very top under the fixed bar */
     .desktop-main {
@@ -341,7 +393,7 @@
 
     /* ─── DESKTOP PAGE FOOTER (moved out of the old sidebar) ─── */
     .desktop-footer {
-      border-top: 1px solid #1e1c17; background: #0a0905;
+      border-top: 1px solid var(--surf-2); background: var(--black);
       padding: 40px 52px 32px;
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
       font-size: 12px; color: var(--text-muted); line-height: 1.7;
@@ -353,9 +405,9 @@
     .desktop-footer a { color: var(--text-muted); text-decoration: none; transition: color .2s; }
     .desktop-footer a:hover { color: var(--gold); }
     .desktop-footer .foot-bottom {
-      grid-column: 1 / -1; border-top: 1px solid #1e1c17;
+      grid-column: 1 / -1; border-top: 1px solid var(--surf-2);
       padding-top: 16px; margin-top: 4px;
-      font-size: 10.5px; color: rgba(245,240,232,.35);
+      font-size: 10.5px; color: rgba(var(--white-rgb),.35);
     }
 
     /* Desktop screens */
@@ -391,12 +443,12 @@
     .hero-sub {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic; font-size: 20px;
-      color: rgba(245,240,232,0.7); margin-bottom: 32px; line-height: 1.5;
+      color: rgba(var(--white-rgb),0.7); margin-bottom: 32px; line-height: 1.5;
       max-width: 500px;
     }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
-      background: var(--gold); color: var(--black);
+      background: var(--gold); color:var(--ink);
       font-family: 'DM Sans', sans-serif;
       font-size: 13px; font-weight: 500; letter-spacing: 1px;
       padding: 14px 32px; border-radius: 2px;
@@ -473,7 +525,7 @@
     }
     .sw-name {
       font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
-      font-size: clamp(26px, 2.4vw, 38px); color: var(--white); line-height: 1.05;
+      font-size: clamp(26px, 2.4vw, 38px); color: var(--on-photo); line-height: 1.05;
       text-shadow: 0 2px 24px rgba(0,0,0,.7);
     }
     .sw-cat-lg {
@@ -517,13 +569,13 @@
     }
     .sm-card-img {
       position: relative; width: 100%; aspect-ratio: 3/4;
-      overflow: hidden; background: #1a1815;
+      overflow: hidden; background: var(--surf-2);
     }
     .sm-card-img img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: contain; object-position: center center;
-      background: #1a1815; padding: 8px;
+      background: var(--surf-2); padding: 8px;
     }
     .sm-card-img .img-hover { opacity: 0; transition: opacity .3s; }
     .shirt-card-sm:hover .sm-card-img .img-hover { opacity: 1; }
@@ -533,17 +585,17 @@
     .shirt-card-sm-price { font-size: 15px; color: var(--gold); font-weight: 500; }
 
     /* Divider */
-    .divider { height: 1px; background: #1e1c17; margin: 0 48px; }
+    .divider { height: 1px; background: var(--surf-2); margin: 0 48px; }
 
     /* ─── SHOP GRID ─── */
     .shop-header { padding: 32px 48px 0; }
     .shop-toolbar {
       display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
-      padding: 16px 48px; border-bottom: 1px solid #1e1c17;
+      padding: 16px 48px; border-bottom: 1px solid var(--surf-2);
     }
     .search-wrap { flex: 1; min-width: 200px; position: relative; }
     .search-wrap input {
-      width: 100%; background: var(--grey); border: 1px solid #2e2c27;
+      width: 100%; background: var(--grey); border: 1px solid var(--line);
       color: var(--white); font-family: 'DM Sans', sans-serif;
       font-size: 14px; padding: 10px 16px 10px 38px; border-radius: 2px; outline: none;
       transition: border-color 0.2s;
@@ -553,24 +605,24 @@
     .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 16px; height: 16px; }
     .filter-btn {
       padding: 8px 18px; border-radius: 2px;
-      border: 1px solid #2e2c27; background: transparent;
+      border: 1px solid var(--line); background: transparent;
       color: var(--text-muted); font-family: 'DM Sans', sans-serif;
       font-size: 12px; font-weight: 500; letter-spacing: 0.5px;
       cursor: pointer; text-transform: uppercase; transition: all 0.2s;
     }
-    .filter-btn.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
+    .filter-btn.active { background: var(--gold); color:var(--ink); border-color: var(--gold); }
 
 
     .shirt-card-img {
       position: relative;
       width: 100%; aspect-ratio: 3/4;
-      overflow: hidden; background: #1a1815;
+      overflow: hidden; background: var(--surf-2);
     }
     .shirt-card-img img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: contain; object-position: center center;
-      padding: 8px; background: #1a1815;
+      padding: 8px; background: var(--surf-2);
     }
     .shirt-card-img .img-hover { opacity: 0; transition: opacity .3s; }
     .shirt-card:hover .shirt-card-img .img-hover { opacity: 1; }
@@ -581,7 +633,7 @@
       border: 1px solid rgba(200,169,80,.6);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: var(--cream); padding: 0;
+      cursor: pointer; color: var(--on-photo); padding: 0;
       transition: all .2s;
     }
     .like-btn:hover { border-color: var(--gold); background: rgba(30,27,23,.95); transform: scale(1.08); }
@@ -592,7 +644,7 @@
       position: absolute; bottom: 8px; left: 8px; z-index: 3;
       background: linear-gradient(180deg, transparent, rgba(6,5,4,.55));
       padding: 3px 4px; font-size: 8px; letter-spacing: 1.4px; text-transform: uppercase;
-      color: rgba(245,240,232,.85); font-weight: 500; line-height: 1.2;
+      color: rgba(var(--on-photo-rgb),.85); font-weight: 500; line-height: 1.2;
       max-width: calc(100% - 16px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       text-shadow: 0 1px 4px rgba(0,0,0,.9);
     }
@@ -604,16 +656,16 @@
     .shirt-grid.list-view .shirt-card {
       flex-direction: row;
       align-items: stretch;
-      background: #14120e;
-      border: 1px solid #201e18;
+      background: var(--surf-2);
+      border: 1px solid var(--line);
     }
     .shirt-grid.list-view .shirt-card-img {
       flex: 0 0 240px;
       width: 240px;
       aspect-ratio: 3/4;
-      background: #100e0b;
+      background: var(--surf-1);
     }
-    .shirt-grid.list-view .shirt-card-img img { background: #100e0b; padding: 12px; }
+    .shirt-grid.list-view .shirt-card-img img { background: var(--surf-1); padding: 12px; }
     .shirt-grid.list-view .shirt-card-body {
       flex: 1;
       display: flex;
@@ -638,15 +690,15 @@
     }
     .list-meta span {
       font-size: 10.5px; letter-spacing: 1.2px; text-transform: uppercase;
-      color: rgba(245,240,232,.62);
-      background: #1c1a15; border: 1px solid #262319;
+      color: rgba(var(--white-rgb),.62);
+      background: var(--surf-2); border: 1px solid var(--line);
       padding: 5px 11px; border-radius: 2px;
     }
     .list-desc { display: none; }
     .shirt-grid.list-view .list-desc {
       display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
       overflow: hidden;
-      font-size: 13.5px; line-height: 1.75; color: rgba(245,240,232,.55);
+      font-size: 13.5px; line-height: 1.75; color: rgba(var(--white-rgb),.55);
       margin-bottom: 4px;
     }
     @media (max-width: 700px) {
@@ -673,12 +725,12 @@
     .spec-row {
       display: grid; grid-template-columns: 130px 1fr;
       gap: 16px; align-items: baseline;
-      padding: 13px 2px; border-bottom: 1px solid #1a1815;
+      padding: 13px 2px; border-bottom: 1px solid var(--surf-2);
     }
-    .spec-row:first-child { border-top: 1px solid #1a1815; }
+    .spec-row:first-child { border-top: 1px solid var(--surf-2); }
     .spec-key {
       font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      color: rgba(245,240,232,.38);
+      color: rgba(var(--white-rgb),.38);
     }
     .spec-val { font-size: 15px; color: var(--cream); }
     @media (max-width: 700px) {
@@ -689,10 +741,10 @@
     .detail-accordion { margin-top: 30px; }
     .acc-label {
       font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: rgba(245,240,232,.35); margin-bottom: 14px;
+      color: rgba(var(--white-rgb),.35); margin-bottom: 14px;
     }
-    .acc-item { border-top: 1px solid #1e1c17; cursor: pointer; }
-    .acc-item:last-child { border-bottom: 1px solid #1e1c17; }
+    .acc-item { border-top: 1px solid var(--surf-2); cursor: pointer; }
+    .acc-item:last-child { border-bottom: 1px solid var(--surf-2); }
     .acc-head {
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
       padding: 17px 2px; font-size: 12px; font-weight: 600;
@@ -709,15 +761,15 @@
     }
     .acc-item.open .acc-body { max-height: 400px; padding: 0 2px 18px; }
     .acc-body p {
-      font-size: 13.5px; line-height: 1.8; color: rgba(245,240,232,.62);
+      font-size: 13.5px; line-height: 1.8; color: rgba(var(--white-rgb),.62);
       margin: 0 0 12px;
     }
     .acc-body p:last-child { margin-bottom: 0; }
     .acc-body a { color: var(--gold); }
     /* ═══ SITE FOOTER ═══ */
     #site-footer {
-      background: #0d0b08;
-      border-top: 1px solid #1a1815;
+      background: var(--surf-1);
+      border-top: 1px solid var(--surf-2);
       padding: 56px 52px 28px;
       margin-top: 40px;
     }
@@ -736,10 +788,10 @@
       font-size: 19px; color: var(--cream);
     }
     .foot-drop-cta-sub {
-      font-size: 12.5px; color: rgba(245,240,232,.5); margin-top: 4px;
+      font-size: 12.5px; color: rgba(var(--white-rgb),.5); margin-top: 4px;
     }
     .foot-drop-btn {
-      background: var(--gold); color: var(--black); border: none;
+      background: var(--gold); color:var(--ink); border: none;
       padding: 13px 26px; border-radius: 2px; white-space: nowrap;
       font-family: 'DM Sans', sans-serif; font-size: 11.5px; font-weight: 700;
       letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
@@ -757,35 +809,35 @@
       font-size: 17px; color: var(--cream); margin-bottom: 16px;
     }
     .foot-col a {
-      display: block; color: rgba(245,240,232,.5);
+      display: block; color: rgba(var(--white-rgb),.5);
       font-size: 12.5px; line-height: 2.1;
       text-decoration: none; cursor: pointer; transition: color .2s;
     }
     .foot-col a:hover { color: var(--gold); }
     .foot-note {
       margin-top: 12px; font-size: 11px; line-height: 1.7;
-      color: rgba(245,240,232,.3);
+      color: rgba(var(--white-rgb),.3);
     }
     .foot-pay {
       display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-      padding: 24px 0; border-top: 1px solid #1a1815;
+      padding: 24px 0; border-top: 1px solid var(--surf-2);
     }
     .foot-pay-label {
       font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-      color: rgba(245,240,232,.3);
+      color: rgba(var(--white-rgb),.3);
     }
     .foot-pay-icons { display: flex; gap: 8px; flex-wrap: wrap; }
     .pay-chip {
       font-size: 9.5px; letter-spacing: 1px; font-weight: 600;
-      color: rgba(245,240,232,.55);
-      background: #16140f; border: 1px solid #221f18;
+      color: rgba(var(--white-rgb),.55);
+      background: var(--surf-2); border: 1px solid var(--line);
       padding: 7px 12px; border-radius: 3px; white-space: nowrap;
     }
     .foot-bottom {
       display: flex; align-items: center; justify-content: space-between;
       gap: 20px; flex-wrap: wrap;
-      padding-top: 22px; border-top: 1px solid #1a1815;
-      font-size: 11px; color: rgba(245,240,232,.32);
+      padding-top: 22px; border-top: 1px solid var(--surf-2);
+      font-size: 11px; color: rgba(var(--white-rgb),.32);
     }
     .foot-tagline { font-style: italic; letter-spacing: 1px; }
     @media (max-width: 900px) {
@@ -818,7 +870,7 @@
       text-shadow: 0 2px 12px rgba(0,0,0,.9);
     }
     .m-fair-date {
-      font-size: 11px; color: rgba(245,240,232,.75); margin-top: 5px;
+      font-size: 11px; color: rgba(var(--white-rgb),.75); margin-top: 5px;
     }
     /* ═══ EXPANDING FAIR STRIPS (Our Story) ═══ */
     .fair-strips {
@@ -895,7 +947,7 @@
       color: var(--gold); opacity: .85;
     }
     .strip-date {
-      font-size: 12px; color: rgba(245,240,232,.75);
+      font-size: 12px; color: rgba(var(--white-rgb),.75);
       letter-spacing: .5px; white-space: nowrap;
     }
     /* open only while the mouse is on that strip — everything closes when you leave */
@@ -954,7 +1006,7 @@
     .shirt-card-price { font-size: 16px; color: var(--gold); font-weight: 500; }
     .add-btn {
       width: 32px; height: 32px; border-radius: 50%;
-      background: var(--gold); color: var(--black);
+      background: var(--gold); color:var(--ink);
       border: none; cursor: pointer; font-size: 20px; font-weight: 300;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.2s, transform 0.1s;
@@ -1045,17 +1097,17 @@
     }
     .gallery-main img {
       width: 100%; aspect-ratio: 3/4; object-fit: contain;
-      border-radius: 2px; background: #1a1815;
+      border-radius: 2px; background: var(--surf-2);
       margin-bottom: 12px; padding: 16px;
     }
     .gallery-arrow {
       position: absolute; top: 50%; transform: translateY(-50%);
-      background: rgba(10,9,5,0.7); border: 1px solid #2e2c27;
+      background: rgba(10,9,5,0.7); border: 1px solid var(--line);
       color: var(--gold); width: 40px; height: 40px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: all 0.2s; z-index: 10;
     }
-    .gallery-arrow:hover { background: var(--gold); color: var(--black); }
+    .gallery-arrow:hover { background: var(--gold); color:var(--ink); }
     .gallery-arrow svg { width: 18px; height: 18px; }
     .gallery-arrow.prev { left: 12px; }
     .gallery-arrow.next { right: 12px; }
@@ -1084,10 +1136,10 @@
     .spec-item { background: var(--grey); padding: 14px; border-radius: 2px; }
     .spec-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
     .spec-value { font-size: 14px; font-weight: 500; }
-    .detail-desc { font-size: 14px; line-height: 1.75; color: #b0a898; margin-bottom: 26px; }
+    .detail-desc { font-size: 14px; line-height: 1.75; color: var(--text-muted-2); margin-bottom: 26px; }
     .detail-add-btn {
       width: 100%; padding: 18px;
-      background: var(--gold); color: var(--black);
+      background: var(--gold); color:var(--ink);
       border: none; border-radius: 2px; cursor: pointer;
       font-family: 'DM Sans', sans-serif;
       font-size: 14px; font-weight: 500; letter-spacing: 1px;
@@ -1095,14 +1147,14 @@
     }
     .detail-add-btn:hover { background: var(--gold-light); }
     .detail-add-btn:active { transform: scale(0.98); }
-    .detail-add-btn:disabled { background: var(--grey-mid, #4a4640); color: var(--text-muted); cursor: not-allowed; }
+    .detail-add-btn:disabled { background: var(--grey-mid, var(--line-soft)); color: var(--text-muted); cursor: not-allowed; }
 
     /* ─── CART ─── */
     .cart-wrap { padding: 48px; max-width: 800px; }
     .cart-title { font-size: 28px; font-weight: 500; margin-bottom: 32px; }
     .cart-item {
       display: flex; gap: 20px; align-items: center;
-      padding: 20px 0; border-bottom: 1px solid #1e1c17;
+      padding: 20px 0; border-bottom: 1px solid var(--surf-2);
     }
     .cart-item img { width: 72px; height: 72px; object-fit: cover; border-radius: 2px; background: var(--grey); flex-shrink: 0; }
     .cart-item-info { flex: 1; }
@@ -1120,7 +1172,7 @@
     .cart-total-label { font-size: 16px; color: var(--text-muted); }
     .cart-total-amount { font-size: 28px; color: var(--gold); font-weight: 500; }
     .cart-checkout-btn {
-      padding: 18px 48px; background: var(--gold); color: var(--black);
+      padding: 18px 48px; background: var(--gold); color:var(--ink);
       border: none; border-radius: 2px; cursor: pointer;
       font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
       letter-spacing: 1px; text-transform: uppercase; transition: background 0.2s;
@@ -1134,14 +1186,14 @@
     .checkout-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
     .form-section-label {
       font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--gold); font-weight: 500; padding: 20px 0 12px; border-top: 1px solid #1e1c17; margin-top: 8px;
+      color: var(--gold); font-weight: 500; padding: 20px 0 12px; border-top: 1px solid var(--surf-2); margin-top: 8px;
     }
     .form-section-label:first-child { border-top: none; padding-top: 0; margin-top: 0; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
     .form-group label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); font-weight: 500; }
     .form-group input, .form-group select, .form-group textarea {
-      background: var(--grey); border: 1px solid #2e2c27;
+      background: var(--grey); border: 1px solid var(--line);
       color: var(--white); font-family: 'DM Sans', sans-serif;
       font-size: 14px; padding: 12px; border-radius: 2px; outline: none;
       transition: border-color 0.2s;
@@ -1157,15 +1209,15 @@
       position: sticky; top: 24px;
     }
     .order-summary-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
-    .summary-item { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px; color: #b0a898; }
+    .summary-item { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px; color: var(--text-muted-2); }
     .summary-item span:last-child { color: var(--white); }
-    .summary-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: 500; padding-top: 16px; border-top: 1px solid #3a3830; margin-top: 8px; }
+    .summary-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: 500; padding-top: 16px; border-top: 1px solid var(--line-soft); margin-top: 8px; }
     .summary-total span:last-child { color: var(--gold); }
     .payment-methods { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
-    .payment-method { background: #1e1c17; border-radius: 2px; padding: 6px 12px; font-size: 11px; color: var(--text-muted); }
+    .payment-method { background: var(--surf-2); border-radius: 2px; padding: 6px 12px; font-size: 11px; color: var(--text-muted); }
     .pay-btn {
       width: 100%; max-width: 100%; padding: 14px 24px;
-      background: var(--gold); color: var(--black);
+      background: var(--gold); color:var(--ink);
       border: none; border-radius: 2px; cursor: pointer;
       font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
       letter-spacing: 0.5px; text-transform: uppercase; transition: background 0.2s;
@@ -1174,7 +1226,7 @@
     }
     .pay-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
     .pay-btn:hover { background: var(--gold-light); }
-    .pay-btn:disabled { background: #4a4640; color: var(--text-muted); cursor: not-allowed; }
+    .pay-btn:disabled { background: var(--line-soft); color: var(--text-muted); cursor: not-allowed; }
 
     /* ─── PROFILE ─── */
     .profile-wrap { padding: 48px; max-width: 600px; }
@@ -1182,8 +1234,8 @@
     .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--grey); border: 2px solid var(--gold-dim); display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 16px; }
     .profile-name { font-size: 24px; font-weight: 500; margin-bottom: 4px; }
     .profile-email { font-size: 14px; color: var(--text-muted); }
-    .profile-section-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; padding: 24px 0 12px; border-top: 1px solid #1e1c17; margin-top: 8px; }
-    .profile-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #1e1c17; font-size: 15px; cursor: pointer; }
+    .profile-section-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; padding: 24px 0 12px; border-top: 1px solid var(--surf-2); margin-top: 8px; }
+    .profile-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--surf-2); font-size: 15px; cursor: pointer; }
     .profile-item svg { width: 18px; height: 18px; color: var(--text-muted); }
 
     /* ─── MOBILE STYLES (override) ─── */
@@ -1216,42 +1268,42 @@
     }
     .m-hero > *:not(.m-hero-bg) { position: relative; z-index: 2; }
       .m-hero-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
-      .m-hero-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 44px; line-height: .95; letter-spacing: -1px; color: var(--white); margin-bottom: 12px; }
+      .m-hero-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 44px; line-height: .95; letter-spacing: -1px; color: var(--on-photo); margin-bottom: 12px; }
     .m-hero-title span { color: transparent; -webkit-text-stroke: 1.2px rgba(200,169,80,.55); }
-      .m-hero-title span { color: var(--gold); }
-      .m-hero-sub { font-size: 13px; font-weight: 300; color: rgba(245,240,232,.6); margin-bottom: 24px; line-height: 1.7; border-left: 1px solid rgba(200,169,80,.25); padding-left: 12px; }
+    .m-hero-title span { color: var(--gold); }
+      .m-hero-sub { font-size: 13px; font-weight: 300; color: rgba(var(--on-photo-rgb),.6); margin-bottom: 24px; line-height: 1.7; border-left: 1px solid rgba(200,169,80,.25); padding-left: 12px; }
       .m-section-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; padding: 24px 20px 12px; }
       .m-shirt-row { display: flex; gap: 12px; overflow-x: auto; padding: 0 20px 16px; scrollbar-width: none; }
       .m-shirt-row::-webkit-scrollbar { display: none; }
       .m-shirt-card-sm { flex: 0 0 160px; cursor: pointer; background: var(--grey); border-radius: 2px; overflow: hidden; }
-      .m-shirt-card-sm img { width: 100%; height: 200px; object-fit: cover; background: #1e1c17; }
+      .m-shirt-card-sm img { width: 100%; height: 200px; object-fit: cover; background: var(--surf-2); }
       .m-shirt-card-sm-info { padding: 10px 12px; }
       .m-shirt-card-sm-title { font-size: 12px; font-weight: 500; line-height: 1.3; margin-bottom: 4px; }
       .m-shirt-card-sm-price { font-size: 13px; color: var(--gold); font-weight: 500; }
-      .m-divider { height: 1px; background: #1e1c17; margin: 4px 20px; }
+      .m-divider { height: 1px; background: var(--surf-2); margin: 4px 20px; }
       .m-shop-search { padding: 16px 20px 0; position: relative; }
-      .m-shop-search input { width: 100%; background: var(--grey); border: 1px solid #2e2c27; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 16px 12px 40px; border-radius: 2px; outline: none; }
+      .m-shop-search input { width: 100%; background: var(--grey); border: 1px solid var(--line); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 16px 12px 40px; border-radius: 2px; outline: none; }
       .m-shop-search input::placeholder { color: var(--text-muted); }
       .m-shop-search svg { position: absolute; left: 32px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 16px; height: 16px; }
       .m-filters { display: flex; gap: 8px; padding: 12px 20px; overflow-x: auto; scrollbar-width: none; }
       .m-filters::-webkit-scrollbar { display: none; }
-      .m-filter-btn { flex: 0 0 auto; padding: 7px 16px; border-radius: 2px; border: 1px solid #2e2c27; background: transparent; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
-      .m-filter-btn.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
+      .m-filter-btn { flex: 0 0 auto; padding: 7px 16px; border-radius: 2px; border: 1px solid var(--line); background: transparent; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
+      .m-filter-btn.active { background: var(--gold); color:var(--ink); border-color: var(--gold); }
       .m-shirt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px 20px; }
       .m-shirt-card { background: var(--grey); border-radius: 2px; overflow: hidden; cursor: pointer; }
-      .m-shirt-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #1e1c17; }
+      .m-shirt-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: var(--surf-2); }
       .m-shirt-card-body { padding: 10px; }
       .m-shirt-card-club { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
       .m-shirt-card-title { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 8px; }
       .m-shirt-card-footer { display: flex; align-items: center; justify-content: space-between; }
       .m-shirt-card-price { font-size: 14px; color: var(--gold); font-weight: 500; }
-      .m-add-btn { width: 28px; height: 28px; border-radius: 50%; background: var(--gold); color: var(--black); border: none; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+      .m-add-btn { width: 28px; height: 28px; border-radius: 50%; background: var(--gold); color:var(--ink); border: none; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
     }
 
     /* ─── TOAST ─── */
     .toast {
       position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
-      background: var(--gold); color: var(--black);
+      background: var(--gold); color:var(--ink);
       padding: 12px 24px; border-radius: 2px;
       font-size: 13px; font-weight: 500;
       opacity: 0; transition: all 0.3s; z-index: 999; white-space: nowrap;
@@ -1291,7 +1343,7 @@
     #wardrobe-stage {
       position: relative; height: 440px; margin-top: 28px;
       perspective: 1400px; overflow: hidden;
-      background: linear-gradient(180deg, #0b0a07 0%, #060504 100%);
+      background: linear-gradient(180deg, var(--surf-1) 0%, var(--surf-1) 100%);
       border: 1px solid rgba(200,169,80,.12); border-radius: 3px;
     }
     #wardrobe-stage::before {
@@ -1323,13 +1375,13 @@
       width: 200px; height: 260px; object-fit: cover; object-position: center top;
       border: 1px solid rgba(200,169,80,.28);
       box-shadow: 0 30px 60px rgba(0,0,0,.65), 0 0 0 1px rgba(0,0,0,.4);
-      background: #12100d; display: block;
+      background: var(--surf-2); display: block;
     }
     .ward-cap {
       margin-top: 12px; text-align: center;
     }
     .ward-cap-club { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
-    .ward-cap-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: var(--cream, #f5f0e8); }
+    .ward-cap-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: var(--cream, var(--white)); }
     #wardrobe-empty {
       position: absolute; inset: 0; z-index: 5;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -1350,23 +1402,23 @@
     /* details / account */
     .prof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
     .prof-card {
-      background: #131110; border: 1px solid #221f1b; border-radius: 3px; padding: 28px;
+      background: var(--surf-2); border: 1px solid var(--line); border-radius: 3px; padding: 28px;
     }
     .prof-field { margin-bottom: 16px; }
     .prof-field label { display: block; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
     .prof-field input {
-      width: 100%; background: #0b0a08; border: 1px solid #2a2723; border-radius: 2px;
+      width: 100%; background: var(--surf-1); border: 1px solid var(--line); border-radius: 2px;
       padding: 11px 13px; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none;
       transition: border-color .2s;
     }
     .prof-field input:focus { border-color: rgba(200,169,80,.5); }
     .prof-save {
-      background: var(--gold); color: var(--black); border: none; border-radius: 2px;
+      background: var(--gold); color:var(--ink); border: none; border-radius: 2px;
       padding: 12px 22px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
       letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; margin-top: 8px;
     }
     .prof-order {
-      display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #221f1b;
+      display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line);
     }
     .prof-order:last-child { border-bottom: none; }
     .prof-order img { width: 48px; height: 62px; object-fit: cover; border-radius: 2px; flex-shrink: 0; }
@@ -1424,18 +1476,18 @@
 </head>
 <body>
 <noscript>
-  <div style="background:#0a0905;color:#f5f0e8;padding:40px;font-family:sans-serif;max-width:800px;margin:0 auto">
+  <div style="background:var(--black);color:var(--white);padding:40px;font-family:sans-serif;max-width:800px;margin:0 auto">
     <h1>Shirt Société — Vintage &amp; Match Worn Football Shirts</h1>
     <p>Curated vintage and match worn football shirts from the golden era, sourced across Europe. Based in the Netherlands.</p>
     <p>Browse the collection:</p>
     <ul>
-      <li><a href="/products/" style="color:#c8a950">All shirts — full collection</a></li>
-      <li><a href="/?p=shop" style="color:#c8a950">Shop all shirts</a></li>
-      <li><a href="/?p=shop&amp;cat=match_worn" style="color:#c8a950">Match Worn / Issued shirts</a></li>
-      <li><a href="/?p=shop&amp;cat=clubs" style="color:#c8a950">Club shirts</a></li>
-      <li><a href="/?p=shop&amp;cat=national" style="color:#c8a950">International shirts</a></li>
-      <li><a href="/?p=archive" style="color:#c8a950">The Archive</a></li>
-      <li><a href="/blog.html" style="color:#c8a950">Journal</a></li>
+      <li><a href="/products/" style="color:var(--gold)">All shirts — full collection</a></li>
+      <li><a href="/?p=shop" style="color:var(--gold)">Shop all shirts</a></li>
+      <li><a href="/?p=shop&amp;cat=match_worn" style="color:var(--gold)">Match Worn / Issued shirts</a></li>
+      <li><a href="/?p=shop&amp;cat=clubs" style="color:var(--gold)">Club shirts</a></li>
+      <li><a href="/?p=shop&amp;cat=national" style="color:var(--gold)">International shirts</a></li>
+      <li><a href="/?p=archive" style="color:var(--gold)">The Archive</a></li>
+      <li><a href="/blog.html" style="color:var(--gold)">Journal</a></li>
     </ul>
     <p>This shop works best with JavaScript enabled. Please enable it, or contact us at info@shirtsociete.com.</p>
   </div>
@@ -1444,10 +1496,14 @@
 <!-- ══════════════════════════════════════════
      MOBILE LAYOUT
 ══════════════════════════════════════════ -->
-<header class="mobile-header">
+<header class="mobile-header" style="position:relative">
   <div class="mobile-logo" onclick="mGoTo('home')">
     <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png" alt="Shirt Société">
   </div>
+  <button type="button" onclick="toggleSiteTheme()" title="Toggle light / dark mode" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--white);cursor:pointer;padding:6px;display:flex">
+    <svg id="m-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    <svg id="m-theme-icon-light" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
 </header>
 
 <!-- MOBILE HOME -->
@@ -1480,7 +1536,7 @@
           <div id="m-home-mins" style="font-size:20px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1">--</div>
           <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">m</div>
         </div>
-        <button onclick="mGoTo('about')" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0">Info →</button>
+        <button onclick="mGoTo('about')" style="background:var(--gold);color:var(--ink);border:none;border-radius:2px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0">Info →</button>
       </div>
     </div>
   </div>
@@ -1502,7 +1558,7 @@
     <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;filter:brightness(.26) saturate(.5)"></div>
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.35),rgba(8,7,5,.9))"></div>
     <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:6px">
-      <div class="m-word" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:38px;line-height:1;color:var(--white)">Timeless.</div>
+      <div class="m-word" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:38px;line-height:1;color:var(--on-photo)">Timeless.</div>
       <div class="m-word" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:38px;line-height:1;color:transparent;-webkit-text-stroke:1.2px rgba(200,169,80,.5)">Original.</div>
       <div class="m-word" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:38px;line-height:1;color:var(--gold)">Rare.</div>
     </div>
@@ -1513,19 +1569,19 @@
     <div onclick="mShopCategory('clubs')" style="position:relative;height:180px;border-radius:3px;overflow:hidden;cursor:pointer">
       <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top">
       <div style="position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,9,5,.9))"></div>
-      <div style="position:absolute;bottom:16px;left:16px;font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);text-shadow:0 2px 16px rgba(0,0,0,.7)">Club Classics</div>
+      <div style="position:absolute;bottom:16px;left:16px;font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--on-photo);text-shadow:0 2px 16px rgba(0,0,0,.7)">Club Classics</div>
     </div>
     <div onclick="mShopCategory('national')" style="position:relative;height:180px;border-radius:3px;overflow:hidden;cursor:pointer">
       <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top">
       <div style="position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,9,5,.9))"></div>
-      <div style="position:absolute;bottom:16px;left:16px;font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);text-shadow:0 2px 16px rgba(0,0,0,.7)">International Shirts</div>
+      <div style="position:absolute;bottom:16px;left:16px;font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--on-photo);text-shadow:0 2px 16px rgba(0,0,0,.7)">International Shirts</div>
     </div>
     <div onclick="mGoTo('about')" style="position:relative;height:180px;border-radius:3px;overflow:hidden;cursor:pointer">
       <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top">
       <div style="position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,9,5,.9))"></div>
       <div style="position:absolute;bottom:16px;left:16px">
         <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:20px;color:var(--gold);text-shadow:0 2px 16px rgba(0,0,0,.7)">Our Story</div>
-        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;color:var(--white);text-shadow:0 2px 16px rgba(0,0,0,.7)">Who We Are</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;color:var(--on-photo);text-shadow:0 2px 16px rgba(0,0,0,.7)">Who We Are</div>
       </div>
     </div>
   </div>
@@ -1545,19 +1601,19 @@
   <div id="m-clubs-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
 
   <!-- Early access signup (mobile) -->
-  <section style="position:relative;margin-top:32px;padding:44px 20px;border-top:1px solid #1e1c17;overflow:hidden;text-align:center">
+  <section style="position:relative;margin-top:32px;padding:44px 20px;border-top:1px solid var(--surf-2);overflow:hidden;text-align:center">
     <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 40%/cover;filter:brightness(.18) saturate(.5)"></div>
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.55),rgba(8,7,5,.94))"></div>
     <div style="position:relative;z-index:2">
       <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600">Early Access</div>
-      <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;line-height:1.1;margin-bottom:12px;color:var(--white)">Be first to see new shirts</h2>
-      <p style="font-size:13px;line-height:1.75;color:#9a938a;margin-bottom:20px">Every shirt is one of one. Leave your email and we will let you know when new pieces go live.</p>
+      <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;line-height:1.1;margin-bottom:12px;color:var(--on-photo)">Be first to see new shirts</h2>
+      <p style="font-size:13px;line-height:1.75;color:rgba(var(--on-photo-rgb),.6);margin-bottom:20px">Every shirt is one of one. Leave your email and we will let you know when new pieces go live.</p>
       <div id="m-drop-signup-form" style="display:flex;flex-direction:column;gap:10px">
-        <input type="email" id="m-drop-email-input" placeholder="your@email.com" style="width:100%;background:rgba(10,9,5,.7);border:1px solid #2a2820;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;padding:13px 16px;border-radius:2px;outline:none">
-        <button onclick="submitDropEmailMobile()" style="width:100%;background:var(--gold);color:var(--black);border:none;padding:13px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Notify me</button>
+        <input type="email" id="m-drop-email-input" placeholder="your@email.com" style="width:100%;background:rgba(10,9,5,.7);border:1px solid rgba(var(--on-photo-rgb),.25);color:var(--on-photo);font-family:'DM Sans',sans-serif;font-size:14px;padding:13px 16px;border-radius:2px;outline:none">
+        <button onclick="submitDropEmailMobile()" style="width:100%;background:var(--gold);color:var(--ink);border:none;padding:13px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Notify me</button>
       </div>
       <div id="m-drop-email-confirm" style="display:none;font-size:13px;color:var(--gold);padding:10px 0">Thank you. We will be in touch when the next shirts go live.</div>
-      <p style="font-size:10.5px;color:rgba(245,240,232,.35);margin-top:14px">No spam, only new arrivals.</p>
+      <p style="font-size:10.5px;color:rgba(var(--on-photo-rgb),.35);margin-top:14px">No spam, only new arrivals.</p>
     </div>
   </section>
 </div>
@@ -1576,19 +1632,19 @@
     <button class="m-filter-btn" onclick="mSetFilter('national',this)" id="m-filter-national">National</button>
   </div>
   <div style="display:flex;gap:8px;padding:0 20px 12px;overflow-x:auto;scrollbar-width:none">
-    <select id="m-filter-size" onchange="mFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
+    <select id="m-filter-size" onchange="mFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
       <option value="">All Sizes</option>
       <option>XS</option><option>S</option><option>M</option>
       <option>L</option><option>XL</option><option>XXL</option>
     </select>
-    <select id="m-filter-price" onchange="mFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
+    <select id="m-filter-price" onchange="mFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
       <option value="">All Prices</option>
       <option value="0-100">Under €100</option>
       <option value="100-200">€100–€200</option>
       <option value="200-350">€200–€350</option>
       <option value="350-999">€350+</option>
     </select>
-    <select id="m-sort" onchange="mFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
+    <select id="m-sort" onchange="mFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
       <option value="newest">Newest</option>
       <option value="oldest">Oldest</option>
       <option value="price-asc">Price ↑</option>
@@ -1611,7 +1667,7 @@
       <button class="gallery-arrow prev" onclick="galleryNav('m',-1)" style="left:8px">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      <img id="m-detail-main-img" src="" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;border-radius:2px;background:#1a1815;padding:12px">
+      <img id="m-detail-main-img" src="" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;border-radius:2px;background:var(--surf-2);padding:12px">
       <button class="gallery-arrow next" onclick="galleryNav('m',1)" style="right:8px">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
       </button>
@@ -1624,9 +1680,9 @@
     <div id="m-detail-club" style="font-size:13px;color:var(--text-muted);margin-bottom:16px"></div>
     <div id="m-detail-price" style="font-size:28px;color:var(--gold);font-weight:500;margin-bottom:20px"></div>
     <div id="m-detail-specs" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px"></div>
-    <p id="m-detail-desc" style="font-size:14px;line-height:1.7;color:#b0a898;margin-bottom:24px"></p>
+    <p id="m-detail-desc" style="font-size:14px;line-height:1.7;color:var(--text-muted-2);margin-bottom:24px"></p>
     <div id="m-detail-measurements" style="margin-bottom:24px"></div>
-    <button id="m-detail-add-btn" style="width:100%;padding:16px;background:var(--gold);color:var(--black);border:none;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:1px;text-transform:uppercase" onclick="addToCartFromDetail()">Add to Cart</button>
+    <button id="m-detail-add-btn" style="width:100%;padding:16px;background:var(--gold);color:var(--ink);border:none;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:1px;text-transform:uppercase" onclick="addToCartFromDetail()">Add to Cart</button>
   </div>
 </div>
 
@@ -1663,7 +1719,7 @@
 <!-- MOBILE PROFILE -->
 <div id="screen-profile" class="screen">
   <!-- My Wardrobe (mobile) -->
-  <div id="m-prof-banner" style="position:relative;padding:36px 20px 20px;text-align:center;background:linear-gradient(180deg,#0b0a07,#060504);overflow:hidden;margin-bottom:8px">
+  <div id="m-prof-banner" style="position:relative;padding:36px 20px 20px;text-align:center;background:linear-gradient(180deg,var(--surf-1),var(--surf-1));overflow:hidden;margin-bottom:8px">
     <div id="m-prof-banner-text" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(40px,15vw,64px);line-height:.9;letter-spacing:-2px;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none;will-change:background-position">MY<br>WARDROBE</div>
     <div style="margin-top:12px;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(200,169,80,.5)">Your Collection</div>
   </div>
@@ -1678,11 +1734,11 @@
       </svg>
     </div>
     <p style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:16px">Your wardrobe is empty. The rail is waiting. Every shirt you collect will hang here.</p>
-    <button onclick="mGoTo('shop')" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Browse the collection</button>
+    <button onclick="mGoTo('shop')" style="background:var(--gold);color:var(--ink);border:none;border-radius:2px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Browse the collection</button>
   </div>
 
   <div style="padding:8px 20px 0">
-    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding-bottom:12px;border-top:1px solid #1e1c17;padding-top:20px">Explore</div>
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding-bottom:12px;border-top:1px solid var(--surf-2);padding-top:20px">Explore</div>
     <div class="profile-item" onclick="mGoTo('shop')">
       <span>Shop the Collection</span>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
@@ -1699,7 +1755,7 @@
       <span>Our Story</span>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </div>
-    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px;border-top:1px solid #1e1c17;margin-top:8px">Follow Us</div>
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px;border-top:1px solid var(--surf-2);margin-top:8px">Follow Us</div>
     <a href="https://www.instagram.com/shirtsociete/" target="_blank" class="profile-item" style="text-decoration:none;color:var(--white)">
       <span style="display:flex;align-items:center;gap:10px">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -1707,24 +1763,24 @@
       </span>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </a>
-    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px;border-top:1px solid #1e1c17;margin-top:8px">Contact</div>
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding:16px 0 12px;border-top:1px solid var(--surf-2);margin-top:8px">Contact</div>
     <div class="profile-item" onclick="openContactModal()" style="cursor:pointer"><span style="color:var(--gold)">info@shirtsociete.com</span></div>
   </div>
 </div>
 
 <!-- MOBILE ARCHIVE -->
 <div id="screen-archive" class="screen" style="padding-bottom:90px">
-  <div style="padding:28px 20px 20px;text-align:center;border-bottom:1px solid #1e1c17">
+  <div style="padding:28px 20px 20px;text-align:center;border-bottom:1px solid var(--surf-2)">
     <div style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500">Private Collection</div>
     <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;line-height:1.05;margin-bottom:14px">The Shirt Société Archive</h1>
-    <p style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.75;color:#9a938a;margin-bottom:12px">What drives us are beautiful football shirts. Some shirts simply mean too much to let go: rare specs, match worn jerseys and personal grails that tell the story of the game we love.</p>
-    <p style="font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.7;color:#7f786f;margin-bottom:18px">Want to see more photos, ask a question, or make an offer? Reach out any time via Instagram or email.</p>
+    <p style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.75;color:var(--text-muted-2);margin-bottom:12px">What drives us are beautiful football shirts. Some shirts simply mean too much to let go: rare specs, match worn jerseys and personal grails that tell the story of the game we love.</p>
+    <p style="font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.7;color:var(--text-muted-2);margin-bottom:18px">Want to see more photos, ask a question, or make an offer? Reach out any time via Instagram or email.</p>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
       <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:var(--gold);padding:10px 16px;border-radius:100px;font-size:12px;font-weight:500;text-decoration:none">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
         @shirtsociete
       </a>
-      <button onclick="openContactModal()" style="display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid #2a2820;color:var(--cream);padding:10px 16px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer">
+      <button onclick="openContactModal()" style="display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--line);color:var(--cream);padding:10px 16px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><polyline points="22,6 12,13 2,6"/></svg>
         Send a message
       </button>
@@ -1796,17 +1852,21 @@
       <a class="nav-item" href="/?p=about" onclick="dGoTo('about');return false;" id="d-nav-about">Our Story</a>
 
       <div class="topbar-actions">
+        <button type="button" class="nav-item theme-toggle-btn" onclick="toggleSiteTheme()" id="d-theme-toggle" title="Toggle light / dark mode" style="background:transparent;border:none;cursor:pointer;padding:0">
+          <svg id="d-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <svg id="d-theme-icon-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
         <div class="nav-item" onclick="dGoTo('wishlist')" id="d-nav-wishlist" title="Saved">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-          <span class="icon-badge" id="d-wishlist-count" style="background:var(--grey-light,#3a3830);color:var(--text-muted)"></span>
+          <span class="icon-badge" id="d-wishlist-count" style="background:var(--grey-light,var(--line-soft));color:var(--text-muted)"></span>
         </div>
         <div class="nav-item" onclick="dGoTo('cart')" id="d-nav-cart" title="Cart">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-          <span class="icon-badge" id="d-cart-count" style="background:var(--gold);color:var(--black)"></span>
+          <span class="icon-badge" id="d-cart-count" style="background:var(--gold);color:var(--ink)"></span>
         </div>
         <div class="nav-item" onclick="dGoTo('profile')" id="d-nav-profile" title="My Wardrobe">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <span class="icon-badge" id="d-wardrobe-count" style="background:var(--gold);color:var(--black)"></span>
+          <span class="icon-badge" id="d-wardrobe-count" style="background:var(--gold);color:var(--ink)"></span>
         </div>
         <div class="nav-item" onclick="dGoTo('shop');setTimeout(function(){var i=document.getElementById('d-search-input');if(i){i.focus();i.scrollIntoView({behavior:'smooth',block:'center'});}},60)" title="Search">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1834,7 +1894,7 @@
         </div>
         <div style="line-height:1.2">
           <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600">Next Event</div>
-          <div style="font-size:13px;color:var(--white);font-weight:600">Leipzig · 4 Oct 2026</div>
+          <div style="font-size:13px;color:var(--on-photo);font-weight:600">Leipzig · 4 Oct 2026</div>
         </div>
       </div>
       <div onclick="dShopNewest()" style="display:flex;align-items:center;gap:8px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(76,175,125,.3);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(76,175,125,.7)'" onmouseout="this.style.borderColor='rgba(76,175,125,.3)'">
@@ -1844,17 +1904,17 @@
         </div>
         <div style="line-height:1.2">
           <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#4caf7d;font-weight:600">New Shirts Added</div>
-          <div style="font-size:13px;color:var(--white);font-weight:600">View the latest</div>
+          <div style="font-size:13px;color:var(--on-photo);font-weight:600">View the latest</div>
         </div>
       </div>
       <div onclick="document.getElementById('drop-signup-section').scrollIntoView({behavior:'smooth'})" style="display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(200,169,80,.95),rgba(176,141,62,.95));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(200,169,80,.6);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px rgba(200,169,80,.25)" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 18px rgba(200,169,80,.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(200,169,80,.25)'">
         <div style="position:relative;width:8px;height:8px;flex-shrink:0">
-          <div style="width:8px;height:8px;border-radius:50%;background:#0a0905;position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--black);position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
           <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(10,9,5,.3);animation:pulseRing 1.5s ease-in-out infinite"></div>
         </div>
         <div style="line-height:1.2">
           <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#3a2f12;font-weight:700">Drop Alerts</div>
-          <div style="font-size:13px;color:#0a0905;font-weight:700">Join the list</div>
+          <div style="font-size:13px;color:var(--ink);font-weight:700">Join the list</div>
         </div>
       </div>
     </div>
@@ -1886,15 +1946,15 @@
     <h1 id="cin-h1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(52px,6vw,88px);line-height:.88;letter-spacing:-2px;margin-bottom:24px;opacity:0;transform:translateY(32px)">
       Vintage<br>football<br><span id="cin-h1-gold" style="color:transparent;-webkit-text-stroke:1.5px rgba(200,169,80,.5)">history.</span>
     </h1>
-    <p id="cin-sub" style="font-size:15px;font-weight:300;color:rgba(245,240,232,.45);line-height:1.85;max-width:340px;margin-bottom:36px;border-left:1px solid rgba(200,169,80,.2);padding-left:16px;opacity:0;transform:translateY(14px)">
+    <p id="cin-sub" style="font-size:15px;font-weight:300;color:rgba(var(--on-photo-rgb),.45);line-height:1.85;max-width:340px;margin-bottom:36px;border-left:1px solid rgba(200,169,80,.2);padding-left:16px;opacity:0;transform:translateY(14px)">
       Authenticity. Heritage. Curated Vintage &amp; Match Worn Football Shirts
     </p>
     <div id="cin-btns" style="display:flex;align-items:center;gap:20px;opacity:0;transform:translateY(10px)">
-      <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--black);border:none;padding:14px 26px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:background .25s ease,color .25s ease,box-shadow .25s ease" onmouseover="this.style.background='#f5f0e8';this.style.color='#8a6f28';this.style.boxShadow='0 6px 20px rgba(245,240,232,.25)'" onmouseout="this.style.background='var(--gold)';this.style.color='var(--black)';this.style.boxShadow='none'">
+      <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--ink);border:none;padding:14px 26px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:background .25s ease,color .25s ease,box-shadow .25s ease" onmouseover="this.style.background='var(--on-photo)';this.style.color='#8a6f28';this.style.boxShadow='0 6px 20px rgba(var(--on-photo-rgb),.25)'" onmouseout="this.style.background='var(--gold)';this.style.color='var(--ink)';this.style.boxShadow='none'">
         Shop Collection
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href="/?p=about" onclick="dGoTo('about');return false;" style="background:none;border:none;color:rgba(245,240,232,.85);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color .2s;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,.85)'">Our Story</a>
+      <a href="/?p=about" onclick="dGoTo('about');return false;" style="background:none;border:none;color:rgba(var(--on-photo-rgb),.85);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color .2s;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(var(--on-photo-rgb),.85)'">Our Story</a>
     </div>
   </div>
   <div id="cin-cue" style="position:absolute;bottom:36px;left:52px;display:flex;align-items:center;gap:12px;opacity:0;z-index:2">
@@ -1904,7 +1964,7 @@
 </section>
 
 <!-- LATEST ADDITIONS — right under the hero so visitors see shirts immediately -->
-<section id="latest-additions" style="padding:56px 52px;border-bottom:1px solid #1e1c17;background:#0a0905">
+<section id="latest-additions" style="padding:56px 52px;border-bottom:1px solid var(--surf-2);background:var(--black)">
   <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:12px">
     <div>
       <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Just In</div>
@@ -1932,7 +1992,7 @@
 
     <!-- BIG SEE-THROUGH HEADLINE (sits in the scene like the TikTok) -->
     <div id="dolly-words" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;pointer-events:none;text-align:center">
-      <div id="dw0" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(46px,7.5vw,116px);line-height:.86;letter-spacing:-3px;color:var(--white);text-shadow:0 2px 8px rgba(0,0,0,.9),0 6px 50px rgba(0,0,0,.85);opacity:0;transform:translateY(30px)">VINTAGE</div>
+      <div id="dw0" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(46px,7.5vw,116px);line-height:.86;letter-spacing:-3px;color:var(--on-photo);text-shadow:0 2px 8px rgba(0,0,0,.9),0 6px 50px rgba(0,0,0,.85);opacity:0;transform:translateY(30px)">VINTAGE</div>
       <div id="dw1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(46px,7.5vw,116px);line-height:.86;letter-spacing:-3px;color:transparent;-webkit-text-stroke:2px rgba(200,169,80,.95);text-shadow:0 2px 12px rgba(0,0,0,.8);opacity:0;transform:translateY(30px)">FOOTBALL</div>
       <div id="dw2" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(46px,7.5vw,116px);line-height:.86;letter-spacing:-3px;color:var(--gold);text-shadow:0 2px 8px rgba(0,0,0,.9),0 6px 50px rgba(0,0,0,.85);opacity:0;transform:translateY(30px)">HISTORY</div>
     </div>
@@ -1940,7 +2000,7 @@
     <!-- caption that lands at the end of the pull-back -->
     <div id="dolly-cap" style="position:absolute;bottom:52px;left:50%;transform:translate(-50%,16px);text-align:center;z-index:6;opacity:0">
       <div style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:7px">Vintage Fußballbörse · Frankfurt</div>
-      <div style="font-size:13px;font-weight:300;color:rgba(245,240,232,.65)">Our stand, 4 July 2026</div>
+      <div style="font-size:13px;font-weight:300;color:rgba(var(--on-photo-rgb),.65)">Our stand, 4 July 2026</div>
     </div>
 
     <!-- progress -->
@@ -1965,14 +2025,14 @@
         </div>
         <div>
           <div id="ev-eyebrow" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,.9);opacity:0;transform:translateX(-16px)">Next Event</div>
-          <div id="ev-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(22px,2.6vw,34px);color:var(--white);text-shadow:0 2px 12px rgba(0,0,0,.95),0 4px 30px rgba(0,0,0,.7);margin-bottom:4px;opacity:0;transform:translateX(-20px)">Leipzig</div>
-          <div id="ev-date" style="font-size:13px;color:rgba(245,240,232,.8);text-shadow:0 1px 8px rgba(0,0,0,.9);opacity:0">Vintage Fußballbörse &middot; Sunday 4 October 2026 &middot; 10:00 to 17:00</div>
+          <div id="ev-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(22px,2.6vw,34px);color:var(--on-photo);text-shadow:0 2px 12px rgba(0,0,0,.95),0 4px 30px rgba(0,0,0,.7);margin-bottom:4px;opacity:0;transform:translateX(-20px)">Leipzig</div>
+          <div id="ev-date" style="font-size:13px;color:rgba(var(--on-photo-rgb),.8);text-shadow:0 1px 8px rgba(0,0,0,.9);opacity:0">Vintage Fußballbörse &middot; Sunday 4 October 2026 &middot; 10:00 to 17:00</div>
           <div id="ev-btns" style="display:flex;align-items:center;gap:10px;margin-top:16px;opacity:0;transform:translateY(10px)">
             <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:rgba(6,5,4,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(200,169,80,.35);color:var(--gold);text-decoration:none;padding:9px 16px;border-radius:2px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s" onmouseover="this.style.background='rgba(200,169,80,.16)';this.style.borderColor='rgba(200,169,80,.7)'" onmouseout="this.style.background='rgba(6,5,4,.72)';this.style.borderColor='rgba(200,169,80,.35)'">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
               @vintagefussball
             </a>
-            <button onclick="dGoTo('about')" style="display:inline-flex;align-items:center;gap:7px;background:rgba(6,5,4,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.18);color:rgba(245,240,232,.9);padding:9px 16px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.12)';this.style.borderColor='rgba(255,255,255,.4)'" onmouseout="this.style.background='rgba(6,5,4,.72)';this.style.borderColor='rgba(255,255,255,.18)'">
+            <button onclick="dGoTo('about')" style="display:inline-flex;align-items:center;gap:7px;background:rgba(6,5,4,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.18);color:rgba(var(--on-photo-rgb),.9);padding:9px 16px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.12)';this.style.borderColor='rgba(255,255,255,.4)'" onmouseout="this.style.background='rgba(6,5,4,.72)';this.style.borderColor='rgba(255,255,255,.18)'">
               Event timeline
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
@@ -2088,19 +2148,19 @@
 
 
 <!-- ═══ EARLY ACCESS / DROP SIGNUP ═══ -->
-<section id="drop-signup-section" style="position:relative;padding:72px 52px;border-top:1px solid #1e1c17;border-bottom:1px solid #1e1c17;overflow:hidden;text-align:center">
+<section id="drop-signup-section" style="position:relative;padding:72px 52px;border-top:1px solid var(--surf-2);border-bottom:1px solid var(--surf-2);overflow:hidden;text-align:center">
   <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 40%/cover;filter:brightness(.18) saturate(.5)"></div>
   <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.55),rgba(8,7,5,.94))"></div>
   <div style="position:relative;z-index:2;max-width:560px;margin:0 auto">
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:600">Early Access</div>
-    <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(26px,3vw,38px);line-height:1.1;margin-bottom:14px;color:var(--white)">Be first to see new shirts</h2>
-    <p style="font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.8;color:#9a938a;margin-bottom:26px">Every shirt we list is one of one. When it is gone, it is gone. Leave your email and we will let you know when new vintage and match worn pieces go live, before they appear anywhere else.</p>
+    <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(26px,3vw,38px);line-height:1.1;margin-bottom:14px;color:var(--on-photo)">Be first to see new shirts</h2>
+    <p style="font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.8;color:rgba(var(--on-photo-rgb),.65);margin-bottom:26px">Every shirt we list is one of one. When it is gone, it is gone. Leave your email and we will let you know when new vintage and match worn pieces go live, before they appear anywhere else.</p>
     <div id="drop-signup-form" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-      <input type="email" id="drop-email-input" placeholder="your@email.com" style="flex:1;min-width:240px;max-width:320px;background:rgba(10,9,5,.7);border:1px solid #2a2820;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;padding:13px 16px;border-radius:2px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.6)'" onblur="this.style.borderColor='#2a2820'" onkeydown="if(event.key==='Enter')submitDropEmail()">
-      <button id="drop-email-btn" onclick="submitDropEmail()" style="background:var(--gold);color:var(--black);border:none;padding:13px 28px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Notify me</button>
+      <input type="email" id="drop-email-input" placeholder="your@email.com" style="flex:1;min-width:240px;max-width:320px;background:rgba(10,9,5,.7);border:1px solid rgba(var(--on-photo-rgb),.25);color:var(--on-photo);font-family:'DM Sans',sans-serif;font-size:14px;padding:13px 16px;border-radius:2px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.6)'" onblur="this.style.borderColor='rgba(var(--on-photo-rgb),.25)'" onkeydown="if(event.key==='Enter')submitDropEmail()">
+      <button id="drop-email-btn" onclick="submitDropEmail()" style="background:var(--gold);color:var(--ink);border:none;padding:13px 28px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Notify me</button>
     </div>
     <div id="drop-email-confirm" style="display:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gold);padding:12px 0">Thank you. We will be in touch when the next shirts go live.</div>
-    <p style="font-size:11px;color:rgba(245,240,232,.35);margin-top:16px;line-height:1.6">No spam, only new arrivals. Unsubscribe any time.</p>
+    <p style="font-size:11px;color:rgba(var(--on-photo-rgb),.35);margin-top:16px;line-height:1.6">No spam, only new arrivals. Unsubscribe any time.</p>
   </div>
 </section>
 
@@ -2125,33 +2185,33 @@
         <button class="filter-btn" onclick="dSetFilter('clubs',this)" id="d-filter-clubs">Clubs</button>
         <button class="filter-btn" onclick="dSetFilter('national',this)" id="d-filter-national">National</button>
       </div>
-      <div style="display:flex;gap:12px;padding:0 48px 16px;flex-wrap:wrap;align-items:center;border-bottom:1px solid #1e1c17">
+      <div style="display:flex;gap:12px;padding:0 48px 16px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--surf-2)">
         <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);font-weight:500">Filter:</div>
-        <select id="d-filter-size" onchange="dFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
+        <select id="d-filter-size" onchange="dFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
           <option value="">All Sizes</option>
           <option>XS</option><option>S</option><option>M</option>
           <option>L</option><option>XL</option><option>XXL</option>
           <option>Player Issue</option>
         </select>
-        <select id="d-filter-price" onchange="dFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
+        <select id="d-filter-price" onchange="dFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
           <option value="">All Prices</option>
           <option value="0-100">Under €100</option>
           <option value="100-200">€100 – €200</option>
           <option value="200-350">€200 – €350</option>
           <option value="350-999">€350+</option>
         </select>
-        <select id="d-filter-decade" onchange="dFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
+        <select id="d-filter-decade" onchange="dFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
           <option value="">All Decades</option>
         </select>
-        <select id="d-filter-condition" onchange="dFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
+        <select id="d-filter-condition" onchange="dFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
           <option value="">All Conditions</option>
         </select>
-        <select id="d-filter-availability" onchange="dFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
+        <select id="d-filter-availability" onchange="dFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
           <option value="">Available &amp; Sold</option>
           <option value="available">Available only</option>
           <option value="sold">Sold only</option>
         </select>
-        <select id="d-sort" onchange="dFilterShirts()" style="background:#1a1815;border:1px solid #2e2c27;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
+        <select id="d-sort" onchange="dFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer">
           <option value="newest">Newest First</option>
           <option value="oldest">Oldest First</option>
           <option value="price-asc">Price: Low to High</option>
@@ -2161,10 +2221,10 @@
         </select>
         <button onclick="resetFilters()" style="background:none;border:none;color:var(--text-muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 0;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">✕ Reset</button>
         <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
-          <div id="d-view-grid" onclick="setShopView('grid')" title="Grid view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:2px;cursor:pointer;background:#2a2620;transition:all .2s">
+          <div id="d-view-grid" onclick="setShopView('grid')" title="Grid view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:2px;cursor:pointer;background:var(--line);transition:all .2s">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--gold)"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           </div>
-          <div id="d-view-list" onclick="setShopView('list')" title="List view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #2e2c27;border-radius:2px;cursor:pointer;background:#1a1815;transition:all .2s">
+          <div id="d-view-list" onclick="setShopView('list')" title="List view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:2px;cursor:pointer;background:var(--surf-2);transition:all .2s">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><rect x="3" y="4" width="6" height="6"/><line x1="12" y1="6" x2="21" y2="6"/><line x1="12" y1="9" x2="18" y2="9"/><rect x="3" y="14" width="6" height="6"/><line x1="12" y1="16" x2="21" y2="16"/><line x1="12" y1="19" x2="18" y2="19"/></svg>
           </div>
         </div>
@@ -2230,7 +2290,7 @@
       </div>
       <!-- more shirts from the same club -->
       <div id="d-related-wrap" style="display:none;padding:0 48px 56px">
-        <div style="height:1px;background:#1a1815;margin-bottom:36px"></div>
+        <div style="height:1px;background:var(--surf-2);margin-bottom:36px"></div>
         <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px">
           <div id="d-related-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white)"></div>
           <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="font-size:12px;color:var(--text-muted);cursor:pointer;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all →</a>
@@ -2353,12 +2413,12 @@
 
     <!-- SHIRT SOCIÉTÉ ARCHIVE (private collection, not for sale) -->
     <div class="dscreen" id="d-screen-archive">
-      <section style="padding:56px 52px 40px;border-bottom:1px solid #1e1c17;text-align:center">
+      <section style="padding:56px 52px 40px;border-bottom:1px solid var(--surf-2);text-align:center">
         <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:500">Private Collection</div>
         <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(32px,4vw,52px);line-height:1.05;margin-bottom:22px">The Shirt Société Archive</h1>
-        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:#9a938a">What drives us are beautiful football shirts. Some shirts simply mean too much to let go: rare specs, match worn jerseys and personal grails that tell the story of the game we love.</p>
-        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:#9a938a">The Shirt Société Archive brings these pieces together in one place, the shirts we are most proud to have owned. This collection will keep growing as we do, and every so often one of these shirts may find a new home with the right collector. Looking for a shirt you can buy today? Browse <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.35)">the full collection</a> or our <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.35)">match worn shirts</a>.</p>
-        <p style="max-width:600px;margin:0 auto 30px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.75;color:#7f786f">Want to see more photos, ask a question, or make an offer? Reach out any time via Instagram or email.</p>
+        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:var(--text-muted-2)">What drives us are beautiful football shirts. Some shirts simply mean too much to let go: rare specs, match worn jerseys and personal grails that tell the story of the game we love.</p>
+        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:var(--text-muted-2)">The Shirt Société Archive brings these pieces together in one place, the shirts we are most proud to have owned. This collection will keep growing as we do, and every so often one of these shirts may find a new home with the right collector. Looking for a shirt you can buy today? Browse <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.35)">the full collection</a> or our <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.35)">match worn shirts</a>.</p>
+        <p style="max-width:600px;margin:0 auto 30px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.75;color:var(--text-muted-2)">Want to see more photos, ask a question, or make an offer? Reach out any time via Instagram or email.</p>
 
         <div style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:500">Contact</div>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
@@ -2366,7 +2426,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             @shirtsociete
           </a>
-          <button onclick="openContactModal()" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid #2a2820;color:var(--cream);padding:11px 20px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.5)'" onmouseout="this.style.borderColor='#2a2820'">
+          <button onclick="openContactModal()" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--cream);padding:11px 20px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.5)'" onmouseout="this.style.borderColor='var(--line)'">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><polyline points="22,6 12,13 2,6"/></svg>
             Send a message
           </button>
@@ -2376,10 +2436,10 @@
         <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap">
           <div id="d-archive-filters" style="display:flex;gap:8px;flex-wrap:wrap"></div>
           <div style="display:flex;gap:6px;flex-shrink:0">
-            <div id="d-arch-view-grid" onclick="setArchiveView('grid')" title="Grid view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:2px;cursor:pointer;background:#2a2620;transition:all .2s">
+            <div id="d-arch-view-grid" onclick="setArchiveView('grid')" title="Grid view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:2px;cursor:pointer;background:var(--line);transition:all .2s">
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
             </div>
-            <div id="d-arch-view-list" onclick="setArchiveView('list')" title="List view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #2e2c27;border-radius:2px;cursor:pointer;background:#1a1815;transition:all .2s">
+            <div id="d-arch-view-list" onclick="setArchiveView('list')" title="List view" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:2px;cursor:pointer;background:var(--surf-2);transition:all .2s">
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
             </div>
           </div>
@@ -2397,12 +2457,12 @@
         <div id="ab-mask-text" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(64px,11vw,170px);line-height:.88;letter-spacing:-3px;text-align:center;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.05_1_qigdxz.jpg') center 35%/cover no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;will-change:background-position;user-select:none">
           OUR<br>STORY
         </div>
-        <p style="margin-top:26px;max-width:520px;text-align:center;font-size:14px;font-weight:300;line-height:1.8;color:rgba(245,240,232,.55);padding:0 24px">Curated vintage &amp; match worn shirts, sourced across Europe by a true football collector.</p>
+        <p style="margin-top:26px;max-width:520px;text-align:center;font-size:14px;font-weight:300;line-height:1.8;color:rgba(var(--white-rgb),.55);padding:0 24px">Curated vintage &amp; match worn shirts, sourced across Europe by a true football collector.</p>
         <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(200,169,80,.4)">Est. 2025 · Harderwijk</div>
       </section>
 
       <!-- Fair photos -->
-      <div class="anim-about fade-in" style="padding:64px;border-top:1px solid #1e1c17">
+      <div class="anim-about fade-in" style="padding:64px;border-top:1px solid var(--surf-2)">
         <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500">On the Road</div>
         <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;margin-bottom:6px">At the Fairs</h2>
         <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:32px">Vintage Fußballbörse · Germany</div>
@@ -2462,12 +2522,12 @@
           <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500">Event Timeline</div>
           <div style="font-size:12px;color:var(--text-muted)">2026</div>
         </div>
-        <div style="background:#111009;border:1px solid #1e1c17;border-left:3px solid var(--gold);border-radius:2px;padding:20px 24px;margin-bottom:28px">
+        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-left:3px solid var(--gold);border-radius:2px;padding:20px 24px;margin-bottom:28px">
           <div onclick="var b=document.getElementById('vfb-body');var ic=document.getElementById('vfb-ic');var open=b.style.display!=='none';b.style.display=open?'none':'block';ic.style.transform=open?'rotate(0deg)':'rotate(45deg)';" style="display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer">
             <div style="font-size:15px;font-weight:600;color:var(--white)">What is Vintage Fußballbörse?</div>
             <div id="vfb-ic" style="flex-shrink:0;width:22px;height:22px;border-radius:50%;border:1px solid rgba(200,169,80,.5);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;font-style:italic;font-family:'Playfair Display',serif;transition:transform .25s">i</div>
           </div>
-          <p id="vfb-body" style="display:none;font-size:14px;color:#b0a898;line-height:1.8;margin-bottom:0;margin-top:12px">
+          <p id="vfb-body" style="display:none;font-size:14px;color:var(--text-muted-2);line-height:1.8;margin-bottom:0;margin-top:12px">
             Vintage Fußballbörse is Germany's most established vintage football fair, held multiple times a year across major cities. Each edition brings together
             <span style="color:var(--gold);font-weight:600">over 1,000 collectors</span> from across Europe — from casual fans to serious collectors and dealers.
             The fairs are a unique meeting place where rare match worn shirts, vintage originals and club memorabilia change hands and stories are shared.
@@ -2502,7 +2562,7 @@
               <!-- Hamburg -->
               <div style="text-align:center">
                 <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px">
+                <div style="margin-top:12px;background:var(--surf-2);border:1px solid var(--line);border-radius:3px;padding:24px 16px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">04.02 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Hamburg</div>
                   <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
@@ -2512,7 +2572,7 @@
               <!-- Cologne -->
               <div style="text-align:center">
                 <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px">
+                <div style="margin-top:12px;background:var(--surf-2);border:1px solid var(--line);border-radius:3px;padding:24px 16px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">31.05 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Cologne</div>
                   <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
@@ -2522,7 +2582,7 @@
               <!-- Düsseldorf -->
               <div style="text-align:center">
                 <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px">
+                <div style="margin-top:12px;background:var(--surf-2);border:1px solid var(--line);border-radius:3px;padding:24px 16px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">13.06 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Düsseldorf</div>
                   <div style="font-size:13px;color:var(--text-muted)">Pop-up event</div>
@@ -2532,7 +2592,7 @@
               <!-- Frankfurt -->
               <div style="text-align:center">
                 <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:#1a1715;border:1px solid #252320;border-radius:3px;padding:24px 16px">
+                <div style="margin-top:12px;background:var(--surf-2);border:1px solid var(--line);border-radius:3px;padding:24px 16px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">04.07 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Frankfurt</div>
                   <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
@@ -2541,8 +2601,8 @@
 
               <!-- Leipzig -->
               <div style="text-align:center">
-                <div style="width:12px;height:12px;border-radius:50%;background:var(--black);border:2px solid #3a3830;margin:0 auto;margin-top:-7px;position:relative;z-index:2"></div>
-                <div style="margin-top:13px;background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:24px 16px;opacity:0.55">
+                <div style="width:12px;height:12px;border-radius:50%;background:var(--black);border:2px solid var(--line-soft);margin:0 auto;margin-top:-7px;position:relative;z-index:2"></div>
+                <div style="margin-top:13px;background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:24px 16px;opacity:0.55">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">04.10 · 🇩🇪</div>
                   <div style="font-size:28px;font-weight:900;color:var(--white);margin-bottom:6px">Leipzig</div>
                   <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
@@ -2559,41 +2619,41 @@
 
       <!-- Story section -->
       <div class="anim-about slide-left" style="display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:100%">
-        <div style="padding:64px;border-right:1px solid #1e1c17">
+        <div style="padding:64px;border-right:1px solid var(--surf-2)">
           <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:500">Who We Are</div>
           <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:36px;line-height:1.2;margin-bottom:20px">A Collector's Eye,<br>A Curator's Touch</h2>
-          <p style="font-size:16px;line-height:1.9;color:#b0a898;margin-bottom:16px">Shirt Société was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for collectors around the globe.</p>
-          <p style="font-size:16px;line-height:1.9;color:#b0a898;margin-bottom:16px">From vintage clubs to match worn pieces worn by legends, every shirt in our collection has been hand-picked for its authenticity, rarity and history. We don't just sell shirts. We preserve football heritage.</p>
-          <p style="font-size:16px;line-height:1.9;color:#b0a898;margin-bottom:32px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Hamburg (04.02.2026), Cologne (31.05.2026), Düsseldorf (13.06.2026) and most recently Frankfurt (04.07.2026), Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next stop: Leipzig, October 4th 2026.</p>
-          <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);padding:14px 28px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase">
+          <p style="font-size:16px;line-height:1.9;color:var(--text-muted-2);margin-bottom:16px">Shirt Société was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for collectors around the globe.</p>
+          <p style="font-size:16px;line-height:1.9;color:var(--text-muted-2);margin-bottom:16px">From vintage clubs to match worn pieces worn by legends, every shirt in our collection has been hand-picked for its authenticity, rarity and history. We don't just sell shirts. We preserve football heritage.</p>
+          <p style="font-size:16px;line-height:1.9;color:var(--text-muted-2);margin-bottom:32px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Hamburg (04.02.2026), Cologne (31.05.2026), Düsseldorf (13.06.2026) and most recently Frankfurt (04.07.2026), Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next stop: Leipzig, October 4th 2026.</p>
+          <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--ink);padding:14px 28px;border-radius:2px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             Follow on Instagram
           </a>
         </div>
-        <div style="padding:64px;background:#0d0b08">
+        <div style="padding:64px;background:var(--surf-1)">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px">
-            <div style="background:#1a1715;padding:28px 24px;border-radius:2px;border:1px solid #2a2820">
+            <div style="background:var(--surf-2);padding:28px 24px;border-radius:2px;border:1px solid var(--line)">
               <div style="font-size:48px;font-weight:700;color:var(--gold);line-height:1">1,400+</div>
               <div style="font-size:12px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:8px">Instagram Followers</div>
             </div>
-            <div style="background:#1a1715;padding:28px 24px;border-radius:2px;border:1px solid #2a2820">
+            <div style="background:var(--surf-2);padding:28px 24px;border-radius:2px;border:1px solid var(--line)">
               <div style="font-size:48px;font-weight:700;color:var(--gold);line-height:1">2025</div>
               <div style="font-size:12px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:8px">Founded</div>
             </div>
-            <div style="background:#1a1715;padding:28px 24px;border-radius:2px;border:1px solid #2a2820">
+            <div style="background:var(--surf-2);padding:28px 24px;border-radius:2px;border:1px solid var(--line)">
               <div style="font-size:48px;font-weight:700;color:var(--gold);line-height:1">4+</div>
               <div style="font-size:12px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:8px">Events</div>
             </div>
-            <div style="background:#1a1715;padding:28px 24px;border-radius:2px;border:1px solid #2a2820">
+            <div style="background:var(--surf-2);padding:28px 24px;border-radius:2px;border:1px solid var(--line)">
               <div style="font-size:40px;line-height:1">🌍</div>
               <div style="font-size:12px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:8px">Worldwide shipping</div>
             </div>
-            <div style="background:#1a1715;padding:28px 24px;border-radius:2px;border:1px solid #2a2820;grid-column:1/-1">
+            <div style="background:var(--surf-2);padding:28px 24px;border-radius:2px;border:1px solid var(--line);grid-column:1/-1">
               <div style="font-size:14px;color:var(--text-muted)">📍 Based in <span style="color:var(--white);font-weight:500">the Netherlands</span>, active across Europe</div>
             </div>
           </div>
           <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500">Our Mission</div>
-          <p style="font-size:16px;line-height:1.9;color:#b0a898;font-style:italic;border-left:2px solid var(--gold);padding-left:20px">"Every shirt tells a story. Our mission is to connect passionate collectors with authentic pieces of football history, and to ensure that these rare shirts are preserved and cherished by people who truly appreciate them."</p>
+          <p style="font-size:16px;line-height:1.9;color:var(--text-muted-2);font-style:italic;border-left:2px solid var(--gold);padding-left:20px">"Every shirt tells a story. Our mission is to connect passionate collectors with authentic pieces of football history, and to ensure that these rare shirts are preserved and cherished by people who truly appreciate them."</p>
         </div>
       </div>
 
@@ -2602,12 +2662,12 @@
         <div style="text-align:center;margin-bottom:36px">
           <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:500">Follow Along</div>
           <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;line-height:1.2;margin-bottom:12px">From our Instagram</h2>
-          <p style="font-size:15px;color:#b0a898;max-width:520px;margin:0 auto 8px">The latest shirts, drops and finds, straight from <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">@shirtsociete</a>.</p>
+          <p style="font-size:15px;color:var(--text-muted-2);max-width:520px;margin:0 auto 8px">The latest shirts, drops and finds, straight from <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">@shirtsociete</a>.</p>
         </div>
         <!-- Live Instagram feed via Behold -->
         <behold-widget feed-id="1ISYhS1hdWnSvanK8oDW" style="--behold-gap:14px;--behold-row-height:300px"></behold-widget>
         <div style="text-align:center;margin-top:28px">
-          <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);padding:13px 26px;border-radius:2px;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase">
+          <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--ink);padding:13px 26px;border-radius:2px;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase">
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             Follow @shirtsociete
           </a>
@@ -2626,8 +2686,8 @@
           </div>
           <!-- Navigation arrows + current photo -->
           <div style="position:relative;margin-bottom:16px">
-            <img id="gallery-main-img" src="" alt="" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:#111009;display:block">
-            <video id="gallery-main-video" controls playsinline preload="metadata" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:#111009;display:none"></video>
+            <img id="gallery-main-img" src="" alt="" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:var(--surf-1);display:block">
+            <video id="gallery-main-video" controls playsinline preload="metadata" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:var(--surf-1);display:none"></video>
             <!-- Prev -->
             <button onclick="galleryPrev()" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:var(--white);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">‹</button>
             <!-- Next -->
@@ -2641,7 +2701,7 @@
       </div>
 
       <!-- CTA -->
-      <div class="anim-about scale-in" style="padding:64px;background:#0d0b08;border-top:1px solid #1e1c17;text-align:center">
+      <div class="anim-about scale-in" style="padding:64px;background:var(--surf-1);border-top:1px solid var(--surf-2);text-align:center">
         <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:40px;margin-bottom:12px">Authenticity. Heritage. <span style="color:var(--gold)">Football History.</span></div>
         <p style="font-size:15px;color:var(--text-muted);margin-bottom:32px">Find your next piece of football history in our collection.</p>
         <a href="/?p=shop" onclick="dGoTo('shop');return false;" class="btn-primary" style="text-decoration:none">Shop the Collection</a>
@@ -2732,41 +2792,41 @@
       <div style="margin-top:14px;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(200,169,80,.45)">Est. 2025 · Harderwijk</div>
     </div>
     <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:28px;line-height:1.15;color:var(--white);margin-bottom:18px">A Collector's Eye,<br>A Curator's Touch</h2>
-    <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:16px">Shirt Société was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for collectors around the globe.</p>
-    <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:16px">From vintage clubs to match worn pieces worn by legends, every shirt in our collection has been hand-picked for its authenticity, rarity and history. We don't just sell shirts. We preserve football heritage.</p>
-    <p style="font-size:14px;line-height:1.8;color:#b0a898;margin-bottom:24px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Hamburg (04.02.2026), Cologne (31.05.2026), Düsseldorf (13.06.2026) and most recently Frankfurt (04.07.2026), Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next stop: Leipzig, October 4th 2026.</p>
+    <p style="font-size:14px;line-height:1.8;color:var(--text-muted-2);margin-bottom:16px">Shirt Société was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for collectors around the globe.</p>
+    <p style="font-size:14px;line-height:1.8;color:var(--text-muted-2);margin-bottom:16px">From vintage clubs to match worn pieces worn by legends, every shirt in our collection has been hand-picked for its authenticity, rarity and history. We don't just sell shirts. We preserve football heritage.</p>
+    <p style="font-size:14px;line-height:1.8;color:var(--text-muted-2);margin-bottom:24px">Active at vintage football fairs across Germany, including Vintage Fußballbörse in Hamburg (04.02.2026), Cologne (31.05.2026), Düsseldorf (13.06.2026) and most recently Frankfurt (04.07.2026), Shirt Société has built a reputation among collectors for quality, knowledge and passion. Next stop: Leipzig, October 4th 2026.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
-      <div style="background:var(--grey);padding:18px 16px;border-radius:2px;border:1px solid #2a2820;text-align:center">
+      <div style="background:var(--grey);padding:18px 16px;border-radius:2px;border:1px solid var(--line);text-align:center">
         <div style="font-size:26px;font-weight:700;color:var(--gold);line-height:1">1,400+</div>
         <div style="font-size:10.5px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Instagram Followers</div>
       </div>
-      <div style="background:var(--grey);padding:18px 16px;border-radius:2px;border:1px solid #2a2820;text-align:center">
+      <div style="background:var(--grey);padding:18px 16px;border-radius:2px;border:1px solid var(--line);text-align:center">
         <div style="font-size:26px;font-weight:700;color:var(--gold);line-height:1">2025</div>
         <div style="font-size:10.5px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Founded</div>
       </div>
-      <div style="background:var(--grey);padding:18px 16px;border-radius:2px;border:1px solid #2a2820;text-align:center">
+      <div style="background:var(--grey);padding:18px 16px;border-radius:2px;border:1px solid var(--line);text-align:center">
         <div style="font-size:26px;font-weight:700;color:var(--gold);line-height:1">4+</div>
         <div style="font-size:10.5px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Events</div>
       </div>
-      <div style="background:var(--grey);padding:18px 16px;border-radius:2px;border:1px solid #2a2820;text-align:center">
+      <div style="background:var(--grey);padding:18px 16px;border-radius:2px;border:1px solid var(--line);text-align:center">
         <div style="font-size:24px;line-height:1">🌍</div>
         <div style="font-size:10.5px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Worldwide shipping</div>
       </div>
     </div>
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500">Follow the Journey</div>
-    <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:var(--grey);border:1px solid #2e2c27;border-radius:2px;padding:14px;color:var(--gold);text-decoration:none;font-size:14px;font-weight:500">
+    <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:var(--grey);border:1px solid var(--line);border-radius:2px;padding:14px;color:var(--gold);text-decoration:none;font-size:14px;font-weight:500">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
       @shirtsociete on Instagram
     </a>
 
     <!-- At the Fairs -->
-    <div style="margin-top:38px;padding-top:30px;border-top:1px solid #1e1c17">
+    <div style="margin-top:38px;padding-top:30px;border-top:1px solid var(--surf-2)">
       <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--white);margin-bottom:5px">At the Fairs</div>
       <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:18px">Vintage Fußballbörse · Germany</div>
-      <p style="font-size:13.5px;line-height:1.85;color:#b0a898;margin-bottom:14px">
+      <p style="font-size:13.5px;line-height:1.85;color:var(--text-muted-2);margin-bottom:14px">
         You will find us at the vintage football fairs across Germany, where collectors and dealers from all over Europe come together. It is where the rarest pieces change hands and where the stories behind them are told.
       </p>
-      <p style="font-size:13.5px;line-height:1.85;color:#b0a898;margin-bottom:22px">
+      <p style="font-size:13.5px;line-height:1.85;color:var(--text-muted-2);margin-bottom:22px">
         So far we have exhibited in Hamburg, Cologne, Düsseldorf and Frankfurt. Leipzig is next.
       </p>
 
@@ -2802,12 +2862,12 @@
       </div>
 
       <!-- collapsible explainer -->
-      <div style="background:#111009;border:1px solid #1e1c17;border-left:3px solid var(--gold);border-radius:2px;padding:16px 18px;margin-bottom:26px">
+      <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-left:3px solid var(--gold);border-radius:2px;padding:16px 18px;margin-bottom:26px">
         <div onclick="var b=document.getElementById('m-vfb-body');var ic=document.getElementById('m-vfb-ic');var open=b.style.display!=='none';b.style.display=open?'none':'block';ic.style.transform=open?'rotate(0deg)':'rotate(45deg)';" style="display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer">
           <div style="font-size:13.5px;font-weight:600;color:var(--white)">What is Vintage Fußballbörse?</div>
           <div id="m-vfb-ic" style="flex-shrink:0;width:20px;height:20px;border-radius:50%;border:1px solid rgba(200,169,80,.5);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-style:italic;font-family:'Playfair Display',serif;transition:transform .25s">i</div>
         </div>
-        <p id="m-vfb-body" style="display:none;font-size:13px;color:#b0a898;line-height:1.8;margin-top:12px">
+        <p id="m-vfb-body" style="display:none;font-size:13px;color:var(--text-muted-2);line-height:1.8;margin-top:12px">
           Vintage Fußballbörse is Germany's most established vintage football fair, held several times a year across major cities. Each edition brings together <span style="color:var(--gold);font-weight:600">over 1,000 collectors</span> from across Europe. Rare match worn shirts, vintage originals and club memorabilia change hands, and stories are shared. Shirt Société attends as a regular exhibitor.
         </p>
       </div>
@@ -2815,27 +2875,27 @@
       <!-- timeline -->
       <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">The Journey</div>
       <div style="display:flex;flex-direction:column;gap:10px">
-        <div style="background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:14px 16px">
+        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">04.02.2026 · 🇩🇪</div>
           <div style="font-size:17px;font-weight:700;color:var(--white)">Hamburg</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
         </div>
-        <div style="background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:14px 16px">
+        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">31.05.2026 · 🇩🇪</div>
           <div style="font-size:17px;font-weight:700;color:var(--white)">Cologne</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
         </div>
-        <div style="background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:14px 16px">
+        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">13.06.2026 · 🇩🇪</div>
           <div style="font-size:17px;font-weight:700;color:var(--white)">Düsseldorf</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
         </div>
-        <div style="background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:14px 16px">
+        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">04.07.2026 · 🇩🇪</div>
           <div style="font-size:17px;font-weight:700;color:var(--white)">Frankfurt</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
         </div>
-        <div style="background:#111009;border:1px solid #1e1c17;border-radius:3px;padding:14px 16px;opacity:.6">
+        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px;opacity:.6">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">04.10.2026 · 🇩🇪</div>
           <div style="font-size:17px;font-weight:700;color:var(--white)">Leipzig</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
@@ -2925,7 +2985,7 @@
         <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')"
           style="top:6px;right:6px;width:28px;height:28px;z-index:3">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-            fill="${isLiked ? 'var(--gold)' : 'rgba(245,240,232,.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--cream)'}" stroke-width="2.5">
+            fill="${isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--on-photo)'}" stroke-width="2.5">
             <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
           </svg>
         </button>
@@ -2982,7 +3042,7 @@
             <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
             ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
             <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:6px;right:6px;width:28px;height:28px;z-index:3">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(245,240,232,.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--cream)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--on-photo)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
             </button>
           </div>
           <div class="m-shirt-card-body">
@@ -3027,7 +3087,7 @@
     }
     var latest = live.slice(0, 4);
     grid.innerHTML = latest.map(function(s) {
-      var label = s.category === 'match_worn' ? 'Match Worn' : 'Vintage';
+      var label = s.category === 'match_worn' ? 'Match Worn / Issued' : 'Vintage';
       var meta = [];
       if (s.season) meta.push(s.season);
       if (s.size) meta.push('Size ' + s.size);
@@ -3082,10 +3142,10 @@
         b.textContent = dir < 0 ? '\u2039' : '\u203A';
         b.style.cssText = 'position:absolute;top:calc(50% - 20px);' + (dir < 0 ? 'left:6px' : 'right:6px') +
           ';transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(10,9,5,.9);' +
-          'border:1px solid rgba(200,169,80,.4);color:#c8a950;display:flex;align-items:center;justify-content:center;' +
+          'border:1px solid rgba(200,169,80,.4);color:var(--gold);display:flex;align-items:center;justify-content:center;' +
           'font-size:24px;line-height:1;cursor:pointer;z-index:6;opacity:0;transition:opacity .25s,border-color .2s,background .2s;' +
           '-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);user-select:none;font-family:serif';
-        b.onmouseover = function(){ this.style.borderColor = '#c8a950'; this.style.background = 'rgba(20,18,12,.95)'; };
+        b.onmouseover = function(){ this.style.borderColor = 'var(--gold)'; this.style.background = 'rgba(20,18,12,.95)'; };
         b.onmouseout = function(){ this.style.borderColor = 'rgba(200,169,80,.4)'; this.style.background = 'rgba(10,9,5,.9)'; };
         b.onclick = function(e) {
           e.stopPropagation();
@@ -3165,7 +3225,7 @@
           ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
           ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
           <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:8px;right:8px;width:28px;height:28px;z-index:3">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(245,240,232,.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--cream)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--on-photo)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
           </button>
         </div>
         <div class="shirt-card-sm-info">
@@ -3256,8 +3316,8 @@
     var gv = document.getElementById('d-view-grid');
     var lv = document.getElementById('d-view-list');
     var base = 'width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer;transition:all .2s;';
-    var on = 'border:1px solid var(--gold);background:#2a2620';
-    var off = 'border:1px solid #2e2c27;background:#1a1815';
+    var on = 'border:1px solid var(--gold);background:var(--line)';
+    var off = 'border:1px solid var(--line);background:var(--surf-2)';
     if (gv) {
       gv.style.cssText = base + (mode === 'grid' ? on : off);
       var gs = gv.querySelector('svg');
@@ -3286,21 +3346,21 @@
     var html = '<div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:32px 0 8px;flex-wrap:wrap">';
     var btn = function(label, page, active, disabled) {
       if (disabled) {
-        return '<span style="padding:9px 14px;font-size:12px;color:rgba(245,240,232,.2)">' + label + '</span>';
+        return '<span style="padding:9px 14px;font-size:12px;color:rgba(var(--white-rgb),.2)">' + label + '</span>';
       }
       var style = active
-        ? 'background:var(--gold);color:var(--black);border:1px solid var(--gold);font-weight:700'
-        : 'background:#1a1815;color:var(--text-muted);border:1px solid #2e2c27';
+        ? 'background:var(--gold);color:var(--ink);border:1px solid var(--gold);font-weight:700'
+        : 'background:var(--surf-2);color:var(--text-muted);border:1px solid var(--line)';
       return '<div onclick="goToShopPage(' + page + ')" style="' + style + ';padding:9px 14px;border-radius:2px;font-size:12px;cursor:pointer;min-width:38px;text-align:center;transition:all .2s">' + label + '</div>';
     };
     html += btn('‹', shopPage - 1, false, shopPage === 1);
     var from = Math.max(1, shopPage - 2), to = Math.min(pages, shopPage + 2);
-    if (from > 1) { html += btn('1', 1, shopPage === 1, false); if (from > 2) html += '<span style="color:rgba(245,240,232,.25)">…</span>'; }
+    if (from > 1) { html += btn('1', 1, shopPage === 1, false); if (from > 2) html += '<span style="color:rgba(var(--white-rgb),.25)">…</span>'; }
     for (var p = from; p <= to; p++) html += btn(String(p), p, p === shopPage, false);
-    if (to < pages) { if (to < pages - 1) html += '<span style="color:rgba(245,240,232,.25)">…</span>'; html += btn(String(pages), pages, shopPage === pages, false); }
+    if (to < pages) { if (to < pages - 1) html += '<span style="color:rgba(var(--white-rgb),.25)">…</span>'; html += btn(String(pages), pages, shopPage === pages, false); }
     html += btn('›', shopPage + 1, false, shopPage === pages);
     html += '</div>';
-    html += '<div style="text-align:center;font-size:11px;color:rgba(245,240,232,.35);padding-bottom:28px">Showing ' +
+    html += '<div style="text-align:center;font-size:11px;color:rgba(var(--white-rgb),.35);padding-bottom:28px">Showing ' +
             (((shopPage - 1) * SHOP_PER_PAGE) + 1) + '–' + Math.min(shopPage * SHOP_PER_PAGE, total) + ' of ' + total + ' shirts</div>';
     wrap.innerHTML = html;
   }
@@ -3450,7 +3510,7 @@
             ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
             ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
             <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" title="Save shirt" style="top:8px;right:8px;width:30px;height:30px;z-index:3">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(245,240,232,.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--cream)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--on-photo)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
             </button>
           </div>
           <div class="shirt-card-body">
@@ -3885,11 +3945,11 @@
     ].filter(function(r) { return r[1] && String(r[1]).trim(); });
     if (!rows.length) return '';
     return ''
-      + '<div style="border-top:1px solid #1e1c17;padding-top:18px;margin-bottom:8px">'
+      + '<div style="border-top:1px solid var(--surf-2);padding-top:18px;margin-bottom:8px">'
       +   '<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Provenance &amp; authenticity dossier</div>'
       +   '<div style="font-size:11px;color:var(--text-muted);line-height:1.6;margin-bottom:14px">The documented history of this shirt. This is what separates a genuine match worn piece from a retail version.</div>'
       +   rows.map(function(r) {
-            return '<div style="display:flex;gap:14px;padding:8px 0;border-bottom:1px solid #15130f">'
+            return '<div style="display:flex;gap:14px;padding:8px 0;border-bottom:1px solid var(--surf-2)">'
               + '<span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:130px;flex-shrink:0">' + r[0] + '</span>'
               + '<span style="font-size:14px;color:var(--cream);line-height:1.5">' + String(r[1]) + '</span>'
               + '</div>';
@@ -3905,14 +3965,14 @@
     var lTxt = hasL ? (parseFloat(L) + ' cm') : '—';
     var wTxt = hasW ? (parseFloat(W) + ' cm') : '—';
     return ''
-      + '<div style="border-top:1px solid #1e1c17;padding-top:18px;margin-bottom:8px">'
+      + '<div style="border-top:1px solid var(--surf-2);padding-top:18px;margin-bottom:8px">'
       +   '<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Measurements</div>'
       +   '<div style="display:flex;align-items:center;gap:22px">'
       +     '<div style="flex-shrink:0">' + measurementSvg() + '</div>'
       +     '<div style="display:flex;flex-direction:column;gap:10px">'
       +       '<div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:56px">Length</span><span style="font-size:17px;font-weight:600;color:var(--cream)">' + lTxt + '</span></div>'
       +       '<div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:56px">Width</span><span style="font-size:17px;font-weight:600;color:var(--cream)">' + wTxt + '</span></div>'
-      +       '<div style="font-size:11px;color:#9a9284;line-height:1.5;max-width:230px">Laid flat, measured shoulder to hem (length) and pit to pit (width).</div>'
+      +       '<div style="font-size:11px;color:var(--text-muted-2);line-height:1.5;max-width:230px">Laid flat, measured shoulder to hem (length) and pit to pit (width).</div>'
       +     '</div>'
       +   '</div>'
       + '</div>';
@@ -3923,7 +3983,7 @@
     return ''
       + '<svg width="96" height="104" viewBox="0 0 120 130" fill="none" xmlns="http://www.w3.org/2000/svg">'
       +   '<path d="M42 16 L22 26 L14 44 L26 52 L34 46 L34 112 L86 112 L86 46 L94 52 L106 44 L98 26 L78 16 '
-      +         'C74 24 66 28 60 28 C54 28 46 24 42 16 Z" fill="#1a1813" stroke="#3a372f" stroke-width="1.5" stroke-linejoin="round"/>'
+      +         'C74 24 66 28 60 28 C54 28 46 24 42 16 Z" fill="#1a1813" stroke="var(--line-soft)" stroke-width="1.5" stroke-linejoin="round"/>'
       // width arrow (horizontal, across the chest)
       +   '<line x1="36" y1="72" x2="84" y2="72" stroke="var(--gold)" stroke-width="1.6"/>'
       +   '<polyline points="40,68 36,72 40,76" fill="none" stroke="var(--gold)" stroke-width="1.6"/>'
@@ -4505,7 +4565,7 @@
     if (!input || !input.value.trim() || !input.value.includes('@')) {
       if (input) {
         input.style.borderColor = '#e05555';
-        setTimeout(function(){ input.style.borderColor = '#2a2820'; }, 2000);
+        setTimeout(function(){ input.style.borderColor = 'var(--line)'; }, 2000);
       }
       return;
     }
@@ -4712,8 +4772,8 @@
     wrap.innerHTML =
       '<div style="display:flex;gap:8px;flex-wrap:wrap;width:100%">' + main.join('') + '</div>'
       + (sub.length
-          ? '<div style="display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:10px;padding-top:10px;border-top:1px solid #1e1c17">'
-            + '<span style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#5a544a;align-self:center;margin-right:4px">'
+          ? '<div style="display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:10px;padding-top:10px;border-top:1px solid var(--surf-2)">'
+            + '<span style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--line-soft);align-self:center;margin-right:4px">'
             + (f.group === 'decade' ? 'Decade' : (f.group === 'clubs' ? 'League' : 'Country')) + '</span>'
             + sub.join('') + '</div>'
           : '');
@@ -4772,7 +4832,7 @@
         var main = imgs[0] || '';
         return ''
           + '<div onclick="openArchiveItem(\'' + s.id + '\')" style="cursor:pointer">'
-          +   '<div style="position:relative;aspect-ratio:3/4;background:#111;border-radius:3px;overflow:hidden">'
+          +   '<div style="position:relative;aspect-ratio:3/4;background:var(--surf-1);border-radius:3px;overflow:hidden">'
           +     '<img src="' + main + '" alt="' + (s.title||'') + '" loading="lazy" style="width:100%;height:100%;object-fit:cover">'
           +     '<div style="position:absolute;top:8px;left:8px;background:rgba(10,9,5,.8);color:var(--gold);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px">Archive</div>'
           +   '</div>'
@@ -4790,8 +4850,8 @@
     var gv = document.getElementById('d-arch-view-grid');
     var lv = document.getElementById('d-arch-view-list');
     var base = 'width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer;transition:all .2s;';
-    var on = 'border:1px solid var(--gold);background:#2a2620';
-    var off = 'border:1px solid #2e2c27;background:#1a1815';
+    var on = 'border:1px solid var(--gold);background:var(--line)';
+    var off = 'border:1px solid var(--line);background:var(--surf-2)';
     if (gv) { gv.style.cssText = base + (mode === 'grid' ? on : off); var gs = gv.querySelector('svg'); if (gs) gs.style.stroke = mode === 'grid' ? 'var(--gold)' : 'var(--text-muted)'; }
     if (lv) { lv.style.cssText = base + (mode === 'list' ? on : off); var ls = lv.querySelector('svg'); if (ls) ls.style.stroke = mode === 'list' ? 'var(--gold)' : 'var(--text-muted)'; }
     var grid = document.getElementById('d-archive-grid');
@@ -4867,7 +4927,7 @@
       box.innerHTML =
         '<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Match details</div>'
         + rows.map(function (r) {
-            return '<div style="display:flex;gap:14px;padding:8px 0;border-bottom:1px solid #15130f">'
+            return '<div style="display:flex;gap:14px;padding:8px 0;border-bottom:1px solid var(--surf-2)">'
               + '<span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);min-width:110px;flex-shrink:0">' + r[0] + '</span>'
               + '<span style="font-size:14px;color:var(--cream);line-height:1.5">' + String(r[1]) + '</span>'
               + '</div>';
@@ -4875,7 +4935,7 @@
     })();
     document.getElementById('ad-main-img').src = imgs[0] || '';
     document.getElementById('ad-thumbs').innerHTML = imgs.map(function(img, i){
-      return '<img src="' + img + '" onclick="archiveSwitchImg(' + i + ')" style="width:56px;height:56px;object-fit:cover;border-radius:2px;cursor:pointer;border:1px solid ' + (i===0?'var(--gold)':'#2a2820') + '" data-ai="' + i + '">';
+      return '<img src="' + img + '" onclick="archiveSwitchImg(' + i + ')" style="width:56px;height:56px;object-fit:cover;border-radius:2px;cursor:pointer;border:1px solid ' + (i===0?'var(--gold)':'var(--line)') + '" data-ai="' + i + '">';
     }).join('');
     document.getElementById('archive-detail-modal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -4898,7 +4958,7 @@
     currentImgIndex = i;
     document.getElementById('ad-main-img').src = currentImages[i];
     document.querySelectorAll('#ad-thumbs img').forEach(function(t){
-      t.style.borderColor = (parseInt(t.getAttribute('data-ai')) === i) ? 'var(--gold)' : '#2a2820';
+      t.style.borderColor = (parseInt(t.getAttribute('data-ai')) === i) ? 'var(--gold)' : 'var(--line)';
     });
   }
   // swipe left/right on the archive photo to move between images
@@ -5022,7 +5082,7 @@
 
       if (likedShirts.length) {
         html += likedShirts.map(s => `
-          <div style="display:flex;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid #1e1c17;cursor:pointer" onclick="openDetail('${s.id}','d')">
+          <div style="display:flex;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--surf-2);cursor:pointer" onclick="openDetail('${s.id}','d')">
             <img src="${getImg(s)}" style="width:80px;height:80px;object-fit:cover;border-radius:2px;background:var(--grey);flex-shrink:0">
             <div style="flex:1">
               <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">${s.club||''}</div>
@@ -5030,8 +5090,8 @@
               <div style="font-size:16px;color:var(--gold);font-weight:500">€${parseFloat(s.price).toFixed(2)}</div>
             </div>
             <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
-              <button onclick="event.stopPropagation();toggleLike('${s.id}')" style="background:none;border:1px solid #2e2c27;border-radius:2px;color:var(--text-muted);font-size:12px;padding:6px 10px;cursor:pointer">Remove</button>
-              ${!cart.some(c => c.id === s.id) ? `<button onclick="event.stopPropagation();quickAdd('${s.id}', event)" style="background:var(--gold);border:none;border-radius:2px;color:var(--black);font-size:12px;padding:6px 10px;cursor:pointer;font-weight:500">Add to Cart</button>` : '<span style="font-size:11px;color:var(--text-muted)">In cart ✓</span>'}
+              <button onclick="event.stopPropagation();toggleLike('${s.id}')" style="background:none;border:1px solid var(--line);border-radius:2px;color:var(--text-muted);font-size:12px;padding:6px 10px;cursor:pointer">Remove</button>
+              ${!cart.some(c => c.id === s.id) ? `<button onclick="event.stopPropagation();quickAdd('${s.id}', event)" style="background:var(--gold);border:none;border-radius:2px;color:var(--ink);font-size:12px;padding:6px 10px;cursor:pointer;font-weight:500">Add to Cart</button>` : '<span style="font-size:11px;color:var(--text-muted)">In cart ✓</span>'}
             </div>
           </div>`).join('');
       }
@@ -5318,7 +5378,7 @@
     var dots = [];
     slides.forEach(function (s, i) {
       var d = document.createElement('div');
-      d.style.cssText = 'width:13px;height:13px;border-radius:50%;background:' + (i === 0 ? 'var(--gold)' : 'rgba(245,240,232,.35)') + ';cursor:pointer;transition:background .3s,transform .2s;border:1px solid rgba(255,255,255,.15)';
+      d.style.cssText = 'width:13px;height:13px;border-radius:50%;background:' + (i === 0 ? 'var(--gold)' : 'rgba(var(--white-rgb),.35)') + ';cursor:pointer;transition:background .3s,transform .2s;border:1px solid rgba(255,255,255,.15)';
       d.addEventListener('mouseover', function () { this.style.transform = 'scale(1.25)'; });
       d.addEventListener('mouseout', function () { this.style.transform = 'scale(1)'; });
       d.addEventListener('click', function () { go(i); resetTimer(); });
@@ -5333,7 +5393,7 @@
       slides[current].style.opacity = '0';
       current = (n + slides.length) % slides.length;
       slides[current].style.opacity = '1';
-      dots.forEach(function (d, i) { d.style.background = i === current ? 'var(--gold)' : 'rgba(245,240,232,.35)'; });
+      dots.forEach(function (d, i) { d.style.background = i === current ? 'var(--gold)' : 'rgba(var(--white-rgb),.35)'; });
     }
 
     var timer = null;
@@ -6111,7 +6171,7 @@
     row.innerHTML = items.map(function(s) {
       return '<div style="flex:0 0 150px;cursor:pointer" onclick="openDetail(\'' + s.id + '\',\'m\')">' +
                '<div style="width:2px;height:28px;margin:0 auto;background:linear-gradient(180deg,rgba(200,169,80,.7),rgba(200,169,80,.2))"></div>' +
-               '<img src="' + (s.image || '') + '" style="width:150px;height:195px;object-fit:cover;object-position:center top;border:1px solid rgba(200,169,80,.25);background:#12100d;display:block">' +
+               '<img src="' + (s.image || '') + '" style="width:150px;height:195px;object-fit:cover;object-position:center top;border:1px solid rgba(200,169,80,.25);background:var(--surf-2);display:block">' +
                '<div style="text-align:center;margin-top:8px">' +
                  '<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:2px">' + (s.club || 'Shirt Société') + '</div>' +
                  '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;color:var(--white)">' + (s.title || '') + '</div>' +
@@ -6232,7 +6292,7 @@
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
   </div>
   <img id="zoom-lightbox-img" src="" alt="" onclick="toggleZoomLevel(event)">
-  <div id="zoom-hint" style="position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,.45);pointer-events:none;z-index:5;text-align:center;white-space:nowrap">Click the image to zoom</div>
+  <div id="zoom-hint" style="position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--white-rgb),.45);pointer-events:none;z-index:5;text-align:center;white-space:nowrap">Click the image to zoom</div>
   <div class="zoom-nav next" onclick="zoomNav(event,1)">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
   </div>
@@ -6242,10 +6302,10 @@
 <div id="cart-flight"></div>
 
 <!-- ═══ COOKIE CONSENT ═══ -->
-<div id="cookie-banner" style="position:fixed;bottom:24px;left:24px;z-index:9500;display:none;width:360px;max-width:calc(100vw - 48px);background:linear-gradient(180deg,#0d0b08,#080604);border:1px solid rgba(200,169,80,.28);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);overflow:hidden">
+<div id="cookie-banner" style="position:fixed;bottom:24px;left:24px;z-index:9500;display:none;width:360px;max-width:calc(100vw - 48px);background:linear-gradient(180deg,var(--surf-1),var(--surf-1));border:1px solid rgba(200,169,80,.28);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);overflow:hidden">
   <div style="padding:20px 22px 8px">
     <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:17px;color:var(--gold);margin-bottom:8px">Cookie preferences</div>
-    <div style="font-size:12px;line-height:1.65;color:rgba(245,240,232,.6)">We use essential cookies to run the shop, and optional cookies you control. See our <a href="/privacy.html" style="color:var(--gold);text-decoration:underline">Privacy Policy</a>.</div>
+    <div style="font-size:12px;line-height:1.65;color:rgba(var(--white-rgb),.6)">We use essential cookies to run the shop, and optional cookies you control. See our <a href="/privacy.html" style="color:var(--gold);text-decoration:underline">Privacy Policy</a>.</div>
   </div>
 
   <div style="padding:14px 22px 4px;display:flex;flex-direction:column;gap:12px">
@@ -6256,45 +6316,45 @@
       </div>
       <div>
         <div style="font-size:12.5px;font-weight:600;color:var(--cream);margin-bottom:2px">Required</div>
-        <div style="font-size:11px;line-height:1.5;color:rgba(245,240,232,.45)">Needed for the cart and core features. Always on.</div>
+        <div style="font-size:11px;line-height:1.5;color:rgba(var(--white-rgb),.45)">Needed for the cart and core features. Always on.</div>
       </div>
     </div>
     <!-- Personalization -->
     <div style="display:flex;align-items:flex-start;gap:12px">
       <div id="ck-personalization" onclick="ssToggle('personalization')" style="flex-shrink:0;width:34px;height:19px;border-radius:20px;background:var(--gold);position:relative;cursor:pointer;transition:background .2s;margin-top:1px">
-        <div class="ck-knob" style="position:absolute;top:2px;left:17px;width:15px;height:15px;border-radius:50%;background:#0a0905;transition:left .2s"></div>
+        <div class="ck-knob" style="position:absolute;top:2px;left:17px;width:15px;height:15px;border-radius:50%;background:var(--black);transition:left .2s"></div>
       </div>
       <div>
         <div style="font-size:12.5px;font-weight:600;color:var(--cream);margin-bottom:2px">Personalization</div>
-        <div style="font-size:11px;line-height:1.5;color:rgba(245,240,232,.45)">Remembers your actions to tailor your next visit.</div>
+        <div style="font-size:11px;line-height:1.5;color:rgba(var(--white-rgb),.45)">Remembers your actions to tailor your next visit.</div>
       </div>
     </div>
     <!-- Marketing -->
     <div style="display:flex;align-items:flex-start;gap:12px">
       <div id="ck-marketing" onclick="ssToggle('marketing')" style="flex-shrink:0;width:34px;height:19px;border-radius:20px;background:var(--gold);position:relative;cursor:pointer;transition:background .2s;margin-top:1px">
-        <div class="ck-knob" style="position:absolute;top:2px;left:17px;width:15px;height:15px;border-radius:50%;background:#0a0905;transition:left .2s"></div>
+        <div class="ck-knob" style="position:absolute;top:2px;left:17px;width:15px;height:15px;border-radius:50%;background:var(--black);transition:left .2s"></div>
       </div>
       <div>
         <div style="font-size:12.5px;font-weight:600;color:var(--cream);margin-bottom:2px">Marketing</div>
-        <div style="font-size:11px;line-height:1.5;color:rgba(245,240,232,.45)">Used to optimise marketing and ads elsewhere.</div>
+        <div style="font-size:11px;line-height:1.5;color:rgba(var(--white-rgb),.45)">Used to optimise marketing and ads elsewhere.</div>
       </div>
     </div>
     <!-- Analytics -->
     <div style="display:flex;align-items:flex-start;gap:12px">
-      <div id="ck-analytics" onclick="ssToggle('analytics')" style="flex-shrink:0;width:34px;height:19px;border-radius:20px;background:rgba(245,240,232,.15);position:relative;cursor:pointer;transition:background .2s;margin-top:1px">
-        <div class="ck-knob" style="position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#0a0905;transition:left .2s"></div>
+      <div id="ck-analytics" onclick="ssToggle('analytics')" style="flex-shrink:0;width:34px;height:19px;border-radius:20px;background:rgba(var(--white-rgb),.15);position:relative;cursor:pointer;transition:background .2s;margin-top:1px">
+        <div class="ck-knob" style="position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:var(--black);transition:left .2s"></div>
       </div>
       <div>
         <div style="font-size:12.5px;font-weight:600;color:var(--cream);margin-bottom:2px">Analytics</div>
-        <div style="font-size:11px;line-height:1.5;color:rgba(245,240,232,.45)">Helps us understand how the site is used.</div>
+        <div style="font-size:11px;line-height:1.5;color:rgba(var(--white-rgb),.45)">Helps us understand how the site is used.</div>
       </div>
     </div>
   </div>
 
   <div style="display:flex;gap:8px;padding:16px 22px 20px">
-    <button onclick="ssCookieAll(false)" style="flex:1;background:transparent;border:1px solid rgba(245,240,232,.2);color:rgba(245,240,232,.8);padding:10px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Decline</button>
+    <button onclick="ssCookieAll(false)" style="flex:1;background:transparent;border:1px solid rgba(var(--white-rgb),.2);color:rgba(var(--white-rgb),.8);padding:10px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Decline</button>
     <button onclick="ssCookieSave()" style="flex:1;background:transparent;border:1px solid rgba(200,169,80,.4);color:var(--gold);padding:10px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Save</button>
-    <button onclick="ssCookieAll(true)" style="flex:1.3;background:var(--gold);border:none;color:var(--black);padding:10px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Accept all</button>
+    <button onclick="ssCookieAll(true)" style="flex:1.3;background:var(--gold);border:none;color:var(--ink);padding:10px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Accept all</button>
   </div>
 </div>
 
@@ -6313,7 +6373,7 @@
       box.style.background = 'var(--gold)';
       if (knob) knob.style.left = '17px';
     } else {
-      box.style.background = 'rgba(245,240,232,.15)';
+      box.style.background = 'rgba(var(--white-rgb),.15)';
       if (knob) knob.style.left = '2px';
     }
   }
@@ -6369,33 +6429,33 @@
 </script>
 
 <!-- My Wardrobe intro video (plays once per session) -->
-<div id="wardrobe-intro" style="position:fixed;inset:0;z-index:9200;background:#060504;display:none;align-items:center;justify-content:center;overflow:hidden">
+<div id="wardrobe-intro" style="position:fixed;inset:0;z-index:9200;background:var(--surf-1);display:none;align-items:center;justify-content:center;overflow:hidden">
   <video id="wardrobe-intro-video" playsinline muted preload="none"
     style="width:100%;height:100%;object-fit:cover"
     src="https://res.cloudinary.com/dinpfdojh/video/upload/v1784635503/openart-video_1784557449812_135b9230_1784557449840_13ecf9c3_bxe8ra.mp4"></video>
   <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 40%,rgba(4,3,2,.55) 100%)"></div>
   <!-- MY WARDROBE title over the video: white/gold/black, shown only briefly at the very start -->
   <div id="wardrobe-intro-title" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2;text-align:center;background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(6,5,4,.55),transparent 75%)">
-    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(48px,10vw,132px);line-height:.86;letter-spacing:-3px;color:#f5f0e8;text-shadow:0 2px 20px rgba(0,0,0,.85),0 6px 50px rgba(0,0,0,.6)">MY<br>WARDROBE</div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(48px,10vw,132px);line-height:.86;letter-spacing:-3px;color:var(--on-photo);text-shadow:0 2px 20px rgba(0,0,0,.85),0 6px 50px rgba(0,0,0,.6)">MY<br>WARDROBE</div>
     <div style="margin-top:22px;font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:clamp(18px,3vw,34px);color:var(--gold);text-shadow:0 2px 16px rgba(0,0,0,.9)">Shirt Société</div>
     <div style="margin-top:14px;width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
   </div>
   <!-- outro title: appears just before the video ends -->
   <div id="wardrobe-outro-title" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2;text-align:center;opacity:0;background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(6,5,4,.6),transparent 75%)">
-    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(44px,9vw,120px);line-height:.86;letter-spacing:-3px;color:#f5f0e8;text-shadow:0 2px 20px rgba(0,0,0,.85),0 6px 50px rgba(0,0,0,.6)">Your<br>Collection</div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(44px,9vw,120px);line-height:.86;letter-spacing:-3px;color:var(--on-photo);text-shadow:0 2px 20px rgba(0,0,0,.85),0 6px 50px rgba(0,0,0,.6)">Your<br>Collection</div>
     <div style="margin-top:22px;font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:clamp(18px,3vw,34px);color:var(--gold);text-shadow:0 2px 16px rgba(0,0,0,.9)">Shirt Société</div>
     <div style="margin-top:14px;width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
   </div>
-  <div id="wardrobe-intro-skip" style="position:absolute;bottom:30px;right:34px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.55);cursor:pointer;z-index:3;padding:8px 16px;border:1px solid rgba(245,240,232,.2);border-radius:2px">Skip</div>
+  <div id="wardrobe-intro-skip" style="position:absolute;bottom:30px;right:34px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--on-photo-rgb),.55);cursor:pointer;z-index:3;padding:8px 16px;border:1px solid rgba(var(--on-photo-rgb),.2);border-radius:2px">Skip</div>
 </div>
 
 <!-- ═══ ARCHIVE DETAIL MODAL (top-level, works on mobile too) ═══ -->
 <div id="archive-detail-modal" style="position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:24px;overflow-y:auto">
-  <div style="background:#0d0b07;border:1px solid #1e1c17;border-radius:6px;max-width:920px;width:100%;max-height:92vh;overflow:hidden;position:relative;display:flex;flex-direction:column">
-    <button onclick="closeArchiveDetail()" style="position:absolute;top:14px;right:14px;z-index:5;background:rgba(0,0,0,.5);border:1px solid #2a2820;color:var(--cream);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center">×</button>
+  <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:6px;max-width:920px;width:100%;max-height:92vh;overflow:hidden;position:relative;display:flex;flex-direction:column">
+    <button onclick="closeArchiveDetail()" style="position:absolute;top:14px;right:14px;z-index:5;background:rgba(0,0,0,.5);border:1px solid var(--line);color:var(--cream);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center">×</button>
     <div class="archive-detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0">
-      <div style="background:#0a0905;padding:24px;display:flex;flex-direction:column;gap:12px">
-        <div style="position:relative;background:#111;border-radius:3px;overflow:hidden;cursor:zoom-in;max-height:78vh" onclick="openArchiveZoom()">
+      <div style="background:var(--black);padding:24px;display:flex;flex-direction:column;gap:12px">
+        <div style="position:relative;background:var(--surf-1);border-radius:3px;overflow:hidden;cursor:zoom-in;max-height:78vh" onclick="openArchiveZoom()">
           <img id="ad-main-img" src="" alt="" style="width:100%;height:100%;max-height:78vh;object-fit:contain;display:block">
         </div>
         <div id="ad-thumbs" style="display:flex;gap:8px;flex-wrap:wrap"></div>
@@ -6405,8 +6465,8 @@
         <h2 id="ad-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;line-height:1.2;margin-bottom:6px"></h2>
         <div id="ad-club" style="font-size:13px;color:var(--text-muted);margin-bottom:4px"></div>
         <div id="ad-season" style="font-size:13px;color:var(--text-muted);margin-bottom:18px"></div>
-        <div id="ad-match" style="display:none;border-top:1px solid #1e1c17;padding-top:16px;margin-bottom:20px"></div>
-        <p id="ad-story" style="font-size:14px;line-height:1.75;color:#b0a898;margin-bottom:8px"></p>
+        <div id="ad-match" style="display:none;border-top:1px solid var(--surf-2);padding-top:16px;margin-bottom:20px"></div>
+        <p id="ad-story" style="font-size:14px;line-height:1.75;color:var(--text-muted-2);margin-bottom:8px"></p>
       </div>
     </div>
   </div>
@@ -6414,53 +6474,53 @@
 
 <!-- ═══ CONTACT MODAL ═══ -->
 <div id="drop-alert-modal" style="position:fixed;inset:0;z-index:9600;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:24px;overflow-y:auto">
-  <div style="width:100%;max-width:460px;background:linear-gradient(180deg,#0d0b08,#080604);border:1px solid rgba(200,169,80,.28);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);overflow:hidden">
+  <div style="width:100%;max-width:460px;background:linear-gradient(180deg,var(--surf-1),var(--surf-1));border:1px solid rgba(200,169,80,.28);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);overflow:hidden">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 28px 18px;border-bottom:1px solid rgba(200,169,80,.15)">
       <div>
         <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Early Access</div>
         <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;color:var(--cream);line-height:1.15">Be first to see new shirts</div>
       </div>
-      <div onclick="closeDropAlertModal()" style="cursor:pointer;font-size:24px;line-height:1;color:rgba(245,240,232,.5);padding:0 4px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,.5)'">&times;</div>
+      <div onclick="closeDropAlertModal()" style="cursor:pointer;font-size:24px;line-height:1;color:rgba(var(--white-rgb),.5);padding:0 4px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(var(--white-rgb),.5)'">&times;</div>
     </div>
 
     <div style="padding:24px 28px 28px">
-      <p style="font-size:13px;color:rgba(245,240,232,.6);line-height:1.7;margin:0 0 20px">Every shirt we list is one of one. Leave your email and we will let you know when new vintage and match worn pieces go live, before they appear anywhere else.</p>
+      <p style="font-size:13px;color:rgba(var(--white-rgb),.6);line-height:1.7;margin:0 0 20px">Every shirt we list is one of one. Leave your email and we will let you know when new vintage and match worn pieces go live, before they appear anywhere else.</p>
 
       <div id="da-form" style="display:flex;gap:10px;flex-wrap:wrap">
-        <input id="da-email" type="email" placeholder="your@email.com" style="flex:1;min-width:200px;background:#131109;border:1px solid #22201a;border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='#22201a'" onkeydown="if(event.key==='Enter')submitDropAlertEmail()">
-        <button id="da-btn" onclick="submitDropAlertEmail()" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:13px 24px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Notify me</button>
+        <input id="da-email" type="email" placeholder="your@email.com" style="flex:1;min-width:200px;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'" onkeydown="if(event.key==='Enter')submitDropAlertEmail()">
+        <button id="da-btn" onclick="submitDropAlertEmail()" style="background:var(--gold);color:var(--ink);border:none;border-radius:2px;padding:13px 24px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Notify me</button>
       </div>
       <div id="da-confirm" style="display:none;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--gold);padding:4px 0">Thank you. We will be in touch when the next shirts go live.</div>
-      <p style="font-size:11px;color:rgba(245,240,232,.35);margin-top:16px;line-height:1.6">No spam, only new arrivals. Unsubscribe any time.</p>
+      <p style="font-size:11px;color:rgba(var(--white-rgb),.35);margin-top:16px;line-height:1.6">No spam, only new arrivals. Unsubscribe any time.</p>
     </div>
   </div>
 </div>
 
 <div id="contact-modal" style="position:fixed;inset:0;z-index:9600;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:24px;overflow-y:auto">
-  <div style="width:100%;max-width:520px;background:linear-gradient(180deg,#0d0b08,#080604);border:1px solid rgba(200,169,80,.28);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);overflow:hidden">
+  <div style="width:100%;max-width:520px;background:linear-gradient(180deg,var(--surf-1),var(--surf-1));border:1px solid rgba(200,169,80,.28);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);overflow:hidden">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 28px 18px;border-bottom:1px solid rgba(200,169,80,.15)">
       <div>
         <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--cream);line-height:1">Contact</div>
         <div style="margin-top:6px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(200,169,80,.6)">Shirt Société</div>
       </div>
-      <div onclick="closeContactModal()" style="cursor:pointer;font-size:24px;line-height:1;color:rgba(245,240,232,.5);padding:0 4px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,.5)'">&times;</div>
+      <div onclick="closeContactModal()" style="cursor:pointer;font-size:24px;line-height:1;color:rgba(var(--white-rgb),.5);padding:0 4px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(var(--white-rgb),.5)'">&times;</div>
     </div>
 
     <div style="padding:24px 28px 28px">
-      <p style="font-size:13px;color:rgba(245,240,232,.6);line-height:1.7;margin:0 0 20px">Any question about a shirt, an order or the fairs? Send us a message and we'll get back to you.</p>
+      <p style="font-size:13px;color:rgba(var(--white-rgb),.6);line-height:1.7;margin:0 0 20px">Any question about a shirt, an order or the fairs? Send us a message and we'll get back to you.</p>
 
       <div style="display:flex;flex-direction:column;gap:14px">
-        <input id="cf-name" type="text" placeholder="Your name" style="width:100%;background:#131109;border:1px solid #22201a;border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='#22201a'">
-        <input id="cf-email" type="email" placeholder="Your email" style="width:100%;background:#131109;border:1px solid #22201a;border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='#22201a'">
-        <input id="cf-subject" type="text" placeholder="Subject (optional)" style="width:100%;background:#131109;border:1px solid #22201a;border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='#22201a'">
-        <textarea id="cf-message" rows="5" placeholder="Your message" style="width:100%;background:#131109;border:1px solid #22201a;border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;resize:vertical;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='#22201a'"></textarea>
+        <input id="cf-name" type="text" placeholder="Your name" style="width:100%;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'">
+        <input id="cf-email" type="email" placeholder="Your email" style="width:100%;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'">
+        <input id="cf-subject" type="text" placeholder="Subject (optional)" style="width:100%;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'">
+        <textarea id="cf-message" rows="5" placeholder="Your message" style="width:100%;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;resize:vertical;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'"></textarea>
       </div>
 
       <div id="cf-status" style="display:none;margin-top:14px;font-size:12.5px;line-height:1.6"></div>
 
       <div style="display:flex;align-items:center;gap:12px;margin-top:20px;flex-wrap:wrap">
-        <button id="cf-send" onclick="sendContactMessage()" style="background:var(--gold);color:var(--black);border:none;border-radius:2px;padding:13px 28px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Send message</button>
-        <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;color:rgba(245,240,232,.55);text-decoration:none;font-size:12px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,.55)'">
+        <button id="cf-send" onclick="sendContactMessage()" style="background:var(--gold);color:var(--ink);border:none;border-radius:2px;padding:13px 28px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Send message</button>
+        <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;color:rgba(var(--white-rgb),.55);text-decoration:none;font-size:12px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(var(--white-rgb),.55)'">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
           or message us on Instagram
         </a>
@@ -6470,6 +6530,25 @@
 </div>
 
 <script>
+  // ── LIGHT / DARK THEME TOGGLE ──
+  function applyThemeIcons(mode) {
+    var dDark = document.getElementById('d-theme-icon-dark'), dLight = document.getElementById('d-theme-icon-light');
+    var mDark = document.getElementById('m-theme-icon-dark'), mLight = document.getElementById('m-theme-icon-light');
+    [dDark, mDark].forEach(function(el){ if (el) el.style.display = mode === 'light' ? 'none' : 'block'; });
+    [dLight, mLight].forEach(function(el){ if (el) el.style.display = mode === 'light' ? 'block' : 'none'; });
+  }
+  function toggleSiteTheme() {
+    var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    var next = isLight ? 'dark' : 'light';
+    if (next === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    try { localStorage.setItem('ss-theme', next); } catch (e) {}
+    applyThemeIcons(next);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    applyThemeIcons(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+  });
+
   function openContactModal() {
     var m = document.getElementById('contact-modal');
     if (m) { m.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
@@ -6508,7 +6587,7 @@
     if (!input || !input.value.trim() || !input.value.includes('@')) {
       if (input) {
         input.style.borderColor = '#e05555';
-        setTimeout(function(){ input.style.borderColor = '#22201a'; }, 2000);
+        setTimeout(function(){ input.style.borderColor = 'var(--line)'; }, 2000);
       }
       return;
     }
