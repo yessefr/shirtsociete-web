@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Apply saved theme before first paint, to avoid a flash of the wrong theme -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('ss-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog - Shirt Société | Vintage Football Shirt Stories</title>
   <meta name="description" content="Stories, guides and insights from the world of vintage and match worn football shirts.">
@@ -18,34 +27,54 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FKJWGECXN"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-3FKJWGECXN");</script>
   <style>
-    :root{--black:#0a0905;--gold:#c8a950;--white:#f5f0e8;--grey:#1a1815;--text-muted:#888070;--sidebar-w:240px;}
+    :root{
+      --black:#0a0905; --gold:#c8a950; --gold-dim:#9a7e3a; --white:#f5f0e8; --cream:#f5f0e8;
+      --grey:#1a1815; --surf-1:#0d0b08; --surf-2:#1a1815; --line:#2a2820; --line-soft:#3a372f;
+      --text-muted:#888070; --text-muted-2:#b0a898; --ink:#0a0905; --sidebar-w:240px; --topbar-h:72px;
+    }
+    html[data-theme="light"]{
+      --black:#efe1c4; --gold:#a1791f; --gold-dim:#7d5c17; --white:#241d12; --cream:#241d12;
+      --grey:#e6d6b0; --surf-1:#e6d6b0; --surf-2:#e0cea0; --line:#cbb583; --line-soft:#b8a06a;
+      --text-muted:#6b5f47; --text-muted-2:#4f4531;
+    }
     *{box-sizing:border-box;margin:0;padding:0;}
     html,body{background:var(--black);color:var(--white);font-family:"DM Sans",sans-serif;min-height:100vh;}
-    .layout{display:flex;min-height:100vh;}
-    .sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:0;left:0;bottom:0;background:#0e0c08;border-right:1px solid #1e1c17;display:flex;flex-direction:column;z-index:100;overflow-y:auto;scrollbar-width:none;}
-    .sidebar::-webkit-scrollbar{display:none;}
-    .sidebar-logo{padding:20px;border-bottom:1px solid #1e1c17;cursor:pointer;}
-    .sidebar-logo img{width:100%;max-height:80px;object-fit:contain;}
-    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text-muted);font-size:13px;font-weight:500;transition:all 0.2s;border-left:3px solid transparent;text-decoration:none;}
-    .nav-item:hover{color:var(--white);}
-    .nav-item.active{color:var(--gold);border-left-color:var(--gold);}
-    .nav-item svg{width:16px;height:16px;flex-shrink:0;}
-    .nav-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#3a3830;padding:14px 20px 6px;}
-    .sidebar-footer{margin-top:auto;padding:14px 20px;border-top:1px solid #1e1c17;font-size:11px;color:var(--text-muted);}
-    .main{margin-left:var(--sidebar-w);flex:1;}
-    .blog-header{padding:64px 64px 48px;border-bottom:1px solid #1e1c17;}
+    a{color:inherit;}
+    /* ─── TOPBAR (matches the main shop) ─── */
+    .blog-topbar{
+      position:sticky; top:0; z-index:200; display:flex; align-items:center; justify-content:space-between;
+      gap:20px; padding:16px 32px; background:var(--black); border-bottom:1px solid var(--surf-2);
+    }
+    .blog-topbar .logo img{height:52px; object-fit:contain; cursor:pointer;}
+    .blog-nav{display:flex; align-items:center; gap:4px;}
+    .blog-nav a{
+      display:flex; align-items:center; padding:8px 12px; border-radius:8px;
+      color:var(--text-muted); font-size:13px; font-weight:500; text-decoration:none; transition:color .2s;
+    }
+    .blog-nav a:hover{color:var(--white);}
+    .blog-nav a.active{color:var(--gold);}
+    .blog-topbar-actions{display:flex; align-items:center; gap:14px;}
+    .theme-toggle-btn{background:transparent; border:none; color:var(--text-muted); cursor:pointer; padding:6px; display:flex;}
+    .theme-toggle-btn:hover{color:var(--gold);}
+    @media(max-width:900px){ .blog-nav{display:none;} }
+    .mob-header{display:none;padding:14px 20px;background:var(--black);border-bottom:1px solid var(--surf-2);align-items:center;justify-content:space-between;}
+    .mob-header img{height:36px;}
+    .mob-header a{color:var(--gold);font-size:13px;text-decoration:none;}
+    @media(max-width:900px){ .mob-header{display:flex;} .blog-topbar{display:none;} }
+    .main{flex:1;}
+    .blog-header{padding:64px 64px 48px;border-bottom:1px solid var(--surf-2);}
     .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500;}
     .blog-h1{font-family:"Playfair Display",serif;font-style:italic;font-weight:900;font-size:48px;line-height:1.1;margin-bottom:12px;}
     .blog-sub{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:var(--text-muted);}
     .posts-grid{display:flex;flex-direction:column;}
-    .post-card{cursor:pointer;padding:32px 40px;border-bottom:1px solid #1e1c17;transition:background 0.2s;display:flex;gap:28px;align-items:flex-start;text-decoration:none;color:inherit;}
+    .post-card{cursor:pointer;padding:32px 40px;border-bottom:1px solid var(--surf-2);transition:background 0.2s;display:flex;gap:28px;align-items:flex-start;text-decoration:none;color:inherit;}
     .post-card:hover{background:rgba(255,255,255,0.02);}
     .post-card.no-image{padding-top:26px;border-top:2px solid var(--gold);}
     .post-card.no-image .post-tag{margin-top:0;}
     .post-card .post-img{flex:0 0 240px;margin-bottom:0;max-height:170px;}
     .post-card .post-img.portrait{aspect-ratio:4/3;}
     .post-card .post-body-text{flex:1;min-width:0;}
-    .post-img{width:100%;margin-bottom:20px;border-radius:2px;overflow:hidden;background:#111009;}
+    .post-img{width:100%;margin-bottom:20px;border-radius:2px;overflow:hidden;background:var(--surf-1);}
     .post-img.landscape{aspect-ratio:16/9;}
     .post-img.portrait{aspect-ratio:3/4;}
     .post-img.wide{aspect-ratio:auto;}
@@ -54,24 +83,24 @@
     .post-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500;}
     .post-title{font-family:"Playfair Display",serif;font-weight:700;font-size:22px;line-height:1.3;margin-bottom:10px;}
     .post-excerpt{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:14px;}
-    .post-meta{font-size:12px;color:#4a4640;}
+    .post-meta{font-size:12px;color:var(--line-soft);}
     .read-more{font-size:12px;color:var(--gold);font-weight:500;margin-top:12px;}
     #post-detail{display:none;}
     #post-detail.active{display:block;}
     .post-back{display:flex;align-items:center;gap:8px;color:var(--gold);cursor:pointer;font-size:13px;font-weight:500;margin-bottom:32px;background:none;border:none;}
     .detail-wrap{max-width:720px;padding:64px;margin:0 auto;}
     .detail-title{font-family:"Playfair Display",serif;font-style:italic;font-weight:900;font-size:40px;line-height:1.2;margin-bottom:12px;}
-    .detail-meta{font-size:13px;color:var(--text-muted);margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid #1e1c17;}
-    .detail-img{width:100%;margin-bottom:36px;border-radius:2px;overflow:hidden;background:#111009;}
+    .detail-meta{font-size:13px;color:var(--text-muted);margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--surf-2);}
+    .detail-img{width:100%;margin-bottom:36px;border-radius:2px;overflow:hidden;background:var(--surf-1);}
     .detail-img.landscape{aspect-ratio:16/9;}
     .detail-img.portrait{aspect-ratio:3/4;max-height:480px;}
     .detail-img img{width:100%;height:100%;object-fit:cover;object-position:center top;}
-    .post-body{font-size:16px;line-height:1.9;color:#c8c0b0;}
+    .post-body{font-size:16px;line-height:1.9;color:var(--text-muted-2);}
     .post-body h2{font-family:"Playfair Display",serif;font-weight:700;font-size:26px;color:var(--white);margin:36px 0 14px;}
     .post-body p{margin-bottom:16px;}
     .post-body h3{font-family:"Playfair Display",serif;font-style:italic;font-weight:700;font-size:20px;color:var(--gold);margin:28px 0 10px;}
     .post-body figure{margin:32px 0;}
-    .post-body video,.post-body figure img{width:100%;border-radius:3px;display:block;background:#0d0b08;}
+    .post-body video,.post-body figure img{width:100%;border-radius:3px;display:block;background:var(--surf-1);}
     .post-body figcaption{margin-top:10px;font-size:12px;color:var(--text-muted);letter-spacing:.5px;text-align:center;}
     .post-body ul{margin:0 0 16px 24px;}
     .post-body li{margin-bottom:8px;}
@@ -80,45 +109,46 @@
     /* internal links in articles: gold, not the browser default purple/blue */
     .post-body a,.post-body a:link,.post-body a:visited,.body-content a,.body-content a:link,.body-content a:visited{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.35);transition:border-color .2s,color .2s;}
     .post-body a:hover,.body-content a:hover{color:var(--white);border-bottom-color:var(--gold);}
-    .mob-header{display:none;padding:14px 20px;background:#0e0c08;border-bottom:1px solid #1e1c17;align-items:center;justify-content:space-between;}
-    .mob-header img{height:36px;}
-    .mob-header a{color:var(--gold);font-size:13px;text-decoration:none;}
     @media(max-width:767px){
-      .sidebar{display:none;} .main{margin-left:0;}
       .blog-header{padding:24px 20px;} .blog-h1{font-size:28px;}
       .posts-grid{grid-template-columns:1fr;}
       .post-card{padding:24px 20px;border-right:none;flex-direction:column;gap:16px;}
       .post-card .post-img{flex:none;width:100%;max-height:200px;}
       .detail-wrap{padding:24px 20px;} .detail-title{font-size:26px;}
-      .mob-header{display:flex;}
     }
   </style>
 </head>
 <body>
 <div class="mob-header">
   <a href="/"><img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png" alt="Shirt Société"></a>
-  <a href="/">Back to shop</a>
+  <div style="display:flex;align-items:center;gap:14px">
+    <button type="button" class="theme-toggle-btn" onclick="toggleSiteTheme()" title="Toggle light / dark mode">
+      <svg id="m-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <svg id="m-theme-icon-light" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <a href="/">Back to shop</a>
+  </div>
 </div>
+<header class="blog-topbar">
+  <div class="logo" onclick="location.href='/'">
+    <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png" alt="Shirt Société">
+  </div>
+  <nav class="blog-nav">
+    <a href="/">Home</a>
+    <a href="/?p=shop">Shop</a>
+    <a href="/?p=shop&sort=new">New Added</a>
+    <a href="/?p=archive">Shirt Société Archive</a>
+    <a href="/blog.html" class="active">Blog</a>
+    <a href="/?p=about">Our Story</a>
+  </nav>
+  <div class="blog-topbar-actions">
+    <button type="button" class="theme-toggle-btn" onclick="toggleSiteTheme()" title="Toggle light / dark mode">
+      <svg id="d-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <svg id="d-theme-icon-light" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
+</header>
 <div class="layout">
-  <aside class="sidebar">
-    <div class="sidebar-logo" onclick="location.href='/'">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png" alt="Shirt Société">
-    </div>
-    <nav>
-      <div class="nav-label">Navigation</div>
-      <a class="nav-item" href="/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
-      <a class="nav-item" href="/#shop"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Shop</a>
-      <a class="nav-item active" href="/blog.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Blog</a>
-      <a class="nav-item" href="/#about"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Our Story</a>
-    </nav>
-    <div class="sidebar-footer">
-      <a href="https://www.instagram.com/shirtsociete/" target="_blank" style="display:flex;align-items:center;gap:6px;color:var(--gold);text-decoration:none;margin-bottom:8px;font-size:12px">
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        @shirtsociete
-      </a>
-      <div>2026 Shirt Société</div>
-    </div>
-  </aside>
   <main class="main">
     <div id="blog-list">
       <div class="blog-header">
@@ -139,6 +169,26 @@
     </div>
   </main>
 </div>
+
+<script>
+  function applyThemeIcons(mode) {
+    var dDark = document.getElementById('d-theme-icon-dark'), dLight = document.getElementById('d-theme-icon-light');
+    var mDark = document.getElementById('m-theme-icon-dark'), mLight = document.getElementById('m-theme-icon-light');
+    [dDark, mDark].forEach(function(el){ if (el) el.style.display = mode === 'light' ? 'none' : 'block'; });
+    [dLight, mLight].forEach(function(el){ if (el) el.style.display = mode === 'light' ? 'block' : 'none'; });
+  }
+  function toggleSiteTheme() {
+    var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    var next = isLight ? 'dark' : 'light';
+    if (next === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    try { localStorage.setItem('ss-theme', next); } catch (e) {}
+    applyThemeIcons(next);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    applyThemeIcons(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+  });
+</script>
 
 <!-- Post data stored in HTML, not JS strings -->
 <div id="post-data" style="display:none">
