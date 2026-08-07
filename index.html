@@ -1065,11 +1065,27 @@
     #zoom-lightbox-img {
       max-width: 98vw; max-height: 96vh;
       object-fit: contain;
-      transition: transform .25s ease-out;
+      transition: transform .25s ease-out, opacity .3s ease;
       transform-origin: center center;
       cursor: zoom-in;
       user-select: none; -webkit-user-drag: none;
     }
+    .zoom-thumbs {
+      position: absolute; bottom: 64px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; max-width: 86vw; overflow-x: auto;
+      padding: 8px 10px; z-index: 3001; scrollbar-width: none;
+      background: rgba(0,0,0,.25); border-radius: 8px;
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    }
+    .zoom-thumbs::-webkit-scrollbar { display: none; }
+    .zoom-thumb {
+      flex: 0 0 auto; width: 52px; height: 52px; border-radius: 3px; overflow: hidden;
+      cursor: pointer; opacity: .5; border: 2px solid transparent;
+      transition: opacity .2s ease, border-color .2s ease, transform .2s ease;
+    }
+    .zoom-thumb:hover { opacity: .85; transform: translateY(-2px); }
+    .zoom-thumb.active { opacity: 1; border-color: var(--gold); }
+    .zoom-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     #zoom-lightbox-img.zoomed { transition: none; cursor: crosshair; }
     #zoom-lightbox-img.super { cursor: zoom-out; }
     #zoom-lightbox-img.zoomed { cursor: move; }
@@ -1077,7 +1093,7 @@
       position: absolute; top: 24px; right: 28px;
       width: 40px; height: 40px; border-radius: 50%;
       background: rgba(255,255,255,.08); border: 1px solid rgba(200,169,80,.25);
-      color: var(--cream); display: flex; align-items: center; justify-content: center;
+      color: var(--on-photo); display: flex; align-items: center; justify-content: center;
       cursor: pointer; z-index: 3001; transition: background .2s;
     }
     .zoom-close:hover { background: rgba(200,169,80,.15); }
@@ -1085,7 +1101,7 @@
       position: absolute; top: 50%; transform: translateY(-50%);
       width: 48px; height: 48px; border-radius: 50%;
       background: rgba(255,255,255,.06); border: 1px solid rgba(200,169,80,.2);
-      color: var(--cream); display: flex; align-items: center; justify-content: center;
+      color: var(--on-photo); display: flex; align-items: center; justify-content: center;
       cursor: pointer; z-index: 3001; transition: background .2s;
     }
     .zoom-nav:hover { background: rgba(200,169,80,.15); }
@@ -1093,7 +1109,7 @@
     .zoom-nav.next { right: 24px; }
     .zoom-counter {
       position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
-      font-size: 11px; letter-spacing: 2px; color: var(--muted); z-index: 3001;
+      font-size: 11px; letter-spacing: 2px; color: rgba(var(--on-photo-rgb),.7); z-index: 3001;
     }
     .gallery-main img {
       width: 100%; aspect-ratio: 3/4; object-fit: contain;
@@ -4012,10 +4028,48 @@
   // ── ZOOM LIGHTBOX ──
   var zoomLevel = 1, zoomPanX = 0, zoomPanY = 0;
 
+  function renderZoomThumbs() {
+    var wrap = document.getElementById('zoom-thumbs');
+    if (!wrap) return;
+    if (currentImages.length < 2) { wrap.innerHTML = ''; wrap.style.display = 'none'; return; }
+    wrap.style.display = 'flex';
+    wrap.innerHTML = currentImages.map(function(src, i) {
+      return '<div class="zoom-thumb' + (i === currentImgIndex ? ' active' : '') + '" data-zi="' + i + '" onclick="zoomJumpTo(' + i + ')"><img src="' + src + '" alt="" loading="lazy"></div>';
+    }).join('');
+    var activeThumb = wrap.querySelector('.zoom-thumb.active');
+    if (activeThumb) activeThumb.scrollIntoView({ inline: 'center', block: 'nearest' });
+  }
+  // Smooth crossfade between images instead of an instant src swap
+  function zoomShowImage(index) {
+    if (!currentImages.length) return;
+    currentImgIndex = ((index % currentImages.length) + currentImages.length) % currentImages.length;
+    var img = document.getElementById('zoom-lightbox-img');
+    zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
+    img.style.transformOrigin = 'center center';
+    img.style.transform = 'scale(1)';
+    img.classList.remove('zoomed', 'super');
+    var _h = document.getElementById('zoom-hint');
+    if (_h) _h.textContent = 'Click the image to zoom';
+    img.style.opacity = '0';
+    setTimeout(function() {
+      img.src = currentImages[currentImgIndex];
+      img.style.opacity = '1';
+    }, 150);
+    updateZoomCounter();
+    renderZoomThumbs();
+    // sync main detail image too
+    var mainId = document.getElementById('d-detail-main-img') ? 'd-detail-main-img' : 'm-detail-main-img';
+    var mainEl = document.getElementById(mainId);
+    if (mainEl) mainEl.src = currentImages[currentImgIndex];
+    var adMain = document.getElementById('ad-main-img');
+    if (adMain) adMain.src = currentImages[currentImgIndex];
+  }
+  function zoomJumpTo(i) { zoomShowImage(i); }
   function openZoom() {
     if (!currentImages.length) return;
     var lb = document.getElementById('zoom-lightbox');
     var img = document.getElementById('zoom-lightbox-img');
+    img.style.opacity = '1';
     img.src = currentImages[currentImgIndex];
     zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
     img.style.transformOrigin = 'center center';
@@ -4024,6 +4078,7 @@
     var _h = document.getElementById('zoom-hint');
     if (_h) _h.textContent = 'Click the image to zoom';
     updateZoomCounter();
+    renderZoomThumbs();
     lb.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -4042,20 +4097,7 @@
   function zoomNav(e, dir) {
     if (e) e.stopPropagation();
     if (!currentImages.length) return;
-    currentImgIndex = (currentImgIndex + dir + currentImages.length) % currentImages.length;
-    var img = document.getElementById('zoom-lightbox-img');
-    zoomLevel = 1; zoomPanX = 0; zoomPanY = 0;
-    img.style.transformOrigin = 'center center';
-    img.style.transform = 'scale(1)';
-    img.classList.remove('zoomed', 'super');
-    var _h = document.getElementById('zoom-hint');
-    if (_h) _h.textContent = 'Click the image to zoom';
-    img.src = currentImages[currentImgIndex];
-    updateZoomCounter();
-    // sync main detail image too
-    var mainId = document.getElementById('d-detail-main-img') ? 'd-detail-main-img' : 'm-detail-main-img';
-    var mainEl = document.getElementById(mainId);
-    if (mainEl) mainEl.src = currentImages[currentImgIndex];
+    zoomShowImage(currentImgIndex + dir);
   }
   var zoomFitScale = 1;   // single zoom level
 
@@ -6305,7 +6347,8 @@
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
   </div>
   <img id="zoom-lightbox-img" src="" alt="" onclick="toggleZoomLevel(event)">
-  <div id="zoom-hint" style="position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--white-rgb),.45);pointer-events:none;z-index:5;text-align:center;white-space:nowrap">Click the image to zoom</div>
+  <div id="zoom-thumbs" class="zoom-thumbs" onclick="event.stopPropagation()"></div>
+  <div id="zoom-hint" style="position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--on-photo-rgb),.45);pointer-events:none;z-index:5;text-align:center;white-space:nowrap">Click the image to zoom</div>
   <div class="zoom-nav next" onclick="zoomNav(event,1)">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
   </div>
@@ -6527,7 +6570,6 @@
 
     <div style="padding:24px 28px 28px">
       <div id="si-form">
-        <p style="font-size:13px;color:rgba(var(--white-rgb),.6);line-height:1.7;margin:0 0 20px">Leave your email and your question — it goes straight to us, together with which shirt you're asking about.</p>
         <div style="display:flex;flex-direction:column;gap:14px">
           <input id="si-email" type="email" placeholder="Your email" style="width:100%;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'">
           <textarea id="si-question" rows="4" placeholder="Your question" style="width:100%;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;resize:vertical;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'"></textarea>
