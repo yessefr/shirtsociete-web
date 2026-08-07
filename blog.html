@@ -803,7 +803,7 @@ function showPost(id) {
     imgWrap.className = "detail-img " + (post.orientation || "landscape");
     var img = document.createElement("img");
     img.src = post.image;
-    img.alt = post.tag;
+    img.alt = post.title;
     imgWrap.appendChild(img);
     content.appendChild(imgWrap);
   }
@@ -812,6 +812,16 @@ function showPost(id) {
   body.className = "post-body";
   body.innerHTML = post.bodyHTML;
   content.appendChild(body);
+
+  // internal links to the shop/archive on every article — Google finds
+  // pages mainly through links, and this gives every post a real path
+  // back into the shop instead of relying on the sitemap alone
+  var cta = document.createElement("div");
+  cta.style.cssText = "margin-top:40px;padding-top:24px;border-top:1px solid var(--surf-2);display:flex;gap:20px;flex-wrap:wrap";
+  cta.innerHTML =
+    '<a href="/?p=shop" style="color:var(--gold);font-size:13px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:6px">Browse the shop &rarr;</a>' +
+    '<a href="/?p=archive" style="color:var(--gold);font-size:13px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:6px">Explore the Archive &rarr;</a>';
+  content.appendChild(cta);
 
   window.scrollTo(0, 0);
   // own shareable URL per article (no #hash, which Google treats as the same page)
