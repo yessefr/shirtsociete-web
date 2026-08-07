@@ -132,6 +132,11 @@
          must stay dark in both themes, since --black itself becomes light
          beige in light mode and would be unreadable on a gold background */
       --ink: #0a0905;
+      /* how dark the blurred background photos sit behind big banner titles
+         (My Cart / Saved / Our Story / sweep gallery) — brighter in light
+         mode so the page feels lighter even though the banner text itself
+         stays fixed (--on-photo) */
+      --photo-dim: 0.2;
       --sidebar-w: 240px;
       --topbar-h: 72px;
     }
@@ -153,6 +158,7 @@
       --surf-2: #e0cea0;
       --line: #cbb583;
       --line-soft: #b8a06a;
+      --photo-dim: 0.62;
     }
     html[data-theme="light"] .desktop-footer,
     html[data-theme="light"] #site-footer,
@@ -860,6 +866,7 @@
       border-radius: 3px; overflow: hidden; scroll-snap-align: start;
     }
     .m-fair-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.85); }
+    html[data-theme="light"] .m-fair-card img { filter: brightness(1); }
     .m-fair-info {
       position: absolute; left: 14px; right: 14px; bottom: 14px;
       border-left: 2px solid var(--gold); padding-left: 11px;
@@ -900,6 +907,7 @@
       transition: filter .55s ease, transform .8s cubic-bezier(.16,1,.3,1);
       transform: scale(1.04);
     }
+    html[data-theme="light"] .fair-strip img { filter: grayscale(.1) brightness(.94); }
     .strip-shade {
       position: absolute; inset: 0;
       background: linear-gradient(180deg, rgba(6,5,4,0) 0%, rgba(6,5,4,.12) 45%, rgba(6,5,4,.72) 100%);
@@ -913,7 +921,7 @@
       font-family: 'DM Sans', sans-serif;
       font-size: 13px; font-weight: 600;
       letter-spacing: 5px; text-transform: uppercase;
-      color: var(--cream);
+      color: var(--on-photo);
       white-space: nowrap;
       text-shadow: 0 2px 12px rgba(0,0,0,.9);
       transition: opacity .3s ease;
@@ -936,7 +944,7 @@
     .strip-city {
       font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
       font-size: clamp(26px,2.6vw,40px); line-height: 1;
-      color: var(--cream); margin-bottom: 8px;
+      color: var(--on-photo); margin-bottom: 8px;
       text-shadow: 0 2px 16px rgba(0,0,0,.8);
       white-space: nowrap;
     }
@@ -947,7 +955,7 @@
       color: var(--gold); opacity: .85;
     }
     .strip-date {
-      font-size: 12px; color: rgba(var(--white-rgb),.75);
+      font-size: 12px; color: rgba(var(--on-photo-rgb),.75);
       letter-spacing: .5px; white-space: nowrap;
     }
     /* open only while the mouse is on that strip — everything closes when you leave */
@@ -1572,7 +1580,7 @@
 
   <!-- Words: Timeless / Original / Rare (mobile) -->
   <div style="position:relative;padding:64px 20px;text-align:center;overflow:hidden">
-    <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;filter:brightness(.26) saturate(.5)"></div>
+    <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;filter:brightness(var(--photo-dim)) saturate(.5)"></div>
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.35),rgba(8,7,5,.9))"></div>
     <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:6px">
       <div class="m-word" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:38px;line-height:1;color:var(--on-photo)">Timeless.</div>
@@ -1619,7 +1627,7 @@
 
   <!-- Early access signup (mobile) -->
   <section style="position:relative;margin-top:32px;padding:44px 20px;border-top:1px solid var(--surf-2);overflow:hidden;text-align:center">
-    <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 40%/cover;filter:brightness(.18) saturate(.5)"></div>
+    <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 40%/cover;filter:brightness(var(--photo-dim)) saturate(.5)"></div>
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.55),rgba(8,7,5,.94))"></div>
     <div style="position:relative;z-index:2">
       <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600">Early Access</div>
@@ -2028,53 +2036,23 @@
   </section>
 </div>
 
-<!-- SCENE 5: NEXT EVENT BANNER -->
-<div id="cin-event-banner" style="opacity:0;transform:translateY(40px)">
-  <div style="position:relative;border-top:1px solid rgba(200,169,80,.2);border-bottom:1px solid rgba(200,169,80,.2);padding:34px 52px;overflow:hidden">
-    <div id="ev-seethrough" style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1784229972/images_1_zhpwmj.png') center/100% 100% no-repeat;filter:brightness(.85) saturate(1.25) contrast(1.08);will-change:transform"></div>
-    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,9,5,.72) 0%,rgba(10,9,5,.42) 40%,rgba(10,9,5,.22) 70%,rgba(10,9,5,.35) 100%)"></div>
-    <div style="position:relative;z-index:2">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap">
-      <div style="display:flex;align-items:center;gap:24px">
-        <div style="position:relative;flex-shrink:0;width:20px;height:20px">
-          <div style="width:20px;height:20px;border-radius:50%;background:var(--gold);animation:pulseGlow 1.5s ease-in-out infinite;position:absolute"></div>
-          <div style="position:absolute;inset:-6px;border-radius:50%;background:rgba(200,169,80,.2);animation:pulseRing 1.5s ease-in-out infinite"></div>
-        </div>
-        <div>
-          <div id="ev-eyebrow" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,.9);opacity:0;transform:translateX(-16px)">Next Event</div>
-          <div id="ev-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(22px,2.6vw,34px);color:var(--on-photo);text-shadow:0 2px 12px rgba(0,0,0,.95),0 4px 30px rgba(0,0,0,.7);margin-bottom:4px;opacity:0;transform:translateX(-20px)">Leipzig</div>
-          <div id="ev-date" style="font-size:13px;color:rgba(var(--on-photo-rgb),.8);text-shadow:0 1px 8px rgba(0,0,0,.9);opacity:0">Vintage Fußballbörse &middot; Sunday 4 October 2026 &middot; 10:00 to 17:00</div>
-          <div id="ev-btns" style="display:flex;align-items:center;gap:10px;margin-top:16px;opacity:0;transform:translateY(10px)">
-            <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:rgba(6,5,4,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(200,169,80,.35);color:var(--gold);text-decoration:none;padding:9px 16px;border-radius:2px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s" onmouseover="this.style.background='rgba(200,169,80,.16)';this.style.borderColor='rgba(200,169,80,.7)'" onmouseout="this.style.background='rgba(6,5,4,.72)';this.style.borderColor='rgba(200,169,80,.35)'">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              @vintagefussball
-            </a>
-            <button onclick="dGoTo('about')" style="display:inline-flex;align-items:center;gap:7px;background:rgba(6,5,4,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.18);color:rgba(var(--on-photo-rgb),.9);padding:9px 16px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.12)';this.style.borderColor='rgba(255,255,255,.4)'" onmouseout="this.style.background='rgba(6,5,4,.72)';this.style.borderColor='rgba(255,255,255,.18)'">
-              Event timeline
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <div style="text-align:center;background:rgba(6,5,4,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(200,169,80,.3);border-radius:4px;padding:10px 14px;min-width:54px">
-          <div id="cin-days" style="font-size:28px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
-          <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-top:4px">Days</div>
-        </div>
-        <div style="font-size:28px;color:rgba(200,169,80,.2);padding-bottom:14px">:</div>
-        <div style="text-align:center;background:rgba(6,5,4,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(200,169,80,.3);border-radius:4px;padding:10px 14px;min-width:54px">
-          <div id="cin-hours" style="font-size:28px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
-          <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-top:4px">Hours</div>
-        </div>
-        <div style="font-size:28px;color:rgba(200,169,80,.2);padding-bottom:14px">:</div>
-        <div style="text-align:center;background:rgba(6,5,4,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(200,169,80,.3);border-radius:4px;padding:10px 14px;min-width:54px">
-          <div id="cin-mins" style="font-size:28px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums">--</div>
-          <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-top:4px">Mins</div>
-        </div>
-      </div>
+<!-- SCENE 5: NEXT EVENT — kept subtle and low-key -->
+<div id="cin-event-banner" style="opacity:0;transform:translateY(20px);padding:22px 52px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <div style="position:relative;flex-shrink:0;width:8px;height:8px">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulseGlow 1.5s ease-in-out infinite;position:absolute"></div>
+    </div>
+    <div id="ev-eyebrow" style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;opacity:0;transform:translateY(8px)">Next Event</div>
+    <div id="ev-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:15px;color:var(--white);opacity:0;transform:translateY(8px)">Leipzig</div>
+    <div id="ev-date" style="font-size:12.5px;color:var(--text-muted);opacity:0;transform:translateY(8px)">Vintage Fußballbörse &middot; Sunday 4 October 2026 &middot; 10:00 to 17:00</div>
+    <div id="ev-btns" style="margin-left:auto;display:flex;align-items:center;gap:20px;opacity:0;transform:translateY(8px)">
+      <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener" style="color:var(--text-muted);text-decoration:none;font-size:11px;transition:color .2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">@vintagefussball</a>
+      <button onclick="dGoTo('about')" style="background:none;border:none;color:var(--gold);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;padding:0">
+        Event timeline
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
     </div>
   </div>
-</div>
 </div>
 
 <!-- Divider between Next Event and New Shirts Added -->
@@ -2139,9 +2117,9 @@
 <div id="cin-sweep-pin" style="position:relative;height:600vh">
   <section id="cin-s-sweep" style="position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--black)">
 
-    <div id="swbg0" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
-    <div id="swbg1" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
-    <div id="swbg2" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;opacity:0;filter:brightness(.2) saturate(.5);transition:opacity 1.2s"></div>
+    <div id="swbg0" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center/cover;opacity:0;filter:brightness(var(--photo-dim)) saturate(.5);transition:opacity 1.2s"></div>
+    <div id="swbg1" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg') center/cover;opacity:0;filter:brightness(var(--photo-dim)) saturate(.5);transition:opacity 1.2s"></div>
+    <div id="swbg2" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;opacity:0;filter:brightness(var(--photo-dim)) saturate(.5);transition:opacity 1.2s"></div>
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,transparent 0%,transparent 28%,rgba(10,9,5,.8) 100%),linear-gradient(180deg,rgba(10,9,5,.8) 0%,transparent 18%,transparent 78%,rgba(10,9,5,.95) 100%);pointer-events:none;z-index:6"></div>
 
     <!-- 4 shirts stacked, GSAP moves each one -->
@@ -2166,7 +2144,7 @@
 
 <!-- ═══ EARLY ACCESS / DROP SIGNUP ═══ -->
 <section id="drop-signup-section" style="position:relative;padding:72px 52px;border-top:1px solid var(--surf-2);border-bottom:1px solid var(--surf-2);overflow:hidden;text-align:center">
-  <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 40%/cover;filter:brightness(.18) saturate(.5)"></div>
+  <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 40%/cover;filter:brightness(var(--photo-dim)) saturate(.5)"></div>
   <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.55),rgba(8,7,5,.94))"></div>
   <div style="position:relative;z-index:2;max-width:560px;margin:0 auto">
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:600">Early Access</div>
@@ -4258,10 +4236,6 @@
     cart.push({ id: shirt.id, title: shirt.title, price: shirt.price, image: getImg(shirt), club: shirt.club, size: shirt.size });
     saveCart(); updateCartBadge(); showToast('Added to cart \u2713');
     renderMobileGrid(); renderDesktopGrid();
-    try {
-      var el = srcEl || document.getElementById('d-detail-main-img') || document.getElementById('m-detail-main-img');
-      if (el && typeof cartFlight === 'function') cartFlight(shirt, el);
-    } catch (e) {}
   }
 
   function quickAdd(id, ev) {
