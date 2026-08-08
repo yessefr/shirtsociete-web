@@ -395,6 +395,10 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
             Generate sitemap
           </button>
+          <button class="btn btn-secondary" onclick="generateMerchantFeed()" id="merchant-btn" title="Builds a Google Shopping product feed of every shirt that is live for sale">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+            Generate Merchant feed
+          </button>
           <button class="btn btn-primary" onclick="openShirtModal()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Add Shirt
@@ -755,6 +759,32 @@
 </div>
 
 <!-- SITEMAP MODAL -->
+<div class="modal-overlay" id="merchant-modal">
+  <div class="modal" style="max-width:760px">
+    <div class="modal-header">
+      <div class="modal-title">Google Merchant feed (products.xml)</div>
+      <button class="modal-close" onclick="document.getElementById('merchant-modal').classList.remove('open')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:rgba(200,169,80,0.06);border:1px solid rgba(200,169,80,0.25);border-radius:3px;padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.7;color:var(--text-muted)">
+        <strong style="color:var(--gold)">What to do with this</strong><br>
+        1. Klik op <em>Download</em> hieronder — je krijgt <code>products.xml</code>.<br>
+        2. Upload dat bestand naar GitHub → <code>shirtsociete-web</code> (repo root), commit.<br>
+        3. Het staat dan live op <code>https://shirtsociete.com/products.xml</code>.<br>
+        4. Merchant Center → Producten toevoegen → <em>Producten uit een bestand</em> → <em>Geef een link naar het bestand op</em> → plak die URL.<br>
+        5. Draai deze knop opnieuw + upload zodra je shirts toevoegt of verkoopt (of laat Merchant elke 24u de URL opnieuw ophalen).
+      </div>
+      <div id="merchant-summary" style="font-size:13px;color:var(--text-muted);margin-bottom:12px"></div>
+      <textarea id="merchant-output" readonly style="width:100%;height:300px;background:var(--black);border:1px solid var(--grey-light);color:var(--white);font-family:monospace;font-size:11px;padding:12px;border-radius:2px;outline:none;resize:vertical"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="document.getElementById('merchant-modal').classList.remove('open')">Close</button>
+      <button class="btn btn-secondary" onclick="copyMerchantFeed()">Copy</button>
+      <button class="btn btn-primary" onclick="downloadMerchantFeed()">Download products.xml</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="sitemap-modal">
   <div class="modal" style="max-width:760px">
     <div class="modal-header">
@@ -2036,6 +2066,118 @@
       document.execCommand('copy');
       showToast('Sitemap copied', 'success');
     }
+  }
+
+  // ── GOOGLE MERCHANT FEED ──
+  // Builds a Google Shopping product feed (RSS 2.0 + g: namespace) from the
+  // same live shirts as the site. Only public, for-sale shirts go in — concepts
+  // and sold shirts are left out (Merchant Center is strict about availability).
+  // Each shirt is one of one, so quantity is always 1.
+  var _merchantFeedXml = '';
+  function generateMerchantFeed() {
+    if (!allShirts || !allShirts.length) {
+      showToast('Shirts nog niet geladen — probeer zo opnieuw', 'error');
+      return;
+    }
+    var base = 'https://shirtsociete.com';
+    var lines = [];
+    lines.push('<?xml version="1.0" encoding="UTF-8"?>');
+    lines.push('<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">');
+    lines.push('  <channel>');
+    lines.push('    <title>Shirt Société</title>');
+    lines.push('    <link>' + base + '/</link>');
+    lines.push('    <description>Vintage and match worn football shirts</description>');
+
+    function tag(name, val) {
+      return '      <' + name + '>' + xmlEscape(val) + '</' + name + '>';
+    }
+
+    var included = 0, skippedDraft = 0, skippedSold = 0, skippedNoImg = 0, skippedNoPrice = 0;
+    allShirts.forEach(function(s) {
+      if (!s || !s.id) return;
+      if (s.is_draft) { skippedDraft++; return; }        // concepts: not public yet
+      if (s.available === false) { skippedSold++; return; } // sold: leave out of feed
+      var img = (s.images && s.images.length) ? s.images[0] : '';
+      if (!img) { skippedNoImg++; return; }              // Merchant requires an image
+      var priceNum = parseFloat(s.price);
+      if (!priceNum || isNaN(priceNum)) { skippedNoPrice++; return; } // needs a price
+      var url = base + '/products/' + ssShirtSlug(s) + '.html';
+
+      // description: prefer the real one, fall back to a clean generated line
+      var desc = s.description
+        ? String(s.description).replace(/\s+/g, ' ').trim()
+        : (s.title + ((s.club && s.title.indexOf(s.club) === -1) ? ' — ' + s.club : '')
+           + (s.season ? ' — Season ' + s.season : '')
+           + '. A single, original piece from Shirt Société.');
+
+      // product type / category from our own category field
+      var ptype = s.category === 'match_worn' ? 'Match Worn / Issued'
+                : s.category === 'national' ? 'International Shirts'
+                : 'Club Shirts';
+
+      lines.push('    <item>');
+      lines.push(tag('g:id', String(s.id)));
+      lines.push(tag('g:title', s.title || 'Football shirt'));
+      lines.push(tag('g:description', desc));
+      lines.push(tag('g:link', url));
+      lines.push(tag('g:image_link', img));
+      // extra photos (Merchant allows up to 10 additional image links)
+      (s.images || []).slice(1, 11).forEach(function(im) {
+        if (im) lines.push(tag('g:additional_image_link', im));
+      });
+      lines.push(tag('g:availability', 'in_stock'));
+      lines.push(tag('g:price', priceNum.toFixed(2) + ' EUR'));
+      lines.push(tag('g:condition', 'used'));            // vintage / worn = used
+      lines.push(tag('g:brand', s.club || 'Shirt Société'));
+      lines.push(tag('g:identifier_exists', 'no'));      // no GTIN/MPN on unique shirts
+      lines.push(tag('g:google_product_category', '212')); // Apparel & Accessories > Clothing
+      lines.push(tag('g:product_type', ptype));
+      if (s.size) lines.push(tag('g:size', s.size));
+      lines.push('    </item>');
+      included++;
+    });
+
+    lines.push('  </channel>');
+    lines.push('</rss>');
+    _merchantFeedXml = lines.join('\n');
+
+    document.getElementById('merchant-output').value = _merchantFeedXml;
+    var skips = [];
+    if (skippedSold) skips.push(skippedSold + ' sold');
+    if (skippedDraft) skips.push(skippedDraft + ' concept');
+    if (skippedNoImg) skips.push(skippedNoImg + ' no image');
+    if (skippedNoPrice) skips.push(skippedNoPrice + ' no price');
+    document.getElementById('merchant-summary').innerHTML =
+      '<strong style="color:var(--white)">' + included + ' shirts</strong> in the feed' +
+      (skips.length ? ' <span style="color:var(--text-muted)">(left out: ' + skips.join(', ') + ')</span>' : '') + '.';
+    document.getElementById('merchant-modal').classList.add('open');
+  }
+  function copyMerchantFeed() {
+    var ta = document.getElementById('merchant-output');
+    ta.select();
+    try {
+      navigator.clipboard.writeText(ta.value).then(function() {
+        showToast('Feed copied', 'success');
+      }, function() {
+        document.execCommand('copy');
+        showToast('Feed copied', 'success');
+      });
+    } catch (e) {
+      document.execCommand('copy');
+      showToast('Feed copied', 'success');
+    }
+  }
+  function downloadMerchantFeed() {
+    if (!_merchantFeedXml) return;
+    var blob = new Blob([_merchantFeedXml], { type: 'application/xml' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'products.xml';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
+    showToast('products.xml downloaded', 'success');
   }
 
   // ── PRODUCT PAGE GENERATOR ──
