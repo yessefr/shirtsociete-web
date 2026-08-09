@@ -395,6 +395,10 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
             Generate sitemap
           </button>
+          <button class="btn btn-secondary" onclick="checkShirtData()" id="datacheck-btn" title="Finds shirts where size/condition in the description disagree with the fields">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Check data
+          </button>
           <button class="btn btn-secondary" onclick="generateMerchantFeed()" id="merchant-btn" title="Builds a Google Shopping product feed of every shirt that is live for sale">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
             Generate Merchant feed
@@ -2045,6 +2049,9 @@
     lines.push('</urlset>');
     var xml = lines.join('\n');
 
+    var _smBox = document.getElementById('sitemap-modal');
+    var _smTitle = _smBox ? _smBox.querySelector('.modal-title') : null;
+    if (_smTitle) _smTitle.textContent = 'Sitemap.xml';
     document.getElementById('sitemap-output').value = xml;
     document.getElementById('sitemap-summary').innerHTML =
       '<strong style="color:var(--white)">' + (live + sold + 14 + BLOG_POSTS.length + archN) + ' URL\'s</strong> — ' +
@@ -2066,6 +2073,66 @@
       document.execCommand('copy');
       showToast('Sitemap copied', 'success');
     }
+  }
+
+  // ── DATA CONSISTENCY CHECK ──
+  // The audit found shirts where the spec field and the description disagree
+  // (card says "Size L", description says "XL"; card "Excellent", description
+  // "very good"). Those mismatches confuse buyers and get flagged by Merchant
+  // Center, so this scans every shirt and reports them for manual correction.
+  function checkShirtData() {
+    if (!allShirts || !allShirts.length) {
+      showToast('Shirts nog niet geladen — probeer zo opnieuw', 'error');
+      return;
+    }
+    var SIZES = ['XXXL','XXL','XL','L','M','S','XS'];
+    var CONDS = ['mint','excellent','very good','good','fair','poor'];
+    var issues = [];
+
+    allShirts.forEach(function(s) {
+      var desc = String(s.description || '').toLowerCase();
+      if (!desc.trim()) return;
+      var probs = [];
+
+      // size stated in the description vs the size field
+      if (s.size) {
+        var m = desc.match(/\bsize[:\s]+(xxxl|xxl|xl|l|m|s|xs)\b/i);
+        if (m && m[1].toUpperCase() !== String(s.size).trim().toUpperCase()) {
+          probs.push('size field "' + s.size + '" vs description "' + m[1].toUpperCase() + '"');
+        }
+      }
+      // condition stated in the description vs the condition field
+      if (s.condition) {
+        var dm = desc.match(/\bcondition[:\s]+(mint|excellent|very good|good|fair|poor)\b/i);
+        if (dm && dm[1].toLowerCase() !== String(s.condition).trim().toLowerCase()) {
+          probs.push('condition field "' + s.condition + '" vs description "' + dm[1] + '"');
+        }
+      }
+      // things Merchant Center will reject outright
+      if (!s.is_draft && s.available !== false) {
+        if (!s.images || !s.images.length) probs.push('no photos');
+        if (!s.price || isNaN(parseFloat(s.price))) probs.push('no price');
+        if (!desc.trim()) probs.push('no description');
+      }
+      if (probs.length) issues.push({ title: s.title || '(untitled)', probs: probs });
+    });
+
+    var out = document.getElementById('sitemap-output');
+    var box = document.getElementById('sitemap-modal');
+    var summary = document.getElementById('sitemap-summary');
+    var titleEl = box ? box.querySelector('.modal-title') : null;
+    if (titleEl) titleEl.textContent = 'Data consistency check';
+
+    if (!issues.length) {
+      summary.innerHTML = '<strong style="color:var(--green,#4caf7d)">No problems found</strong> — every shirt\'s size, condition, price and photos line up with its description.';
+      out.value = 'All ' + allShirts.length + ' shirts checked. No mismatches found.';
+    } else {
+      summary.innerHTML = '<strong style="color:var(--white)">' + issues.length + ' shirt(s)</strong> with a mismatch — fix these in the admin before regenerating pages or the feed.';
+      out.value = issues.map(function(it, i) {
+        return (i + 1) + '. ' + it.title + '\n   - ' + it.probs.join('\n   - ');
+      }).join('\n\n');
+    }
+    box.classList.add('open');
   }
 
   // ── GOOGLE MERCHANT FEED ──
@@ -2132,6 +2199,10 @@
       lines.push(tag('g:identifier_exists', 'no'));      // no GTIN/MPN on unique shirts
       lines.push(tag('g:google_product_category', '212')); // Apparel & Accessories > Clothing
       lines.push(tag('g:product_type', ptype));
+      lines.push(tag('g:age_group', 'adult'));
+      lines.push(tag('g:gender', 'unisex'));
+      // one of one: Google should never think there is more stock than there is
+      lines.push(tag('g:quantity', '1'));
       if (s.size) lines.push(tag('g:size', s.size));
       lines.push('    </item>');
       included++;
@@ -2297,18 +2368,44 @@
         '</ul></section>';
     }
 
-    // gallery: one big main photo + clickable thumbnail strip, like the shop
+    // gallery: one big main photo + clickable thumbnail strip, like the shop.
+    // Alt text is descriptive per position rather than "photo 2" (audit 19),
+    // and Cloudinary is asked for right-sized responsive variants instead of
+    // shipping one huge original to every device (audit 20).
     var imgs = (s.images || []).filter(Boolean);
+    // turn a Cloudinary URL into a resized variant; non-Cloudinary URLs pass through
+    function ssCld(u, w) {
+      if (!u || u.indexOf('/upload/') === -1) return u;
+      return u.replace('/upload/', '/upload/f_auto,q_auto,w_' + w + '/');
+    }
+    function ssSrcset(u, widths) {
+      if (!u || u.indexOf('/upload/') === -1) return '';
+      return widths.map(function(w) { return ssCld(u, w) + ' ' + w + 'w'; }).join(', ');
+    }
+    // best-guess descriptions for the usual photo order collectors shoot in
+    var ALT_ROLES = ['front', 'back nameset', 'club crest detail', 'sponsor detail',
+                     'sleeve detail', 'wash label', 'size label', 'fabric detail',
+                     'match wear detail', 'certificate of authenticity'];
+    function altFor(i) {
+      var bits = [s.title];
+      if (i > 0) bits.push(ALT_ROLES[i] || ('detail photo ' + (i + 1)));
+      else bits.push(ALT_ROLES[0]);
+      return bits.join(' — ');
+    }
     var galleryHtml = '';
     if (imgs.length) {
+      var mainSet = ssSrcset(imgs[0], [400, 700, 1000, 1400]);
       galleryHtml = '<div class="gallery-main">'
-        + '<img id="ss-main-img" src="' + htmlEscape(imgs[0]) + '" alt="' + htmlEscape(s.title) + '">'
+        + '<img id="ss-main-img" src="' + htmlEscape(ssCld(imgs[0], 1000) || imgs[0]) + '"'
+        + (mainSet ? ' srcset="' + htmlEscape(mainSet) + '" sizes="(max-width:900px) 100vw, 640px"' : '')
+        + ' width="1000" height="1250" fetchpriority="high"'
+        + ' alt="' + htmlEscape(altFor(0)) + '">'
         + '</div>'
         + (imgs.length > 1
             ? '<div class="gallery-thumbs">' + imgs.map(function(im, i) {
-                return '<img class="gthumb' + (i === 0 ? ' active' : '') + '" src="' + htmlEscape(im)
-                  + '" alt="' + htmlEscape(s.title + ' — photo ' + (i + 1)) + '" loading="lazy"'
-                  + ' onclick="ssPick(this,\'' + htmlEscape(im).replace(/'/g, "\\'") + '\')">';
+                return '<img class="gthumb' + (i === 0 ? ' active' : '') + '" src="' + htmlEscape(ssCld(im, 150) || im)
+                  + '" width="72" height="72" alt="' + htmlEscape(altFor(i)) + '" loading="lazy"'
+                  + ' onclick="ssPick(this,\'' + htmlEscape(ssCld(im, 1000) || im).replace(/'/g, "\\'") + '\')">';
               }).join('') + '</div>'
             : '');
     }
@@ -2345,6 +2442,7 @@
       "name": s.title || '', "image": s.images || [],
       "description": metaDesc,
       "category": "Football Shirt",
+      "sku": String(s.id),
       "brand": { "@type": "Brand", "name": s.club || 'Shirt Société' },
       "offers": {
         "@type": "Offer", "url": url, "priceCurrency": "EUR",
@@ -2353,6 +2451,20 @@
         "seller": { "@type": "Organization", "name": "Shirt Société" }
       }
     };
+    // Only state facts we actually hold — never invent identifiers (audit 14).
+    if (s.mw_code) schema.mpn = String(s.mw_code);
+    (function() {
+      var szMap = { '4':'S','5':'S/M','6':'M','7':'M/L','8':'L','9':'L/XL','10':'XL','11':'XL/XXL','12':'XXL','13':'XXL/3XL' };
+      var sz = s.size || (s.mw_sizecode ? (szMap[String(s.mw_sizecode)] || '') : '');
+      if (sz) schema.size = String(sz).trim();
+    })();
+    // physical size as structured measurements, when we have them
+    var props = [];
+    if (s.width_cm) props.push({ "@type": "PropertyValue", "name": "Width (pit to pit)", "value": String(s.width_cm) + " cm" });
+    if (s.length_cm) props.push({ "@type": "PropertyValue", "name": "Length (shoulder to hem)", "value": String(s.length_cm) + " cm" });
+    if (s.season) props.push({ "@type": "PropertyValue", "name": "Season", "value": String(s.season) });
+    if (s.condition) props.push({ "@type": "PropertyValue", "name": "Condition", "value": String(s.condition) });
+    if (props.length) schema.additionalProperty = props;
     // breadcrumb so Google can show Home › Shop › <shirt> in results
     var crumb = {
       "@context": "https://schema.org/", "@type": "BreadcrumbList",
@@ -2426,7 +2538,7 @@
       +   '.prov dd{margin:2px 0 10px;padding-bottom:10px;border-bottom:1px solid var(--line-soft);font-size:14px}'
       +   '.meas ul{border-top:1px solid var(--line)}'
       +   '.meas li{list-style:none;padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:14px}'
-      +   '.cta{display:inline-block;background:var(--gold);color:var(--ink);padding:15px 32px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px;margin:8px 10px 8px 0;transition:opacity .2s}'
+      +   '.cta{display:inline-block;background:var(--gold);color:var(--ink);padding:15px 32px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px;margin:8px 10px 8px 0;transition:opacity .2s;border:none;cursor:pointer;font-family:inherit}'
       +   '.cta:hover{opacity:.88}'
       +   '.cta-alt{display:inline-block;background:transparent;color:var(--gold);border:1px solid var(--gold);padding:15px 32px;border-radius:2px;text-decoration:none;font-weight:600;letter-spacing:1px;text-transform:uppercase;font-size:12px;margin:8px 0}'
       +   '.soldbox{display:inline-block;background:var(--surf-2);color:var(--muted);padding:15px 32px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;font-size:12px;margin:8px 0}'
@@ -2487,7 +2599,11 @@
       + (s.description ? '      <div class="desc">' + htmlEscape(s.description) + '</div>\n' : '')
       + (s.available === false
           ? '      <div class="soldbox">This shirt has been sold.</div>\n'
-          : '      <a class="cta" href="/products/' + slug + '.html?add=1">Add to cart &rarr;</a>\n'
+            + '      <div style="margin-top:14px">'
+            +   '<a class="cta-alt" href="/?p=shop' + (s.club ? '&q=' + encodeURIComponent(s.club) : '') + '">Find a similar shirt</a> '
+            +   '<a class="cta-alt" href="/?p=shop#drop-signup">Notify me when another arrives</a>'
+            + '</div>\n'
+          : '      <button type="button" class="cta" onclick="ssAddToCart()">Add to cart &rarr;</button>\n'
             + '      <a class="cta-alt" href="/products/' + slug + '.html">View in shop</a>\n')
       + '      <div class="shipbox">'
       +   '<div class="shipline"><strong>Shipping</strong> Fully tracked and insured, sent within 2 business days. Signature required for high-value orders.</div>'
@@ -2513,6 +2629,9 @@
       +   '  } catch (e) {}\n'
       +   '})();\n'
       +   'function ssPick(el,src){var m=document.getElementById("ss-main-img");if(m)m.src=src;var ts=el.parentNode.querySelectorAll(".gthumb");for(var i=0;i<ts.length;i++)ts[i].classList.remove("active");el.classList.add("active");}\n'
+      /* Cart is triggered as a button, not an ?add=1 link, so no extra
+         indexable URL is ever created for Google to crawl (audit point 5). */
+      +   'function ssAddToCart(){location.href="/?shirt=" + encodeURIComponent(' + JSON.stringify(String(s.id)) + ') + "&add=1";}\n'
       +   'function ssApplyIcons(mode){var d=document.getElementById("ss-ic-dark"),l=document.getElementById("ss-ic-light");if(d)d.style.display=mode==="light"?"none":"block";if(l)l.style.display=mode==="light"?"block":"none";}\n'
       +   'function ssToggleTheme(){var isL=document.documentElement.getAttribute("data-theme")==="light";var next=isL?"dark":"light";if(next==="light")document.documentElement.setAttribute("data-theme","light");else document.documentElement.removeAttribute("data-theme");try{localStorage.setItem("ss-theme",next);}catch(e){}ssApplyIcons(next);}\n'
       +   'ssApplyIcons(document.documentElement.getAttribute("data-theme")==="light"?"light":"dark");\n'
