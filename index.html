@@ -44,8 +44,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Trustpilot domain verification -->
   <meta name="trustpilot-one-time-domain-verification-id" content="70dd859d-1eb5-43e1-aa8c-4b3327e5c44f"/>
-  <title>Shirt Société | Vintage Football Shirts | Timeless, Original, Rare</title>
-  <meta name="description" content="Shirt Société — curated vintage and match worn football shirts from the golden era. Rare originals sourced across Europe. Based in the Netherlands, active at Vintage Fußballbörse fairs in Germany.">
+  <title>Vintage &amp; Match Worn Football Shirts | Shirt Société</title>
+  <meta name="description" content="Shop authentic vintage and match worn football shirts, sourced across Europe. Rare club, national team and player shirts for collectors worldwide.">
   <meta name="keywords" content="vintage football shirts, match worn shirts, vintage voetbalshirts, match issue shirts, Bayern München shirt, Ajax shirt, football memorabilia, vintage football, rare football shirts, Shirt Société">
   <meta name="author" content="Shirt Société">
   <meta name="robots" content="index, follow">
@@ -94,7 +94,6 @@
     "openingHours": "Mo-Su 00:00-23:59"
   }
   </script>
-  <title>Shirt Société | Vintage Football Shirts | Timeless, Original, Rare</title>
   <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_32,h_32,b_rgb:0a0905,f_png,q_100,e_sharpen:80/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=12">
   <link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_16,h_16,b_rgb:0a0905,f_png,q_100,e_sharpen:100/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=12">
   <link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/dinpfdojh/image/upload/c_pad,w_192,h_192,b_rgb:0a0905,f_png,q_100/v1782387987/Shirt_Soci%C3%A9t%C3%A9_1_rqo34v.png?v=12">
@@ -3615,9 +3614,9 @@
   function restoreDefaultMeta() {
     try {
       history.replaceState({}, '', '/');
-      document.title = 'Shirt Société | Vintage Football Shirts | Timeless, Original, Rare';
+      document.title = 'Vintage & Match Worn Football Shirts | Shirt Société';
       var md = document.querySelector('meta[name="description"]');
-      if (md) md.setAttribute('content', 'Shirt Société — curated vintage & match worn football shirts. Timeless, original, rare.');
+      if (md) md.setAttribute('content', 'Shop authentic vintage and match worn football shirts, sourced across Europe. Rare club, national team and player shirts for collectors worldwide.');
       if (typeof updateCanonical === 'function') updateCanonical('/');
     } catch (e) {}
   }
@@ -6724,6 +6723,26 @@
     var m = document.getElementById('drop-alert-modal');
     if (m) m.addEventListener('click', function(e) { if (e.target === m) closeDropAlertModal(); });
   })();
+  // Show the drop signup once when someone arrives on the site. sessionStorage
+  // (not localStorage) means it stays gone for the rest of the browser session,
+  // including refreshes, but a genuinely new visit can see it again.
+  // Skipped entirely if they already signed up, and never on top of checkout.
+  function ssMaybeAutoDropPopup() {
+    try {
+      if (sessionStorage.getItem('ss-drop-popup-seen')) return;
+      if (localStorage.getItem('ss-drop-signed-up')) return;
+      var p = new URLSearchParams(window.location.search).get('p');
+      if (p && p !== 'home') return;             // only on the homepage
+      if (window.location.search.indexOf('shirt=') !== -1) return;  // not on a shared product link
+      sessionStorage.setItem('ss-drop-popup-seen', '1');
+      setTimeout(function() {
+        var anyOpen = document.querySelector('#contact-modal[style*="flex"], #shirt-inquiry-modal[style*="flex"], #zoom-lightbox.open');
+        if (anyOpen) return;
+        openDropAlertModal();
+      }, 4000);
+    } catch (e) {}
+  }
+  document.addEventListener('DOMContentLoaded', ssMaybeAutoDropPopup);
   async function submitDropAlertEmail() {
     var input = document.getElementById('da-email');
     var btn = document.getElementById('da-btn');
@@ -6756,6 +6775,7 @@
       if (typeof showToast === 'function') showToast('Something went wrong, please try again');
       return;
     }
+    try { localStorage.setItem('ss-drop-signed-up', '1'); } catch (e) {}
     if (form) form.style.display = 'none';
     if (confirm) confirm.style.display = 'block';
   }
