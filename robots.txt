@@ -4,4 +4,27 @@ Allow: /
 # Admin panel should not be indexed
 Disallow: /admin.html
 
+# Filter, sort and cart combinations produce near-identical pages and eat
+# crawl budget. The real landing pages (/collections/, /clubs/,
+# /national-teams/, /products/) stay fully crawlable.
+Disallow: /*?*sort=
+Disallow: /*?*size=
+Disallow: /*?*condition=
+Disallow: /*?*price=
+Disallow: /*?*q=
+Disallow: /*?*add=
+Disallow: /*?*ssr=
+Disallow: /*?p=cart
+Disallow: /*?p=checkout
+Disallow: /*?p=profile
+Disallow: /*?p=wishlist
+
+# Let Google fetch the assets it needs to render pages properly
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.webp$
+Allow: /*.svg$
+
 Sitemap: https://shirtsociete.com/sitemap.xml
