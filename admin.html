@@ -2306,15 +2306,26 @@
     }];
   }
 
+  // JSZip is only pulled in when a generator actually needs it, so the admin
+  // stays light on load. Every zip-producing button routes through here.
+  function ssWithJSZip(cb) {
+    if (typeof JSZip !== 'undefined') { cb(); return; }
+    var sc = document.createElement('script');
+    sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    sc.onload = cb;
+    sc.onerror = function() { showToast('Could not load ZIP library (check connection)', 'error'); };
+    document.head.appendChild(sc);
+  }
+
   function generateCollectionPages() {
     if (!allShirts || !allShirts.length) {
       showToast('Shirts nog niet geladen — probeer zo opnieuw', 'error');
       return;
     }
-    if (typeof JSZip === 'undefined') {
-      showToast('JSZip nog niet geladen — probeer zo opnieuw', 'error');
-      return;
-    }
+    ssWithJSZip(function() { ssBuildCollections(); });
+  }
+
+  function ssBuildCollections() {
     var base = 'https://shirtsociete.com';
     var zip = new JSZip();
     var made = [];
@@ -2482,10 +2493,10 @@
   // /journal/<slug>/ with its own title, description, canonical and Article
   // schema, instead of everything living behind ?post= on one URL.
   function generateJournalPages() {
-    if (typeof JSZip === 'undefined') {
-      showToast('JSZip nog niet geladen — probeer zo opnieuw', 'error');
-      return;
-    }
+    ssWithJSZip(function() { ssBuildJournal(); });
+  }
+
+  function ssBuildJournal() {
     showToast('Reading blog.html...', 'success');
     fetch('/blog.html', { cache: 'no-store' })
       .then(function(r) {
