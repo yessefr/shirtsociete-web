@@ -4364,10 +4364,14 @@
     };
   }
 
+  // Every country we ship to in the EU is free over 150 euro, so once the cart
+  // is past that threshold the estimate should already show 0 rather than a
+  // placeholder rate the customer will never actually be charged.
+  const EU_FREE_AT = 150;
   function getShipping() {
     const country = getSelectedCountry();
     const subtotal = getCartTotal();
-    if (!country) return 7.95; // default before country selected
+    if (!country) return subtotal >= EU_FREE_AT ? 0 : 7.95; // estimate before country is picked
     return getShippingForCountry(country, subtotal).cost;
   }
 
@@ -4389,10 +4393,12 @@
         </div>
       `).join('')}
       <div class="cart-footer">
-        <div class="cart-shipping-note">Free shipping on EU orders over €150 · Select country at checkout for exact shipping cost</div>
+        <div class="cart-shipping-note">${sub >= EU_FREE_AT
+          ? 'Free shipping on this order within the EU &middot; Select country at checkout to confirm'
+          : 'Free shipping on EU orders over &euro;150 &middot; Select country at checkout for exact shipping cost'}</div>
         <div class="cart-total-row">
           <div>
-            <div class="cart-total-label">Total ${ship > 0 ? '(incl. €'+ship.toFixed(2)+' shipping)' : ''}</div>
+            <div class="cart-total-label">Total ${ship > 0 ? '(incl. &euro;'+ship.toFixed(2)+' shipping)' : '(free shipping)'}</div>
           </div>
           <div class="cart-total-amount">€${total.toFixed(2)}</div>
         </div>
