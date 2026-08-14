@@ -2223,8 +2223,8 @@
       + '<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">\n'
       + '<style>'
       +   '*{margin:0;padding:0;box-sizing:border-box}'
-      +   ':root{--gold:#c8a950;--black:#0a0905;--cream:#f5f0e8;--muted:#888070;--ink:#0a0905;--surf-2:#1a1815;--line:#1e1c17;--txt2:#cfc8bc}'
-      +   'html[data-theme="light"]{--gold:#a1791f;--black:#efe1c4;--cream:#241d12;--muted:#6b5f47;--surf-2:#e0cea0;--line:#cbb583;--txt2:#3f3524}'
+      +   ':root{--gold:#c8a950;--black:#0a0905;--cream:#f5f0e8;--muted:#888070;--ink:#0a0905;--surf-1:#15130f;--surf-2:#1a1815;--line:#1e1c17;--txt2:#cfc8bc}'
+      +   'html[data-theme="light"]{--gold:#a1791f;--black:#efe1c4;--cream:#241d12;--muted:#6b5f47;--surf-1:#e6d6b0;--surf-2:#e0cea0;--line:#cbb583;--txt2:#3f3524}'
       +   'body{background:var(--black);color:var(--cream);font-family:"DM Sans",system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}'
       +   'a{color:var(--gold)}'
       +   '.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:24px;padding:14px 32px;background:var(--black);border-bottom:1px solid var(--line)}'
@@ -2243,9 +2243,12 @@
          frame (contain, not cover) so nothing is cropped off. */
       +   '.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}'
       +   '@media(max-width:760px){.wrap{padding:24px 18px 70px}h1{font-size:28px}}'
-      +   '.card{display:flex;flex-direction:column;background:var(--surf-2);border:1px solid var(--line);border-radius:3px;overflow:hidden;text-decoration:none;color:inherit;transition:border-color .2s}'
+      /* Block, not flex: inside a flex column the browser falls back to the
+         image's intrinsic height and ignores aspect-ratio, which stretched
+         the cards into tall half-empty boxes. */
+      +   '.card{display:block;background:var(--surf-2);border:1px solid var(--line);border-radius:3px;overflow:hidden;text-decoration:none;color:inherit;transition:border-color .2s}'
       +   '.card:hover{border-color:var(--gold)}'
-      +   '.card img{width:100%;aspect-ratio:3/4;object-fit:contain;background:var(--surf-1);padding:8px;display:block}'
+      +   '.card img{width:100%;height:auto;aspect-ratio:3/4;object-fit:contain;background:var(--surf-1);padding:8px;display:block}'
       +   '.card .t{font-size:13px;color:var(--cream);padding:10px 12px 2px;font-weight:500;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}'
       +   '.card .p{font-size:14px;color:var(--gold);padding:6px 12px 12px;font-weight:600}'
       +   '.card .sold{font-size:11.5px;color:var(--muted);padding:6px 12px 12px;text-transform:uppercase;letter-spacing:1px}'
