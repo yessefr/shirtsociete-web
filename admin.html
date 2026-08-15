@@ -548,6 +548,13 @@
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title" id="shirt-modal-title">Add Shirt</div>
+      <div style="display:flex;align-items:center;gap:14px;margin-left:auto;margin-right:14px">
+        <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:#b0a898;cursor:pointer" title="Hides provenance and detail fields. Everything a normal vintage shirt needs stays visible.">
+          <input type="checkbox" id="m-quick" onchange="ssQuickMode()" style="cursor:pointer">
+          Quick list
+        </label>
+        <button type="button" class="btn btn-secondary" style="padding:7px 12px;font-size:12px" onclick="ssSuggestDescription()">Suggest description</button>
+      </div>
       <button class="modal-close" onclick="closeShirtModal()">×</button>
     </div>
     <div class="modal-body">
@@ -1106,6 +1113,11 @@
   }
 
   function openShirtModal(shirt = null) {
+    try {
+      var q = document.getElementById('m-quick');
+      if (q) { q.checked = localStorage.getItem('ss-quick-list') === '1'; }
+    } catch (e) {}
+    setTimeout(ssQuickMode, 0);
     editingShirtId = shirt ? shirt.id : null;
     document.getElementById('shirt-modal-title').textContent = shirt ? 'Edit Shirt' : 'Add Shirt';
     document.getElementById('m-title').value = shirt?.title || '';
@@ -2132,6 +2144,65 @@
   // (card says "Size L", description says "XL"; card "Excellent", description
   // "very good"). Those mismatches confuse buyers and get flagged by Merchant
   // Center, so this scans every shirt and reports them for manual correction.
+  // ── QUICK LIST MODE ──
+  // Most stock is ordinary vintage: club, season, size, condition, price, photos.
+  // Quick mode hides the match worn provenance block so listing those shirts is a
+  // short form instead of a long one. It only hides fields; nothing is cleared,
+  // and the full form is one click away for the pieces that deserve research.
+  var SS_MW_FIELDS = ['mw_player','mw_player_img','mw_player_credit','mw_match','mw_date',
+                      'mw_competition','mw_type','mw_code','mw_sizecode','mw_provenance',
+                      'mw_coa','mw_photomatch','mw_included'];
+
+  function ssQuickMode() {
+    var on = document.getElementById('m-quick').checked;
+    try { localStorage.setItem('ss-quick-list', on ? '1' : '0'); } catch (e) {}
+    SS_MW_FIELDS.forEach(function(f) {
+      var el = document.getElementById('m-' + f);
+      var group = el && el.closest ? el.closest('.form-group') : null;
+      if (group) group.style.display = on ? 'none' : '';
+    });
+    // the section header above the match worn block
+    var hdr = document.querySelector('.form-label[style*="c8a950"]');
+    var hgroup = hdr && hdr.closest ? hdr.closest('.form-group') : null;
+    if (hgroup) hgroup.style.display = on ? 'none' : '';
+  }
+
+  // Builds a factual description from the fields already filled in, so a plain
+  // vintage listing does not need a written-from-scratch paragraph. It states
+  // only what the form contains and never invents provenance.
+  function ssSuggestDescription() {
+    function val(id) { var e = document.getElementById(id); return e ? String(e.value || '').trim() : ''; }
+    var box = document.getElementById('m-description');
+    if (!box) return;
+    if (box.value.trim() && !confirm('Replace the current description?')) return;
+
+    var club = val('m-club'), season = val('m-season'), size = val('m-size');
+    var cond = val('m-condition'), cat = val('m-category');
+    var player = val('m-mw_player'), mwType = val('m-mw_type');
+    var comp = val('m-mw_competition'), fixture = val('m-mw_match'), date = val('m-mw_date');
+    var coa = val('m-mw_coa'), len = val('m-length'), wid = val('m-width');
+
+    var s = [];
+    if (cat === 'match_worn' && player) {
+      s.push((mwType || 'Match worn') + ' shirt worn by ' + player
+        + (club ? ' for ' + club : '')
+        + (season ? ' during the ' + season + ' season' : '') + '.');
+      if (fixture) s.push('From ' + fixture + (date ? ', ' + date : '') + (comp ? ' (' + comp + ')' : '') + '.');
+      else if (comp) s.push(comp + '. Exact fixture not confirmed.');
+      if (coa) s.push('Supplied with a certificate of authenticity.');
+    } else {
+      s.push('Original ' + (club ? club + ' ' : '') + (season ? season + ' ' : '') + 'shirt.');
+      s.push('An original from the period, not a reproduction or retro reissue.');
+    }
+    if (size) s.push('Size ' + size + '.');
+    if (cond) s.push('Condition: ' + cond.toLowerCase() + '.');
+    if (len && wid) s.push('Measured flat: ' + len + ' cm shoulder to hem, ' + wid + ' cm pit to pit.');
+    s.push('A single piece — once it is sold it will not return.');
+
+    box.value = s.join(' ');
+    showToast('Description suggested — edit before saving', 'success');
+  }
+
   // ── PRODUCT DATA VALIDATION (audit §1) ──
   // One report covering every consistency rule the audit asks for. Run this
   // before regenerating pages or the Merchant feed: the site, the feed and the
