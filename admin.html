@@ -403,6 +403,10 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
             Generate journal
           </button>
+          <button class="btn btn-secondary" onclick="checkWantList()" id="wantlist-btn" title="Match open want list requests against current stock">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            Want list
+          </button>
           <button class="btn btn-secondary" onclick="checkShirtData()" id="datacheck-btn" title="Finds shirts where size/condition in the description disagree with the fields">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             Check data
@@ -2726,6 +2730,105 @@
       .catch(function(e) {
         showToast('Journal generation failed: ' + e.message, 'error');
       });
+  }
+
+  // ── WANT LIST MATCHING (audit §13) ──
+  // Reads open want-list requests and scores them against current stock.
+  // Nothing is emailed automatically: this is a report the owner reviews,
+  // which keeps the existing consent setup intact.
+  function ssWantScore(req, s) {
+    var score = 0, why = [];
+    var club = String(req.club || '').toLowerCase().trim();
+    var sClub = String(s.club || '').toLowerCase();
+    var sTitle = String(s.title || '').toLowerCase();
+    if (!club) return null;
+    if (sClub === club || sClub.indexOf(club) !== -1 || club.indexOf(sClub) !== -1 || sTitle.indexOf(club) !== -1) {
+      score += 50; why.push('club');
+    } else return null;                       // club is the hard requirement
+
+    if (req.player) {
+      var p = String(req.player).toLowerCase();
+      if (sTitle.indexOf(p) !== -1 || String(s.mw_player || '').toLowerCase().indexOf(p) !== -1) {
+        score += 25; why.push('player');
+      }
+    }
+    var yr = String(s.season || s.title || '').match(/(19|20)\d{2}/);
+    if (yr && req.season_from && req.season_to) {
+      var y = parseInt(yr[0], 10);
+      if (y >= req.season_from - 1 && y <= req.season_to + 1) { score += 15; why.push('era'); }
+    }
+    if (req.size && s.size && String(req.size).toUpperCase().indexOf(String(s.size).toUpperCase()) !== -1) {
+      score += 10; why.push('size');
+    }
+    if (req.budget_max && s.price && parseFloat(s.price) <= req.budget_max) { score += 10; why.push('budget'); }
+    var pref = String(req.match_worn_pref || '').toLowerCase();
+    if (pref.indexOf('match worn only') !== -1 && s.category !== 'match_worn') return null;
+    if (pref.indexOf('match worn') !== -1 && s.category === 'match_worn') { score += 10; why.push('match worn'); }
+    return { score: score, why: why };
+  }
+
+  async function checkWantList() {
+    var box = document.getElementById('sitemap-modal');
+    var t = box ? box.querySelector('.modal-title') : null;
+    if (t) t.textContent = 'Want list matches';
+    var out = document.getElementById('sitemap-output');
+    var sum = document.getElementById('sitemap-summary');
+    sum.innerHTML = 'Loading want list...';
+    out.value = '';
+    box.classList.add('open');
+
+    var reqs = [];
+    try {
+      var r = await fetch(SUPABASE.url + '/rest/v1/want_list?status=eq.open&order=created_at.desc', {
+        headers: { apikey: SUPABASE.key, Authorization: 'Bearer ' + SUPABASE.key }
+      });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      reqs = await r.json();
+    } catch (e) {
+      sum.innerHTML = '<strong style="color:#e07a6a">Could not load the want list.</strong> '
+        + 'If the table does not exist yet, create it first (see SEO_SETUP.md).';
+      out.value = String(e.message || e);
+      return;
+    }
+
+    if (!reqs.length) {
+      sum.innerHTML = 'No open want list requests.';
+      out.value = 'Nothing to match yet.';
+      return;
+    }
+
+    var pool = (allShirts || []).filter(function(s) { return s && !s.is_draft && s.available !== false; });
+    var lines = [], matched = 0;
+
+    reqs.forEach(function(req) {
+      var hits = [];
+      pool.forEach(function(s) {
+        var m = ssWantScore(req, s);
+        if (m && m.score >= 50) hits.push({ s: s, m: m });
+      });
+      hits.sort(function(a, b) { return b.m.score - a.m.score; });
+
+      lines.push('── ' + (req.club || '(no club)')
+        + (req.player ? ' / ' + req.player : '')
+        + (req.season_text ? ' / ' + req.season_text : '')
+        + (req.size ? ' / size ' + req.size : ''));
+      lines.push('   ' + (req.email || '(no email)') + (req.budget_text ? '  ·  budget ' + req.budget_text : ''));
+      if (!hits.length) {
+        lines.push('   no match in current stock');
+      } else {
+        matched++;
+        hits.slice(0, 5).forEach(function(h) {
+          lines.push('   → ' + h.s.title
+            + '  (' + h.m.score + '% · ' + h.m.why.join(', ') + ')'
+            + (h.s.price ? '  \u20ac' + parseFloat(h.s.price).toFixed(2) : ''));
+        });
+      }
+      lines.push('');
+    });
+
+    sum.innerHTML = '<strong style="color:var(--white)">' + reqs.length + ' open request(s)</strong>, '
+      + matched + ' with a match in current stock. Review before contacting anyone.';
+    out.value = lines.join('\n');
   }
 
   // ── GOOGLE MERCHANT FEED ──
