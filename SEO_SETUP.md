@@ -154,3 +154,80 @@ because `/collections/...` covers the same listings as real URLs.
 - **Core Web Vitals** — any new mobile issues
 
 Act on trends, not on single days.
+
+---
+
+## 7. One-time setup for the Sell Your Shirt upload form
+
+Photos submitted through `/sell-your-shirt.html` upload straight to Cloudinary.
+Create the preset once:
+
+1. Cloudinary → **Settings** → **Upload** → **Upload presets** → *Add upload preset*
+2. Name it exactly `shirt_submissions`
+3. Signing mode: **Unsigned**
+4. Folder: `shirt-submissions`
+5. Under *Upload control*, restrict allowed formats to `jpg, png, webp, heic`
+   and set a max file size of 10 MB
+6. Save
+
+Cloudinary assigns a random public ID to every upload, so the folder cannot be
+browsed or guessed from outside. The upload URLs arrive by email with each
+submission.
+
+If the preset does not exist, the form still submits — the photos simply fail
+and the sender is told to reply to the confirmation email with images instead.
+
+---
+
+## 8. One-time setup for the Want List
+
+Run once in the Supabase SQL editor:
+
+```sql
+create table if not exists want_list (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz default now(),
+  email text not null,
+  name text,
+  club text,
+  player text,
+  season_text text,
+  season_from int,
+  season_to int,
+  size text,
+  budget_text text,
+  budget_max numeric,
+  match_worn_pref text,
+  notes text,
+  status text default 'open'
+);
+
+alter table want_list enable row level security;
+
+-- the public page may only add a request, never read or change anything
+create policy "public can insert want list"
+  on want_list for insert
+  to anon
+  with check (true);
+```
+
+The admin reads this table with the same anon key, so also add:
+
+```sql
+create policy "read want list"
+  on want_list for select
+  to anon
+  using (true);
+```
+
+If you would rather the requests not be publicly readable, drop that second
+policy and read the table from the Supabase dashboard instead — the admin
+button will then report that it cannot load the list.
+
+### Using it
+Admin → **Want list**. Every open request is scored against current stock:
+club is required, then player, era, size, budget and match-worn preference add
+to the score. Nothing is emailed automatically; you decide who to contact.
+
+Set `status` to `matched` or `closed` in Supabase once a request is handled, so
+it drops out of the report.
