@@ -53,6 +53,11 @@
   .btn:disabled{opacity:.6;cursor:default}
   .status{margin-top:14px;font-size:13.5px;display:none;line-height:1.6}
   .note{font-size:12px;color:var(--muted);margin-top:18px}
+  .hint{font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.5}
+  .filelist{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+  .filelist div{font-size:12px;color:var(--txt2);display:flex;justify-content:space-between;gap:10px}
+  .filelist .ok{color:var(--gold)}
+  .filelist .bad{color:#e07a6a}
   footer{border-top:1px solid var(--line);padding:28px 32px;text-align:center;font-size:12px;color:var(--muted)}
   @media(max-width:760px){.wrap{padding:26px 18px 70px}h1{font-size:28px}}
 </style>
@@ -114,7 +119,29 @@
     <div><label for="f-price">Asking price (optional)</label><input id="f-price" type="text" placeholder="e.g. &euro;150 or open to offers"></div>
   </div>
   <div class="row">
+    <div>
+      <label for="f-files">Photos &mdash; upload up to 8</label>
+      <input id="f-files" type="file" accept="image/*" multiple
+             style="padding:10px 12px;background:var(--surf-2);border:1px dashed var(--line);cursor:pointer">
+      <div class="hint">Ideally: front, back, neck tag and wash label. JPG or PNG, max 10&nbsp;MB each.</div>
+      <div id="f-filelist" class="filelist"></div>
+    </div>
+  </div>
+  <div class="row">
     <div><label for="f-links">Photo links (optional)</label><input id="f-links" type="text" placeholder="Dropbox, Google Drive, WeTransfer, Instagram..."></div>
+  </div>
+  <div class="row">
+    <div>
+      <label for="f-bulk">Are you selling a larger collection?</label>
+      <select id="f-bulk" onchange="ssBulkToggle()">
+        <option value="">No, a single shirt or a few</option>
+        <option value="yes">Yes, a larger collection</option>
+      </select>
+    </div>
+    <div id="f-count-wrap" style="display:none">
+      <label for="f-count">Roughly how many shirts?</label>
+      <input id="f-count" type="text" placeholder="e.g. around 40">
+    </div>
   </div>
   <div class="row">
     <div><label for="f-notes">Anything else</label><textarea id="f-notes" placeholder="Where it came from, flaws, nameset, certificates..."></textarea></div>
@@ -125,8 +152,70 @@
 <p class="note">No photos to hand? Send the form anyway and reply to our email with pictures. You can also email us directly at <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a>.</p>
 
 <script>
+// Photos go straight to Cloudinary with an unsigned preset scoped to one
+// folder, so no server of our own touches the files. Cloudinary assigns a
+// random public_id, which keeps the folder from being enumerable by guessing.
+var SS_CLOUD = 'dinpfdojh';
+var SS_PRESET = 'shirt_submissions';   // create this unsigned preset in Cloudinary
+var SS_MAX_FILES = 8;
+var SS_MAX_MB = 10;
+
+function ssBulkToggle(){
+  var wrap = document.getElementById('f-count-wrap');
+  wrap.style.display = document.getElementById('f-bulk').value === 'yes' ? '' : 'none';
+}
+
+function ssRenderFileList(msgs){
+  var box = document.getElementById('f-filelist');
+  box.innerHTML = msgs.map(function(m){
+    return '<div><span>' + m.name + '</span><span class="' + (m.cls||'') + '">' + m.state + '</span></div>';
+  }).join('');
+}
+
+async function ssUploadPhotos(show){
+  var input = document.getElementById('f-files');
+  var files = input && input.files ? Array.prototype.slice.call(input.files) : [];
+  if (!files.length) return { urls: [], failed: 0 };
+
+  if (files.length > SS_MAX_FILES){
+    show('Please select no more than ' + SS_MAX_FILES + ' photos.', false);
+    throw new Error('too many files');
+  }
+  var oversized = files.filter(function(f){ return f.size > SS_MAX_MB * 1024 * 1024; });
+  if (oversized.length){
+    show('These files are larger than ' + SS_MAX_MB + ' MB: ' + oversized.map(function(f){return f.name;}).join(', '), false);
+    throw new Error('file too large');
+  }
+
+  var state = files.map(function(f){ return { name: f.name, state: 'waiting' }; });
+  ssRenderFileList(state);
+
+  var urls = [], failed = 0;
+  for (var i = 0; i < files.length; i++){
+    state[i].state = 'uploading...'; ssRenderFileList(state);
+    try{
+      var fd = new FormData();
+      fd.append('file', files[i]);
+      fd.append('upload_preset', SS_PRESET);
+      fd.append('folder', 'shirt-submissions');
+      var r = await fetch('https://api.cloudinary.com/v1_1/' + SS_CLOUD + '/image/upload', { method: 'POST', body: fd });
+      var d = await r.json();
+      if (d && d.secure_url){
+        urls.push(d.secure_url);
+        state[i].state = 'uploaded'; state[i].cls = 'ok';
+      } else {
+        failed++; state[i].state = 'failed'; state[i].cls = 'bad';
+      }
+    }catch(e){
+      failed++; state[i].state = 'failed'; state[i].cls = 'bad';
+    }
+    ssRenderFileList(state);
+  }
+  return { urls: urls, failed: failed };
+}
+
 async function ssSubmit(){
-  var f = [{"id": "f-email", "label": "Email", "req": true}, {"id": "f-name", "label": "Name", "req": true}, {"id": "f-club", "label": "Club or country", "req": true}, {"id": "f-season", "label": "Season", "req": false}, {"id": "f-size", "label": "Size", "req": false}, {"id": "f-cond", "label": "Condition", "req": false}, {"id": "f-type", "label": "Shirt type", "req": false}, {"id": "f-price", "label": "Asking price", "req": false}, {"id": "f-links", "label": "Photo links", "req": false}, {"id": "f-notes", "label": "Notes", "req": false}];
+  var f = [{"id": "f-email", "label": "Email", "req": true}, {"id": "f-name", "label": "Name", "req": true}, {"id": "f-club", "label": "Club or country", "req": true}, {"id": "f-season", "label": "Season", "req": false}, {"id": "f-size", "label": "Size", "req": false}, {"id": "f-cond", "label": "Condition", "req": false}, {"id": "f-type", "label": "Shirt type", "req": false}, {"id": "f-price", "label": "Asking price", "req": false}, {"id": "f-links", "label": "Photo links", "req": false}, {"id": "f-bulk", "label": "Larger collection", "req": false}, {"id": "f-count", "label": "Approx. number of shirts", "req": false}, {"id": "f-notes", "label": "Notes", "req": false}];
   var missing = [];
   var vals = {};
   f.forEach(function(k){
@@ -141,8 +230,22 @@ async function ssSubmit(){
   var email = vals['Email'] || '';
   if (email.indexOf('@') === -1){ show('Please enter a valid email address.', false); return; }
   var btn = document.getElementById('ss-btn');
-  btn.disabled = true; btn.textContent = 'Sending...';
+  btn.disabled = true; btn.textContent = 'Uploading photos...';
+  var up;
+  try{
+    up = await ssUploadPhotos(show);
+  }catch(e){
+    btn.disabled = false; btn.textContent = 'Send';
+    return;
+  }
+  if (up.failed){
+    show(up.failed + ' photo(s) could not be uploaded. You can still send the form and reply to our email with the photos.', false);
+  }
+  btn.textContent = 'Sending...';
   var msg = Object.keys(vals).map(function(k){ return k + ': ' + (vals[k] || '-'); }).join('\n');
+  if (up.urls.length){
+    msg += '\n\nUploaded photos (' + up.urls.length + '):\n' + up.urls.join('\n');
+  }
   try{
     var res = await fetch('https://shirtsociete.netlify.app/api/contact', {
       method:'POST', headers:{'Content-Type':'application/json'},
