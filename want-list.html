@@ -110,6 +110,51 @@
 <p class="note">In the meantime, browse the <a href="/collections/vintage-football-shirts/">full collection</a> to see the kind of pieces that pass through.</p>
 
 <script>
+// Requests are stored as structured fields as well as emailed, so new stock can
+// be matched against open requests instead of someone re-reading old mail.
+var SS_DB = 'https://hzwmjbsfmdkmaoikezoc.supabase.co';
+var SS_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6d21qYnNmbWRrbWFvaWtlem9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTczNDIsImV4cCI6MjA5MzEzMzM0Mn0.5-ToRrtP3bhkN_qmSMmLM5YXQgE5kWoE0wVpsksqIMs';
+
+function ssYear(str){
+  var m = String(str || '').match(/(19|20)\d{2}/g);
+  return m ? m.map(Number) : [];
+}
+function ssBudget(str){
+  var m = String(str || '').replace(/[.,](?=\d{3}\b)/g, '').match(/\d+/g);
+  return m ? Math.max.apply(null, m.map(Number)) : null;
+}
+
+async function ssStoreRequest(vals){
+  var yrs = ssYear(vals['Season or era']);
+  var row = {
+    email: vals['Email'] || null,
+    name: vals['Name'] || null,
+    club: vals['Club or country'] || null,
+    player: vals['Player'] || null,
+    season_text: vals['Season or era'] || null,
+    season_from: yrs.length ? Math.min.apply(null, yrs) : null,
+    season_to:   yrs.length ? Math.max.apply(null, yrs) : null,
+    size: vals['Size'] || null,
+    budget_text: vals['Budget'] || null,
+    budget_max: ssBudget(vals['Budget']),
+    match_worn_pref: vals['Match worn'] || null,
+    notes: vals['Notes'] || null,
+    status: 'open'
+  };
+  try{
+    await fetch(SS_DB + '/rest/v1/want_list', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SS_KEY,
+        'Authorization': 'Bearer ' + SS_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(row)
+    });
+  }catch(e){ /* email below stays the fallback */ }
+}
+
 async function ssSubmit(){
   var f = [{"id": "f-email", "label": "Email", "req": true}, {"id": "f-name", "label": "Name", "req": false}, {"id": "f-club", "label": "Club or country", "req": true}, {"id": "f-player", "label": "Player", "req": false}, {"id": "f-season", "label": "Season or era", "req": false}, {"id": "f-size", "label": "Size", "req": false}, {"id": "f-budget", "label": "Budget", "req": false}, {"id": "f-mw", "label": "Match worn", "req": false}, {"id": "f-notes", "label": "Notes", "req": false}];
   var missing = [];
@@ -127,6 +172,7 @@ async function ssSubmit(){
   if (email.indexOf('@') === -1){ show('Please enter a valid email address.', false); return; }
   var btn = document.getElementById('ss-btn');
   btn.disabled = true; btn.textContent = 'Sending...';
+  await ssStoreRequest(vals);
   var msg = Object.keys(vals).map(function(k){ return k + ': ' + (vals[k] || '-'); }).join('\n');
   try{
     var res = await fetch('https://shirtsociete.netlify.app/api/contact', {
