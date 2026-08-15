@@ -2013,10 +2013,9 @@
 
     // fixed pages
     addUrl(base + '/', 'daily', '1.0');
-    addUrl(base + '/?p=shop', 'daily', '0.9');
-    addUrl(base + '/?p=shop&cat=match_worn', 'weekly', '0.8');
-    addUrl(base + '/?p=shop&cat=clubs', 'weekly', '0.8');
-    addUrl(base + '/?p=shop&cat=national', 'weekly', '0.8');
+    // Query-string shop states are deliberately left out: /collections/... now
+    // covers the same ground as a real crawlable URL, so listing both would put
+    // two competing copies of the same listing in the index (audit §4, §8).
     addUrl(base + '/?p=archive', 'weekly', '0.8');
     addUrl(base + '/?p=about', 'monthly', '0.6');
     addUrl(base + '/blog.html', 'weekly', '0.7');
@@ -2129,58 +2128,136 @@
   // (card says "Size L", description says "XL"; card "Excellent", description
   // "very good"). Those mismatches confuse buyers and get flagged by Merchant
   // Center, so this scans every shirt and reports them for manual correction.
+  // ── PRODUCT DATA VALIDATION (audit §1) ──
+  // One report covering every consistency rule the audit asks for. Run this
+  // before regenerating pages or the Merchant feed: the site, the feed and the
+  // structured data all read from these same fields, so a conflict here shows
+  // up in three places at once.
+  var SS_SIZES = ['XXXL','XXL','XL','L','M','S','XS'];
+  var SS_CONDS = ['mint','excellent','very good','good','fair','poor'];
+
+  function ssClassify(s) {
+    var t = String(s.mw_type || '').toLowerCase();
+    if (t.indexOf('worn') !== -1 && t.indexOf('issued') !== -1) return 'ambiguous';
+    if (t.indexOf('worn') !== -1) return 'worn';
+    if (t.indexOf('issued') !== -1 || t.indexOf('player') !== -1) return 'issued';
+    return '';
+  }
+
   function checkShirtData() {
     if (!allShirts || !allShirts.length) {
       showToast('Shirts nog niet geladen — probeer zo opnieuw', 'error');
       return;
     }
-    var SIZES = ['XXXL','XXL','XL','L','M','S','XS'];
-    var CONDS = ['mint','excellent','very good','good','fair','poor'];
-    var issues = [];
+    var issues = [], seenSlug = {}, seenId = {}, counts = { error: 0, warn: 0 };
 
     allShirts.forEach(function(s) {
-      var desc = String(s.description || '').toLowerCase();
-      if (!desc.trim()) return;
+      var desc = String(s.description || '');
+      var low = desc.toLowerCase();
+      var live = !s.is_draft;
+      var forSale = live && s.available !== false;
       var probs = [];
+      function err(m) { probs.push('[error] ' + m); counts.error++; }
+      function warn(m) { probs.push('[warn]  ' + m); counts.warn++; }
 
-      // size stated in the description vs the size field
-      if (s.size) {
-        var m = desc.match(/\bsize[:\s]+(xxxl|xxl|xl|l|m|s|xs)\b/i);
+      // ── duplicates ──
+      var slug = ssShirtSlug(s);
+      if (slug) {
+        if (seenSlug[slug]) err('duplicate slug, shared with "' + seenSlug[slug] + '"');
+        else seenSlug[slug] = s.title || s.id;
+      }
+      if (s.id != null) {
+        if (seenId[s.id]) err('duplicate product ID ' + s.id);
+        else seenId[s.id] = true;
+      }
+
+      // ── size ──
+      if (!s.size && !s.mw_sizecode) {
+        (forSale ? err : warn)('missing size');
+      } else if (s.size) {
+        var m = low.match(/\bsize[:\s]+(xxxl|xxl|xl|l|m|s|xs)\b/);
         if (m && m[1].toUpperCase() !== String(s.size).trim().toUpperCase()) {
-          probs.push('size field "' + s.size + '" vs description "' + m[1].toUpperCase() + '"');
+          err('size conflict: field "' + s.size + '" vs description "' + m[1].toUpperCase() + '"');
         }
       }
-      // condition stated in the description vs the condition field
-      if (s.condition) {
-        var dm = desc.match(/\bcondition[:\s]+(mint|excellent|very good|good|fair|poor)\b/i);
+
+      // ── condition ──
+      if (!s.condition) {
+        (forSale ? err : warn)('missing condition');
+      } else {
+        var dm = low.match(/\bcondition[:\s]+(mint|excellent|very good|good|fair|poor)\b/);
         if (dm && dm[1].toLowerCase() !== String(s.condition).trim().toLowerCase()) {
-          probs.push('condition field "' + s.condition + '" vs description "' + dm[1] + '"');
+          err('condition conflict: field "' + s.condition + '" vs description "' + dm[1] + '"');
         }
       }
-      // things Merchant Center will reject outright
-      if (!s.is_draft && s.available !== false) {
-        if (!s.images || !s.images.length) probs.push('no photos');
-        if (!s.price || isNaN(parseFloat(s.price))) probs.push('no price');
-        if (!desc.trim()) probs.push('no description');
+
+      // ── classification (audit §2) ──
+      var cls = ssClassify(s);
+      if (s.category === 'match_worn') {
+        if (!s.mw_type) err('match worn category but no classification set');
+        else if (cls === 'ambiguous') {
+          // only acceptable when evidence genuinely cannot distinguish
+          warn('classification is "Match Worn / Issued" — set the exact type if the evidence allows');
+        }
+        // provenance expected on worn/issued pieces
+        var prov = [s.mw_player, s.mw_match, s.mw_date, s.mw_competition, s.mw_provenance, s.mw_coa]
+                     .filter(function(v) { return v && String(v).trim(); });
+        if (!prov.length) err('match worn/issued item with no provenance fields at all');
+        else if (!s.mw_player) warn('no player recorded');
+        if (s.mw_match && !s.mw_date) warn('fixture recorded but no date');
+      } else if (s.mw_type) {
+        warn('classification "' + s.mw_type + '" set on a non match worn category');
       }
-      if (probs.length) issues.push({ title: s.title || '(untitled)', probs: probs });
+
+      // ── commerce basics ──
+      if (forSale) {
+        if (!s.price || isNaN(parseFloat(s.price))) err('missing or invalid price');
+        if (s.available == null) warn('availability not explicitly set');
+        if (!desc.trim()) err('missing description');
+      }
+
+      // ── images ──
+      if (!s.images || !s.images.length) {
+        (forSale ? err : warn)('no images');
+      } else if (s.images.length < 3 && forSale) {
+        warn('only ' + s.images.length + ' image(s) — front, back and label recommended');
+      }
+
+      // ── measurements ──
+      if (forSale && (!s.length_cm || !s.width_cm)) warn('missing measurements (length/width)');
+
+      // ── description hygiene ──
+      if (desc && /\bshir\b|\bshrit\b|  +/.test(low)) warn('possible typo or double space in description');
+      if (desc && desc.length < 60 && forSale) warn('very short description');
+
+      if (probs.length) {
+        issues.push({ title: (s.title || '(untitled)') + (s.is_draft ? '  [concept]' : ''), probs: probs });
+      }
     });
 
-    var out = document.getElementById('sitemap-output');
     var box = document.getElementById('sitemap-modal');
-    var summary = document.getElementById('sitemap-summary');
-    var titleEl = box ? box.querySelector('.modal-title') : null;
-    if (titleEl) titleEl.textContent = 'Data consistency check';
+    var t = box ? box.querySelector('.modal-title') : null;
+    if (t) t.textContent = 'Product data validation';
 
-    if (!issues.length) {
-      summary.innerHTML = '<strong style="color:var(--green,#4caf7d)">No problems found</strong> — every shirt\'s size, condition, price and photos line up with its description.';
-      out.value = 'All ' + allShirts.length + ' shirts checked. No mismatches found.';
-    } else {
-      summary.innerHTML = '<strong style="color:var(--white)">' + issues.length + ' shirt(s)</strong> with a mismatch — fix these in the admin before regenerating pages or the feed.';
-      out.value = issues.map(function(it, i) {
-        return (i + 1) + '. ' + it.title + '\n   - ' + it.probs.join('\n   - ');
-      }).join('\n\n');
-    }
+    var lines = [];
+    lines.push('Checked ' + allShirts.length + ' shirts.');
+    lines.push(counts.error + ' error(s), ' + counts.warn + ' warning(s).');
+    lines.push('');
+    lines.push('Errors block a clean feed or contradict the page. Warnings are quality gaps.');
+    lines.push('');
+    issues.forEach(function(it, i) {
+      lines.push((i + 1) + '. ' + it.title);
+      it.probs.forEach(function(p) { lines.push('   ' + p); });
+      lines.push('');
+    });
+    if (!issues.length) lines.push('No problems found.');
+
+    document.getElementById('sitemap-summary').innerHTML = issues.length
+      ? '<strong style="color:var(--white)">' + counts.error + ' error(s)</strong> and '
+        + counts.warn + ' warning(s) across ' + issues.length + ' shirt(s). '
+        + 'Fix the errors before regenerating pages or the Merchant feed.'
+      : '<strong style="color:#4caf7d">All ' + allShirts.length + ' shirts pass</strong> — no conflicts, duplicates or missing required fields.';
+    document.getElementById('sitemap-output').value = lines.join('\n');
     box.classList.add('open');
   }
 
@@ -2347,19 +2424,19 @@
     var collections = [
       { slug: 'match-worn-football-shirts', name: 'Match Worn Football Shirts',
         h1: 'Match Worn &amp; Match Issued Football Shirts',
-        intro: 'Shirts that were actually worn or issued to players, each one a single piece with its own documented history. Every match worn shirt we list is checked on labels, stitching, badges and wash tags before it goes online.',
+        intro: 'Shirts that were actually worn or issued to players, each one a single piece with its own documented history.',
         filter: function(s) { return s.category === 'match_worn'; } },
       { slug: 'vintage-club-shirts', name: 'Vintage Club Football Shirts',
         h1: 'Vintage Club Football Shirts',
-        intro: 'Original club shirts from the golden era of European football, sourced across Europe through collectors and contacts. No reproductions, no reissues.',
+        intro: 'Original club shirts from the golden era of European football.',
         filter: function(s) { return s.category === 'clubs'; } },
       { slug: 'national-team-shirts', name: 'Vintage National Team Shirts',
         h1: 'Vintage National Team Shirts',
-        intro: 'International shirts from World Cups, European Championships and qualifying campaigns. Rare originals from the tournaments that defined a generation.',
+        intro: 'International shirts from World Cups, European Championships and qualifying campaigns.',
         filter: function(s) { return s.category === 'national'; } },
       { slug: 'vintage-football-shirts', name: 'Vintage Football Shirts',
         h1: 'Vintage Football Shirts',
-        intro: 'The full Shirt Société collection: original vintage and match worn football shirts, club and international, each one a single unique piece.',
+        intro: 'The full Shirt Société collection: original vintage and match worn football shirts, club and international.',
         filter: function() { return true; } }
     ];
 
@@ -2373,7 +2450,7 @@
       collections.push({
         slug: d + 's-football-shirts', name: d + 's Football Shirts',
         h1: d + 's Football Shirts',
-        intro: 'Original football shirts from the ' + d + 's, kept exactly as they were made. Browse what is currently in the collection from this decade.',
+        intro: 'Original football shirts from the ' + d + 's, kept exactly as they were made.',
         filter: function(s) { return decadeOf(s) === parseInt(d, 10); }
       });
     });
@@ -2420,8 +2497,7 @@
         var slug = ssSlugify(name);
         var url = base + '/' + folderName + '/' + slug + '/';
         var avail = items.filter(function(s) { return s.available !== false; });
-        var intro = 'Vintage and match worn ' + name + ' shirts from the Shirt Société collection. '
-          + 'Every shirt is an original, sourced via collectors and contacts, and checked on labels, stitching and badges.';
+        var intro = 'Vintage and match worn ' + name + ' shirts from the Shirt Société collection.';
         var body = '<div class="crumb"><a href="/">Home</a> / <a href="/?p=shop">Shop</a> / ' + htmlEscape(name) + '</div>'
           + '<div class="eyebrow">' + label + '</div>'
           + '<h1>' + htmlEscape(name) + ' Vintage &amp; Match Worn Shirts</h1>'
@@ -2695,7 +2771,7 @@
            + '. A single, original piece from Shirt Société.');
 
       // product type / category from our own category field
-      var ptype = s.category === 'match_worn' ? 'Match Worn / Issued'
+      var ptype = s.category === 'match_worn' ? (String(s.mw_type || '').trim() || 'Match Worn / Issued')
                 : s.category === 'national' ? 'International Shirts'
                 : 'Club Shirts';
 
@@ -2873,6 +2949,33 @@
     // strip a trailing ", Size XL" / " - size l" / " (size M)" from the title
     t = t.replace(/[\s,\u2013\u2014\-\(]+size\s*[:\s]*\s*(xxxl|xxl|xl|l|m|s|xs)\s*\)?\s*$/i, '').trim();
     t = t.replace(/[,\u2013\u2014\-\s]+$/, '').trim();
+
+    // Thin titles like "Brazil 1998 Away" get enriched from the canonical
+    // fields (audit §5). Titles that already carry club, season and character
+    // are left exactly as they are — the shop's own wording is usually better
+    // than anything a template produces.
+    var hasClub   = s.club && t.toLowerCase().indexOf(String(s.club).toLowerCase()) !== -1;
+    var hasSeason = s.season && t.indexOf(String(s.season)) !== -1;
+    var hasType   = /shirt|jersey|trikot/i.test(t);
+    var hasPlayer = s.mw_player && t.toLowerCase().indexOf(String(s.mw_player).toLowerCase()) !== -1;
+
+    if (t.length < 45 || !hasType) {
+      var parts = [];
+      if (!hasClub && s.club) parts.push(s.club);
+      parts.push(t);
+      if (!hasType) parts.push('Shirt');
+      t = parts.join(' ').replace(/\s+/g, ' ').trim();
+
+      var tail = [];
+      if (s.category === 'match_worn') {
+        var cls = String(s.mw_type || '').trim();
+        if (cls && t.toLowerCase().indexOf(cls.toLowerCase()) === -1) tail.push(cls);
+        if (s.mw_player && !hasPlayer) tail.push(s.mw_player);
+      } else {
+        tail.push('Vintage Original');
+      }
+      if (tail.length) t += ' \u2014 ' + tail.join(', ');
+    }
     return t;
   }
 
@@ -2883,17 +2986,29 @@
     var img = (s.images && s.images[0]) ? s.images[0] : '';
     var price = (s.price != null) ? parseFloat(s.price).toFixed(2) : '';
     var avail = (s.available === false) ? 'SoldOut' : 'InStock';
-    var cat = s.category === 'match_worn' ? 'Match Worn / Issued'
+    // The label shown on the page mirrors the exact classification whenever the
+    // data has one, so the H1, the badge, the passport and the schema all agree.
+    var cat = s.category === 'match_worn'
+            ? (String(s.mw_type || '').trim() || 'Match Worn / Issued')
             : s.category === 'national' ? 'International' : 'Club';
     var metaDesc = (s.description ? String(s.description).replace(/\s+/g, ' ').trim().slice(0, 155)
                    : (s.title + ' — original vintage football shirt at Shirt Société.'));
 
     // provenance rows (only the filled ones) — full dossier order
+    // Passport rows follow the audit's field order. Empty rows are dropped
+    // rather than shown blank, and an unknown fixture is stated as unknown
+    // instead of being left out silently or guessed at.
     var provRows = [
       ['Classification', s.mw_type], ['Player', s.mw_player],
-      ['Match', s.mw_match], ['Date', s.mw_date], ['Competition', s.mw_competition],
-      ['Provenance', s.mw_provenance], ['Certificate (COA)', s.mw_coa],
-      ['Photomatch', s.mw_photomatch], ['Product code', s.mw_code],
+      ['Club', s.club], ['Season', s.season],
+      ['Competition', s.mw_competition],
+      ['Fixture', s.mw_match || (s.category === 'match_worn' ? 'Exact fixture not confirmed' : '')],
+      ['Fixture date', s.mw_date],
+      ['Product code', s.mw_code],
+      ['Player sizing', s.mw_sizecode],
+      ['Certificate (COA)', s.mw_coa],
+      ['Provenance', s.mw_provenance],
+      ['Photomatch', s.mw_photomatch],
       ['Included', s.mw_included]
     ].filter(function(r) { return r[1] && String(r[1]).trim(); });
     var provHtml = provRows.length
@@ -3077,7 +3192,27 @@
         "@type": "Offer", "url": url, "priceCurrency": "EUR",
         "price": price, "availability": "https://schema.org/" + avail,
         "itemCondition": "https://schema.org/UsedCondition",
-        "seller": { "@type": "Organization", "name": "Shirt Société" }
+        "seller": { "@type": "Organization", "name": "Shirt Société" },
+        // Shipping and returns are stated here so Google can show them in
+        // Merchant listings. Values mirror shipping.html and refund.html.
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": { "@type": "MonetaryAmount", "value": "3.95", "currency": "EUR" },
+          "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "NL" },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
+            "transitTime": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 7, "unitCode": "DAY" }
+          }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "NL",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 14,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/ReturnShippingFees"
+        }
       }
     };
     // Only state facts we actually hold — never invent identifiers (audit 14).
