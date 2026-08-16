@@ -1631,13 +1631,13 @@
     <div style="position:relative;z-index:2">
       <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600">Early Access</div>
       <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;line-height:1.1;margin-bottom:12px;color:var(--on-photo)">One hour before everyone else</h2>
-      <p style="font-size:13px;line-height:1.75;color:rgba(var(--on-photo-rgb),.6);margin-bottom:20px">Collector List members see each new drop at 19:00 CET, an hour before Instagram and the public listing.</p>
+      <p style="font-size:13px;line-height:1.75;color:rgba(var(--on-photo-rgb),.6);margin-bottom:20px">Members see each new collection an hour before Instagram and the public listing. Tell us what you collect and we will flag pieces that match.</p>
       <div id="m-drop-signup-form" style="display:flex;flex-direction:column;gap:10px">
         <input type="email" id="m-drop-email-input" placeholder="your@email.com" style="width:100%;background:rgba(10,9,5,.7);border:1px solid rgba(var(--on-photo-rgb),.25);color:var(--on-photo);font-family:'DM Sans',sans-serif;font-size:14px;padding:13px 16px;border-radius:2px;outline:none">
         <button onclick="submitDropEmailMobile()" style="width:100%;background:var(--gold);color:var(--ink);border:none;padding:13px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Join the list</button>
       </div>
-      <div id="m-drop-email-confirm" style="display:none;font-size:13px;color:var(--gold);padding:10px 0">You are on the Collector List. You will see the next drop at 19:00 CET, before anyone else.</div>
-      <p style="font-size:10.5px;color:rgba(var(--on-photo-rgb),.35);margin-top:14px">One email per drop. No discounts, no filler.</p>
+      <div id="m-drop-email-confirm" style="display:none;font-size:13px;color:var(--gold);padding:10px 0">You are on the Collector List. You will see the next collection before anyone else.</div>
+      <p style="font-size:10.5px;color:rgba(var(--on-photo-rgb),.35);margin-top:14px">Only when a new collection goes live. No discounts, no filler.</p>
     </div>
   </section>
 </div>
@@ -2148,13 +2148,13 @@
   <div style="position:relative;z-index:2;max-width:560px;margin:0 auto">
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:600">The Collector List</div>
     <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(26px,3vw,38px);line-height:1.1;margin-bottom:14px;color:var(--on-photo)">One hour before everyone else</h2>
-    <p style="font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.8;color:rgba(var(--on-photo-rgb),.65);margin-bottom:26px">Every shirt is one of one, so the first person to see it is usually the one who gets it. Collector List members receive each new drop at 19:00 CET, a full hour before it is announced on Instagram or listed publicly.</p>
+    <p style="font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.8;color:rgba(var(--on-photo-rgb),.65);margin-bottom:26px">Every shirt is one of one, so the first person to see it is usually the one who gets it. Collector List members receive each new collection a full hour before it is announced on Instagram or listed publicly. Tell us what you collect and we will let you know when something you are hunting for comes in.</p>
     <div id="drop-signup-form" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
       <input type="email" id="drop-email-input" placeholder="your@email.com" style="flex:1;min-width:240px;max-width:320px;background:rgba(10,9,5,.7);border:1px solid rgba(var(--on-photo-rgb),.25);color:var(--on-photo);font-family:'DM Sans',sans-serif;font-size:14px;padding:13px 16px;border-radius:2px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.6)'" onblur="this.style.borderColor='rgba(var(--on-photo-rgb),.25)'" onkeydown="if(event.key==='Enter')submitDropEmail()">
       <button id="drop-email-btn" onclick="submitDropEmail()" style="background:var(--gold);color:var(--ink);border:none;padding:13px 28px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Join the list</button>
     </div>
-    <div id="drop-email-confirm" style="display:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gold);padding:12px 0">You are on the Collector List. You will see the next drop at 19:00 CET, before anyone else.</div>
-    <p style="font-size:11px;color:rgba(var(--on-photo-rgb),.35);margin-top:16px;line-height:1.6">Roughly one email per drop. No discounts, no filler. Unsubscribe any time.</p>
+    <div id="drop-email-confirm" style="display:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gold);padding:12px 0">You are on the Collector List. You will see the next collection before anyone else.</div>
+    <p style="font-size:11px;color:rgba(var(--on-photo-rgb),.35);margin-top:16px;line-height:1.6">A few emails a year, only when a new collection goes live. No discounts, no filler. Unsubscribe any time.</p>
   </div>
 </section>
 
@@ -2710,7 +2710,7 @@
       <div class="foot-drop-cta">
         <div>
           <div class="foot-drop-cta-head">The Collector List</div>
-          <div class="foot-drop-cta-sub">New drops at 19:00 CET, an hour before anyone else sees them.</div>
+          <div class="foot-drop-cta-sub">Every new collection reaches members an hour before anyone else.</div>
         </div>
         <button type="button" class="foot-drop-btn" onclick="openDropAlertModal()">Join the Collector List</button>
       </div>
@@ -6595,14 +6595,19 @@
     </div>
 
     <div style="padding:24px 28px 28px">
-      <p style="font-size:13px;color:rgba(var(--white-rgb),.6);line-height:1.7;margin:0 0 20px">Every shirt is one of one, so the first to see it is usually the one who gets it. Members receive each new drop at 19:00 CET, a full hour before Instagram and the public listing.</p>
+      <p style="font-size:13px;color:rgba(var(--white-rgb),.6);line-height:1.7;margin:0 0 20px">Every shirt is one of one, so the first to see it is usually the one who gets it. Members receive each new collection an hour before Instagram and the public listing.</p>
 
-      <div id="da-form" style="display:flex;gap:10px;flex-wrap:wrap">
-        <input id="da-email" type="email" placeholder="your@email.com" style="flex:1;min-width:200px;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'" onkeydown="if(event.key==='Enter')submitDropAlertEmail()">
-        <button id="da-btn" onclick="submitDropAlertEmail()" style="background:var(--gold);color:var(--ink);border:none;border-radius:2px;padding:13px 24px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Join the list</button>
+      <div id="da-form">
+        <input id="da-email" type="email" placeholder="your@email.com" style="width:100%;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:13px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'" onkeydown="if(event.key==='Enter')submitDropAlertEmail()">
+        <!-- Knowing what someone collects turns a mailing list into a matching
+             list: a Bayern collector can be told about a Bayern shirt directly. -->
+        <div style="font-size:11px;color:rgba(var(--white-rgb),.45);margin:16px 0 8px;letter-spacing:.5px">What do you collect? <span style="opacity:.6">Optional</span></div>
+        <div id="da-tags" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        <input id="da-other" type="text" placeholder="Anything else — club, country, era, size" style="width:100%;margin-top:8px;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:11px 14px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'">
+        <button id="da-btn" onclick="submitDropAlertEmail()" style="width:100%;margin-top:16px;background:var(--gold);color:var(--ink);border:none;border-radius:2px;padding:13px 24px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Join the list</button>
       </div>
-      <div id="da-confirm" style="display:none;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--gold);padding:4px 0">You are on the Collector List. You will see the next drop at 19:00 CET, before anyone else.</div>
-      <p style="font-size:11px;color:rgba(var(--white-rgb),.35);margin-top:16px;line-height:1.6">Roughly one email per drop. No discounts, no filler. Unsubscribe any time.</p>
+      <div id="da-confirm" style="display:none;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--gold);padding:4px 0">You are on the Collector List. You will see the next collection before anyone else.</div>
+      <p style="font-size:11px;color:rgba(var(--white-rgb),.35);margin-top:16px;line-height:1.6">A few emails a year, only when a new collection goes live. No discounts, no filler. Unsubscribe any time.</p>
     </div>
   </div>
 </div>
@@ -6821,6 +6826,35 @@
     } catch (e) {}
   }
   document.addEventListener('DOMContentLoaded', ssMaybeAutoDropPopup);
+  // Tag chips for the Collector List. Kept short and optional so the form still
+  // takes seconds to complete; the value is in knowing who collects what.
+  var SS_TAGS = ['Ajax','Netherlands','Bayern München','Borussia Dortmund','Germany',
+                 'Italy','England','Spain','1980s','1990s','2000s','Match Worn','Player Issue'];
+  var ssPickedTags = [];
+  (function renderTags() {
+    var wrap = document.getElementById('da-tags');
+    if (!wrap) return;
+    wrap.innerHTML = SS_TAGS.map(function(t) {
+      return '<button type="button" data-tag="' + t + '" onclick="ssToggleTag(this)" '
+        + 'style="background:transparent;border:1px solid var(--line);color:rgba(var(--white-rgb),.7);'
+        + 'padding:6px 11px;border-radius:100px;font-family:\'DM Sans\',sans-serif;font-size:11.5px;'
+        + 'cursor:pointer;transition:all .15s">' + t + '</button>';
+    }).join('');
+  })();
+  function ssToggleTag(el) {
+    var t = el.getAttribute('data-tag');
+    var i = ssPickedTags.indexOf(t);
+    if (i === -1) {
+      ssPickedTags.push(t);
+      el.style.borderColor = 'var(--gold)'; el.style.color = 'var(--gold)';
+      el.style.background = 'rgba(200,169,80,.1)';
+    } else {
+      ssPickedTags.splice(i, 1);
+      el.style.borderColor = 'var(--line)'; el.style.color = 'rgba(var(--white-rgb),.7)';
+      el.style.background = 'transparent';
+    }
+  }
+
   async function submitDropAlertEmail() {
     var input = document.getElementById('da-email');
     var btn = document.getElementById('da-btn');
@@ -6838,7 +6872,13 @@
       var res = await fetch('https://shirtsociete.netlify.app/api/drop-signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: input.value.trim(), drop: 'Footer - drop alerts' })
+        body: JSON.stringify({
+          email: input.value.trim(),
+          drop: 'Collector List'
+            + (ssPickedTags.length ? ' | collects: ' + ssPickedTags.join(', ') : '')
+            + ((document.getElementById('da-other') || {}).value
+                 ? ' | also: ' + document.getElementById('da-other').value.trim() : '')
+        })
       });
       var data = await res.json();
       if (!res.ok) {
