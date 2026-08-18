@@ -14,10 +14,9 @@ Disallow: /*?*price=
 Disallow: /*?*q=
 Disallow: /*?*add=
 Disallow: /*?*ssr=
-Disallow: /*?p=cart
-Disallow: /*?p=checkout
-Disallow: /*?p=profile
-Disallow: /*?p=wishlist
+# Cart, checkout, profile and wishlist are NOT blocked here on purpose: they
+# serve a noindex tag instead. A blocked page can never be read, so Google
+# would keep them listed as duplicates rather than dropping them.
 
 # Let Google fetch the assets it needs to render pages properly
 Allow: /*.css$
