@@ -2167,40 +2167,76 @@
     if (hgroup) hgroup.style.display = on ? 'none' : '';
   }
 
-  // Builds a factual description from the fields already filled in, so a plain
-  // vintage listing does not need a written-from-scratch paragraph. It states
-  // only what the form contains and never invents provenance.
+  // Builds a factual description in exactly the same shape as the shirts that
+  // are already live on the site, so a concept does not read differently from a
+  // published listing. Live copy follows one pattern:
+  //   Vintage {Club} {kit} shirt from the {season} season. In {condition} condition.
+  //   Match worn {Club} shirt, worn by {Player} against {Fixture}. Comes with a
+  //   Certificate of Authenticity.
+  // It states only what the form contains, never invents provenance, and adds no
+  // filler sentences — the one editorial line of context is written by hand.
   function ssSuggestDescription() {
     function val(id) { var e = document.getElementById(id); return e ? String(e.value || '').trim() : ''; }
     var box = document.getElementById('m-description');
     if (!box) return;
     if (box.value.trim() && !confirm('Replace the current description?')) return;
 
-    var club = val('m-club'), season = val('m-season'), size = val('m-size');
-    var cond = val('m-condition'), cat = val('m-category');
-    var player = val('m-mw_player'), mwType = val('m-mw_type');
+    var title = val('m-title'), club = val('m-club'), season = val('m-season');
+    var cond = val('m-condition').toLowerCase(), cat = val('m-category');
+    var player = val('m-mw_player'), mwType = val('m-mw_type').toLowerCase();
     var comp = val('m-mw_competition'), fixture = val('m-mw_match'), date = val('m-mw_date');
-    var coa = val('m-mw_coa'), len = val('m-length'), wid = val('m-width');
+    var coa = val('m-mw_coa');
+
+    // "1995/96" reads as a season, a bare "1995" does not
+    function seasonPhrase(pre) {
+      if (!season) return '';
+      return /^\d{4}$/.test(season) ? pre + ' ' + season : pre + ' the ' + season + ' season';
+    }
+    // the kit type already lives in the title, so read it from there
+    function kit() {
+      var t = title.toLowerCase();
+      if (t.indexOf('goalkeeper') !== -1) return 'goalkeeper ';
+      if (t.indexOf('third') !== -1) return 'third ';
+      if (t.indexOf('away') !== -1) return 'away ';
+      if (t.indexOf('home') !== -1) return 'home ';
+      return '';
+    }
 
     var s = [];
-    if (cat === 'match_worn' && player) {
-      s.push((mwType || 'Match worn') + ' shirt worn by ' + player
-        + (club ? ' for ' + club : '')
-        + (season ? ' during the ' + season + ' season' : '') + '.');
-      if (fixture) s.push('From ' + fixture + (date ? ', ' + date : '') + (comp ? ' (' + comp + ')' : '') + '.');
-      else if (comp) s.push(comp + '. Exact fixture not confirmed.');
-      if (coa) s.push('Supplied with a certificate of authenticity.');
-    } else {
-      s.push('Original ' + (club ? club + ' ' : '') + (season ? season + ' ' : '') + 'shirt.');
-      s.push('An original from the period, not a reproduction or retro reissue.');
-    }
-    if (size) s.push('Size ' + size + '.');
-    if (cond) s.push('Condition: ' + cond.toLowerCase() + '.');
-    if (len && wid) s.push('Measured flat: ' + len + ' cm shoulder to hem, ' + wid + ' cm pit to pit.');
-    s.push('A single piece — once it is sold it will not return.');
 
-    box.value = s.join(' ');
-    showToast('Description suggested — edit before saving', 'success');
+    if (cat === 'match_worn') {
+      var lead, verb;
+      if (mwType.indexOf('player issue') !== -1)      { lead = 'Player issue';        verb = 'issued to'; }
+      else if (mwType.indexOf('match issued') !== -1) { lead = 'Match issued';        verb = 'prepared for'; }
+      else if (mwType.indexOf('worn') !== -1 && mwType.indexOf('issued') !== -1)
+                                                      { lead = 'Match worn / issued'; verb = 'attributed to'; }
+      else                                            { lead = 'Match worn';          verb = 'worn by'; }
+
+      var open = lead + (club ? ' ' + club : '') + ' shirt';
+      if (season) open += ' ' + seasonPhrase('from');
+      if (player) {
+        open += ', ' + verb + ' ' + player;
+        // a fixture written as "A vs B" is a match, a single name is an opponent
+        if (fixture) open += (/\s+(vs|v\.?|-)\s+/i.test(fixture) ? ' in ' + fixture : ' against ' + fixture);
+        if (date) open += ' on ' + date;
+      }
+      s.push(open + '.');
+
+      if (!fixture) {
+        s.push(comp ? comp + '. Exact fixture not confirmed.' : 'Exact fixture not confirmed.');
+      } else if (comp) {
+        s.push(comp + '.');
+      }
+      if (coa) s.push('Comes with a Certificate of Authenticity.');
+    } else {
+      s.push('Vintage' + (club ? ' ' + club : '') + ' ' + kit() + 'shirt'
+             + (season ? ' ' + seasonPhrase('from') : '') + '.');
+    }
+
+    if (cond) s.push('In ' + cond + ' condition.');
+
+    box.value = s.join(' ').replace(/\s+/g, ' ').trim();
+    showToast('Description suggested — add one line of context if you know it', 'success');
   }
 
   // ── PRODUCT DATA VALIDATION (audit §1) ──
@@ -2304,6 +2340,12 @@
       // ── description hygiene ──
       if (desc && /\bshir\b|\bshrit\b|  +/.test(low)) warn('possible typo or double space in description');
       if (desc && desc.length < 60 && forSale) warn('very short description');
+      // Filler sentences an older version of "Suggest description" used to add.
+      // No live listing carries them, so any shirt that still does reads
+      // differently from the rest of the shop.
+      if (/not a reproduction|retro reissue|will not return|sourced via collectors/.test(low)) {
+        warn('boilerplate sentence in description — rewrite in the live style');
+      }
 
       if (probs.length) {
         issues.push({ title: (s.title || '(untitled)') + (s.is_draft ? '  [concept]' : ''), probs: probs });
