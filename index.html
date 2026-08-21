@@ -138,14 +138,19 @@
       --photo-dim: 0.2;
       --sidebar-w: 240px;
       /* the bar is now three stacked rows: announcement / logo / nav */
-      --announce-h: 34px;
+      --announce-h: 40px;
       --topbar-main-h: 78px;
       --topbar-nav-h: 46px;
-      --topbar-h: 158px;
+      --topbar-h: 164px;
+      /* the announcement strip is a solid band, so it carries its own colours */
+      --announce-bg: var(--gold);
+      --announce-fg: #14120b;
     }
 
     /* ── LIGHT (beige) THEME ── */
     html[data-theme="light"] {
+      --announce-bg: #14120b;
+      --announce-fg: #e8d08c;
       --black: #efe1c4;
       --gold: #a1791f;
       --gold-dim: #7d5c17;
@@ -265,17 +270,39 @@
        the small uppercase line stays readable straight over the hero photo. */
     .topbar-announce {
       height: var(--announce-h); flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      padding: 0 32px; text-align: center;
-      background: rgba(10,9,5,0.60);
-      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      font-size: 10px; font-weight: 600; letter-spacing: 2.4px;
-      text-transform: uppercase; color: rgba(var(--on-photo-rgb),.78);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+      padding: 0 12px;
+      background: var(--announce-bg); color: var(--announce-fg);
+      transition: background .35s ease, color .35s ease;
     }
-    .topbar-announce em { font-style: normal; color: var(--gold); }
-    .topbar.scrolled .topbar-announce { background: rgba(10,9,5,0.35); }
+    .topbar.scrolled .topbar-announce { background: var(--announce-bg); }
+    /* collapsed away from the top of the page — height, not display, so it
+       folds and unfolds instead of snapping */
+    .topbar.no-announce .topbar-announce {
+      height: 0; opacity: 0; overflow: hidden; pointer-events: none;
+      transition: height .3s ease, opacity .2s ease;
+    }
+
+    /* the message itself, swapped by fading through */
+    .ann-view { position: relative; min-width: 0; max-width: 720px; text-align: center; }
+    .ann-msg {
+      display: block; font-size: 11px; font-weight: 700; letter-spacing: 1.6px;
+      text-transform: uppercase; color: var(--announce-fg); text-decoration: none;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    a.ann-msg:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .ann-view.swap .ann-msg { opacity: 0; transform: translateY(-5px); }
+    .ann-msg b { font-weight: 800; }
+
+    .ann-arrow {
+      background: none; border: none; cursor: pointer; padding: 0 10px;
+      color: var(--announce-fg); opacity: .55; line-height: 1;
+      font-size: 17px; font-family: 'DM Sans', sans-serif;
+      transition: opacity .2s ease;
+    }
+    .ann-arrow:hover { opacity: 1; }
+    @media (max-width: 900px) { .ann-msg { font-size: 10px; letter-spacing: 1.2px; } }
 
     /* ROW 2 — search on the left, logo dead centre, four icons on the right.
        A 1fr / auto / 1fr grid keeps the logo optically centred no matter how
@@ -316,7 +343,6 @@
     /* the bar is always see-through, so keep a soft shadow for legibility */
     .topbar .nav-item,
     .topbar-logo img,
-    .topbar-announce,
     .topbar-icons svg { text-shadow: 0 1px 6px rgba(0,0,0,0.6); filter: drop-shadow(0 1px 4px rgba(0,0,0,0.55)); }
     /* in the bar, hide the little SVG on text links to keep it clean; keep text */
     .topbar-nav .nav-item svg { display: none; }
@@ -1310,26 +1336,82 @@
       #ad-main-img { max-height: 60vh !important; }
       .archive-detail-grid > div:last-child { max-height: none !important; overflow: visible !important; padding: 20px !important; }
 
-      /* Mobile hero */
+      /* ─── Mobile hero: the same composition as the laptop, centred, with the
+         same masked line reveal. Driven by CSS keyframes rather than GSAP so it
+         plays on the first paint even on a slow connection. ─── */
       .m-hero {
       position: relative; overflow: hidden;
-      min-height: 78vh; padding: 32px 20px 40px;
-      display: flex; flex-direction: column; justify-content: flex-end;
+      min-height: 86vh; padding: 44px 22px 64px;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center; text-align: center;
     }
+    @supports (min-height: 86svh) { .m-hero { min-height: 86svh; } }
     .m-hero-bg {
       position: absolute; inset: 0;
       background: url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;
+      animation: cinKenBurns 38s ease-in-out infinite; will-change: transform;
     }
     .m-hero-bg::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(10,9,5,.55) 0%, rgba(10,9,5,.35) 35%, rgba(10,9,5,.96) 100%);
+      background: radial-gradient(ellipse 78% 58% at 50% 46%, rgba(10,9,5,.72) 0%, rgba(10,9,5,.5) 45%, rgba(10,9,5,.2) 78%, rgba(10,9,5,0) 100%),
+                  linear-gradient(180deg, rgba(10,9,5,.45) 0%, rgba(10,9,5,.15) 30%, rgba(10,9,5,.96) 100%);
     }
     .m-hero > *:not(.m-hero-bg) { position: relative; z-index: 2; }
-      .m-hero-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
-      .m-hero-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 44px; line-height: .95; letter-spacing: -1px; color: var(--on-photo); margin-bottom: 12px; }
-    .m-hero-title span { color: transparent; -webkit-text-stroke: 1.2px rgba(200,169,80,.55); }
-    .m-hero-title span { color: var(--gold); }
-      .m-hero-sub { font-size: 13px; font-weight: 300; color: rgba(var(--on-photo-rgb),.6); margin-bottom: 24px; line-height: 1.7; border-left: 1px solid rgba(200,169,80,.25); padding-left: 12px; }
+
+      .m-hero-eyebrow {
+        font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
+        margin-bottom: 20px; font-weight: 500;
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        opacity: 0; animation: mFadeUp .8s ease-out .15s forwards;
+      }
+      .m-hero-eyebrow i { display: block; width: 0; height: 1px; background: var(--gold); animation: mRule .9s ease-out .35s forwards; }
+
+      .m-hero-title {
+        font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+        font-size: clamp(42px, 13.5vw, 60px); line-height: .92; letter-spacing: -1px;
+        color: var(--on-photo); margin: 0;
+      }
+      .m-hero-title .cin-line > span { transform: translateY(115%) skewY(2.5deg); animation: mLineUp 1.15s cubic-bezier(.16,1,.3,1) forwards; }
+      .m-hero-title .cin-line:nth-child(1) > span { animation-delay: .30s; }
+      .m-hero-title .cin-line:nth-child(2) > span { animation-delay: .43s; }
+      /* the third line rises AND catches the light, so both animations sit in
+         one declaration — a separate rule would lose to the line-reveal above */
+      .m-hero-title .cin-line:nth-child(3) > span.m-gold {
+        animation: mLineUp 1.15s cubic-bezier(.16,1,.3,1) .56s forwards,
+                   cinSheen 1.9s cubic-bezier(.4,0,.2,1) 1.5s forwards;
+      }
+      .m-hero-title .m-gold {
+        color: transparent; -webkit-text-stroke: 1.3px rgba(200,169,80,.65);
+        background-image: linear-gradient(100deg, rgba(240,222,160,0) 42%, rgba(245,230,175,.8) 50%, rgba(240,222,160,0) 58%);
+        background-size: 300% 100%; background-position: 175% 0; background-repeat: no-repeat;
+        -webkit-background-clip: text; background-clip: text;
+      }
+
+      .m-hero-rule { width: 0; height: 1px; background: rgba(200,169,80,.45); margin: 26px auto 20px; animation: mRuleWide 1s ease-out 1.05s forwards; }
+      .m-hero-sub {
+        font-size: 13.5px; font-weight: 300; color: rgba(var(--on-photo-rgb),.62);
+        margin: 0 auto 30px; max-width: 320px; line-height: 1.8;
+        opacity: 0; animation: mFadeUp .8s ease-out 1.15s forwards;
+      }
+      .m-hero-btns { display: flex; flex-direction: column; align-items: center; gap: 14px; opacity: 0; animation: mFadeUp .8s ease-out 1.3s forwards; }
+      .m-hero-alt {
+        background: none; border: none; color: rgba(var(--on-photo-rgb),.8);
+        font-family: 'DM Sans', sans-serif; font-size: 10.5px; font-weight: 500;
+        letter-spacing: 2px; text-transform: uppercase; cursor: pointer; padding: 4px 8px;
+      }
+
+      @keyframes mLineUp  { to { transform: translateY(0) skewY(0); } }
+      @keyframes mFadeUp  { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes mRule    { to { width: 22px; } }
+      @keyframes mRuleWide{ to { width: 44px; } }
+
+      @media (prefers-reduced-motion: reduce) {
+        .m-hero-bg { animation: none; }
+        .m-hero-eyebrow, .m-hero-sub, .m-hero-btns { opacity: 1 !important; animation: none !important; }
+        .m-hero-title .cin-line > span { transform: none !important; animation: none !important; }
+        .m-hero-eyebrow i { width: 22px; animation: none !important; }
+        .m-hero-rule { width: 44px; animation: none !important; }
+      }
       .m-section-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; padding: 24px 20px 12px; }
       .m-shirt-row { display: flex; gap: 12px; overflow-x: auto; padding: 0 20px 16px; scrollbar-width: none; }
       .m-shirt-row::-webkit-scrollbar { display: none; }
@@ -1530,6 +1612,27 @@
     .cin-cta:hover::after { animation: cinCtaSheen .75s ease-out; }
     @keyframes cinCtaSheen { 0% { left: -60%; opacity: 0 } 15% { opacity: 1 } 100% { left: 130%; opacity: 0 } }
 
+    /* A 1080p laptop leaves roughly 700px under the header, a desktop leaves
+       far more. Step the hero type down by viewport HEIGHT so the composition
+       keeps its breathing room on a laptop instead of pressing into the nav. */
+    @media (min-width: 768px) and (max-height: 940px) {
+      #cin-h1 { font-size: clamp(56px, 10.4vh, 86px) !important; margin-bottom: 18px !important; }
+      #cin-ew { margin-bottom: 20px !important; }
+      #cin-sub-wrap { margin: 24px auto 30px !important; }
+      #cin-sub { font-size: 14.5px !important; line-height: 1.75 !important; }
+      #cin-cue { bottom: 58px !important; }
+    }
+    @media (min-width: 768px) and (max-height: 800px) {
+      #cin-h1 { font-size: clamp(50px, 9.6vh, 74px) !important; margin-bottom: 14px !important; }
+      #cin-sub-wrap { margin: 18px auto 24px !important; }
+      #cin-cue { display: none !important; }
+    }
+    @media (min-width: 768px) and (max-height: 700px) {
+      #cin-h1 { font-size: clamp(44px, 9vh, 62px) !important; }
+      #cin-ew { margin-bottom: 14px !important; }
+      #cin-sub-wrap { margin: 14px auto 20px !important; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .cin-line > span { transform: none !important; }
       #cin-h1-gold.sweep, #cin-h1:hover #cin-h1-gold, .cin-cta:hover::after { animation: none; }
@@ -1634,13 +1737,21 @@
     <div class="m-hero-bg"></div>
     <!-- compact pills -->
     
-    <div class="m-hero-eyebrow">Est. 2025 · Harderwijk, NL</div>
-    <h1 class="m-hero-title">Vintage<br>football<br><span>history.</span></h1>
+    <div class="m-hero-eyebrow"><i></i>Est. 2025 &middot; Harderwijk, NL<i></i></div>
+    <h1 class="m-hero-title">
+      <span class="cin-line"><span>Vintage</span></span>
+      <span class="cin-line"><span>football</span></span>
+      <span class="cin-line"><span class="m-gold">history.</span></span>
+    </h1>
+    <div class="m-hero-rule"></div>
     <p class="m-hero-sub">Authenticity. Heritage. Curated Vintage &amp; Match Worn Football Shirts</p>
-    <button class="btn-primary" onclick="mGoTo('shop')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-      Shop the collection
-    </button>
+    <div class="m-hero-btns">
+      <button class="btn-primary" onclick="mGoTo('shop')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Shop the collection
+      </button>
+      <button class="m-hero-alt" onclick="mGoTo('about')">Our Story</button>
+    </div>
   </div>
 
   <!-- Words: Timeless / Original / Rare (mobile) -->
@@ -1921,7 +2032,11 @@
   <header class="topbar" id="d-topbar">
 
     <!-- Row 1: announcement strip -->
-    <div class="topbar-announce">Authentic Vintage &amp; Match Worn Football Shirts <em>&middot;</em> One of One</div>
+    <div class="topbar-announce">
+      <button type="button" class="ann-arrow" onclick="ssAnnStep(-1)" aria-label="Previous message">&lsaquo;</button>
+      <div class="ann-view" id="ann-view"></div>
+      <button type="button" class="ann-arrow" onclick="ssAnnStep(1)" aria-label="Next message">&rsaquo;</button>
+    </div>
 
     <!-- Row 2: search left &middot; logo centre &middot; icons right -->
     <div class="topbar-main">
@@ -1978,6 +2093,80 @@
     </nav>
   </header>
 
+  <script>
+  /* ── ANNOUNCEMENT BAR ──────────────────────────────────────────────
+     Edit this list and nothing else. Each entry is one message; add an
+     href and the message becomes a link. Keep them short — the strip is
+     one line and truncates rather than wraps.
+
+     Keep every line factually true. The shipping line below matches
+     SHIPPING_RATES in this file (free_at: 150, EU destinations), which is
+     what the cart actually charges.                                     */
+  var SS_ANNOUNCEMENTS = [
+    { text: 'New shirts online now &middot; <b>See the latest</b>', href: '/?p=shop&sort=new' },
+    { text: 'Free shipping on EU orders over <b>&euro;150</b>' },
+    { text: 'Authentic vintage &amp; match worn football shirts &middot; <b>One of one</b>' }
+  ];
+
+  (function() {
+    var view = document.getElementById('ann-view');
+    if (!view) return;
+    var i = 0, timer = null, paused = false;
+    var DWELL = 6000;
+
+    function paint() {
+      var m = SS_ANNOUNCEMENTS[i];
+      if (!m) return;
+      var el;
+      if (m.href) {
+        el = document.createElement('a');
+        el.href = m.href;
+        el.addEventListener('click', function(e) {
+          // stay in the single-page app rather than reloading it
+          if (typeof dShopNewest === 'function' && m.href.indexOf('sort=new') !== -1) {
+            e.preventDefault(); dShopNewest();
+          }
+        });
+      } else {
+        el = document.createElement('span');
+      }
+      el.className = 'ann-msg';
+      el.innerHTML = m.text;
+      view.innerHTML = '';
+      view.appendChild(el);
+    }
+
+    function go(dir) {
+      if (SS_ANNOUNCEMENTS.length < 2) return;
+      view.classList.add('swap');
+      setTimeout(function() {
+        i = (i + dir + SS_ANNOUNCEMENTS.length) % SS_ANNOUNCEMENTS.length;
+        paint();
+        view.classList.remove('swap');
+      }, 300);
+    }
+
+    function start() {
+      stop();
+      if (SS_ANNOUNCEMENTS.length < 2) return;
+      timer = setInterval(function() { if (!paused) go(1); }, DWELL);
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+    // manual arrows restart the clock, so a message you stepped to gets its
+    // full turn instead of flicking away a moment later
+    window.ssAnnStep = function(dir) { go(dir); start(); };
+
+    var bar = view.parentNode;
+    bar.addEventListener('mouseenter', function() { paused = true; });
+    bar.addEventListener('mouseleave', function() { paused = false; });
+    document.addEventListener('visibilitychange', function() { paused = document.hidden; });
+
+    paint();
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) start();
+  })();
+  </script>
+
   <!-- Desktop Main -->
   <main class="desktop-main">
 
@@ -1987,7 +2176,7 @@
 <div id="cin-home">
 
 <!-- SCENE 1: HERO -->
-<section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:0 52px">
+<section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:var(--topbar-h) 52px 0">
     <!-- Compact event + drop pills (top of page) -->
     <div id="cin-top-pills" style="position:absolute;top:176px;right:28px;z-index:5;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(-12px)">
       <div onclick="dGoTo('about')" style="display:flex;align-items:center;gap:8px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(200,169,80,.25);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.6)'" onmouseout="this.style.borderColor='rgba(200,169,80,.25)'">
@@ -4798,7 +4987,7 @@
     // against a plain (and in light mode, beige) page background.
     var bar = document.getElementById('d-topbar');
     if (bar) {
-      if (screen === 'home') { bar.classList.remove('scrolled'); bar.classList.remove('hidden'); }
+      if (screen === 'home') { bar.classList.remove('scrolled'); bar.classList.remove('hidden'); bar.classList.remove('no-announce'); }
       else { bar.classList.add('scrolled'); bar.classList.remove('hidden'); }
     }
     if (screen === 'cart') {
@@ -7166,6 +7355,11 @@
       if (!isHome) { bar.classList.add('scrolled'); }
       else if (y > 60) { bar.classList.add('scrolled'); }
       else { bar.classList.remove('scrolled'); }
+      // The announcement strip belongs to the top of the page only. Past that
+      // it collapses, so scrolling back up returns the menu on its own rather
+      // than the whole three-row block.
+      if (y > 40) { bar.classList.add('no-announce'); }
+      else { bar.classList.remove('no-announce'); }
       // always show near the very top
       if (y < 80) { bar.classList.remove('hidden'); }
       else if (y > lastY + 6) { bar.classList.add('hidden'); }   // scrolling down
