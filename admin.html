@@ -1888,12 +1888,9 @@
       heading: 'Twelve new shirts<br>go live tonight',
       lines: [
         'The next collection goes online this evening. Twelve shirts, each one a single piece.',
-        // EDIT: one sentence of hints. Say only what is true, name nothing you
-        // have not verified. Delete the line rather than pad it.
-        'A few hints: [EDIT — e.g. two match worn pieces with certificates, and a run of nineties originals].',
         'The rest stays quiet until it is online.'
       ],
-      highlight: 'Everyone on this list gets the email an hour before the shirts go anywhere else.',
+      highlight: 'You see them first. The moment the shirts go live, this list gets the email. Instagram follows an hour later.',
       ctaText: 'Visit the shop',
       ctaUrl: 'https://shirtsociete.com'
     };
@@ -1908,7 +1905,7 @@
       eyebrow: 'The Collector List',
       heading: 'Twelve shirts<br>are online now',
       lines: [
-        'The new collection is live in the shop. You are seeing it an hour before it goes anywhere else.',
+        'The new collection is live in the shop. You are seeing it first; Instagram follows an hour from now.',
         // EDIT: one sentence on the mix. How many match worn or player issue,
         // how many vintage, which era. Numbers only, no adjectives needed.
         '[EDIT — e.g. Three match worn pieces and nine vintage originals, mostly from the nineties.]',
@@ -2213,6 +2210,7 @@
       return '';
     }
 
+    var size = val('m-size');
     var s = [];
 
     if (cat === 'match_worn') {
@@ -2240,14 +2238,16 @@
       }
       if (coa) s.push('Comes with a Certificate of Authenticity.');
     } else {
-      s.push('Vintage' + (club ? ' ' + club : '') + ' ' + kit() + 'shirt'
+      s.push('Original' + (club ? ' ' + club : '') + ' ' + kit() + 'shirt'
              + (season ? ' ' + seasonPhrase('from') : '') + '.');
     }
 
-    if (cond) s.push('In ' + cond + ' condition.');
+    // Live listings close with this on a line of its own, one blank line down.
+    var tail = ((size ? 'Size ' + size + '. ' : '') + (cond ? 'Condition: ' + cond + '.' : '')).trim();
 
-    box.value = s.join(' ').replace(/\s+/g, ' ').trim();
-    showToast('Description suggested — add one line of context if you know it', 'success');
+    var body = s.join(' ').replace(/[ ]+/g, ' ').trim();
+    box.value = (tail ? body + '\n\n' + tail : body);
+    showToast('Opening and closing written — add the history paragraph in between', 'success');
   }
 
   // ── PRODUCT DATA VALIDATION (audit §1) ──
