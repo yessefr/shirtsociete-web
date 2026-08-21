@@ -1877,38 +1877,49 @@
   // The announcement (before the drop) and the live email (when it goes live).
   // Every subscriber receives their OWN separate email — nobody sees the others.
 
-  // Content of the announcement: teases the drop without giving everything away
+  // Content of the announcement: teases the drop without giving everything away.
+  // No promised clock time — the list is told it goes live tonight, not at 20:00,
+  // so a delay never turns into a broken promise.
   function announcementPayload() {
     return {
       secret: 'ss-drop-2026',
-      subject: 'Ten shirts drop Thursday at 16:00',
+      subject: 'Twelve shirts, tonight',
       eyebrow: 'Drop announcement',
-      heading: 'Ten new shirts<br>Thursday 6 August, 16:00',
+      heading: 'Twelve new shirts<br>go live tonight',
       lines: [
-        'The next drop goes live this Thursday at <strong style="color:#4caf7d">16:00</strong>. Ten shirts at once, and every one of them is a single, unique piece.',
-        'A few hints at what is coming: a match worn Serie A shirt with its certificate and original NFC tag still attached, two shirts prepared for players at a German club you will know instantly, and a handful of vintage originals from the nineties.',
-        'The rest we are keeping quiet until Thursday.'
+        'The next collection goes online this evening. Twelve shirts, each one a single piece.',
+        // EDIT: one sentence of hints. Say only what is true, name nothing you
+        // have not verified. Delete the line rather than pad it.
+        'A few hints: [EDIT — e.g. two match worn pieces with certificates, and a run of nineties originals].',
+        'The rest stays quiet until it is online.'
       ],
-      highlight: 'Everyone on this list gets the email the moment the drop goes live. Once a shirt is sold, it does not come back.',
+      highlight: 'Everyone on this list gets the email an hour before the shirts go anywhere else.',
       ctaText: 'Visit the shop',
       ctaUrl: 'https://shirtsociete.com'
     };
   }
 
-  // Content of the live email, sent when the shirts are actually online
+  // Content of the live email, sent when the shirts are actually online.
+  // Keep it short: the list opted in for early access, not for a newsletter.
   function liveDropPayload() {
     return {
       secret: 'ss-drop-2026',
-      subject: 'The drop is live — ten new shirts',
-      eyebrow: 'The drop is live',
-      heading: 'Ten new shirts<br>are online now',
+      subject: 'Twelve shirts, live now',
+      eyebrow: 'The Collector List',
+      heading: 'Twelve shirts<br>are online now',
       lines: [
-        'Three match worn and player issue pieces, alongside seven vintage originals from the nineties.',
-        'Every shirt is one of one. When it is gone, it does not come back.'
+        'The new collection is live in the shop. You are seeing it an hour before it goes anywhere else.',
+        // EDIT: one sentence on the mix. How many match worn or player issue,
+        // how many vintage, which era. Numbers only, no adjectives needed.
+        '[EDIT — e.g. Three match worn pieces and nine vintage originals, mostly from the nineties.]',
+        // EDIT: optional. Two sentences on the one shirt worth leading with:
+        // club, season, and the fact that makes it worth a look. Delete this
+        // whole line if nothing stands out tonight.
+        '[EDIT — the standout piece, or delete this line.]'
       ],
       highlight: '',
-      ctaText: 'Shop the drop',
-      ctaUrl: 'https://shirtsociete.com/?p=shop'
+      ctaText: 'See the new shirts',
+      ctaUrl: 'https://shirtsociete.com/?p=shop&sort=new'
     };
   }
 
