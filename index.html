@@ -1503,6 +1503,37 @@
       100% { transform: scale(1.0) translate(0, 0); }
     }
     .cin-kenburns { animation: cinKenBurns 38s ease-in-out infinite; will-change: transform; }
+
+    /* ─── HERO TEXT ─── each headline line rises out of its own mask, so the
+       words appear to be lifted off the photo rather than faded in. */
+    /* the mask clips, so leave room for italic descenders and the left overhang */
+    .cin-line { display: block; overflow: hidden; padding: 0 .1em .22em; margin: 0 -.1em -.22em; }
+    .cin-line > span { display: block; will-change: transform; }
+
+    /* a single pass of light through the outlined word, on load and on hover */
+    #cin-h1-gold {
+      background-image: linear-gradient(100deg, rgba(240,222,160,0) 42%, rgba(245,230,175,.8) 50%, rgba(240,222,160,0) 58%);
+      background-size: 300% 100%; background-position: 175% 0; background-repeat: no-repeat;
+      -webkit-background-clip: text; background-clip: text;
+    }
+    #cin-h1-gold.sweep { animation: cinSheen 1.9s cubic-bezier(.4,0,.2,1) forwards; }
+    #cin-h1:hover #cin-h1-gold { animation: cinSheen 1.4s cubic-bezier(.4,0,.2,1); }
+    @keyframes cinSheen { from { background-position: 175% 0; } to { background-position: -75% 0; } }
+
+    /* the gold button catches the light when you reach for it */
+    .cin-cta { position: relative; overflow: hidden; }
+    .cin-cta::after {
+      content: ''; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%;
+      background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.5) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-18deg); opacity: 0; pointer-events: none;
+    }
+    .cin-cta:hover::after { animation: cinCtaSheen .75s ease-out; }
+    @keyframes cinCtaSheen { 0% { left: -60%; opacity: 0 } 15% { opacity: 1 } 100% { left: 130%; opacity: 0 } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cin-line > span { transform: none !important; }
+      #cin-h1-gold.sweep, #cin-h1:hover #cin-h1-gold, .cin-cta:hover::after { animation: none; }
+    }
     @media (prefers-reduced-motion: reduce) { .cin-kenburns { animation: none; } }
 
     /* pulsing dots for the Next Event / New Shirts Added pills */
@@ -1956,7 +1987,7 @@
 <div id="cin-home">
 
 <!-- SCENE 1: HERO -->
-<section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;padding:0 52px">
+<section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:0 52px">
     <!-- Compact event + drop pills (top of page) -->
     <div id="cin-top-pills" style="position:absolute;top:176px;right:28px;z-index:5;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(-12px)">
       <div onclick="dGoTo('about')" style="display:flex;align-items:center;gap:8px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(200,169,80,.25);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.6)'" onmouseout="this.style.borderColor='rgba(200,169,80,.25)'">
@@ -2009,29 +2040,37 @@
   <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 120% 100% at 50% 50%, rgba(0,0,0,0) 60%, rgba(6,5,4,0.45) 100%)"></div>
   <!-- slide dots (centered, enlarged, clickable) -->
   <div id="cin-hero-dots" style="position:absolute;bottom:30px;left:0;right:0;z-index:3;display:flex;gap:14px;justify-content:center"></div>
-  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,9,5,.88) 0%,rgba(10,9,5,.4) 60%,rgba(10,9,5,.05) 100%),linear-gradient(180deg,rgba(10,9,5,.15) 0%,rgba(10,9,5,0) 35%,rgba(10,9,5,.96) 100%)"></div>
-  <div id="cin-hero-text" style="position:relative;z-index:6;max-width:600px">
-    <div id="cin-ew" style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:14px;opacity:0;transform:translateY(16px)">
-      <span style="display:block;width:28px;height:1px;background:var(--gold)"></span>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 62% 60% at 50% 47%, rgba(10,9,5,.82) 0%, rgba(10,9,5,.6) 42%, rgba(10,9,5,.2) 74%, rgba(10,9,5,0) 100%),linear-gradient(180deg,rgba(10,9,5,.3) 0%,rgba(10,9,5,0) 32%,rgba(10,9,5,.96) 100%)"></div>
+  <div id="cin-hero-text" style="position:relative;z-index:6;width:100%;max-width:860px;margin:0 auto;text-align:center">
+   <div id="cin-hero-inner">
+    <div id="cin-ew" style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:26px;display:flex;align-items:center;justify-content:center;gap:14px;opacity:0;transform:translateY(16px)">
+      <span class="cin-ew-rule" style="display:block;width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold))"></span>
       Est. 2025 &middot; Harderwijk, Netherlands
+      <span class="cin-ew-rule" style="display:block;width:0;height:1px;background:linear-gradient(90deg,var(--gold),transparent)"></span>
     </div>
-    <h1 id="cin-h1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(52px,6vw,88px);line-height:.88;letter-spacing:-2px;margin-bottom:24px;opacity:0;transform:translateY(32px);color:var(--on-photo)">
-      Vintage<br>football<br><span id="cin-h1-gold" style="color:transparent;-webkit-text-stroke:1.5px rgba(200,169,80,.5)">history.</span>
+    <h1 id="cin-h1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(52px,6vw,88px);line-height:.88;letter-spacing:-2px;margin-bottom:24px;opacity:0;color:var(--on-photo)">
+      <span class="cin-line"><span>Vintage</span></span>
+      <span class="cin-line"><span>football</span></span>
+      <span class="cin-line"><span id="cin-h1-gold" style="color:transparent;-webkit-text-stroke:1.5px rgba(200,169,80,.5)">history.</span></span>
     </h1>
-    <p id="cin-sub" style="font-size:15px;font-weight:300;color:rgba(var(--on-photo-rgb),.45);line-height:1.85;max-width:340px;margin-bottom:36px;border-left:1px solid rgba(200,169,80,.2);padding-left:16px;opacity:0;transform:translateY(14px)">
-      Authenticity. Heritage. Curated Vintage &amp; Match Worn Football Shirts
-    </p>
-    <div id="cin-btns" style="display:flex;align-items:center;gap:20px;opacity:0;transform:translateY(10px)">
-      <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--ink);border:none;padding:14px 26px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:background .25s ease,color .25s ease,box-shadow .25s ease" onmouseover="this.style.background='var(--on-photo)';this.style.color='#8a6f28';this.style.boxShadow='0 6px 20px rgba(var(--on-photo-rgb),.25)'" onmouseout="this.style.background='var(--gold)';this.style.color='var(--ink)';this.style.boxShadow='none'">
+    <div id="cin-sub-wrap" style="margin:30px auto 38px;max-width:430px;opacity:0;transform:translateY(14px)">
+      <span id="cin-sub-rule" style="display:block;width:0;height:1px;margin:0 auto 22px;background:rgba(200,169,80,.45)"></span>
+      <p id="cin-sub" style="font-size:15px;font-weight:300;color:rgba(var(--on-photo-rgb),.5);line-height:1.9;margin:0">
+        Authenticity. Heritage. Curated Vintage &amp; Match Worn Football Shirts
+      </p>
+    </div>
+    <div id="cin-btns" style="display:flex;align-items:center;justify-content:center;gap:24px;opacity:0;transform:translateY(10px)">
+      <a href="/?p=shop" onclick="dGoTo('shop');return false;" class="cin-cta" style="display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--ink);border:none;padding:14px 26px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:background .25s ease,color .25s ease,box-shadow .25s ease" onmouseover="this.style.background='var(--on-photo)';this.style.color='#8a6f28';this.style.boxShadow='0 6px 20px rgba(var(--on-photo-rgb),.25)'" onmouseout="this.style.background='var(--gold)';this.style.color='var(--ink)';this.style.boxShadow='none'">
         Shop Collection
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
       <a href="/?p=about" onclick="dGoTo('about');return false;" style="background:none;border:none;color:rgba(var(--on-photo-rgb),.85);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color .2s;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(var(--on-photo-rgb),.85)'">Our Story</a>
     </div>
+   </div>
   </div>
-  <div id="cin-cue" style="position:absolute;bottom:36px;left:52px;display:flex;align-items:center;gap:12px;opacity:0;z-index:2">
-    <div style="width:40px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)"></div>
-    <span style="font-size:8px;letter-spacing:4px;text-transform:uppercase;color:rgba(200,169,80,.4)">Scroll to explore</span>
+  <div id="cin-cue" style="position:absolute;bottom:70px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;z-index:2;pointer-events:none">
+    <span style="font-size:8px;letter-spacing:4px;text-transform:uppercase;color:rgba(200,169,80,.45)">Scroll to explore</span>
+    <div style="width:1px;height:34px;background:linear-gradient(180deg,rgba(200,169,80,.55),transparent)"></div>
   </div>
 </section>
 
@@ -5953,24 +5992,71 @@
       // so we use the default window scroller — do NOT override it.
       var sc = document.querySelector('.desktop-main') || document.body;
 
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
       // ── HERO ENTRANCE ──
+      // The headline is three separate lines, each sitting below its own mask.
+      // They are lifted out one after the other, which reads as typesetting
+      // rather than as a fade.
       gsap.set('#cin-hero-carousel', { scale: 1.01 });
+      gsap.set('#cin-h1 .cin-line > span', { yPercent: 115, skewY: 2.5 });
+
       var htl = gsap.timeline({ delay: 0.3 });
       htl
         .to('#cin-hero-carousel', { scale: 1, duration: 2.2, ease: 'power2.out' })
-        .to('#cin-ew',    { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=1.6')
-        .to('#cin-h1',    { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out' }, '-=0.6')
-        .to('#cin-sub',   { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.5')
-        .to('#cin-btns',  { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4')
-        .to('#cin-cue',   { opacity: 1,       duration: 0.4                     }, '-=0.2')
-        .to('#cin-top-pills', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3');
+        .to('#cin-ew',       { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=1.6')
+        // the two rules open outward from the words, not in from one side
+        .to('.cin-ew-rule',  { width: 40,        duration: 0.9, ease: 'power2.out' }, '-=0.50')
+        .set('#cin-h1',      { opacity: 1 }, '-=0.55')
+        // each line is lifted out of its own mask with a touch of skew, which
+        // is what stops it reading as a plain slide
+        .to('#cin-h1 .cin-line > span', {
+          yPercent: 0, skewY: 0, duration: 1.25, ease: 'power4.out', stagger: 0.13
+        }, '-=0.55')
+        // light passes through the outlined word just as it settles
+        .add(function() {
+          var g = document.getElementById('cin-h1-gold');
+          if (g && !reduceMotion) g.classList.add('sweep');
+        }, '-=0.35')
+        .to('#cin-sub-rule', { width: 44,        duration: 0.9, ease: 'power2.out' }, '-=0.85')
+        .to('#cin-sub-wrap', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '-=0.85')
+        .to('#cin-btns',     { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.55')
+        .to('#cin-cue',      { opacity: 1,       duration: 0.5                     }, '-=0.20')
+        .to('#cin-top-pills',{ opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.35');
 
       gsap.to('#cin-cue', { y: 8, repeat: -1, yoyo: true, duration: 1.3, ease: 'sine.inOut', delay: 2.5 });
 
       // Hero parallax — gentle, so the hero framing stays close to the dolly's opening frame (same photo = seamless handoff)
       gsap.to('#cin-hero-carousel', { yPercent: 6, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: 'top top', end: 'bottom top', scrub: true } });
-      gsap.to('#cin-hero-text', { opacity: 0, y: -32, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: '18% top', end: '68% top', scrub: true } });
-      gsap.to('#cin-cue', { opacity: 0, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: '8% top', end: '30% top', scrub: true } });
+
+      // The text does NOT fade out on scroll. It holds back against the page,
+      // so it stays readable and leaves the frame with the section instead of
+      // dissolving under your eyes. Positive y = it lags behind the scroll.
+      gsap.to('#cin-hero-text', {
+        y: 120, ease: 'none',
+        scrollTrigger: { trigger: '#cin-s1', start: 'top top', end: 'bottom top', scrub: 0.6 }
+      });
+      // The cue is the one thing that should disappear: once you are scrolling,
+      // it has done its job.
+      gsap.to('#cin-cue', { opacity: 0, y: 14, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: '3% top', end: '16% top', scrub: true } });
+
+      // The block drifts a few pixels with the cursor. Small enough that you
+      // feel it rather than notice it. This runs on the inner wrapper so it can
+      // never collide with the scroll tween on the outer one. Pointer only.
+      if (!reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+        var heroSec = document.getElementById('cin-s1');
+        var heroIn  = document.getElementById('cin-hero-inner');
+        if (heroSec && heroIn) {
+          var qx = gsap.quickTo(heroIn, 'x', { duration: 1.1, ease: 'power3' });
+          var qy = gsap.quickTo(heroIn, 'y', { duration: 1.1, ease: 'power3' });
+          heroSec.addEventListener('mousemove', function(e) {
+            var r = heroSec.getBoundingClientRect();
+            qx(((e.clientX - r.left) / r.width  - 0.5) * 16);
+            qy(((e.clientY - r.top)  / r.height - 0.5) * 11);
+          }, { passive: true });
+          heroSec.addEventListener('mouseleave', function() { qx(0); qy(0); });
+        }
+      }
 
 
       // ── SHIRT SWEEP ──
@@ -6210,10 +6296,15 @@
       // if hero text is still invisible, GSAP didn't run — reveal all
       var h1 = document.getElementById('cin-h1');
       if (h1 && getComputedStyle(h1).opacity === '0') {
-        ['cin-ew','cin-h1','cin-sub','cin-btns','cin-cue','cin-top-pills'].forEach(function(id){
+        ['cin-ew','cin-h1','cin-sub-wrap','cin-btns','cin-cue','cin-top-pills'].forEach(function(id){
           var el = document.getElementById(id);
           if (el) { el.style.opacity = '1'; el.style.transform = 'none'; el.style.filter = 'none'; }
         });
+        // the masked headline lines and the two rules sit on transforms, not opacity
+        document.querySelectorAll('#cin-h1 .cin-line > span').forEach(function(el){ el.style.transform = 'none'; });
+        document.querySelectorAll('.cin-ew-rule').forEach(function(el){ el.style.width = '40px'; });
+        var subRule = document.getElementById('cin-sub-rule');
+        if (subRule) { subRule.style.width = '44px'; subRule.style.transform = 'none'; }
         // reveal all shirt-sweep and section wraps
         wrap.querySelectorAll('[style*="opacity:0"]').forEach(function(el){
           el.style.opacity = '1'; el.style.transform = 'none';
