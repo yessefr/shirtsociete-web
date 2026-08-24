@@ -915,6 +915,15 @@
       .foot-cols { grid-template-columns: 1fr; gap: 26px; }
       .foot-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
     }
+    /* the fair gallery on a phone: full height, thumb-sized controls */
+    @media (max-width: 767px) {
+      #event-gallery-overlay > div { padding: 56px 14px calc(28px + env(safe-area-inset-bottom)) !important; }
+      #gallery-city { font-size: 28px !important; }
+      #gallery-main-img, #gallery-main-video { max-height: 62vh !important; }
+      #event-gallery-overlay button { min-width: 44px; min-height: 44px; }
+      #gallery-thumbs img { width: 56px !important; height: 56px !important; }
+    }
+
     /* mobile fair cards — swipeable row */
     .m-fair-row {
       display: flex; gap: 10px; overflow-x: auto; margin-bottom: 26px;
@@ -923,8 +932,17 @@
     }
     .m-fair-row::-webkit-scrollbar { display: none; }
     .m-fair-card {
-      position: relative; flex: 0 0 62%; aspect-ratio: 4/5;
+      position: relative; flex: 0 0 66%; aspect-ratio: 3/4;
       border-radius: 3px; overflow: hidden; scroll-snap-align: start;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .m-fair-card:active { opacity: .82; }
+    /* a visible tap cue, otherwise the cards look like decoration */
+    .m-fair-card::after {
+      content: ''; position: absolute; top: 10px; right: 10px;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: rgba(10,9,5,.6) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f5f0e8' stroke-width='2'%3E%3Crect x='3' y='3' width='18' height='18' rx='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpolyline points='21 15 16 10 5 21'/%3E%3C/svg%3E") center/13px no-repeat;
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     }
     .m-fair-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.85); }
     html[data-theme="light"] .m-fair-card img { filter: brightness(1); }
@@ -941,14 +959,16 @@
       font-size: 11px; color: rgba(var(--white-rgb),.75); margin-top: 5px;
     }
     /* ═══ EXPANDING FAIR STRIPS (Our Story) ═══ */
+    /* The source photos are portrait. The row therefore stays tall and only
+       the WIDTHS change on hover — the row used to jump from 360 to 660px,
+       which read as too small at rest and too big on hover. */
     .fair-strips {
       display: flex;
       gap: 4px;
-      height: 360px;
+      height: 560px;
       margin-bottom: 48px;
       overflow: hidden;
       border-radius: 3px;
-      transition: height .55s cubic-bezier(.16,1,.3,1);
     }
     .fair-strip {
       position: relative;
@@ -1022,11 +1042,7 @@
     /* open only while the mouse is on that strip — everything closes when you leave */
     .fair-strip:hover,
     .fair-strip:focus-visible {
-      flex-grow: 1.9;
-    }
-    /* row grows taller when any strip is hovered — favours the portrait photos */
-    .fair-strips:hover {
-      height: 660px;
+      flex-grow: 2.2;
     }
     .fair-strip:hover img,
     .fair-strip:focus-visible img {
@@ -1041,10 +1057,10 @@
     }
 
     @media (max-width: 1200px) {
-      .fair-strips { height: 520px; }
+      .fair-strips { height: 480px; }
     }
     @media (max-width: 900px) {
-      .fair-strips { height: 420px; }
+      .fair-strips { height: 400px; }
       .strip-open { left: 20px; right: 20px; bottom: 22px; padding-left: 12px; }
     }
     .shirt-grid {
@@ -1537,7 +1553,7 @@
     /* the gold band */
     .story-figures {
       background: var(--gold); color: #14120b;
-      display: grid; grid-template-columns: repeat(4, 1fr);
+      display: grid; grid-template-columns: repeat(3, 1fr);
     }
     .story-fig { padding: 42px 32px; border-right: 1px solid rgba(20,18,11,.16); }
     .story-fig:last-child { border-right: none; }
@@ -1564,25 +1580,39 @@
     .live-tag i { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); animation: ssPulse 2.2s ease-in-out infinite; }
     @media (prefers-reduced-motion: reduce) { .live-tag i { animation: none; } }
 
-    /* mission, set as a statement rather than a boxed quote */
-    .story-mission { max-width: 900px; margin: 0 auto; padding: 82px 52px; text-align: center; }
-    .story-mission-rule { width: 40px; height: 1px; background: var(--gold); margin: 0 auto 26px; }
-    .story-mission p {
-      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700;
-      font-size: clamp(21px, 2.2vw, 30px); line-height: 1.55; color: var(--white); margin: 0;
+    /* mission and vision, side by side, then the three rules they translate into */
+    .story-purpose { max-width: 1180px; margin: 0 auto; padding: 84px 52px 90px; }
+    .purpose-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+    .purpose-col { position: relative; padding-top: 28px; border-top: 1px solid var(--gold); }
+    .purpose-h {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: clamp(23px, 2.1vw, 31px); line-height: 1.28; color: var(--white);
+      margin: 0 0 18px; letter-spacing: -.3px;
     }
-    .story-mission cite {
-      display: block; margin-top: 24px; font-style: normal;
-      font-family: 'DM Sans', sans-serif; font-size: 10px;
-      letter-spacing: 2.6px; text-transform: uppercase; color: var(--text-muted);
+    .purpose-col p { font-size: 15px; line-height: 1.95; color: var(--text-muted-2); margin: 0; }
+
+    .purpose-rules {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+      margin-top: 68px; padding-top: 42px; border-top: 1px solid var(--surf-2);
+    }
+    .purpose-rule-n {
+      font-family: 'Playfair Display', serif; font-weight: 900; font-size: 15px;
+      color: var(--gold); margin-bottom: 12px; letter-spacing: 1px;
+    }
+    .purpose-rule-h { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 9px; }
+    .purpose-rule p { font-size: 13.5px; line-height: 1.8; color: var(--text-muted); margin: 0; }
+
+    @media (max-width: 1000px) {
+      .story-purpose { padding: 60px 32px 66px; }
+      .purpose-grid { grid-template-columns: 1fr; gap: 42px; }
+      .purpose-rules { grid-template-columns: 1fr; gap: 30px; margin-top: 48px; }
     }
 
     @media (max-width: 1000px) {
       .story-intro { grid-template-columns: 1fr; gap: 34px; padding: 60px 32px 52px; }
-      .story-figures { grid-template-columns: repeat(2, 1fr); }
-      .story-fig:nth-child(2) { border-right: none; }
-      .story-fig:nth-child(-n+2) { border-bottom: 1px solid rgba(20,18,11,.16); }
-      .story-mission { padding: 60px 32px; }
+      .story-figures { grid-template-columns: 1fr; }
+      .story-fig { border-right: none; border-bottom: 1px solid rgba(20,18,11,.16); }
+      .story-fig:last-child { border-bottom: none; }
     }
 
     /* ─── MOBILE FOOTER ───
@@ -3160,17 +3190,39 @@
             <div class="story-fig-l">Fairs</div>
             <div class="story-fig-s">Hamburg, Cologne, D&uuml;sseldorf, Frankfurt, Leipzig.</div>
           </div>
-          <div class="story-fig">
-            <div class="story-fig-n">16</div>
-            <div class="story-fig-l">Countries shipped to</div>
-            <div class="story-fig-s">Across Europe, plus the UK, Switzerland and Norway.</div>
-          </div>
         </div>
 
-        <div class="story-mission">
-          <div class="story-mission-rule"></div>
-          <p>Every shirt tells a story. Our mission is to connect collectors with authentic pieces of football history, and to make sure those shirts end up with people who know what they are holding.</p>
-          <cite>Shirt Soci&eacute;t&eacute;</cite>
+        <div class="story-purpose">
+          <div class="purpose-grid">
+            <div class="purpose-col">
+              <div class="story-label">Mission</div>
+              <h3 class="purpose-h">To keep football&rsquo;s shirts with the people who understand what they are holding.</h3>
+              <p>We find, verify and document vintage and match worn shirts, and we sell them with the evidence attached. Where a shirt was worn, by whom and in which match is researched before it is listed &mdash; and where that cannot be established, we say so on the page rather than fill the gap with a story. A collector should be able to check us, not just trust us.</p>
+            </div>
+            <div class="purpose-col">
+              <div class="story-label">Vision</div>
+              <h3 class="purpose-h">A record of the shirt that lasts as long as the shirt itself.</h3>
+              <p>Most football shirts outlive the paperwork that proves what they are. We are building the opposite: an archive as much as a shop, where every piece that passes through Shirt Soci&eacute;t&eacute; leaves with a written record of its history, its condition and its open questions. In ten years that record should still be worth something to whoever owns it next.</p>
+            </div>
+          </div>
+
+          <div class="purpose-rules">
+            <div class="purpose-rule">
+              <div class="purpose-rule-n">01</div>
+              <div class="purpose-rule-h">Evidence over adjectives</div>
+              <p>A classification is only used when the evidence supports it. Match worn, match issued and player issue are never used interchangeably.</p>
+            </div>
+            <div class="purpose-rule">
+              <div class="purpose-rule-n">02</div>
+              <div class="purpose-rule-h">What we don&rsquo;t know is written down</div>
+              <p>An unconfirmed fixture is listed as unconfirmed. A number applied after production is stated. Silence would be easier and worth less.</p>
+            </div>
+            <div class="purpose-rule">
+              <div class="purpose-rule-n">03</div>
+              <div class="purpose-rule-h">One of one, priced honestly</div>
+              <p>No discount theatre, no countdown timers, no manufactured scarcity. Each shirt is a single piece and is priced as what it is.</p>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -3192,31 +3244,7 @@
         </div>
       </div>
 
-      <!-- Event Gallery Modal -->
-      <div id="event-gallery-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:1000;align-items:flex-start;justify-content:center;padding:0;overflow-y:auto" onclick="closeEventGallery(event)">
-        <div style="position:relative;width:100%;max-width:800px;margin:0 auto;padding:60px 24px 40px" onclick="event.stopPropagation()">
-          <!-- Close -->
-          <button onclick="closeEventGallery()" style="position:fixed;top:16px;right:24px;background:rgba(255,255,255,0.1);border:none;color:var(--white);font-size:20px;cursor:pointer;line-height:1;padding:8px 12px;border-radius:2px;z-index:1001">✕</button>
-          <!-- Header -->
-          <div id="gallery-header" style="margin-bottom:24px;text-align:center">
-            <div id="gallery-city" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:40px;color:#4caf7d;margin-bottom:4px"></div>
-            <div id="gallery-subtitle" style="font-size:13px;color:var(--text-muted)"></div>
-          </div>
-          <!-- Navigation arrows + current photo -->
-          <div style="position:relative;margin-bottom:16px">
-            <img id="gallery-main-img" src="" alt="" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:var(--surf-1);display:block">
-            <video id="gallery-main-video" controls playsinline preload="metadata" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:var(--surf-1);display:none"></video>
-            <!-- Prev -->
-            <button onclick="galleryPrev()" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:var(--white);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">‹</button>
-            <!-- Next -->
-            <button onclick="galleryNext()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:var(--white);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">›</button>
-            <!-- Counter -->
-            <div id="gallery-counter" style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.6);color:var(--white);font-size:12px;padding:4px 10px;border-radius:10px"></div>
-          </div>
-          <!-- Thumbnails -->
-          <div id="gallery-thumbs" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"></div>
-        </div>
-      </div>
+
 
       <!-- CTA -->
       <div class="anim-about scale-in" style="padding:64px;background:var(--surf-1);border-top:1px solid var(--surf-2);text-align:center">
@@ -3306,11 +3334,11 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
       Back
     </div>
-    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:500">Our Story</div>
-    <div class="page-head" style="margin-bottom:20px;padding-left:0;padding-right:0">
+    <div class="page-head" style="margin-bottom:24px;padding-left:0;padding-right:0">
       <div class="ph-eyebrow">Est. 2025 &middot; Harderwijk</div>
       <h1>Our Story</h1>
     </div>
+    <div class="story-label">Who we are</div>
     <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:28px;line-height:1.15;color:var(--white);margin-bottom:18px">A Collector's Eye,<br>A Curator's Touch</h2>
     <p style="font-size:14px;line-height:1.8;color:var(--text-muted-2);margin-bottom:16px">Shirt Société was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for collectors around the globe.</p>
     <p style="font-size:14px;line-height:1.8;color:var(--text-muted-2);margin-bottom:16px">From vintage clubs to match worn pieces worn by legends, every shirt in our collection has been hand-picked for its authenticity, rarity and history. We don't just sell shirts. We preserve football heritage.</p>
@@ -3335,10 +3363,20 @@
         <div class="story-fig-l">Fairs</div>
         <div class="story-fig-s">Hamburg to Leipzig.</div>
       </div>
-      <div class="story-fig" style="padding:24px 18px">
-        <div class="story-fig-n" style="font-size:30px">16</div>
-        <div class="story-fig-l">Countries</div>
-        <div class="story-fig-s">Europe, UK, Switzerland, Norway.</div>
+    </div>
+
+    <div class="story-purpose" style="padding:6px 0 26px">
+      <div class="purpose-grid">
+        <div class="purpose-col">
+          <div class="story-label">Mission</div>
+          <h3 class="purpose-h" style="font-size:21px">To keep football&rsquo;s shirts with the people who understand what they are holding.</h3>
+          <p style="font-size:14px">We find, verify and document vintage and match worn shirts, and we sell them with the evidence attached. Where a shirt was worn, by whom and in which match is researched before it is listed &mdash; and where that cannot be established, we say so on the page rather than fill the gap with a story.</p>
+        </div>
+        <div class="purpose-col">
+          <div class="story-label">Vision</div>
+          <h3 class="purpose-h" style="font-size:21px">A record of the shirt that lasts as long as the shirt itself.</h3>
+          <p style="font-size:14px">Most football shirts outlive the paperwork that proves what they are. We are building the opposite: an archive as much as a shop, where every piece leaves with a written record of its history, its condition and its open questions.</p>
+        </div>
       </div>
     </div>
 
@@ -7176,6 +7214,34 @@
 </div>
 
 <!-- ═══ CONTACT MODAL ═══ -->
+<!-- Event Gallery Modal — lives at top level, NOT inside .desktop-layout.
+     That wrapper is display:none on a phone, so the overlay opened into a
+     hidden ancestor and nothing appeared when you tapped a fair photo. -->
+<div id="event-gallery-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:1000;align-items:flex-start;justify-content:center;padding:0;overflow-y:auto" onclick="closeEventGallery(event)">
+        <div style="position:relative;width:100%;max-width:800px;margin:0 auto;padding:60px 24px 40px" onclick="event.stopPropagation()">
+          <!-- Close -->
+          <button onclick="closeEventGallery()" style="position:fixed;top:16px;right:24px;background:rgba(255,255,255,0.1);border:none;color:var(--white);font-size:20px;cursor:pointer;line-height:1;padding:8px 12px;border-radius:2px;z-index:1001">✕</button>
+          <!-- Header -->
+          <div id="gallery-header" style="margin-bottom:24px;text-align:center">
+            <div id="gallery-city" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:40px;color:#4caf7d;margin-bottom:4px"></div>
+            <div id="gallery-subtitle" style="font-size:13px;color:var(--text-muted)"></div>
+          </div>
+          <!-- Navigation arrows + current photo -->
+          <div style="position:relative;margin-bottom:16px">
+            <img id="gallery-main-img" src="" alt="" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:var(--surf-1);display:block">
+            <video id="gallery-main-video" controls playsinline preload="metadata" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:var(--surf-1);display:none"></video>
+            <!-- Prev -->
+            <button onclick="galleryPrev()" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:var(--white);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">‹</button>
+            <!-- Next -->
+            <button onclick="galleryNext()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:var(--white);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">›</button>
+            <!-- Counter -->
+            <div id="gallery-counter" style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.6);color:var(--white);font-size:12px;padding:4px 10px;border-radius:10px"></div>
+          </div>
+          <!-- Thumbnails -->
+          <div id="gallery-thumbs" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"></div>
+        </div>
+      </div>
+
 <div id="drop-alert-modal" style="position:fixed;inset:0;z-index:9600;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:24px;overflow-y:auto">
   <div style="position:relative;width:100%;max-width:420px;background:var(--surf-1);border:1px solid rgba(200,169,80,.25);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);padding:44px 38px 34px;text-align:center">
 
