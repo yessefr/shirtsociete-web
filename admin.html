@@ -110,9 +110,49 @@
       .page-header { flex-direction: column; align-items: flex-start; gap: 14px; margin-bottom: 22px; }
       .page-header > div:last-child { width: 100%; }
       .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
-      /* let wide tables scroll sideways instead of breaking the layout */
-      .data-table, #recent-orders-table { display: block; overflow-x: auto; white-space: nowrap; }
+      /* Wide tables became a sideways scroll on a phone, which pushed the
+         action buttons off screen — you could see a shirt but not mark it
+         sold. Each row becomes a card instead, with the buttons in reach. */
+      #shirts-table { display: block; }
+      #shirts-table thead { display: none; }
+      #shirts-table tbody { display: block; }
+      #shirts-table tr {
+        display: block; position: relative;
+        background: var(--grey); border: 1px solid var(--grey-light);
+        border-radius: 6px; padding: 12px 12px 12px 76px; margin-bottom: 12px;
+        min-height: 76px;
+      }
+      #shirts-table td {
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        border: none; padding: 3px 0; white-space: normal; max-width: none !important;
+      }
+      /* the label comes from data-label on each cell */
+      #shirts-table td[data-label]:not([data-label=""])::before {
+        content: attr(data-label);
+        font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+        color: var(--text-muted); flex-shrink: 0;
+      }
+      #shirts-table td.cell-title { font-size: 14px; padding-bottom: 8px; }
+      #shirts-table td.cell-title::before { display: none; }
+      /* the photo sits in the padding gutter on the left */
+      #shirts-table td.cell-thumb { position: absolute; left: 12px; top: 12px; padding: 0; }
+      #shirts-table td.cell-thumb .shirt-thumb { width: 52px; height: 52px; object-fit: cover; border-radius: 4px; }
+      #shirts-table td.cell-actions { padding-top: 10px; margin-top: 8px; border-top: 1px solid var(--grey-light); }
+      #shirts-table .action-btns { display: flex; gap: 8px; width: 100%; flex-wrap: wrap; }
+      /* big enough to hit with a thumb */
+      #shirts-table .action-btns .btn { flex: 1; min-width: 88px; padding: 10px 12px; font-size: 13px; }
+      #shirts-table td[colspan] { display: block; text-align: center; }
+
+      /* other tables keep the sideways scroll — they are read, not operated */
+      #recent-orders-table, .data-table:not(#shirts-table) { display: block; overflow-x: auto; white-space: nowrap; }
+
+      #shirts-table-wrap { background: none; border: none; overflow: visible; }
       .modal { width: 94vw !important; max-height: 90vh !important; }
+      .toolbar { flex-direction: column; align-items: stretch; }
+      .toolbar > * { width: 100%; }
+      .form-row { grid-template-columns: 1fr !important; }
+      /* iOS zooms the page when a field is under 16px */
+      .form-input, .form-select, .form-textarea { font-size: 16px; }
     }
 
     /* ── HEADER ── */
@@ -438,8 +478,8 @@
           <option value="sold">Sold</option>
         </select>
       </div>
-      <div class="table-wrap">
-        <table>
+      <div class="table-wrap" id="shirts-table-wrap">
+        <table id="shirts-table">
           <thead><tr>
             <th>Photo</th><th>Title</th><th>Club</th><th>Category</th><th>Size</th><th>Price</th><th>Status</th><th>Actions</th>
           </tr></thead>
@@ -1010,14 +1050,14 @@
 
     document.getElementById('shirts-tbody').innerHTML = shirts.length ? shirts.map(s => `
       <tr>
-        <td><img src="${s.images?.[0] || ''}" class="shirt-thumb" onerror="this.style.background='var(--grey-mid)'"></td>
-        <td style="font-weight:500;max-width:200px">${s.title}</td>
-        <td>${s.club || '—'}</td>
-        <td><span class="badge badge-${s.category}">${s.category?.replace('_',' ') || '—'}</span></td>
-        <td>${s.size || '—'}</td>
-        <td style="color:var(--gold)">€${parseFloat(s.price).toFixed(2)}</td>
-        <td><span class="badge" style="${s.is_draft ? 'background:rgba(200,169,80,.14);color:#c8a950' : (s.available ? 'background:rgba(76,175,125,.15);color:#4caf7d' : 'background:rgba(224,90,77,.15);color:#e05a4d')}">${s.is_draft ? 'Concept' : (s.available ? 'Available' : 'Sold')}</span></td>
-        <td>
+        <td data-label="" class="cell-thumb"><img src="${s.images?.[0] || ''}" class="shirt-thumb" onerror="this.style.background='var(--grey-mid)'"></td>
+        <td data-label="Title" class="cell-title" style="font-weight:500;max-width:200px">${s.title}</td>
+        <td data-label="Club">${s.club || '—'}</td>
+        <td data-label="Category"><span class="badge badge-${s.category}">${s.category?.replace('_',' ') || '—'}</span></td>
+        <td data-label="Size">${s.size || '—'}</td>
+        <td data-label="Price" style="color:var(--gold)">€${parseFloat(s.price).toFixed(2)}</td>
+        <td data-label="Status"><span class="badge" style="${s.is_draft ? 'background:rgba(200,169,80,.14);color:#c8a950' : (s.available ? 'background:rgba(76,175,125,.15);color:#4caf7d' : 'background:rgba(224,90,77,.15);color:#e05a4d')}">${s.is_draft ? 'Concept' : (s.available ? 'Available' : 'Sold')}</span></td>
+        <td data-label="" class="cell-actions">
           <div class="action-btns">
             <button class="btn btn-sm btn-secondary" onclick="editShirt('${s.id}')">Edit</button>
             <button class="btn btn-sm btn-danger" onclick="deleteShirt('${s.id}')">Delete</button>
