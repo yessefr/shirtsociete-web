@@ -220,7 +220,11 @@
       justify-content: center; align-items: center;
     }
     .mobile-logo { cursor: pointer; }
-    .mobile-logo img { height: 64px; object-fit: contain; }
+    .mobile-logo img { height: 64px; object-fit: contain; transition: filter .35s ease; }
+    /* Light mode: the black box is gone, so the header colour shows through
+       and the lettering is rendered solid black instead of gold on beige,
+       which had almost no contrast. */
+    html[data-theme="light"] .mobile-logo img { filter: brightness(0) saturate(100%); }
 
     /* Mobile screens */
     .screen { display: none; flex-direction: column; min-height: calc(100vh - 64px); padding-bottom: 80px; }
@@ -1483,8 +1487,12 @@
     .ss-reels-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: clamp(24px,2.6vw,34px); line-height: 1.1; margin: 0; }
     .ss-reels-sub { font-size: 13px; color: var(--text-muted-2); margin: 8px 0 0; max-width: 460px; line-height: 1.7; }
     .ss-reels-row {
-      display: flex; gap: 16px; overflow-x: auto; padding-bottom: 8px;
-      scrollbar-width: none; scroll-snap-type: x mandatory;
+      display: flex; gap: 16px; padding-bottom: 8px;
+      overflow-x: auto; overflow-y: hidden;
+      -webkit-overflow-scrolling: touch; touch-action: pan-x;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none; scroll-snap-type: x proximity;
+      min-width: 0;
     }
     .ss-reels-row::-webkit-scrollbar { display: none; }
     .ss-reel {
@@ -1494,7 +1502,13 @@
       border: 1px solid var(--line); transition: transform .35s ease, border-color .35s ease;
     }
     .ss-reel:hover { transform: translateY(-4px); border-color: rgba(200,169,80,.45); }
-    .ss-reel video, .ss-reel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    /* A <video> intercepts touch drags, which meant the row could be tapped
+       but never swiped. The gesture now passes through to the scroller; the
+       surrounding link still handles the tap. */
+    .ss-reel video, .ss-reel img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      pointer-events: none;
+    }
     .ss-reel-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,5,.35) 0%, transparent 30%, transparent 55%, rgba(10,9,5,.9) 100%); pointer-events: none; }
     .ss-reel-cap {
       position: absolute; left: 12px; right: 12px; bottom: 12px;
@@ -1519,7 +1533,9 @@
     @media (prefers-reduced-motion: reduce) { .ss-live-dot { animation: none; opacity: .8 } }
 
     @media (max-width: 767px) {
-      .ss-reels-sec { padding: 34px 0 34px 20px; border-top: 1px solid var(--surf-2); }
+      .ss-reels-sec { padding: 34px 0 34px 20px; border-top: 1px solid var(--surf-2); min-width: 0; }
+      /* the last card stops short of the edge so it reads as swipeable */
+      .ss-reels-row { padding-right: 20px; scroll-padding-left: 20px; }
       .ss-reels-head { padding-right: 20px; display: block; }
       .ss-reel { width: 158px; }
     }
@@ -1884,7 +1900,7 @@
 ══════════════════════════════════════════ -->
 <header class="mobile-header" style="position:relative">
   <div class="mobile-logo" onclick="mGoTo('home')">
-    <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png" alt="Shirt Société">
+    <img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=3" alt="Shirt Société">
   </div>
   <button type="button" onclick="toggleSiteTheme()" title="Toggle light / dark mode" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--white);cursor:pointer;padding:6px;display:flex">
     <svg id="m-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
@@ -3163,7 +3179,7 @@
           <div class="story-body">
             <p>Shirt Soci&eacute;t&eacute; was born out of a genuine passion for football and the stories behind the shirts that defined the game. What started as a personal collection quickly grew into something bigger: a curated platform for collectors around the globe.</p>
             <p>From vintage clubs to match worn pieces worn by legends, every shirt is hand-picked for its authenticity, rarity and history. <strong>We don&rsquo;t just sell shirts. We preserve football heritage.</strong></p>
-            <p>Active at vintage football fairs across Germany &mdash; Hamburg, Cologne, D&uuml;sseldorf and most recently Frankfurt &mdash; Shirt Soci&eacute;t&eacute; has built a reputation among collectors for quality, knowledge and passion. Next stop: Leipzig, 4 October 2026.</p>
+            <p>Active at vintage football fairs across Germany, from Hamburg and Cologne to D&uuml;sseldorf and most recently Frankfurt, Shirt Soci&eacute;t&eacute; has built a reputation among collectors for quality, knowledge and passion. Next stop: Leipzig, 4 October 2026.</p>
             <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" class="cin-cta" style="display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:var(--ink);padding:14px 26px;border-radius:2px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none">
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
               Follow on Instagram
@@ -3197,7 +3213,7 @@
             <div class="purpose-col">
               <div class="story-label">Mission</div>
               <h3 class="purpose-h">To keep football&rsquo;s shirts with the people who understand what they are holding.</h3>
-              <p>We find, verify and document vintage and match worn shirts, and we sell them with the evidence attached. Where a shirt was worn, by whom and in which match is researched before it is listed &mdash; and where that cannot be established, we say so on the page rather than fill the gap with a story. A collector should be able to check us, not just trust us.</p>
+              <p>We find, verify and document vintage and match worn shirts, and we sell them with the evidence attached. Where a shirt was worn, by whom and in which match is researched before it is listed. Where that cannot be established, we say so on the page rather than fill the gap with a story. A collector should be able to check us, not just trust us.</p>
             </div>
             <div class="purpose-col">
               <div class="story-label">Vision</div>
@@ -3370,7 +3386,7 @@
         <div class="purpose-col">
           <div class="story-label">Mission</div>
           <h3 class="purpose-h" style="font-size:21px">To keep football&rsquo;s shirts with the people who understand what they are holding.</h3>
-          <p style="font-size:14px">We find, verify and document vintage and match worn shirts, and we sell them with the evidence attached. Where a shirt was worn, by whom and in which match is researched before it is listed &mdash; and where that cannot be established, we say so on the page rather than fill the gap with a story.</p>
+          <p style="font-size:14px">We find, verify and document vintage and match worn shirts, and we sell them with the evidence attached. Where a shirt was worn, by whom and in which match is researched before it is listed. Where that cannot be established, we say so on the page rather than fill the gap with a story.</p>
         </div>
         <div class="purpose-col">
           <div class="story-label">Vision</div>
