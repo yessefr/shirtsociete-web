@@ -2,403 +2,545 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://shirtsociete.com/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://shirtsociete.com/?p=shop</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/?p=shop&amp;cat=match_worn</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/?p=shop&amp;cat=clubs</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/?p=shop&amp;cat=national</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://shirtsociete.com/?p=archive</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/?p=about</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=netherlands-88</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=spot-a-fake</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=caring-for-vintage</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=match-worn-guide</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=vintage-fussballborse</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=how-to-collect</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=vintage-vs-retro</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=fiorentina-1992-banned</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=bayern-match-worn-guide</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=what-is-a-coa</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=vintage-shirt-sizing</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=vintage-shirts-investment</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=buying-vintage-netherlands</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=how-we-source-shirts</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/blog.html?post=adidas-size-codes</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/faq.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/shipping.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/refund.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/privacy.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/terms.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/legal.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/products/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/collections/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/journal/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/de/vintage-fussballtrikots.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/de/matchworn-trikots.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.65</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/sell-your-shirt.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/want-list.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/collections/match-worn-football-shirts/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/collections/vintage-club-shirts/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/collections/national-team-shirts/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/collections/vintage-football-shirts/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://shirtsociete.com/collections/2010s-football-shirts/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <loc>https://shirtsociete.com/collections/2020s-football-shirts/</loc>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://shirtsociete.com/clubs/borussia-dortmund/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <loc>https://shirtsociete.com/clubs/bayern-munchen/</loc>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/collections/1990s-football-shirts/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/clubs/ajax/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shirtsociete.com/clubs/liverpool/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/collections/2020s-football-shirts/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/clubs/ac-milan/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/collections/1980s-football-shirts/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/clubs/1-fc-koln/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/clubs/as-monaco/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/clubs/tsv-1860-munchen/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/clubs/juventus/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/clubs/bayern-munchen/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/clubs/borussia-monchengladbach/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/clubs/fiorentina/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/collections/2000s-football-shirts/</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/clubs/manchester-united/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <loc>https://shirtsociete.com/national-teams/england/</loc>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/national-teams/germany/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shirtsociete.com/national-teams/netherlands/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <loc>https://shirtsociete.com/clubs/manchester-united/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/clubs/flamengo/</loc>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/national-teams/brazil/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/collections/2010s-football-shirts/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/clubs/borussia-dortmund/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/clubs/ac-milan/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/clubs/liverpool/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/collections/1980s-football-shirts/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/clubs/1-fc-koln/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/clubs/as-monaco/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/clubs/tsv-1860-munchen/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/clubs/juventus/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/clubs/fiorentina/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/clubs/borussia-monchengladbach/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/collections/2000s-football-shirts/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/national-teams/netherlands/</loc>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/clubs/eintracht-braunschweig/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/clubs/atletico-madrid/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/clubs/boca-juniors/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/clubs/real-betis/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/national-teams/france/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://shirtsociete.com/clubs/manchester-city/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
+    <loc>https://shirtsociete.com/products/bayern-munchen-2020-match-worn-shirt-joshua-kimmich.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228510/WhatsApp_Image_2026-08-20_at_14.20.36_6_svgwbv.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228510/WhatsApp_Image_2026-08-20_at_14.20.36_7_kkgfk0.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228510/WhatsApp_Image_2026-08-20_at_14.20.36_8_omkqbt.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228510/WhatsApp_Image_2026-08-20_at_14.20.36_9_o30qle.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228511/WhatsApp_Image_2026-08-20_at_14.20.36_11_vtdpdm.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228511/WhatsApp_Image_2026-08-20_at_14.20.36_12_khlldc.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228510/WhatsApp_Image_2026-08-20_at_14.20.36_10_kzd7oz.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228511/WhatsApp_Image_2026-08-20_at_14.20.36_13_dffgnc.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228511/WhatsApp_Image_2026-08-20_at_14.20.36_14_ohdswm.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228512/WhatsApp_Image_2026-08-20_at_14.20.36_17_rjtffd.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/ajax-1993-94-home-shirt-size-xl.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228509/WhatsApp_Image_2026-08-20_at_14.20.34_facqdj.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228513/WhatsApp_Image_2026-08-20_at_14.20.36_y0hiad.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228509/WhatsApp_Image_2026-08-20_at_14.20.36_1_bbzpjw.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228510/WhatsApp_Image_2026-08-20_at_14.20.36_2_jibsdb.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/england-1990-away-shirt-size-l.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691055/WhatsApp_Image_2026-08-02_at_19.16.36_11_lkrxze.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691052/WhatsApp_Image_2026-08-02_at_19.16.36_10_coqavq.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690701/WhatsApp_Image_2026-08-02_at_19.07.20_9_cip5re.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690687/WhatsApp_Image_2026-08-02_at_19.07.20_10_cu902q.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690687/WhatsApp_Image_2026-08-02_at_19.07.20_12_qyri3x.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690687/WhatsApp_Image_2026-08-02_at_19.07.20_11_pugeqk.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/germany-1990-home-shirt-size-m.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039089/WhatsApp_Image_2026-08-15_at_21.19.55_3_k5dgqj.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039090/WhatsApp_Image_2026-08-15_at_21.19.55_4_svdewr.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787037087/WhatsApp_Image_2026-08-15_at_21.23.19_4_hkmlqg.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787037097/WhatsApp_Image_2026-08-15_at_21.23.19_5_y9jcy7.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787037117/WhatsApp_Image_2026-08-15_at_21.23.19_7_uhhax4.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787037107/WhatsApp_Image_2026-08-15_at_21.23.19_6_wfb2km.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/manchester-united-1991-away-shirt-size-m.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039090/WhatsApp_Image_2026-08-15_at_21.19.55_5_uyk2ei.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083535/WhatsApp_Image_2026-08-15_at_21.19.58_s39d5k.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083545/WhatsApp_Image_2026-08-15_at_21.19.59_13_n6etw9.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083547/WhatsApp_Image_2026-08-15_at_21.19.59_18_ontzs1.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083547/WhatsApp_Image_2026-08-15_at_21.19.59_19_lf69ai.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083547/WhatsApp_Image_2026-08-15_at_21.19.59_17_haek1z.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083547/WhatsApp_Image_2026-08-15_at_21.19.59_15_votdlo.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083548/WhatsApp_Image_2026-08-15_at_21.19.59_20_e3wiou.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/germany-1990-home-shirt-size-m.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228513/WhatsApp_Image_2026-08-20_at_14.20.36_25_howeug.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787228513/WhatsApp_Image_2026-08-20_at_14.20.36_24_hny6n3.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787037080/WhatsApp_Image_2026-08-15_at_21.23.19_1_y2yna4.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787037080/WhatsApp_Image_2026-08-15_at_21.23.19_2_ahb9qy.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787037080/WhatsApp_Image_2026-08-15_at_21.23.19_3_wstqem.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/bayern-munchen-1997-match-shirt-weinzierl-size-xl.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039090/WhatsApp_Image_2026-08-15_at_21.19.58_2_gj90eh.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039090/WhatsApp_Image_2026-08-15_at_21.19.58_1_lcq0gs.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083541/WhatsApp_Image_2026-08-15_at_21.19.59_6_ifvvgq.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083542/WhatsApp_Image_2026-08-15_at_21.19.59_7_ox3rsm.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083541/WhatsApp_Image_2026-08-15_at_21.19.59_4_grhute.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083542/WhatsApp_Image_2026-08-15_at_21.19.59_8_qrebwj.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083544/WhatsApp_Image_2026-08-15_at_21.19.59_12_pxbtmv.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083542/WhatsApp_Image_2026-08-15_at_21.19.59_11_h92ytt.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/bayern-munchen-2020-match-worn-shirt-javi-martinez-uefa-super-cup-size-l.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039090/WhatsApp_Image_2026-08-15_at_21.19.58_3_jkbq87.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039090/WhatsApp_Image_2026-08-15_at_21.19.58_4_pbes2o.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083534/WhatsApp_Image_2026-08-15_at_21.19.58_13_oaw5ch.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039146/WhatsApp_Image_2026-08-15_at_21.19.58_14_b1eckg.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083534/WhatsApp_Image_2026-08-15_at_21.19.58_15_yxb7kd.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083534/WhatsApp_Image_2026-08-15_at_21.19.58_16_jvckwc.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083536/WhatsApp_Image_2026-08-15_at_21.19.59_1_cmglpl.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083535/WhatsApp_Image_2026-08-15_at_21.19.58_17_rtiyei.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083535/WhatsApp_Image_2026-08-15_at_21.19.59_2_lfhqla.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787083535/WhatsApp_Image_2026-08-15_at_21.19.58_20_uny600.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/flamengo-1995-96-home-shirt-size-m.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039089/WhatsApp_Image_2026-08-15_at_21.19.55_2_ciw0ah.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039089/WhatsApp_Image_2026-08-15_at_21.19.55_1_mlfyaf.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787037127/WhatsApp_Image_2026-08-15_at_21.23.19_8_g8xb3z.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787037137/WhatsApp_Image_2026-08-15_at_21.23.19_9_lygigy.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039088/WhatsApp_Image_2026-08-15_at_21.23.19_11_h9fqfb.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039088/WhatsApp_Image_2026-08-15_at_21.23.19_12_gzmv2b.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/bayern-munchen-match-worn-issued-shirt-lucio-size-xl.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039090/WhatsApp_Image_2026-08-15_at_21.19.58_6_zg14ch.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039090/WhatsApp_Image_2026-08-15_at_21.19.58_5_j3ld43.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039091/WhatsApp_Image_2026-08-15_at_21.19.58_8_xpejbr.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039090/WhatsApp_Image_2026-08-15_at_21.19.58_7_x7tsoi.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039096/WhatsApp_Image_2026-08-15_at_21.19.58_9_bbthsg.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039106/WhatsApp_Image_2026-08-15_at_21.19.58_10_x3ycdv.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039116/WhatsApp_Image_2026-08-15_at_21.19.58_11_gmhvnm.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039126/WhatsApp_Image_2026-08-15_at_21.19.58_12_hoqg36.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/brazil-1994-home-shirt-vintage-original-size-l.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039089/WhatsApp_Image_2026-08-15_at_21.19.53_dehq38.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039090/WhatsApp_Image_2026-08-15_at_21.19.55_iiofxv.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039088/WhatsApp_Image_2026-08-15_at_21.23.19_14_dm53ca.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039089/WhatsApp_Image_2026-08-15_at_21.23.19_17_yz7dsx.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039088/WhatsApp_Image_2026-08-15_at_21.23.19_15_gdbqsc.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787039089/WhatsApp_Image_2026-08-15_at_21.23.19_18_of1pee.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/ajax-1997-98-away-shirt-size-xxl.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691052/WhatsApp_Image_2026-08-02_at_19.16.36_7_b9tmv4.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691051/WhatsApp_Image_2026-08-02_at_19.16.36_6_rkzoop.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690689/WhatsApp_Image_2026-08-02_at_19.07.20_20_jjwcq3.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690689/WhatsApp_Image_2026-08-02_at_19.07.20_22_ghogdc.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690689/WhatsApp_Image_2026-08-02_at_19.07.20_23_sfwsmr.jpg</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://shirtsociete.com/products/borussia-dortmund-2017-18-home-shirt-marco-reus-match-worn-issued-size-m.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690711/WhatsApp_Image_2026-08-02_at_19.05.24_mlg67c.jpg</image:loc></image:image>
@@ -412,8 +554,33 @@
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690795/WhatsApp_Image_2026-08-02_at_19.06.22_19_eqmazk.jpg</image:loc></image:image>
   </url>
   <url>
+    <loc>https://shirtsociete.com/products/ac-milan-2023-24-match-worn-shirt-fikayo-tomori-with-coa-size-l.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690710/WhatsApp_Image_2026-08-02_at_19.05.24_4_ixjwpq.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690711/WhatsApp_Image_2026-08-02_at_19.05.24_3_kqffvc.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690712/WhatsApp_Image_2026-08-02_at_19.06.21_3_eicckt.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690712/WhatsApp_Image_2026-08-02_at_19.06.19_cum19o.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690712/WhatsApp_Image_2026-08-02_at_19.06.21_1_hlqsui.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690717/WhatsApp_Image_2026-08-02_at_19.06.21_teazof.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690717/WhatsApp_Image_2026-08-02_at_19.06.22_1_m7zt7y.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690798/WhatsApp_Image_2026-08-02_at_19.06.22_ue7d4j.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/liverpool-1995-96-home-shirt-size-l.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691049/WhatsApp_Image_2026-08-02_at_19.16.36_3_yscwm4.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691048/WhatsApp_Image_2026-08-02_at_19.16.36_2_cp1qbc.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690692/WhatsApp_Image_2026-08-02_at_19.07.20_30_slnh8t.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690695/WhatsApp_Image_2026-08-02_at_19.07.20_32_ci3s5o.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690695/WhatsApp_Image_2026-08-02_at_19.07.20_33_kr156y.jpg</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://shirtsociete.com/products/borussia-dortmund-2016-17-home-shirt-pierre-emerick-aubameyang-match-worn-issued-size-l.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690707/WhatsApp_Image_2026-08-02_at_19.05.24_1_ixnxov.jpg</image:loc></image:image>
@@ -427,46 +594,10 @@
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690701/WhatsApp_Image_2026-08-02_at_19.06.22_23_u7kaqg.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://shirtsociete.com/products/ajax-1997-98-away-shirt-size-xxl.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691052/WhatsApp_Image_2026-08-02_at_19.16.36_7_b9tmv4.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691051/WhatsApp_Image_2026-08-02_at_19.16.36_6_rkzoop.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690689/WhatsApp_Image_2026-08-02_at_19.07.20_20_jjwcq3.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690689/WhatsApp_Image_2026-08-02_at_19.07.20_22_ghogdc.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690689/WhatsApp_Image_2026-08-02_at_19.07.20_23_sfwsmr.jpg</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/products/liverpool-1995-96-home-shirt-size-l.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691049/WhatsApp_Image_2026-08-02_at_19.16.36_3_yscwm4.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691048/WhatsApp_Image_2026-08-02_at_19.16.36_2_cp1qbc.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690692/WhatsApp_Image_2026-08-02_at_19.07.20_30_slnh8t.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690695/WhatsApp_Image_2026-08-02_at_19.07.20_32_ci3s5o.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690695/WhatsApp_Image_2026-08-02_at_19.07.20_33_kr156y.jpg</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/products/ac-milan-2023-24-match-worn-shirt-fikayo-tomori-with-coa-size-l.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690710/WhatsApp_Image_2026-08-02_at_19.05.24_4_ixjwpq.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690711/WhatsApp_Image_2026-08-02_at_19.05.24_3_kqffvc.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690712/WhatsApp_Image_2026-08-02_at_19.06.21_3_eicckt.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690712/WhatsApp_Image_2026-08-02_at_19.06.19_cum19o.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690712/WhatsApp_Image_2026-08-02_at_19.06.21_1_hlqsui.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690717/WhatsApp_Image_2026-08-02_at_19.06.21_teazof.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690717/WhatsApp_Image_2026-08-02_at_19.06.22_1_m7zt7y.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690798/WhatsApp_Image_2026-08-02_at_19.06.22_ue7d4j.jpg</image:loc></image:image>
-  </url>
-  <url>
     <loc>https://shirtsociete.com/products/1-fc-koln-1985-86-home-shirt-size-m.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691056/WhatsApp_Image_2026-08-02_at_19.05.22_1_fwjc8a.jpg</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691057/WhatsApp_Image_2026-08-02_at_19.05.22_ktsb6p.jpg</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690700/WhatsApp_Image_2026-08-02_at_19.07.20_47_bvzdir.jpg</image:loc></image:image>
@@ -474,7 +605,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/as-monaco-1996-97-home-shirt-size-m.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691051/WhatsApp_Image_2026-08-02_at_19.16.36_4_u8whcr.jpg</image:loc></image:image>
@@ -486,20 +617,8 @@
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690691/WhatsApp_Image_2026-08-02_at_19.07.20_28_u5k9bw.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://shirtsociete.com/products/tsv-1860-munchen-1993-94-home-shirt-size-l.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691056/WhatsApp_Image_2026-08-02_at_19.16.36_zxih4j.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691048/WhatsApp_Image_2026-08-02_at_19.16.36_1_jr7q2g.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690695/WhatsApp_Image_2026-08-02_at_19.07.20_34_crtdm4.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690696/WhatsApp_Image_2026-08-02_at_19.07.20_35_m1dcxx.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690696/WhatsApp_Image_2026-08-02_at_19.07.20_36_xkidxd.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690696/WhatsApp_Image_2026-08-02_at_19.07.20_37_n8optz.jpg</image:loc></image:image>
-  </url>
-  <url>
     <loc>https://shirtsociete.com/products/1-fc-koln-1991-92-home-shirt-size-m.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691048/WhatsApp_Image_2026-08-02_at_19.16.35_1_jengg8.jpg</image:loc></image:image>
@@ -512,8 +631,20 @@
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690697/WhatsApp_Image_2026-08-02_at_19.07.20_42_wik2ze.jpg</image:loc></image:image>
   </url>
   <url>
+    <loc>https://shirtsociete.com/products/tsv-1860-munchen-1993-94-home-shirt-size-l.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691056/WhatsApp_Image_2026-08-02_at_19.16.36_zxih4j.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691048/WhatsApp_Image_2026-08-02_at_19.16.36_1_jr7q2g.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690695/WhatsApp_Image_2026-08-02_at_19.07.20_34_crtdm4.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690696/WhatsApp_Image_2026-08-02_at_19.07.20_35_m1dcxx.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690696/WhatsApp_Image_2026-08-02_at_19.07.20_36_xkidxd.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690696/WhatsApp_Image_2026-08-02_at_19.07.20_37_n8optz.jpg</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://shirtsociete.com/products/juventus-1995-home-shirt-size-m.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785691055/WhatsApp_Image_2026-08-02_at_19.16.36_15_b0cy1j.jpg</image:loc></image:image>
@@ -526,37 +657,19 @@
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785690706/WhatsApp_Image_2026-08-02_at_19.06.22_31_cttzjl.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://shirtsociete.com/products/bayern-munchen-2016-17-champions-league-match-worn-shirt-jerome-boateng-with-coa-size-l.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <loc>https://shirtsociete.com/products/fiorentina-1992-banned-home-shirt-rare-vintage-original-size-l.html</loc>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092757/WhatsApp_Image_2026-07-26_at_21.04.44_9_tahjq3.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092757/WhatsApp_Image_2026-07-26_at_21.04.44_8_ihqoe8.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092802/WhatsApp_Image_2026-07-26_at_20.32.33_36_bibbgy.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092802/WhatsApp_Image_2026-07-26_at_20.32.33_38_g52pze.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092801/WhatsApp_Image_2026-07-26_at_20.32.33_37_iqq5jz.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092802/WhatsApp_Image_2026-07-26_at_20.32.33_39_oxq4m2.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092803/WhatsApp_Image_2026-07-26_at_20.32.33_41_lnfqcs.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092802/WhatsApp_Image_2026-07-26_at_20.32.33_40_su2aum.jpg</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/products/borussia-monchengladbach-1999-2000-match-worn-shirt-hausweiler-with-coa-size-xl.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092758/WhatsApp_Image_2026-07-26_at_21.04.45_5_rdfl0l.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092758/WhatsApp_Image_2026-07-26_at_21.04.45_4_ffn1kp.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092768/WhatsApp_Image_2026-07-26_at_20.33.22_9_bqasex.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092765/WhatsApp_Image_2026-07-26_at_20.33.22_6_lilfvy.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092766/WhatsApp_Image_2026-07-26_at_20.33.22_7_d4lh3w.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092767/WhatsApp_Image_2026-07-26_at_20.33.22_11_hwazh5.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092767/WhatsApp_Image_2026-07-26_at_20.33.22_12_satdmt.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092768/WhatsApp_Image_2026-07-26_at_20.33.22_13_t6yn55.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092767/WhatsApp_Image_2026-07-26_at_20.33.22_10_ogc9rn.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092758/WhatsApp_Image_2026-07-26_at_21.04.45_6_kmfakt.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092758/WhatsApp_Image_2026-07-26_at_21.04.45_7_owzmug.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092769/WhatsApp_Image_2026-07-26_at_20.33.22_17_yqvu71.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092769/WhatsApp_Image_2026-07-26_at_20.33.22_18_gcdexr.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092769/WhatsApp_Image_2026-07-26_at_20.33.22_20_fwvqjb.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://shirtsociete.com/products/bayern-munchen-2020-21-match-worn-shirt-josip-stanisic-with-coa.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092759/WhatsApp_Image_2026-07-26_at_21.04.44_2_xtp9fg.jpg</image:loc></image:image>
@@ -571,19 +684,37 @@
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092796/WhatsApp_Image_2026-07-26_at_20.32.33_16_k1aozu.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://shirtsociete.com/products/fiorentina-1992-banned-home-shirt-rare-vintage-original-size-l.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <loc>https://shirtsociete.com/products/bayern-munchen-2016-17-champions-league-match-worn-shirt-jerome-boateng-with-coa-size-l.html</loc>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092758/WhatsApp_Image_2026-07-26_at_21.04.45_6_kmfakt.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092758/WhatsApp_Image_2026-07-26_at_21.04.45_7_owzmug.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092769/WhatsApp_Image_2026-07-26_at_20.33.22_17_yqvu71.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092769/WhatsApp_Image_2026-07-26_at_20.33.22_18_gcdexr.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092769/WhatsApp_Image_2026-07-26_at_20.33.22_20_fwvqjb.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092757/WhatsApp_Image_2026-07-26_at_21.04.44_9_tahjq3.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092757/WhatsApp_Image_2026-07-26_at_21.04.44_8_ihqoe8.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092802/WhatsApp_Image_2026-07-26_at_20.32.33_36_bibbgy.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092802/WhatsApp_Image_2026-07-26_at_20.32.33_38_g52pze.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092801/WhatsApp_Image_2026-07-26_at_20.32.33_37_iqq5jz.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092802/WhatsApp_Image_2026-07-26_at_20.32.33_39_oxq4m2.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092803/WhatsApp_Image_2026-07-26_at_20.32.33_41_lnfqcs.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092802/WhatsApp_Image_2026-07-26_at_20.32.33_40_su2aum.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/borussia-monchengladbach-1999-2000-match-worn-shirt-hausweiler-with-coa-size-xl.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092758/WhatsApp_Image_2026-07-26_at_21.04.45_5_rdfl0l.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092758/WhatsApp_Image_2026-07-26_at_21.04.45_4_ffn1kp.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092768/WhatsApp_Image_2026-07-26_at_20.33.22_9_bqasex.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092765/WhatsApp_Image_2026-07-26_at_20.33.22_6_lilfvy.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092766/WhatsApp_Image_2026-07-26_at_20.33.22_7_d4lh3w.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092767/WhatsApp_Image_2026-07-26_at_20.33.22_11_hwazh5.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092767/WhatsApp_Image_2026-07-26_at_20.33.22_12_satdmt.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092768/WhatsApp_Image_2026-07-26_at_20.33.22_13_t6yn55.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785092767/WhatsApp_Image_2026-07-26_at_20.33.22_10_ogc9rn.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://shirtsociete.com/products/manchester-united-2005-06-home-shirt-vintage-original-size-xl.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_4_enqowc.jpg</image:loc></image:image>
@@ -594,7 +725,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/ac-milan-1990-91-home-shirt-vintage-original-size-xl.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_8_n8kffa.jpg</image:loc></image:image>
@@ -605,7 +736,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/germany-1994-home-shirt-vintage-world-cup-original-size-m.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_1_dhzmjb.jpg</image:loc></image:image>
@@ -617,7 +748,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/netherlands-2004-away-shirt-heitinga-vintage-oranje-original-size-xxl.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_12_ddahfx.jpg</image:loc></image:image>
@@ -627,7 +758,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/brazil-2004-home-shirt-ronaldo-vintage-original-size-m.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784577070/WhatsApp_Image_2026-07-20_at_21.49.37_9_bws8hk.jpg</image:loc></image:image>
@@ -636,9 +767,9 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/eintracht-braunschweig-1986-87-home-shirt-rare-vintage-german-original-size-m.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_6_mbimui.jpg</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784577069/WhatsApp_Image_2026-07-20_at_21.49.37_5_a0i1xk.jpg</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784577075/WhatsApp_Image_2026-07-20_at_21.49.38_11_kq6jea.jpg</image:loc></image:image>
@@ -647,7 +778,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/atletico-madrid-1992-93-home-shirt-vintage-original-size-l.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784577071/WhatsApp_Image_2026-07-20_at_21.49.37_gzkeex.jpg</image:loc></image:image>
@@ -659,7 +790,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/brazil-1998-home-shirt-vintage-world-cup-original-size-l.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_3_unohzu.jpg</image:loc></image:image>
@@ -670,7 +801,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/boca-juniors-2001-home-shirt-vintage-original-size-l.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784576247/WhatsApp_Image_2026-07-20_at_21.34.41_4_ccuzg0.jpg</image:loc></image:image>
@@ -680,7 +811,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/brazil-2004-home-longsleeve-shirt-ronaldinho-vintage-original-size-xl.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784576256/WhatsApp_Image_2026-07-20_at_21.34.41_ftwzwl.jpg</image:loc></image:image>
@@ -691,7 +822,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/real-betis-1987-88-home-shirt-vintage-spanish-original-size-m.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1784576256/WhatsApp_Image_2026-07-20_at_21.34.40_1_ahqn1q.jpg</image:loc></image:image>
@@ -703,7 +834,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/france-1992-home-size-l.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375357/WhatsApp_Image_2026-06-25_at_10.14.30_4_jtqinn.jpg</image:loc></image:image>
@@ -711,26 +842,8 @@
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375361/WhatsApp_Image_2026-06-25_at_10.14.31_4_pfinrk.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://shirtsociete.com/products/brazil-1998-away-size-m.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375356/WhatsApp_Image_2026-06-25_at_10.14.30_3_i4pcrt.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375356/WhatsApp_Image_2026-06-25_at_10.14.30_2_c814lv.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375361/WhatsApp_Image_2026-06-25_at_10.14.31_3_cliuvl.jpg</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/products/france-2000-home-size-xl.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375358/WhatsApp_Image_2026-06-25_at_10.14.30_7_abgja4.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375357/WhatsApp_Image_2026-06-25_at_10.14.30_6_avpmel.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375363/WhatsApp_Image_2026-06-25_at_10.14.31_8_evfnmz.jpg</image:loc></image:image>
-  </url>
-  <url>
     <loc>https://shirtsociete.com/products/manchester-united-1991-cup-winners-cup-size-m.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375356/WhatsApp_Image_2026-06-25_at_10.14.29_pgon2x.jpg</image:loc></image:image>
@@ -739,7 +852,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/manchester-city-1988-89-home-size-l.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375360/WhatsApp_Image_2026-06-25_at_10.14.30_hxtouz.jpg</image:loc></image:image>
@@ -749,8 +862,50 @@
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375359/WhatsApp_Image_2026-06-25_at_10.14.30_11_lxeczi.jpg</image:loc></image:image>
   </url>
   <url>
+    <loc>https://shirtsociete.com/products/brazil-1998-away-size-m.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375356/WhatsApp_Image_2026-06-25_at_10.14.30_3_i4pcrt.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375356/WhatsApp_Image_2026-06-25_at_10.14.30_2_c814lv.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375361/WhatsApp_Image_2026-06-25_at_10.14.31_3_cliuvl.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/france-2000-home-size-xl.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375358/WhatsApp_Image_2026-06-25_at_10.14.30_7_abgja4.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375357/WhatsApp_Image_2026-06-25_at_10.14.30_6_avpmel.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1782375363/WhatsApp_Image_2026-06-25_at_10.14.31_8_evfnmz.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/archive/andre-ooijer-match-issued.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787342445/WhatsApp_Image_2026-08-21_at_21.52.05_gcmyop.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787342445/WhatsApp_Image_2026-08-21_at_21.52.05_1_rclocz.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/archive/matthijs-de-ligt-match-worn.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787342445/WhatsApp_Image_2026-08-21_at_21.52.05_3_sc4ymj.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787342444/WhatsApp_Image_2026-08-21_at_21.52.05_2_yac7d0.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/archive/ruud-van-nistelrooy-match-worn.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787258117/WhatsApp_Image_2026-08-20_at_22.33.55_ajftf4.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1787258117/WhatsApp_Image_2026-08-20_at_22.3d3.55_csigjh.jpg</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://shirtsociete.com/products/archive/francisco-conceicao-match-issued.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1786391592/WhatsApp_Image_2026-08-10_at_20.53.29_drqs2n.jpg</image:loc></image:image>
@@ -758,7 +913,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/archive/anwar-el-ghazi-match-worn.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1786178442/ChatGPT_Image_8_aug_2026_10_40_24_1_to5i0u.png</image:loc></image:image>
@@ -766,47 +921,47 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/archive/tijjani-reijnders-match-worn-signed.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1786178441/ChatGPT_Image_8_aug_2026_10_40_26_4_ptvyt5.png</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1786178442/ChatGPT_Image_8_aug_2026_10_40_25_3_ilts9u.png</image:loc></image:image>
   </url>
   <url>
-    <loc>https://shirtsociete.com/products/archive/ajax-1982-83-away-shirt.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856331/ChatGPT_Image_4_aug_2026_17_11_08_1_vkl4p7.png</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856327/ChatGPT_Image_4_aug_2026_17_11_11_8_jaikod.png</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/products/archive/ajax-1989-90-away-shirt.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856329/ChatGPT_Image_4_aug_2026_17_11_08_2_nqtize.png</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856328/ChatGPT_Image_4_aug_2026_17_11_10_5_icoume.png</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/products/archive/ajax-1982-83-home-shirt.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856326/ChatGPT_Image_4_aug_2026_17_11_10_6_yvtrzd.png</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856327/ChatGPT_Image_4_aug_2026_17_11_11_7_sgmtdm.png</image:loc></image:image>
-  </url>
-  <url>
     <loc>https://shirtsociete.com/products/archive/ajax-1990-91-away-shirt.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856330/ChatGPT_Image_4_aug_2026_17_11_09_3_p5lleb.png</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856328/ChatGPT_Image_4_aug_2026_17_11_09_4_gxqcup.png</image:loc></image:image>
   </url>
   <url>
+    <loc>https://shirtsociete.com/products/archive/ajax-1982-83-away-shirt.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856331/ChatGPT_Image_4_aug_2026_17_11_08_1_vkl4p7.png</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856327/ChatGPT_Image_4_aug_2026_17_11_11_8_jaikod.png</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/archive/ajax-1982-83-home-shirt.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856326/ChatGPT_Image_4_aug_2026_17_11_10_6_yvtrzd.png</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856327/ChatGPT_Image_4_aug_2026_17_11_11_7_sgmtdm.png</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/archive/ajax-1989-90-away-shirt.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856329/ChatGPT_Image_4_aug_2026_17_11_08_2_nqtize.png</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785856328/ChatGPT_Image_4_aug_2026_17_11_10_5_icoume.png</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://shirtsociete.com/products/archive/robert-lewandowski-match-worn-team-signed.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785743936/ChatGPT_Image_3_aug_2026_09_58_44_1_n1wyey.png</image:loc></image:image>
@@ -814,7 +969,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/archive/yokohama-f-marinos-match-worn-home-shirt.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785699500/ChatGPT_Image_2_aug_2026_21_37_39_1_uu2kwn.png</image:loc></image:image>
@@ -822,23 +977,15 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/archive/portugal-1970s-match-worn-home-shirt-16.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785698491/ChatGPT_Image_2_aug_2026_21_20_57_3_nnehsa.png</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785698491/ChatGPT_Image_2_aug_2026_21_20_58_4_fohczp.png</image:loc></image:image>
   </url>
   <url>
-    <loc>https://shirtsociete.com/products/archive/juventus-match-worn-issued.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785415257/ChatGPT_Image_30_jul_2026_14_35_46_4_zmgul4.png</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785415257/ChatGPT_Image_30_jul_2026_14_35_45_3_ckhtcc.png</image:loc></image:image>
-  </url>
-  <url>
     <loc>https://shirtsociete.com/products/archive/jubile-dominique-rocheteau-match-worn-issued.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785415257/ChatGPT_Image_30_jul_2026_14_35_45_1_bcftsg.png</image:loc></image:image>
@@ -846,15 +993,39 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/archive/teze-match-worn.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785415257/ChatGPT_Image_30_jul_2026_14_35_57_fzf6a5.png</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785415257/ChatGPT_Image_30_jul_2026_14_35_51_ehquay.png</image:loc></image:image>
   </url>
   <url>
+    <loc>https://shirtsociete.com/products/archive/juventus-match-worn-issued.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785415257/ChatGPT_Image_30_jul_2026_14_35_46_4_zmgul4.png</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785415257/ChatGPT_Image_30_jul_2026_14_35_45_3_ckhtcc.png</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/archive/bastian-schweinsteiger-match-worn-issued-signed.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405100/ChatGPT_Image_30_jul_2026_11_25_34_7_qcqret.png</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405100/ChatGPT_Image_30_jul_2026_11_25_34_8_lc2o40.png</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/archive/justin-kluivert-match-worn-issued.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405099/ChatGPT_Image_30_jul_2026_11_25_47_bgvui6.png</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405099/ChatGPT_Image_30_jul_2026_11_25_52_qzezo8.png</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://shirtsociete.com/products/archive/daley-blind-match-worn.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405099/ChatGPT_Image_30_jul_2026_11_25_34_2_gfgfzh.png</image:loc></image:image>
@@ -862,7 +1033,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/archive/luka-modric-match-worn-signed.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405099/ChatGPT_Image_30_jul_2026_11_25_34_5_xbdv9o.png</image:loc></image:image>
@@ -870,63 +1041,39 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/archive/aurelien-tchouameni-match-worn-signed.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405100/ChatGPT_Image_30_jul_2026_11_25_34_3_tg3mlm.png</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405100/ChatGPT_Image_30_jul_2026_11_25_34_4_jvnn9e.png</image:loc></image:image>
   </url>
   <url>
-    <loc>https://shirtsociete.com/products/archive/justin-kluivert-match-worn-issued.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <loc>https://shirtsociete.com/products/archive/tijjani-reijnders-match-worn-unwashed.html</loc>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405099/ChatGPT_Image_30_jul_2026_11_25_47_bgvui6.png</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405099/ChatGPT_Image_30_jul_2026_11_25_52_qzezo8.png</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/products/archive/bastian-schweinsteiger-match-worn-issued-signed.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405100/ChatGPT_Image_30_jul_2026_11_25_34_7_qcqret.png</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785405100/ChatGPT_Image_30_jul_2026_11_25_34_8_lc2o40.png</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/products/archive/netherlands-1988-english-spec.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069875/WhatsApp_Image_2026-07-26_at_14.43.01_lr93wf.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069875/WhatsApp_Image_2026-07-26_at_14.43.01_1_frqzfn.jpg</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/products/archive/netherlands-1988-west-germany-spec.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069874/WhatsApp_Image_2026-07-26_at_14.43.00_3_fsisk8.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069874/WhatsApp_Image_2026-07-26_at_14.43.00_4_k1e6gb.jpg</image:loc></image:image>
-  </url>
-  <url>
-    <loc>https://shirtsociete.com/products/archive/netherlands-1988-south-american-spec.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069875/WhatsApp_Image_2026-07-26_at_14.43.00_5_pguu4o.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069874/WhatsApp_Image_2026-07-26_at_14.43.00_6_nmh4vg.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069872/WhatsApp_Image_2026-07-26_at_14.42.58_1_mekna7.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069872/WhatsApp_Image_2026-07-26_at_14.42.58_2_g8mc6t.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://shirtsociete.com/products/archive/netherlands-1988-japanese-spec.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069875/WhatsApp_Image_2026-07-26_at_14.43.00_7_pjyln9.jpg</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069875/WhatsApp_Image_2026-07-26_at_14.43.00_8_yzm6v1.jpg</image:loc></image:image>
   </url>
   <url>
+    <loc>https://shirtsociete.com/products/archive/netherlands-1988-west-germany-spec.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069874/WhatsApp_Image_2026-07-26_at_14.43.00_3_fsisk8.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069874/WhatsApp_Image_2026-07-26_at_14.43.00_4_k1e6gb.jpg</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://shirtsociete.com/products/archive/matthijs-de-ligt-match-worn-unwashed.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069872/WhatsApp_Image_2026-07-26_at_14.42.59_5_yw4ejo.jpg</image:loc></image:image>
@@ -934,7 +1081,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/archive/tijjani-reijnders-match-worn-issued-super-cup-sf.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069872/WhatsApp_Image_2026-07-26_at_14.42.59_2_r0dlhv.jpg</image:loc></image:image>
@@ -942,7 +1089,7 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/archive/tijjani-reijnders-match-worn-first-san-siro-goal.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069872/WhatsApp_Image_2026-07-26_at_14.42.58_3_nzarjj.jpg</image:loc></image:image>
@@ -950,31 +1097,39 @@
   </url>
   <url>
     <loc>https://shirtsociete.com/products/archive/xavi-simons-match-worn-unwashed.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069873/WhatsApp_Image_2026-07-26_at_14.42.59_7_bpqq4u.jpg</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069875/WhatsApp_Image_2026-07-26_at_14.43.00_q2dpji.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://shirtsociete.com/products/archive/tijjani-reijnders-match-worn-unwashed.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069872/WhatsApp_Image_2026-07-26_at_14.42.58_1_mekna7.jpg</image:loc></image:image>
-    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069872/WhatsApp_Image_2026-07-26_at_14.42.58_2_g8mc6t.jpg</image:loc></image:image>
-  </url>
-  <url>
     <loc>https://shirtsociete.com/products/archive/netherlands-1988-irish-spec.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069873/WhatsApp_Image_2026-07-26_at_14.43.00_1_kbzvjr.jpg</image:loc></image:image>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069874/WhatsApp_Image_2026-07-26_at_14.43.00_2_jbmj1o.jpg</image:loc></image:image>
   </url>
   <url>
+    <loc>https://shirtsociete.com/products/archive/netherlands-1988-south-american-spec.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069875/WhatsApp_Image_2026-07-26_at_14.43.00_5_pguu4o.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069874/WhatsApp_Image_2026-07-26_at_14.43.00_6_nmh4vg.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://shirtsociete.com/products/archive/netherlands-1988-english-spec.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069875/WhatsApp_Image_2026-07-26_at_14.43.01_lr93wf.jpg</image:loc></image:image>
+    <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069875/WhatsApp_Image_2026-07-26_at_14.43.01_1_frqzfn.jpg</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://shirtsociete.com/products/archive/rafael-van-der-vaart-match-worn-issued.html</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://res.cloudinary.com/dinpfdojh/image/upload/v1785069872/WhatsApp_Image_2026-07-26_at_14.42.59_4_hegfbc.jpg</image:loc></image:image>
