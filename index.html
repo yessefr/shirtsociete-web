@@ -231,6 +231,7 @@
       .tab-bar { display: none; }
       .drop-alert-fab { display: none; }
       .mobile-header { display: none; }
+      .m-foot { display: none; }
       .screen { display: none !important; }
       .desktop-layout { display: flex !important; }
     }
@@ -1507,6 +1508,31 @@
       .ss-reel { width: 158px; }
     }
 
+    /* ─── MOBILE FOOTER ───
+       The phone layout had no footer at all, so the policy pages, the legal
+       notice and the German pages were unreachable on a phone. Merchant
+       Center and consumer law both expect them to be one tap away. */
+    /* bottom padding clears the fixed tab bar so the legal line stays readable */
+    .m-foot { padding: 34px 20px 96px; border-top: 1px solid var(--surf-2); background: var(--surf-1); }
+    .m-foot-brand { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 20px; margin-bottom: 6px; }
+    .m-foot-tag { font-size: 12px; color: var(--text-muted-2); line-height: 1.7; margin-bottom: 22px; }
+    .m-foot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 16px; }
+    .m-foot-head {
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 10px;
+    }
+    .m-foot-col a, .m-foot-col button {
+      display: block; width: 100%; text-align: left;
+      background: none; border: none; padding: 7px 0;
+      font-family: 'DM Sans', sans-serif; font-size: 13px;
+      color: var(--text-muted-2); text-decoration: none; cursor: pointer;
+    }
+    .m-foot-col a:active, .m-foot-col button:active { color: var(--gold); }
+    .m-foot-legal {
+      margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--surf-2);
+      font-size: 11px; line-height: 1.8; color: var(--text-muted);
+    }
+
     /* ─── PAGE HEADERS ───
        Set the same way as the Shirt Société Archive: plain type on the page
        background in the brand colours, no photograph showing through the
@@ -2065,6 +2091,55 @@
     <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Loading archive...</div>
   </div>
 </div>
+
+<!-- MOBILE FOOTER -->
+<footer class="m-foot">
+  <div class="m-foot-brand">Shirt Soci&eacute;t&eacute;</div>
+  <div class="m-foot-tag">Vintage &amp; match worn football shirts. Every piece one of one.</div>
+
+  <div class="m-foot-grid">
+    <div class="m-foot-col">
+      <div class="m-foot-head">Shop</div>
+      <a href="/?p=shop&cat=match_worn" onclick="mGoTo('shop');mSetFilter('match_worn');return false;">Match Worn / Issued</a>
+      <a href="/?p=shop&cat=clubs" onclick="mGoTo('shop');mSetFilter('clubs');return false;">Clubs</a>
+      <a href="/?p=shop&cat=national" onclick="mGoTo('shop');mSetFilter('national');return false;">International Shirts</a>
+      <a href="/collections/">Collections</a>
+      <a href="/?p=archive" onclick="mGoTo('archive');return false;">Archive</a>
+    </div>
+
+    <div class="m-foot-col">
+      <div class="m-foot-head">Shirt Soci&eacute;t&eacute;</div>
+      <a href="/?p=about" onclick="mGoTo('about');return false;">Our Story</a>
+      <a href="/blog.html">Journal</a>
+      <a href="/sell-your-shirt.html">Sell your shirt</a>
+      <a href="/want-list.html">Want list</a>
+      <a href="/faq.html">FAQ</a>
+    </div>
+
+    <div class="m-foot-col">
+      <div class="m-foot-head">Legal</div>
+      <a href="/shipping.html">Shipping policy</a>
+      <a href="/refund.html">Refund policy</a>
+      <a href="/terms.html">Terms of service</a>
+      <a href="/privacy.html">Privacy policy</a>
+      <a href="/legal.html">Legal notice</a>
+      <button type="button" onclick="ssOpenCookieSettings()">Cookie preferences</button>
+    </div>
+
+    <div class="m-foot-col">
+      <div class="m-foot-head">Contact</div>
+      <button type="button" onclick="openContactModal()">info@shirtsociete.com</button>
+      <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a>
+      <a href="/de/vintage-fussballtrikots.html" hreflang="de">Deutsch</a>
+    </div>
+  </div>
+
+  <div class="m-foot-legal">
+    Shirt Soci&eacute;t&eacute; &middot; Harderwijk, Netherlands<br>
+    KvK 97828408 &middot; BTW NL005290775B10<br>
+    &copy; 2026 Shirt Soci&eacute;t&eacute;. All rights reserved.
+  </div>
+</footer>
 
 <!-- MOBILE TAB BAR -->
 <button type="button" class="drop-alert-fab" onclick="openDropAlertModal()">
@@ -7425,24 +7500,21 @@
 </script>
 <!-- ═══ INSTAGRAM: LIVE FOLLOWER COUNT + REELS ═══ -->
 <script>
-/*  ONE THING TO FILL IN
-    ────────────────────
-    Create a JSON feed in the Behold dashboard (Add Feed → JSON), set the
-    media types to include Videos and Reels, and paste its id below. It is a
-    different id from the widget feed already on the page.
+/*  INSTAGRAM: LIVE FOLLOWER COUNT + REELS
+    ──────────────────────────────────────
+    Primary source is our own Netlify function, which talks to the Instagram
+    Graph API server-side. No token is ever exposed here. It answers from a
+    five minute cache, so the number is at most five minutes behind reality.
 
-    Until this is filled in, the reels rows stay hidden and the follower
-    figures keep the static number written in the HTML. Nothing breaks.
-
-    Refresh rate is Behold's, not ours: once a day on the free plan, faster on
-    paid plans. The counter shows the real number Behold last saw — it never
-    invents a rise.                                                          */
-var SS_BEHOLD_JSON_FEED = '';
+    If that endpoint is unreachable, we fall back to a Behold JSON feed when
+    one is configured. If neither is available nothing happens: the reels
+    rows stay hidden and the follower figures keep the number in the HTML.  */
+var SS_IG_ENDPOINT      = 'https://shirtsociete.netlify.app/.netlify/functions/instagram';
+var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
 
 (function () {
-  if (!SS_BEHOLD_JSON_FEED) return;
-  var FEED_URL = 'https://feeds.behold.so/' + SS_BEHOLD_JSON_FEED;
-  var POLL_MS  = 90000;
+  var POLL_MS  = 120000;
+
   var lastCount = null;
 
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
@@ -7506,7 +7578,7 @@ var SS_BEHOLD_JSON_FEED = '';
 
       var v = document.createElement('video');
       v.src = post.mediaUrl;
-      v.poster = thumbOf(post);
+      if (post.poster) v.poster = post.poster;
       v.muted = true; v.loop = true; v.playsInline = true;
       v.setAttribute('muted', '');
       v.setAttribute('playsinline', '');
@@ -7523,7 +7595,7 @@ var SS_BEHOLD_JSON_FEED = '';
       badge.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
       a.appendChild(badge);
 
-      var caption = post.prunedCaption || post.caption || '';
+      var caption = post.caption || '';
       if (caption) {
         var cap = document.createElement('div');
         cap.className = 'ss-reel-cap';
@@ -7539,26 +7611,74 @@ var SS_BEHOLD_JSON_FEED = '';
     return posts.length > 0;
   }
 
-  function load(first) {
-    fetch(FEED_URL, { cache: 'no-store' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (data) {
-        if (!data) return;
-        var posts = Array.isArray(data) ? data : (data.posts || []);
-        var profile = Array.isArray(data) ? {} : data;
-
-        paintFollowers(profile.followersCount);
-
-        if (first) {
-          var reels = posts.filter(function (p) {
-            var t = String(p.mediaType || '').toUpperCase();
-            return (t === 'VIDEO' || t === 'REEL') && p.mediaUrl;
-          }).slice(0, 8);
-          renderReels('d-reels-row', reels);
-          renderReels('m-reels-row', reels);
-        }
+  // Our own endpoint and Behold return different shapes. Normalise both to
+  // { followers, reels } so the rendering below never has to care which one
+  // answered.
+  function fromNetlify(data) {
+    return {
+      followers: typeof data.followersCount === 'number' ? data.followersCount : null,
+      reels: (data.reels || []).map(function (r) {
+        return {
+          mediaUrl: r.mediaUrl,
+          permalink: r.permalink,
+          caption: r.caption,
+          poster: r.thumbnailUrl
+        };
       })
-      .catch(function () { /* feed unreachable — the static figures stay */ });
+    };
+  }
+
+  function fromBehold(data) {
+    var posts = Array.isArray(data) ? data : (data.posts || []);
+    var profile = Array.isArray(data) ? {} : data;
+    return {
+      followers: typeof profile.followersCount === 'number' ? profile.followersCount : null,
+      reels: posts.filter(function (p) {
+        var t = String(p.mediaType || '').toUpperCase();
+        return (t === 'VIDEO' || t === 'REEL') && p.mediaUrl;
+      }).map(function (p) {
+        return {
+          mediaUrl: p.mediaUrl,
+          permalink: p.permalink,
+          caption: p.prunedCaption || p.caption || '',
+          poster: thumbOf(p)
+        };
+      })
+    };
+  }
+
+  function apply(norm, first) {
+    if (!norm) return false;
+    paintFollowers(norm.followers);
+    if (first && norm.reels && norm.reels.length) {
+      var reels = norm.reels.slice(0, 8);
+      renderReels('d-reels-row', reels);
+      renderReels('m-reels-row', reels);
+    }
+    return norm.followers !== null || (norm.reels && norm.reels.length > 0);
+  }
+
+  function load(first) {
+    // Build the chain in one go. Creating a rejected promise and then
+    // reassigning the variable would orphan the first one, which browsers
+    // report as an unhandled rejection in the console.
+    var primary = SS_IG_ENDPOINT
+      ? fetch(SS_IG_ENDPOINT)
+          .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('bad status')); })
+          .then(function (data) {
+            if (data && data.error) throw new Error(data.error);
+            if (!apply(fromNetlify(data), first)) throw new Error('empty payload');
+          })
+      : Promise.reject(new Error('no endpoint configured'));
+
+    // Only reached if the endpoint is down or not deployed yet.
+    primary.catch(function () {
+      if (!SS_BEHOLD_JSON_FEED) return;
+      return fetch('https://feeds.behold.so/' + SS_BEHOLD_JSON_FEED, { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) { if (data) apply(fromBehold(data), first); })
+        .catch(function () { /* both sources down — the static figures stay */ });
+    });
   }
 
   load(true);
