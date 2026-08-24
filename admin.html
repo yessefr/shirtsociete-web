@@ -153,21 +153,50 @@
          the inline display:flex on that row stays, we only add wrapping */
       .page-header > div:last-child > .btn { flex: 1 1 46%; }
 
-      /* modals behave like sheets: full width, scrollable, close within reach */
+      /* ── Editing a shirt on a phone ──
+         The form was a laptop dialog scaled down: a floating box with two
+         columns, small labels and Save somewhere off the bottom. On a phone
+         it now takes the whole screen, like editing a contact. */
+      .modal-overlay { align-items: stretch !important; padding: 0 !important; }
       .modal {
         width: 100% !important; max-width: none !important;
-        max-height: 92vh !important; border-radius: 10px 10px 0 0 !important;
-        margin-top: auto !important; padding: 20px 16px calc(24px + env(safe-area-inset-bottom)) !important;
+        max-height: none !important; height: 100dvh !important;
+        border-radius: 0 !important; margin: 0 !important; padding: 0 !important;
+        display: flex; flex-direction: column;
       }
-      .modal-overlay { align-items: flex-end !important; padding: 0 !important; }
-      .modal-close { min-width: 44px; min-height: 44px; }
-      /* Save and Cancel stay on screen while you scroll a long form */
+
+      /* title bar stays put while you scroll the form */
+      .modal-header {
+        position: sticky; top: 0; z-index: 3; flex-wrap: wrap;
+        background: var(--grey); border-bottom: 1px solid var(--grey-light);
+        padding: 12px 14px !important; gap: 8px; align-items: center;
+      }
+      .modal-title { font-size: 16px; }
+      .modal-close { min-width: 44px; min-height: 44px; order: 3; margin-left: auto; }
+      /* Quick list and Suggest description drop onto their own full-width row */
+      .modal-header > div[style*="margin-left:auto"] {
+        order: 4; width: 100%; margin: 0 !important;
+        display: flex; gap: 10px; justify-content: space-between; align-items: center;
+      }
+      .modal-header > div[style*="margin-left:auto"] .btn { flex: 1; min-height: 40px; }
+
+      .modal-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px 14px 20px !important; }
+      .form-grid { display: block !important; }
+      .form-group { margin-bottom: 16px; gap: 8px; }
+      .form-label { font-size: 12px; letter-spacing: .6px; color: var(--white); }
+      .form-input, .form-select, .form-textarea { min-height: 48px; padding: 12px 14px; }
+      .form-textarea { min-height: 140px; }
+      /* section headings inside the form get air so the blocks read apart */
+      .form-group .form-label[style*="c8a950"] { margin-top: 10px; font-size: 11px; }
+
+      /* Save and Cancel are always on screen, above the home indicator */
       .modal-footer {
-        position: sticky; bottom: 0; z-index: 2;
-        background: var(--grey); display: flex; gap: 8px;
-        padding-top: 12px; margin-top: 8px;
+        position: sticky; bottom: 0; z-index: 3;
+        background: var(--grey); border-top: 1px solid var(--grey-light);
+        display: flex; gap: 10px; margin: 0;
+        padding: 12px 14px calc(12px + env(safe-area-inset-bottom)) !important;
       }
-      .modal-footer .btn { flex: 1; }
+      .modal-footer .btn { flex: 1; min-height: 48px; font-size: 14px; }
       .page-header { flex-direction: column; align-items: flex-start; gap: 14px; margin-bottom: 22px; }
       .page-header > div:last-child { width: 100%; }
       .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
