@@ -1592,9 +1592,20 @@
       letter-spacing: 1.8px; text-transform: uppercase;
       background: #14120b; color: var(--gold);
       padding: 4px 8px 4px 7px; border-radius: 2px; transform: translateY(-4px);
+      white-space: nowrap;
     }
-    .live-tag i { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); animation: ssPulse 2.2s ease-in-out infinite; }
+    .live-tag i { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); animation: ssPulse 2.2s ease-in-out infinite; flex-shrink: 0; }
+    .live-tag svg { width: 11px; height: 11px; }
     @media (prefers-reduced-motion: reduce) { .live-tag i { animation: none; } }
+
+    /* the line underneath that says where the number comes from and how old it is */
+    .live-src {
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+      font-size: 11.5px; line-height: 1.6; margin-top: 6px; color: rgba(20,18,11,.62);
+    }
+    .live-src svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .live-src a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    .live-age { font-variant-numeric: tabular-nums; font-weight: 600; }
 
     /* mission and vision, side by side, then the three rules they translate into */
     .story-purpose { max-width: 1180px; margin: 0 auto; padding: 84px 52px 90px; }
@@ -3191,10 +3202,13 @@
           <div class="story-fig">
             <div class="story-fig-n">
               <span class="ss-followers" data-fallback="1,500+">1,500+</span>
-              <span class="live-tag"><i></i>Live</span>
+              <span class="live-tag"><i></i><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg> Live</span>
             </div>
             <div class="story-fig-l">Instagram followers</div>
-            <div class="story-fig-s">Read straight from Instagram, refreshed while you are on this page.</div>
+            <div class="live-src">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+              <span>Counted on <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a> &middot; updated <span class="live-age">just now</span></span>
+            </div>
           </div>
           <div class="story-fig">
             <div class="story-fig-n">2025</div>
@@ -3364,10 +3378,13 @@
       <div class="story-fig" style="padding:24px 18px">
         <div class="story-fig-n" style="font-size:30px">
           <span class="ss-followers" data-fallback="1,500+">1,500+</span>
-          <span class="live-tag"><i></i>Live</span>
+          <span class="live-tag"><i></i><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg> Live</span>
         </div>
         <div class="story-fig-l">Instagram followers</div>
-        <div class="story-fig-s">Read straight from Instagram.</div>
+        <div class="live-src">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+          <span>@shirtsociete &middot; updated <span class="live-age">just now</span></span>
+        </div>
       </div>
       <div class="story-fig" style="padding:24px 18px">
         <div class="story-fig-n" style="font-size:30px">2025</div>
@@ -4915,22 +4932,29 @@
   function getCartTotal() { return cart.reduce((s, i) => s + parseFloat(i.price), 0); }
 
   const SHIPPING_RATES = {
-    NL: { rate: 5.95,  free_at: 150 },
-    BE: { rate: 8.95,  free_at: 150 },
-    DE: { rate: 9.95,  free_at: 150 },
-    LU: { rate: 9.95,  free_at: 150 },
-    FR: { rate: 12.95, free_at: 150 },
-    AT: { rate: 12.95, free_at: 150 },
-    DK: { rate: 12.95, free_at: 150 },
-    SE: { rate: 13.95, free_at: 150 },
-    FI: { rate: 13.95, free_at: 150 },
-    PL: { rate: 11.95, free_at: 150 },
-    ES: { rate: 13.95, free_at: 150 },
-    PT: { rate: 13.95, free_at: 150 },
-    IT: { rate: 12.95, free_at: 150 },
-    GB: { rate: 16.95, free_at: null, customs: true },
+    // Verified against DHL eCommerce's published rate table, 25-08-2026.
+    // Parcel 0-2 kg to a home address. NL is the letterbox parcel rate.
+    // Free over EUR 150; that band ships as an insured parcel instead.
+    NL: { rate:  4.45, free_at: 150 },
+    BE: { rate: 10.90, free_at: 150 },
+    DE: { rate: 12.15, free_at: 150 },
+    LU: { rate: 12.15, free_at: 150 },
+    FR: { rate: 12.15, free_at: 150 },
+    IT: { rate: 12.15, free_at: 150 },
+    ES: { rate: 12.15, free_at: 150 },
+    AT: { rate: 14.65, free_at: 150 },
+    DK: { rate: 14.65, free_at: 150 },
+    PL: { rate: 14.65, free_at: 150 },
+    PT: { rate: 14.65, free_at: 150 },
+    SE: { rate: 19.70, free_at: 150 },
+    FI: { rate: 19.70, free_at: 150 },
+    // NOT VERIFIED. Switzerland, Norway and the UK are customs-liable, so DHL
+    // routes them through Express, which has its own tariffs that are not on
+    // the eCommerce rate page. Check dhlexpress.nl before relying on these,
+    // or remove the three countries until you have.
     CH: { rate: 14.95, free_at: null, customs: true },
     NO: { rate: 14.95, free_at: null, customs: true },
+    GB: { rate: 16.95, free_at: null, customs: true },
   };
 
   function getSelectedCountry() {
@@ -7694,7 +7718,8 @@ var SS_IG_ENDPOINT      = 'https://shirtsociete.netlify.app/.netlify/functions/i
 var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
 
 (function () {
-  var POLL_MS  = 120000;
+  var POLL_MS  = 45000;   // the endpoint caches for 60s, so this keeps pace
+  var lastFetchedAt = null;
 
   var lastCount = null;
 
@@ -7715,6 +7740,25 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
     }
     requestAnimationFrame(step);
   }
+
+  // The age line ticks every second. A number that says "updated 3 seconds
+  // ago" reads as live; the same number with no timestamp reads as static.
+  function ageText(ms) {
+    var sec = Math.max(0, Math.round(ms / 1000));
+    if (sec < 10) return 'just now';
+    if (sec < 60) return sec + ' seconds ago';
+    var min = Math.round(sec / 60);
+    if (min === 1) return '1 minute ago';
+    if (min < 60) return min + ' minutes ago';
+    var hr = Math.round(min / 60);
+    return hr === 1 ? '1 hour ago' : hr + ' hours ago';
+  }
+  function paintAge() {
+    if (!lastFetchedAt) return;
+    var t = ageText(Date.now() - lastFetchedAt);
+    document.querySelectorAll('.live-age').forEach(function (el) { el.textContent = t; });
+  }
+  setInterval(paintAge, 1000);
 
   function paintFollowers(count) {
     if (typeof count !== 'number' || !isFinite(count)) return;
@@ -7801,6 +7845,9 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
   // { followers, reels } so the rendering below never has to care which one
   // answered.
   function fromNetlify(data) {
+    var t = Date.parse(data.fetchedAt || '');
+    lastFetchedAt = isFinite(t) ? t : Date.now();
+    paintAge();
     return {
       followers: typeof data.followersCount === 'number' ? data.followersCount : null,
       reels: (data.reels || []).map(function (r) {
@@ -7815,6 +7862,8 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
   }
 
   function fromBehold(data) {
+    lastFetchedAt = Date.now();
+    paintAge();
     var posts = Array.isArray(data) ? data : (data.posts || []);
     var profile = Array.isArray(data) ? {} : data;
     return {
