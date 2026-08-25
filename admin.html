@@ -3185,30 +3185,64 @@
   var _merchantFeedXml = '';
   // Mirrors SHIPPING_RATES in index.html. Change one, change both.
   // freeAt null means the €150 threshold does not apply (outside the EU).
+  // Verified against DHL eCommerce's published rate table, 25-08-2026:
+  // https://www.dhlecommerce.nl/nl/consument/support/verzenden/tarieven
+  // Parcel 0-2 kg to a home address. NL is the letterbox parcel rate.
+  // Mirrors SHIPPING_RATES in index.html — change one, change both.
+  // Orders from this value up are sent as an insured parcel requiring a
+  // signature. Separate from the free-shipping threshold on purpose: free
+  // shipping is what the customer pays, this is which service we book.
+  var SS_INSURED_FROM = 500;
+
   var SS_SHIPPING = [
-    { country: 'NL', rate: 5.95,  freeAt: 150 },
-    { country: 'BE', rate: 8.95,  freeAt: 150 },
-    { country: 'DE', rate: 9.95,  freeAt: 150 },
-    { country: 'LU', rate: 9.95,  freeAt: 150 },
-    { country: 'PL', rate: 11.95, freeAt: 150 },
-    { country: 'FR', rate: 12.95, freeAt: 150 },
-    { country: 'AT', rate: 12.95, freeAt: 150 },
-    { country: 'DK', rate: 12.95, freeAt: 150 },
-    { country: 'IT', rate: 12.95, freeAt: 150 },
-    { country: 'SE', rate: 13.95, freeAt: 150 },
-    { country: 'FI', rate: 13.95, freeAt: 150 },
-    { country: 'ES', rate: 13.95, freeAt: 150 },
-    { country: 'PT', rate: 13.95, freeAt: 150 },
+    { country: 'NL', rate:  4.45, freeAt: 150 },
+    { country: 'BE', rate: 10.90, freeAt: 150 },
+    { country: 'DE', rate: 12.15, freeAt: 150 },
+    { country: 'LU', rate: 12.15, freeAt: 150 },
+    { country: 'FR', rate: 12.15, freeAt: 150 },
+    { country: 'IT', rate: 12.15, freeAt: 150 },
+    { country: 'ES', rate: 12.15, freeAt: 150 },
+    { country: 'AT', rate: 14.65, freeAt: 150 },
+    { country: 'DK', rate: 14.65, freeAt: 150 },
+    { country: 'PL', rate: 14.65, freeAt: 150 },
+    { country: 'PT', rate: 14.65, freeAt: 150 },
+    { country: 'SE', rate: 19.70, freeAt: 150 },
+    { country: 'FI', rate: 19.70, freeAt: 150 },
+    // NOT VERIFIED — customs-liable, DHL routes these through Express.
     { country: 'CH', rate: 14.95, freeAt: null },
     { country: 'NO', rate: 14.95, freeAt: null },
     { country: 'GB', rate: 16.95, freeAt: null }
   ];
 
+
+
   function generateMerchantFeed() {
+    // This used to fail silently: if the shirts had not loaded yet you got a
+    // toast that is easy to miss, and any error inside threw into the console
+    // where nobody looks. Now it loads the shirts itself and reports faults.
     if (!allShirts || !allShirts.length) {
-      showToast('Shirts nog niet geladen — probeer zo opnieuw', 'error');
+      showToast('Loading shirts first...', 'success');
+      if (typeof loadShirts === 'function') {
+        Promise.resolve(loadShirts()).then(function() {
+          if (allShirts && allShirts.length) generateMerchantFeed();
+          else showToast('No shirts could be loaded — check the Shirts tab', 'error');
+        }).catch(function(e) {
+          showToast('Could not load shirts: ' + (e && e.message ? e.message : e), 'error');
+        });
+      } else {
+        showToast('Open the Shirts tab once, then try again', 'error');
+      }
       return;
     }
+    try {
+      buildMerchantFeed();
+    } catch (e) {
+      console.error('merchant feed failed:', e);
+      showToast('Feed failed: ' + (e && e.message ? e.message : e), 'error');
+    }
+  }
+
+  function buildMerchantFeed() {
     var base = 'https://shirtsociete.com';
     var lines = [];
     lines.push('<?xml version="1.0" encoding="UTF-8"?>');
@@ -3282,7 +3316,7 @@
         var free = row.freeAt !== null && priceNum >= row.freeAt;
         lines.push('      <g:shipping>');
         lines.push('        <g:country>' + row.country + '</g:country>');
-        lines.push('        <g:service>Standard tracked</g:service>');
+        lines.push('        <g:service>' + (priceNum >= SS_INSURED_FROM ? 'Insured parcel, signature required' : (row.country === 'NL' ? 'Tracked letterbox parcel' : 'Tracked parcel')) + '</g:service>');
         lines.push('        <g:price>' + (free ? '0.00' : row.rate.toFixed(2)) + ' EUR</g:price>');
         lines.push('      </g:shipping>');
       });
@@ -3713,34 +3747,52 @@
         "shippingDetails": [
           {
             "@type": "OfferShippingDetails",
-            "shippingRate": {
-              "@type": "MonetaryAmount", "value": "5.95", "currency": "EUR"
-            },
+            "shippingRate": { "@type": "MonetaryAmount", "value": "4.45", "currency": "EUR" },
             "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "NL" },
             "deliveryTime": {
               "@type": "ShippingDeliveryTime",
               "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
-              "transitTime": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 7, "unitCode": "DAY" }
+              "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY" }
             }
           },
           {
             "@type": "OfferShippingDetails",
-            "shippingRate": { "@type": "MonetaryAmount", "value": "8.95", "currency": "EUR" },
+            "shippingRate": { "@type": "MonetaryAmount", "value": "10.90", "currency": "EUR" },
             "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "BE" },
             "deliveryTime": {
               "@type": "ShippingDeliveryTime",
               "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
-              "transitTime": { "@type": "QuantitativeValue", "minValue": 7, "maxValue": 21, "unitCode": "DAY" }
+              "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY" }
             }
           },
           {
             "@type": "OfferShippingDetails",
-            "shippingRate": { "@type": "MonetaryAmount", "value": "9.95", "currency": "EUR" },
-            "shippingDestination": { "@type": "DefinedRegion", "addressCountry": ["DE","LU"] },
+            "shippingRate": { "@type": "MonetaryAmount", "value": "12.15", "currency": "EUR" },
+            "shippingDestination": { "@type": "DefinedRegion", "addressCountry": ["DE","LU","FR","IT","ES"] },
             "deliveryTime": {
               "@type": "ShippingDeliveryTime",
               "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
-              "transitTime": { "@type": "QuantitativeValue", "minValue": 7, "maxValue": 21, "unitCode": "DAY" }
+              "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY" }
+            }
+          },
+          {
+            "@type": "OfferShippingDetails",
+            "shippingRate": { "@type": "MonetaryAmount", "value": "14.65", "currency": "EUR" },
+            "shippingDestination": { "@type": "DefinedRegion", "addressCountry": ["AT","DK","PL","PT"] },
+            "deliveryTime": {
+              "@type": "ShippingDeliveryTime",
+              "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
+              "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY" }
+            }
+          },
+          {
+            "@type": "OfferShippingDetails",
+            "shippingRate": { "@type": "MonetaryAmount", "value": "19.70", "currency": "EUR" },
+            "shippingDestination": { "@type": "DefinedRegion", "addressCountry": ["SE","FI"] },
+            "deliveryTime": {
+              "@type": "ShippingDeliveryTime",
+              "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
+              "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY" }
             }
           }
         ],
