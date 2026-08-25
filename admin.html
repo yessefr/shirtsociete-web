@@ -2762,6 +2762,16 @@
       made.push('/collections/' + c.slug + '/');
     });
 
+    // Which journal articles belong on which hub. Matched on the club name,
+    // so a new club with no article simply gets no section rather than a
+    // broken link. Slugs verified against blog.html.
+    var SS_JOURNAL_LINKS = [
+      { slug: 'bayern-match-worn-guide', title: 'Collecting Bayern München match worn shirts', clubs: ['bayern'] },
+      { slug: 'netherlands-88', title: 'Netherlands 1988: five versions of the same shirt', clubs: ['netherlands', 'nederland', 'holland'] },
+      { slug: 'fiorentina-1992-banned', title: 'The Fiorentina 1992 shirt that was withdrawn', clubs: ['fiorentina'] },
+      { slug: 'buying-vintage-netherlands', title: 'Buying vintage shirts in the Netherlands', clubs: ['netherlands', 'nederland', 'holland'] }
+    ];
+
     // ── club hubs & national team hubs ──
     function hubGroup(list, folderName, label, minCount) {
       var groups = {};
@@ -2777,14 +2787,66 @@
         var slug = ssSlugify(name);
         var url = base + '/' + folderName + '/' + slug + '/';
         var avail = items.filter(function(s) { return s.available !== false; });
-        var intro = 'Vintage and match worn ' + name + ' shirts from the Shirt Société collection.';
+        var sold = items.filter(function(s) { return s.available === false; });
+        var mw = items.filter(function(s) { return s.category === 'match_worn'; });
+
+        // ── Audit 11: a hub, not a product list. Even with two shirts for sale
+        // the page has to be worth landing on, so it also carries what is in
+        // the private archive, the journal pieces about this club, and both
+        // directions of the funnel: want list in, sell your shirt in. ──
+        var archiveItems = (typeof allArchive !== 'undefined' && allArchive ? allArchive : [])
+          .filter(function(a) { return String(a.club || '').trim().toLowerCase() === name.toLowerCase(); });
+
+        var related = SS_JOURNAL_LINKS.filter(function(j) {
+          return j.clubs.some(function(c) { return name.toLowerCase().indexOf(c) !== -1; });
+        });
+
+        var intro = 'Vintage and match worn ' + name + ' shirts, each one a single piece with its own '
+          + 'documented history. Every shirt is checked on labels, stitching and badges before it is listed.';
+
         var body = '<div class="crumb"><a href="/">Home</a> / <a href="/?p=shop">Shop</a> / ' + htmlEscape(name) + '</div>'
           + '<div class="eyebrow">' + label + '</div>'
           + '<h1>' + htmlEscape(name) + ' Vintage &amp; Match Worn Shirts</h1>'
           + '<p class="intro">' + htmlEscape(intro) + '</p>'
           + '<div class="count">' + avail.length + ' available'
-            + (items.length - avail.length ? ' &middot; ' + (items.length - avail.length) + ' sold' : '') + '</div>'
-          + '<div class="grid">' + items.map(ssCard).join('') + '</div>'
+            + (sold.length ? ' &middot; ' + sold.length + ' sold' : '')
+            + (mw.length ? ' &middot; ' + mw.length + ' match worn or issued' : '') + '</div>'
+
+          + (avail.length
+              ? '<h2>Available now</h2><div class="grid">' + avail.map(ssCard).join('') + '</div>'
+              : '<h2>Nothing available right now</h2>'
+                + '<p class="intro">No ' + htmlEscape(name) + ' shirt is in stock at the moment. '
+                + 'Tell us what you are looking for and you will hear from us when one arrives.</p>')
+
+          + (sold.length
+              ? '<h2>Previously sold</h2>'
+                + '<p class="intro">Shirts that have already found an owner. Kept here as a record of what has passed through.</p>'
+                + '<div class="grid">' + sold.map(ssCard).join('') + '</div>'
+              : '')
+
+          + (archiveItems.length
+              ? '<h2>From the Shirt Société Archive</h2>'
+                + '<p class="intro">Pieces from the private collection. Not for sale, shown for reference.</p>'
+                + '<div class="links">'
+                + archiveItems.map(function(a) {
+                    return '<a href="/products/archive/' + ssSlugify(a.title || '') + '.html">'
+                      + htmlEscape(a.title || '') + (a.season ? ' &middot; ' + htmlEscape(ssSeason(a.season)) : '') + '</a>';
+                  }).join('')
+                + '</div>'
+              : '')
+
+          + (related.length
+              ? '<h2>Collecting ' + htmlEscape(name) + '</h2><div class="links">'
+                + related.map(function(j) { return '<a href="/journal/' + j.slug + '/">' + htmlEscape(j.title) + '</a>'; }).join('')
+                + '</div>'
+              : '')
+
+          + '<h2>Looking for another ' + htmlEscape(name) + ' shirt?</h2>'
+          + '<div class="links">'
+          +   '<a href="/want-list.html">Add it to the want list</a>'
+          +   '<a href="/sell-your-shirt.html">Sell us your ' + htmlEscape(name) + ' shirt</a>'
+          + '</div>'
+
           + '<h2>More collections</h2><div class="links">'
           +   '<a href="/collections/match-worn-football-shirts/">Match Worn</a>'
           +   '<a href="/collections/vintage-club-shirts/">Club Shirts</a>'
@@ -3121,6 +3183,27 @@
   // and sold shirts are left out (Merchant Center is strict about availability).
   // Each shirt is one of one, so quantity is always 1.
   var _merchantFeedXml = '';
+  // Mirrors SHIPPING_RATES in index.html. Change one, change both.
+  // freeAt null means the €150 threshold does not apply (outside the EU).
+  var SS_SHIPPING = [
+    { country: 'NL', rate: 5.95,  freeAt: 150 },
+    { country: 'BE', rate: 8.95,  freeAt: 150 },
+    { country: 'DE', rate: 9.95,  freeAt: 150 },
+    { country: 'LU', rate: 9.95,  freeAt: 150 },
+    { country: 'PL', rate: 11.95, freeAt: 150 },
+    { country: 'FR', rate: 12.95, freeAt: 150 },
+    { country: 'AT', rate: 12.95, freeAt: 150 },
+    { country: 'DK', rate: 12.95, freeAt: 150 },
+    { country: 'IT', rate: 12.95, freeAt: 150 },
+    { country: 'SE', rate: 13.95, freeAt: 150 },
+    { country: 'FI', rate: 13.95, freeAt: 150 },
+    { country: 'ES', rate: 13.95, freeAt: 150 },
+    { country: 'PT', rate: 13.95, freeAt: 150 },
+    { country: 'CH', rate: 14.95, freeAt: null },
+    { country: 'NO', rate: 14.95, freeAt: null },
+    { country: 'GB', rate: 16.95, freeAt: null }
+  ];
+
   function generateMerchantFeed() {
     if (!allShirts || !allShirts.length) {
       showToast('Shirts nog niet geladen — probeer zo opnieuw', 'error');
@@ -3183,6 +3266,26 @@
       lines.push(tag('g:gender', 'unisex'));
       // one of one: Google should never think there is more stock than there is
       lines.push(tag('g:quantity', '1'));
+
+      // ── SHIPPING ──────────────────────────────────────────────────
+      // Merchant Center flagged "missing shipping data in some countries"
+      // because the feed carried none at all. Rates are stated per country
+      // here, so the feed itself is authoritative and cannot drift from what
+      // the cart charges.
+      //
+      // Feed-level shipping OVERRIDES the account settings, including any
+      // free-shipping rule set there. The €150 threshold is therefore applied
+      // per item: this shirt's own price decides whether it ships free. That
+      // is exact rather than approximate, because every shirt is one of one
+      // and an order is a single shirt.
+      SS_SHIPPING.forEach(function(row) {
+        var free = row.freeAt !== null && priceNum >= row.freeAt;
+        lines.push('      <g:shipping>');
+        lines.push('        <g:country>' + row.country + '</g:country>');
+        lines.push('        <g:service>Standard tracked</g:service>');
+        lines.push('        <g:price>' + (free ? '0.00' : row.rate.toFixed(2)) + ' EUR</g:price>');
+        lines.push('      </g:shipping>');
+      });
       // short selling points Google can surface directly in Shopping
       var hl = ['Original shirt, not a reproduction', 'Single unique piece, one of one'];
       if (s.category === 'match_worn') hl.push('Match worn or player issue');
