@@ -2484,6 +2484,23 @@
       // ── description hygiene ──
       if (desc && /\bshir\b|\bshrit\b|  +/.test(low)) warn('possible typo or double space in description');
       if (desc && desc.length < 60 && forSale) warn('very short description');
+      // Audit P0-1: one product, one classification. If the title still says
+      // "Match Worn / Issued" while the record knows it is Match Issued, the
+      // H1 and the passport contradict each other on the same page.
+      if (s.category === 'match_worn') {
+        var mt = String(s.mw_type || '').trim().toLowerCase();
+        var titleAmbiguous = /match\s*worn\s*\/\s*issued/i.test(s.title || '');
+        var definite = mt === 'match worn' || mt === 'match issued' || mt === 'player issue';
+        if (titleAmbiguous && definite) {
+          err('title says "Match Worn / Issued" but the classification is ' + s.mw_type + ' — one product, one classification');
+        }
+        if (!titleAmbiguous && definite) {
+          // the title should name the classification it actually is
+          var inTitle = new RegExp(mt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i').test(s.title || '');
+          if (!inTitle) warn('title does not name the classification (' + s.mw_type + ')');
+        }
+      }
+
       // Filler sentences an older version of "Suggest description" used to add.
       // No live listing carries them, so any shirt that still does reads
       // differently from the rest of the shop.
@@ -3127,7 +3144,7 @@
       var desc = s.description
         ? String(s.description).replace(/\s+/g, ' ').trim()
         : (s.title + ((s.club && s.title.indexOf(s.club) === -1) ? ' — ' + s.club : '')
-           + (s.season ? ' — Season ' + s.season : '')
+           + (s.season ? ' — Season ' + ssSeason(s.season) : '')
            + '. A single, original piece from Shirt Société.');
 
       // product type / category from our own category field
@@ -3160,7 +3177,7 @@
       var hl = ['Original shirt, not a reproduction', 'Single unique piece, one of one'];
       if (s.category === 'match_worn') hl.push('Match worn or player issue');
       if (s.mw_coa) hl.push('Supplied with a certificate of authenticity');
-      if (s.season) hl.push('Season ' + s.season);
+      if (s.season) hl.push('Season ' + ssSeason(s.season));
       hl.push('Checked on labels, stitching and badges');
       hl.slice(0, 6).forEach(function(h) { lines.push(tag('g:product_highlight', h)); });
       // custom labels make later campaign segmentation possible at no cost
@@ -3346,6 +3363,15 @@
     var img = (s.images && s.images[0]) ? s.images[0] : '';
     var price = (s.price != null) ? parseFloat(s.price).toFixed(2) : '';
     var avail = (s.available === false) ? 'SoldOut' : 'InStock';
+    // Some rows store the season as "Season 2016/17" instead of "2016/17".
+    // Printing that under a field already labelled Season gave "Season Season
+    // 2016/17" (audit 19). Stripping it here means the page is right even if a
+    // stray value slips into the database later.
+    function ssSeason(v) {
+      v = String(v == null ? '' : v).trim();
+      return /^season\b[\s:]*/i.test(v) ? v.replace(/^season\b[\s:]*/i, '').trim() : v;
+    }
+
     // The label shown on the page mirrors the exact classification whenever the
     // data has one, so the H1, the badge, the passport and the schema all agree.
     var cat = s.category === 'match_worn'
@@ -3358,17 +3384,24 @@
     // Passport rows follow the audit's field order. Empty rows are dropped
     // rather than shown blank, and an unknown fixture is stated as unknown
     // instead of being left out silently or guessed at.
+    // Audit rule: every match worn, match issued or player issue shirt gets a
+    // passport, even when little is known. An empty field is answered with what
+    // we actually know about it — "not confirmed", "not established" — because
+    // stating the gap is more credible than leaving the row out.
+    var isMW = s.category === 'match_worn';
     var provRows = [
-      ['Classification', s.mw_type], ['Player', s.mw_player],
-      ['Club', s.club], ['Season', s.season],
+      ['Classification', s.mw_type || (isMW ? 'Match Worn / Issued' : '')],
+      ['Player', s.mw_player],
+      ['Club', s.club],
+      ['Season', ssSeason(s.season)],
       ['Competition', s.mw_competition],
-      ['Fixture', s.mw_match || (s.category === 'match_worn' ? 'Exact fixture not confirmed' : '')],
-      ['Fixture date', s.mw_date],
+      ['Fixture', s.mw_match || (isMW ? 'Not confirmed' : '')],
+      ['Fixture date', s.mw_date || (isMW && !s.mw_match ? 'Not confirmed' : '')],
       ['Product code', s.mw_code],
       ['Player sizing', s.mw_sizecode],
-      ['Certificate (COA)', s.mw_coa],
+      ['Certificate (COA)', s.mw_coa || (isMW ? 'None supplied' : '')],
       ['Provenance', s.mw_provenance],
-      ['Photomatch', s.mw_photomatch],
+      ['Photomatch', s.mw_photomatch || (isMW ? 'Not established' : '')],
       ['Included', s.mw_included]
     ].filter(function(r) { return r[1] && String(r[1]).trim(); });
     var provHtml = provRows.length
@@ -3743,7 +3776,7 @@
       + '      <div class="club">' + htmlEscape(s.club || '') + '</div>\n'
       + '      <div class="price">&euro;' + price + (s.available === false ? ' &middot; <span style="color:#888070;font-size:16px">Sold</span>' : '') + '</div>\n'
       + '      <ul class="specs">\n'
-      + (s.season ? '        <li><b>Season</b> ' + htmlEscape((function(v){v=String(v).trim();return /^season\b/i.test(v)?v.slice(6).trim():v;})(s.season)) + '</li>\n' : '')
+      + (s.season ? '        <li><b>Season</b> ' + htmlEscape(ssSeason(s.season)) + '</li>\n' : '')
       + (function(){
           var szMap = {'4':'S','5':'S/M','6':'M','7':'M/L','8':'L','9':'L/XL','10':'XL','11':'XL/XXL','12':'XXL','13':'XXL/3XL'};
           var sz = s.size || (s.mw_sizecode ? (szMap[String(s.mw_sizecode)] || '') : '');
@@ -3863,7 +3896,7 @@
       + '  <div class="club">' + htmlEscape(s.club || '') + '</div>\n'
       + '  <ul class="specs">\n'
       + (s.club ? '    <li><b>Club</b> ' + htmlEscape(s.club) + '</li>\n' : '')
-      + (s.season ? '    <li><b>Season</b> ' + htmlEscape((function(v){v=String(v).trim();return /^season\b/i.test(v)?v.slice(6).trim():v;})(s.season)) + '</li>\n' : '')
+      + (s.season ? '    <li><b>Season</b> ' + htmlEscape(ssSeason(s.season)) + '</li>\n' : '')
       + '  </ul>\n'
       // match details as their own clearly separated block
       + (function(){
