@@ -3590,6 +3590,8 @@
       "description": metaDesc,
       "category": "Football Shirt",
       "sku": String(s.id),
+      // Google reads condition on the product as well as on the offer
+      "itemCondition": "https://schema.org/UsedCondition",
       "brand": { "@type": "Brand", "name": s.club || 'Shirt Société' },
       "offers": {
         "@type": "Offer", "url": url, "priceCurrency": "EUR",
@@ -3597,17 +3599,48 @@
         "itemCondition": "https://schema.org/UsedCondition",
         "seller": { "@type": "Organization", "name": "Shirt Société" },
         // Shipping and returns are stated here so Google can show them in
-        // Merchant listings. Values mirror shipping.html and refund.html.
-        "shippingDetails": {
-          "@type": "OfferShippingDetails",
-          "shippingRate": { "@type": "MonetaryAmount", "value": "3.95", "currency": "EUR" },
-          "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "NL" },
-          "deliveryTime": {
-            "@type": "ShippingDeliveryTime",
-            "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
-            "transitTime": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 7, "unitCode": "DAY" }
+        // Merchant listings. These MUST match what the cart actually charges
+        // (SHIPPING_RATES in index.html) and what shipping.html states — the
+        // rate here said 3.95 while the checkout charged 5.95, which is the
+        // kind of mismatch that gets a Merchant account suspended.
+        // The free-over-150 threshold is deliberately NOT declared here.
+        // schema.org cannot express "free above an order value", so a zero
+        // rate would read as always free, which is not true. The threshold
+        // belongs in the Merchant Center shipping settings, not in the markup.
+        "shippingDetails": [
+          {
+            "@type": "OfferShippingDetails",
+            "shippingRate": {
+              "@type": "MonetaryAmount", "value": "5.95", "currency": "EUR"
+            },
+            "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "NL" },
+            "deliveryTime": {
+              "@type": "ShippingDeliveryTime",
+              "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
+              "transitTime": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 7, "unitCode": "DAY" }
+            }
+          },
+          {
+            "@type": "OfferShippingDetails",
+            "shippingRate": { "@type": "MonetaryAmount", "value": "8.95", "currency": "EUR" },
+            "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "BE" },
+            "deliveryTime": {
+              "@type": "ShippingDeliveryTime",
+              "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
+              "transitTime": { "@type": "QuantitativeValue", "minValue": 7, "maxValue": 21, "unitCode": "DAY" }
+            }
+          },
+          {
+            "@type": "OfferShippingDetails",
+            "shippingRate": { "@type": "MonetaryAmount", "value": "9.95", "currency": "EUR" },
+            "shippingDestination": { "@type": "DefinedRegion", "addressCountry": ["DE","LU"] },
+            "deliveryTime": {
+              "@type": "ShippingDeliveryTime",
+              "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
+              "transitTime": { "@type": "QuantitativeValue", "minValue": 7, "maxValue": 21, "unitCode": "DAY" }
+            }
           }
-        },
+        ],
         "hasMerchantReturnPolicy": {
           "@type": "MerchantReturnPolicy",
           "applicableCountry": "NL",
