@@ -4,6 +4,12 @@ Allow: /
 # Admin panel should not be indexed
 Disallow: /admin.html
 
+# Source file for the Journal. The articles are published at /journal/<slug>/;
+# this file only exists so the admin can regenerate them. It also carries a
+# noindex tag, which is what actually keeps it out of the index — this line
+# just saves the crawl.
+Disallow: /journal-data.html
+
 # Filter, sort and cart combinations produce near-identical pages and eat
 # crawl budget. The real landing pages (/collections/, /clubs/,
 # /national-teams/, /products/) stay fully crawlable.
