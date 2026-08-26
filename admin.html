@@ -2142,10 +2142,10 @@
       .replace(/"/g, '&quot;');
   }
   function generateSitemap() {
-    if (!allShirts || !allShirts.length) {
-      showToast('Shirts nog niet geladen — probeer zo opnieuw', 'error');
-      return;
-    }
+    ssWithShirts('Generate sitemap', generateSitemapRun);
+  }
+
+  function generateSitemapRun() {
     var base = 'https://shirtsociete.com';
     var today = new Date().toISOString().split('T')[0];
     var lines = [];
@@ -2402,10 +2402,10 @@
   }
 
   function checkShirtData() {
-    if (!allShirts || !allShirts.length) {
-      showToast('Shirts nog niet geladen — probeer zo opnieuw', 'error');
-      return;
-    }
+    ssWithShirts('Check data', checkShirtDataRun);
+  }
+
+  function checkShirtDataRun() {
     var issues = [], seenSlug = {}, seenId = {}, counts = { error: 0, warn: 0 };
 
     allShirts.forEach(function(s) {
@@ -2679,10 +2679,10 @@
   }
 
   function generateCollectionPages() {
-    if (!allShirts || !allShirts.length) {
-      showToast('Shirts nog niet geladen — probeer zo opnieuw', 'error');
-      return;
-    }
+    ssWithShirts('Generate collections', generateCollectionPagesRun);
+  }
+
+  function generateCollectionPagesRun() {
     ssWithJSZip(function() { ssBuildCollections(); });
   }
 
@@ -3216,30 +3216,35 @@
 
 
 
-  function generateMerchantFeed() {
-    // This used to fail silently: if the shirts had not loaded yet you got a
-    // toast that is easy to miss, and any error inside threw into the console
-    // where nobody looks. Now it loads the shirts itself and reports faults.
-    if (!allShirts || !allShirts.length) {
-      showToast('Loading shirts first...', 'success');
-      if (typeof loadShirts === 'function') {
-        Promise.resolve(loadShirts()).then(function() {
-          if (allShirts && allShirts.length) generateMerchantFeed();
-          else showToast('No shirts could be loaded — check the Shirts tab', 'error');
-        }).catch(function(e) {
-          showToast('Could not load shirts: ' + (e && e.message ? e.message : e), 'error');
-        });
-      } else {
-        showToast('Open the Shirts tab once, then try again', 'error');
+  // ── SHARED GUARD FOR EVERY GENERATE BUTTON ──
+  // These buttons used to do nothing at all when the shirt list was not in
+  // memory yet: a toast fired that is easy to miss, and that was the end of
+  // it. Now the shirts are fetched first and the action runs afterwards, and
+  // anything that throws is shown on screen instead of only in the console.
+  function ssWithShirts(label, fn) {
+    if (allShirts && allShirts.length) {
+      try { fn(); }
+      catch (e) {
+        console.error(label + ' failed:', e);
+        showToast(label + ' failed: ' + (e && e.message ? e.message : e), 'error');
       }
       return;
     }
-    try {
-      buildMerchantFeed();
-    } catch (e) {
-      console.error('merchant feed failed:', e);
-      showToast('Feed failed: ' + (e && e.message ? e.message : e), 'error');
+    showToast('Loading shirts first...', 'success');
+    if (typeof loadShirts !== 'function') {
+      showToast('Open the Shirts tab once, then try again', 'error');
+      return;
     }
+    Promise.resolve(loadShirts()).then(function() {
+      if (allShirts && allShirts.length) ssWithShirts(label, fn);
+      else showToast('No shirts could be loaded — check the Shirts tab', 'error');
+    }).catch(function(e) {
+      showToast('Could not load shirts: ' + (e && e.message ? e.message : e), 'error');
+    });
+  }
+
+  function generateMerchantFeed() {
+    ssWithShirts('Generate Merchant feed', buildMerchantFeed);
   }
 
   function buildMerchantFeed() {
@@ -4116,10 +4121,10 @@
   }
 
   function generateProductPages() {
-    if (!allShirts || !allShirts.length) {
-      showToast('Shirts not loaded yet — try again', 'error');
-      return;
-    }
+    ssWithShirts('Generate product pages', buildProductPagesZip);
+  }
+
+  function buildProductPagesZip() {
     function build() {
       var zip = new JSZip();
       var folder = zip.folder('products');
@@ -4158,7 +4163,17 @@
       var sc = document.createElement('script');
       sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
       sc.onload = build;
-      sc.onerror = function() { showToast('Could not load ZIP library (check connection)', 'error'); };
+      sc.onerror = function() {
+        // cdnjs is blocked by some ad blockers and company networks; try a
+        // second source before telling the user it cannot be done
+        var alt = document.createElement('script');
+        alt.src = 'https://unpkg.com/jszip@3.10.1/dist/jszip.min.js';
+        alt.onload = build;
+        alt.onerror = function() {
+          showToast('Could not load the ZIP library — an ad blocker or your network is blocking it', 'error');
+        };
+        document.head.appendChild(alt);
+      };
       document.head.appendChild(sc);
     } else {
       build();
