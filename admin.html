@@ -4126,15 +4126,36 @@
 
   function buildProductPagesZip() {
     function build() {
+      // NOTE: this runs from a script onload callback when JSZip has to be
+      // fetched first, which is OUTSIDE the try/catch in ssWithShirts. Any
+      // error in here was therefore silent — the button simply did nothing.
+      // Everything below is guarded on its own.
+      try {
+        buildInner();
+      } catch (e) {
+        console.error('product pages failed:', e);
+        showToast('Product pages failed: ' + (e && e.message ? e.message : e), 'error');
+      }
+    }
+
+    function buildInner() {
       var zip = new JSZip();
       var folder = zip.folder('products');
       var liveShirts = [];
+      var failed = [];
       allShirts.forEach(function(s) {
         if (!s || !s.id) return;
         if (s.is_draft) return;   // concepts get no public page until you publish them
-        var slug = ssShirtSlug(s);
-        folder.file(slug + '.html', buildProductPage(s, allShirts));
-        liveShirts.push(s);
+        // One broken shirt used to take the whole export down with it. Now it
+        // is skipped and named, so you know which record to fix.
+        try {
+          var slug = ssShirtSlug(s);
+          folder.file(slug + '.html', buildProductPage(s, allShirts));
+          liveShirts.push(s);
+        } catch (e) {
+          console.error('shirt failed:', s.title, e);
+          failed.push((s.title || s.id) + ' (' + (e && e.message ? e.message : e) + ')');
+        }
       });
       // archive shirts go in products/archive/
       var arch = folder.folder('archive');
@@ -4142,11 +4163,19 @@
       var archShirts = [];
       (allArchive || []).forEach(function(s) {
         if (!s || !s.id) return;
-        var slug = ssShirtSlug(s);
-        arch.file(slug + '.html', buildArchivePage(s, allArchive));
-        archShirts.push(s);
-        archCount++;
+        try {
+          var slug = ssShirtSlug(s);
+          arch.file(slug + '.html', buildArchivePage(s, allArchive));
+          archShirts.push(s);
+          archCount++;
+        } catch (e) {
+          console.error('archive shirt failed:', s.title, e);
+          failed.push('archive: ' + (s.title || s.id));
+        }
       });
+      if (failed.length) {
+        showToast(failed.length + ' shirt(s) skipped: ' + failed.slice(0, 3).join(' · '), 'error');
+      }
       // A real HTML index that links to every product page.
       // Search engines find pages by following links — a sitemap alone is a weak
       // signal. This gives Google a crawlable path to every shirt.
@@ -4157,6 +4186,10 @@
         a.download = 'products.zip';
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
         showToast(liveShirts.length + ' shop + ' + archCount + ' archive pages + index generated', 'success');
+      }).catch(function(e) {
+        // a rejected promise reported nowhere was the other silent path
+        console.error('zip failed:', e);
+        showToast('Building the ZIP failed: ' + (e && e.message ? e.message : e), 'error');
       });
     }
     if (typeof JSZip === 'undefined') {
