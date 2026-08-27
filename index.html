@@ -6554,14 +6554,17 @@
       gsap.to('#cin-cue', { y: 8, repeat: -1, yoyo: true, duration: 1.3, ease: 'sine.inOut', delay: 2.5 });
 
       // Hero parallax — gentle, so the hero framing stays close to the dolly's opening frame (same photo = seamless handoff)
-      gsap.to('#cin-hero-carousel', { yPercent: 6, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: 'top top', end: 'bottom top', scrub: true } });
+      gsap.to('#cin-hero-carousel', { yPercent: 3, ease: 'none', scrollTrigger: { trigger: '#cin-s1', start: 'top top', end: 'bottom top', scrub: 0.25 } });
 
       // The text does NOT fade out on scroll. It holds back against the page,
       // so it stays readable and leaves the frame with the section instead of
       // dissolving under your eyes. Positive y = it lags behind the scroll.
+      // The text holds back against the scroll so it stays readable, but 120px
+      // of lag made the whole hero feel sticky. 45px keeps the depth without
+      // fighting the scroll.
       gsap.to('#cin-hero-text', {
-        y: 120, ease: 'none',
-        scrollTrigger: { trigger: '#cin-s1', start: 'top top', end: 'bottom top', scrub: 0.6 }
+        y: 45, ease: 'none',
+        scrollTrigger: { trigger: '#cin-s1', start: 'top top', end: 'bottom top', scrub: 0.25 }
       });
       // The cue is the one thing that should disappear: once you are scrolling,
       // it has done its job.
