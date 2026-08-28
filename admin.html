@@ -695,7 +695,10 @@
       <div class="form-grid">
         <div class="form-group full">
           <label class="form-label">Title *</label>
-          <input type="text" class="form-input" id="m-title" placeholder="Bayern München — Podolski Match Worn">
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="text" class="form-input" id="m-title" placeholder="Ajax 1997/98 Away Shirt — Vintage Original, Size XXL" style="flex:1">
+            <button type="button" class="btn btn-secondary" style="padding:7px 12px;font-size:12px;white-space:nowrap" onclick="ssSuggestTitle()">Suggest title</button>
+          </div>
         </div>
         <div class="form-group">
           <label class="form-label">Club</label>
@@ -2318,6 +2321,68 @@
   //   Certificate of Authenticity.
   // It states only what the form contains, never invents provenance, and adds no
   // filler sentences — the one editorial line of context is written by hand.
+  // ── THE TITLE STANDARD ────────────────────────────────────────
+  // One shape for every shirt, so the shop reads as one catalogue instead of
+  // forty separate decisions. Same order, same separators, every time:
+  //
+  //   Vintage      {Club} {Season} {Kit} Shirt — Vintage Original, Size {Size}
+  //   Match worn   {Club} {Season} {Competition} {Classification} Shirt — {Player}, with COA, Size {Size}
+  //
+  // Anything the record does not hold is left out rather than guessed, and
+  // the parts that are present always appear in this order.
+  function ssBuildTitle(f) {
+    function has(v) { return v && String(v).trim(); }
+    var kit = '';
+    var hay = ((f.title || '') + ' ' + (f.description || '')).toLowerCase();
+    if (hay.indexOf('goalkeeper') !== -1) kit = 'Goalkeeper';
+    else if (hay.indexOf('third') !== -1) kit = 'Third';
+    else if (hay.indexOf('away') !== -1)  kit = 'Away';
+    else if (hay.indexOf('home') !== -1)  kit = 'Home';
+
+    var out = [];
+    if (has(f.club))   out.push(String(f.club).trim());
+    if (has(f.season)) out.push(ssSeason(f.season));
+
+    if (f.category === 'match_worn') {
+      if (has(f.mw_competition)) out.push(String(f.mw_competition).trim());
+      out.push(has(f.mw_type) ? String(f.mw_type).trim() : 'Match Worn / Issued');
+      out.push('Shirt');
+      var tail = [];
+      if (has(f.mw_player)) tail.push(String(f.mw_player).trim());
+      if (has(f.mw_coa) && ['no','none','nee','n','false','0'].indexOf(String(f.mw_coa).toLowerCase()) === -1) {
+        tail.push('with COA');
+      }
+      if (has(f.size)) tail.push('Size ' + String(f.size).trim());
+      return out.join(' ') + (tail.length ? ' — ' + tail.join(', ') : '');
+    }
+
+    if (kit) out.push(kit);
+    out.push('Shirt');
+    var vtail = ['Vintage Original'];
+    if (has(f.size)) vtail.push('Size ' + String(f.size).trim());
+    return out.join(' ') + ' — ' + vtail.join(', ');
+  }
+
+  function ssSuggestTitle() {
+    function val(id) { var e = document.getElementById(id); return e ? String(e.value || '').trim() : ''; }
+    var box = document.getElementById('m-title');
+    if (!box) return;
+    var proposed = ssBuildTitle({
+      title: box.value, club: val('m-club'), season: val('m-season'), size: val('m-size'),
+      category: val('m-category'), mw_type: val('m-mw_type'), mw_player: val('m-mw_player'),
+      mw_coa: val('m-mw_coa'), mw_competition: val('m-mw_competition'),
+      description: val('m-description')
+    });
+    if (!proposed.replace(/[^a-z0-9]/gi, '')) {
+      showToast('Fill in club and season first', 'error');
+      return;
+    }
+    if (box.value.trim() && box.value.trim() !== proposed &&
+        !confirm('Replace:\n\n' + box.value + '\n\nwith:\n\n' + proposed + '?')) return;
+    box.value = proposed;
+    showToast('Title set to the house format', 'success');
+  }
+
   function ssSuggestDescription() {
     function val(id) { var e = document.getElementById(id); return e ? String(e.value || '').trim() : ''; }
     var box = document.getElementById('m-description');
@@ -2482,6 +2547,25 @@
 
       // ── measurements ──
       if (forSale && (!s.length_cm || !s.width_cm)) warn('missing measurements (length/width)');
+
+      // ── house format: title and description ──
+      // One shape for the whole catalogue. These are warnings, not errors:
+      // renaming a live shirt changes its URL, so it is your call when.
+      var houseTitle = ssBuildTitle(s);
+      if (houseTitle && s.title && s.title.trim() !== houseTitle) {
+        warn('title differs from the house format → ' + houseTitle);
+      }
+      // every description closes with the same line
+      if (desc && !/Size\s+[^.]+\.\s*Condition:\s*[^.]+\.\s*$/i.test(desc.trim())) {
+        warn('description does not end with "Size X. Condition: y."');
+      }
+      // and opens the same way
+      if (desc && s.category === 'match_worn' && !/^(match worn|match issued|player issue)/i.test(desc.trim())) {
+        warn('match worn description should open with the classification');
+      }
+      if (desc && s.category !== 'match_worn' && !/^(original|vintage)/i.test(desc.trim())) {
+        warn('vintage description should open with "Original ..."');
+      }
 
       // ── description hygiene ──
       if (desc && /\bshir\b|\bshrit\b|  +/.test(low)) warn('possible typo or double space in description');
