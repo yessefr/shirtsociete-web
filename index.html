@@ -1657,6 +1657,94 @@
     }
     .m-hero-video + .m-hero-eyebrow { position: relative; }
 
+    /* ─── FILTER SHEET (mobile) ───
+       Three dropdowns in a scrolling row meant the native picker covered the
+       screen for every single choice. One button opens a sheet instead, you
+       set everything at once, and one button applies it. */
+    .m-filter-bar {
+      display: flex; gap: 8px; padding: 0 20px 12px; align-items: center;
+    }
+    .m-filter-open {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 9px;
+      background: var(--surf-2); border: 1px solid var(--line); color: var(--white);
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      padding: 12px 16px; border-radius: 2px; cursor: pointer; min-height: 44px;
+    }
+    .m-filter-open .count {
+      background: var(--gold); color: var(--ink); border-radius: 100px;
+      font-size: 11px; font-weight: 700; padding: 1px 8px; display: none;
+    }
+    .m-filter-open .count.on { display: inline-block; }
+
+    .m-sheet-back {
+      position: fixed; inset: 0; z-index: 900; background: rgba(6,5,4,.7);
+      opacity: 0; pointer-events: none; transition: opacity .25s ease;
+    }
+    .m-sheet-back.open { opacity: 1; pointer-events: auto; }
+    .m-sheet {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 901;
+      background: var(--surf-1); border-top: 1px solid var(--surf-2);
+      border-radius: 14px 14px 0 0; max-height: 86vh; overflow-y: auto;
+      transform: translateY(100%); transition: transform .3s cubic-bezier(.16,1,.3,1);
+      padding: 10px 20px calc(20px + env(safe-area-inset-bottom));
+    }
+    .m-sheet.open { transform: translateY(0); }
+    .m-sheet-grab { width: 38px; height: 4px; border-radius: 2px; background: var(--line-soft); margin: 4px auto 16px; }
+    .m-sheet h3 {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: 21px; margin: 0 0 18px;
+    }
+    .m-sheet-group { margin-bottom: 22px; }
+    .m-sheet-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 10px;
+    }
+    .m-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .m-chip {
+      background: transparent; border: 1px solid var(--line); color: var(--text-muted-2);
+      font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 10px 15px;
+      border-radius: 2px; cursor: pointer; min-height: 42px;
+    }
+    .m-chip.on { background: var(--gold); border-color: var(--gold); color: var(--ink); font-weight: 600; }
+    .m-sheet-actions {
+      position: sticky; bottom: 0; background: var(--surf-1);
+      display: flex; gap: 10px; padding-top: 14px; margin-top: 4px;
+      border-top: 1px solid var(--surf-2);
+    }
+    .m-sheet-actions button { flex: 1; min-height: 48px; border-radius: 2px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+    .m-sheet-clear { background: transparent; border: 1px solid var(--line); color: var(--text-muted-2); flex: 0 0 34% !important; }
+    .m-sheet-apply { background: var(--gold); border: none; color: var(--ink); }
+
+    /* ─── SWIPEABLE CARD PHOTOS (mobile) ───
+       Your photography is the strongest thing you have, but on a phone only
+       one shot per shirt was visible without opening it. The card now holds
+       the whole set as a horizontal snap strip. */
+    .m-swipe {
+      position: absolute; inset: 0; display: flex;
+      overflow-x: auto; overflow-y: hidden;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+      touch-action: pan-x; overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+    .m-swipe::-webkit-scrollbar { display: none; }
+    .m-swipe > div {
+      flex: 0 0 100%; height: 100%; scroll-snap-align: center; position: relative;
+    }
+    .m-swipe img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: contain; padding: 8px; background: var(--surf-2);
+    }
+    /* dots, so it is obvious there is more than one photo */
+    .m-swipe-dots {
+      position: absolute; left: 0; right: 0; bottom: 7px; z-index: 3;
+      display: flex; justify-content: center; gap: 5px; pointer-events: none;
+    }
+    .m-swipe-dots i {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(245,240,232,.4); transition: background .2s, width .2s;
+    }
+    .m-swipe-dots i.on { background: var(--gold); width: 14px; border-radius: 3px; }
+
     /* ─── CONTACT BLOCK (bottom of Our Story) ─── */
     .contact-band { border-top: 1px solid var(--surf-2); }
     .contact-inner { max-width: 1180px; margin: 0 auto; padding: 76px 52px 84px; }
@@ -2118,28 +2206,22 @@
     <button class="m-filter-btn" onclick="mSetFilter('clubs',this)" id="m-filter-clubs">Clubs</button>
     <button class="m-filter-btn" onclick="mSetFilter('national',this)" id="m-filter-national">National</button>
   </div>
-  <div style="display:flex;gap:8px;padding:0 20px 12px;overflow-x:auto;scrollbar-width:none">
-    <select id="m-filter-size" onchange="mFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
-      <option value="">All Sizes</option>
-      <option>XS</option><option>S</option><option>M</option>
-      <option>L</option><option>XL</option><option>XXL</option>
-    </select>
-    <select id="m-filter-price" onchange="mFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
-      <option value="">All Prices</option>
-      <option value="0-100">Under €100</option>
-      <option value="100-200">€100–€200</option>
-      <option value="200-350">€200–€350</option>
-      <option value="350-999">€350+</option>
-    </select>
-    <select id="m-sort" onchange="mFilterShirts()" style="background:var(--surf-2);border:1px solid var(--line);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:2px;outline:none;cursor:pointer;flex-shrink:0">
-      <option value="newest">Newest</option>
-      <option value="oldest">Oldest</option>
-      <option value="price-asc">Price ↑</option>
-      <option value="price-desc">Price ↓</option>
-      <option value="year-asc">Year ↑</option>
-      <option value="year-desc">Year ↓</option>
-    </select>
+  <div class="m-filter-bar">
+    <button type="button" class="m-filter-open" onclick="mOpenSheet()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+      Filter &amp; sort
+      <span class="count" id="m-filter-count"></span>
+    </button>
   </div>
+
+  <!-- the three controls stay in the DOM: renderMobileGrid still reads them,
+       so nothing else had to change -->
+  <div style="display:none">
+    <select id="m-filter-size"><option value=""></option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
+    <select id="m-filter-price"><option value=""></option><option value="0-100"></option><option value="100-200"></option><option value="200-350"></option><option value="350-999"></option></select>
+    <select id="m-sort"><option value="newest"></option><option value="oldest"></option><option value="price-asc"></option><option value="price-desc"></option><option value="year-asc"></option><option value="year-desc"></option></select>
+  </div>
+
   <div id="m-shirt-grid" class="m-shirt-grid"><div class="loading" style="grid-column:1/-1">Loading...</div></div>
 </div>
 
@@ -2621,7 +2703,7 @@
 <!-- The pin height IS the scroll distance: 420vh meant four and a bit screens
      of scrolling to get past this one section. 210vh keeps the whole camera
      move intact but halves how long you are held there. -->
-<div id="cin-dolly-pin" style="position:relative;height:210vh">
+<div id="cin-dolly-pin" style="position:relative;height:285vh">
   <section id="cin-dolly" style="position:relative;height:100vh;overflow:hidden;background:var(--black)">
 
     <!-- FRAME 1: wide (identical to the hero photo, so the transition is seamless) -->
@@ -3638,6 +3720,54 @@
   </div>
 </div>
 
+<!-- MOBILE FILTER SHEET -->
+<div class="m-sheet-back" id="m-sheet-back" onclick="mCloseSheet()"></div>
+<div class="m-sheet" id="m-sheet" role="dialog" aria-label="Filter and sort">
+  <div class="m-sheet-grab"></div>
+  <h3>Filter &amp; sort</h3>
+
+  <div class="m-sheet-group">
+    <div class="m-sheet-label">Size</div>
+    <div class="m-chips" id="m-sheet-size">
+      <button type="button" class="m-chip on" data-v="">All</button>
+      <button type="button" class="m-chip" data-v="XS">XS</button>
+      <button type="button" class="m-chip" data-v="S">S</button>
+      <button type="button" class="m-chip" data-v="M">M</button>
+      <button type="button" class="m-chip" data-v="L">L</button>
+      <button type="button" class="m-chip" data-v="XL">XL</button>
+      <button type="button" class="m-chip" data-v="XXL">XXL</button>
+    </div>
+  </div>
+
+  <div class="m-sheet-group">
+    <div class="m-sheet-label">Price</div>
+    <div class="m-chips" id="m-sheet-price">
+      <button type="button" class="m-chip on" data-v="">Any</button>
+      <button type="button" class="m-chip" data-v="0-100">Under &euro;100</button>
+      <button type="button" class="m-chip" data-v="100-200">&euro;100&ndash;&euro;200</button>
+      <button type="button" class="m-chip" data-v="200-350">&euro;200&ndash;&euro;350</button>
+      <button type="button" class="m-chip" data-v="350-999">&euro;350+</button>
+    </div>
+  </div>
+
+  <div class="m-sheet-group">
+    <div class="m-sheet-label">Sort by</div>
+    <div class="m-chips" id="m-sheet-sort">
+      <button type="button" class="m-chip on" data-v="newest">Newest</button>
+      <button type="button" class="m-chip" data-v="oldest">Oldest</button>
+      <button type="button" class="m-chip" data-v="price-asc">Price low to high</button>
+      <button type="button" class="m-chip" data-v="price-desc">Price high to low</button>
+      <button type="button" class="m-chip" data-v="year-desc">Newest season</button>
+      <button type="button" class="m-chip" data-v="year-asc">Oldest season</button>
+    </div>
+  </div>
+
+  <div class="m-sheet-actions">
+    <button type="button" class="m-sheet-clear" onclick="mSheetClear()">Clear</button>
+    <button type="button" class="m-sheet-apply" onclick="mSheetApply()" id="m-sheet-apply">Show shirts</button>
+  </div>
+</div>
+
 <!-- MOBILE WISHLIST -->
 <div id="screen-wishlist" class="screen" style="padding-bottom:80px">
   <div style="padding:24px 20px 16px;font-size:20px;font-weight:500">My Wishlist</div>
@@ -3739,6 +3869,149 @@
 
   function mFilterShirts() { renderMobileGrid(); }
 
+  // Up to five photos per card as a snap strip. One photo falls back to a
+  // plain image, so a shirt with a single shot behaves exactly as before.
+  function mSwipeStrip(s) {
+    var imgs = (s.images || []).filter(Boolean).slice(0, 5);
+    if (!imgs.length) return '<img src="' + getImg(s) + '" alt="' + (s.title || '') + '" loading="lazy">';
+    if (imgs.length === 1) return '<img src="' + imgs[0] + '" alt="' + (s.title || '') + '" loading="lazy">';
+
+    var slides = imgs.map(function (src, i) {
+      return '<div><img src="' + src + '" alt="' + (s.title || '') + (i ? ' — photo ' + (i + 1) : '') + '" loading="lazy"></div>';
+    }).join('');
+    var dots = imgs.map(function (_, i) { return '<i class="' + (i === 0 ? 'on' : '') + '"></i>'; }).join('');
+
+    // The strip swallows the tap that would open the shirt, so the click is
+    // re-attached here — but only when you tapped rather than swiped.
+    return '<div class="m-swipe" data-shirt="' + s.id + '" onscroll="mSwipeDots(this)">' + slides + '</div>'
+         + '<div class="m-swipe-dots">' + dots + '</div>';
+  }
+
+  function mSwipeDots(strip) {
+    if (strip._t) return;                       // throttle: scroll fires a lot
+    strip._t = setTimeout(function () {
+      strip._t = null;
+      var i = Math.round(strip.scrollLeft / strip.clientWidth);
+      var dots = strip.parentNode.querySelectorAll('.m-swipe-dots i');
+      dots.forEach(function (d, n) { d.classList.toggle('on', n === i); });
+    }, 60);
+  }
+
+  // A swipe must not open the shirt; a tap must. This tells them apart by
+  // how far the finger moved.
+  (function () {
+    var sx = 0, sy = 0, moved = false;
+    document.addEventListener('touchstart', function (e) {
+      var strip = e.target.closest && e.target.closest('.m-swipe');
+      if (!strip) return;
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY; moved = false;
+    }, { passive: true });
+    document.addEventListener('touchmove', function (e) {
+      if (Math.abs(e.touches[0].clientX - sx) > 8 || Math.abs(e.touches[0].clientY - sy) > 8) moved = true;
+    }, { passive: true });
+    document.addEventListener('click', function (e) {
+      var strip = e.target.closest && e.target.closest('.m-swipe');
+      if (strip && moved) { e.stopPropagation(); e.preventDefault(); }
+    }, true);
+  })();
+
+  // ── FILTER SHEET ──
+  // The sheet writes into the three hidden selects that renderMobileGrid
+  // already reads, so the filtering logic itself is untouched.
+  function mSheetGet(group) {
+    var on = document.querySelector('#m-sheet-' + group + ' .m-chip.on');
+    return on ? (on.dataset.v || '') : '';
+  }
+
+  function mOpenSheet() {
+    // reflect whatever is currently applied, so the sheet never lies
+    [['size', 'm-filter-size'], ['price', 'm-filter-price'], ['sort', 'm-sort']].forEach(function (pair) {
+      var cur = (document.getElementById(pair[1]) || {}).value || '';
+      document.querySelectorAll('#m-sheet-' + pair[0] + ' .m-chip').forEach(function (c) {
+        c.classList.toggle('on', (c.dataset.v || '') === cur);
+      });
+    });
+    mSheetPreview();
+    document.getElementById('m-sheet-back').classList.add('open');
+    document.getElementById('m-sheet').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function mCloseSheet() {
+    document.getElementById('m-sheet-back').classList.remove('open');
+    document.getElementById('m-sheet').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Counting the matches before you apply is the whole point of a sheet:
+  // you can see a filter is too narrow without closing it first.
+  function mSheetCount(size, price) {
+    var list = (allShirts || []).slice();
+    if (mCurrentFilter === 'new') {
+      var cut = Date.now() - 21 * 24 * 60 * 60 * 1000;
+      list = list.filter(function (s) { return s.created_at && new Date(s.created_at).getTime() >= cut; });
+    } else if (mCurrentFilter !== 'all') {
+      list = list.filter(function (s) { return s.category === mCurrentFilter; });
+    }
+    var q = (document.getElementById('m-search-input') || {}).value || '';
+    if (q) { var terms = expandSearchTerms(q.toLowerCase()); list = list.filter(function (s) { return shirtMatchesSearch(s, terms); }); }
+    if (size) list = list.filter(function (s) { return s.size === size; });
+    if (price) {
+      var p = price.split('-').map(Number);
+      list = list.filter(function (s) { return parseFloat(s.price) >= p[0] && parseFloat(s.price) <= p[1]; });
+    }
+    return list.length;
+  }
+
+  function mSheetPreview() {
+    var n = mSheetCount(mSheetGet('size'), mSheetGet('price'));
+    var btn = document.getElementById('m-sheet-apply');
+    if (btn) btn.textContent = n === 1 ? 'Show 1 shirt' : 'Show ' + n + ' shirts';
+  }
+
+  function mSheetApply() {
+    var map = { size: 'm-filter-size', price: 'm-filter-price', sort: 'm-sort' };
+    Object.keys(map).forEach(function (g) {
+      var el = document.getElementById(map[g]);
+      if (el) el.value = mSheetGet(g);
+    });
+    mUpdateFilterCount();
+    mCloseSheet();
+    renderMobileGrid();
+  }
+
+  function mSheetClear() {
+    ['size', 'price'].forEach(function (g) {
+      document.querySelectorAll('#m-sheet-' + g + ' .m-chip').forEach(function (c, i) {
+        c.classList.toggle('on', i === 0);
+      });
+    });
+    document.querySelectorAll('#m-sheet-sort .m-chip').forEach(function (c, i) {
+      c.classList.toggle('on', i === 0);
+    });
+    mSheetPreview();
+  }
+
+  // the badge on the button, so you can see a filter is active without opening it
+  function mUpdateFilterCount() {
+    var n = 0;
+    if ((document.getElementById('m-filter-size') || {}).value) n++;
+    if ((document.getElementById('m-filter-price') || {}).value) n++;
+    var badge = document.getElementById('m-filter-count');
+    if (!badge) return;
+    badge.textContent = n;
+    badge.classList.toggle('on', n > 0);
+  }
+
+  // one chip active per group
+  document.addEventListener('click', function (e) {
+    var chip = e.target.closest && e.target.closest('.m-sheet .m-chip');
+    if (!chip) return;
+    chip.parentNode.querySelectorAll('.m-chip').forEach(function (c) { c.classList.remove('on'); });
+    chip.classList.add('on');
+    mSheetPreview();
+  });
+
   function renderMobileGrid() {
     const search = document.getElementById('m-search-input')?.value.toLowerCase() || '';
     const sizeFilter = document.getElementById('m-filter-size')?.value || '';
@@ -3771,7 +4044,7 @@
         <div class="m-shirt-card${s.available === false ? ' is-sold' : ''}" onclick="openDetail('${s.id}','m')" style="position:relative">
           <div class="shirt-card-img">
             ${s.available === false ? '<div class="sold-overlay">Sold</div>' : ''}
-            <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
+            ${mSwipeStrip(s)}
             ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
             <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:6px;right:6px;width:28px;height:28px;z-index:3">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--on-photo)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
@@ -6823,7 +7096,7 @@
         var dolTl = gsap.timeline({
           scrollTrigger: {
             trigger: '#cin-dolly-pin', pin: '#cin-dolly', anticipatePin: 1,
-            start: 'top top', end: 'bottom bottom', scrub: 0.5,
+            start: 'top top', end: 'bottom bottom', scrub: 0.8,
             onUpdate: function(self) {
               var f = document.getElementById('dolly-fill');
               if (f) f.style.width = (self.progress * 100) + '%';
@@ -7852,7 +8125,7 @@
 
     Keep it under about 8 seconds and 3 MB. It loops, so it should not have
     an obvious beginning or end.                                            */
-var SS_MOBILE_HERO_VIDEO = '';
+var SS_MOBILE_HERO_VIDEO = 'https://res.cloudinary.com/dinpfdojh/video/upload/q_auto,f_auto,w_900,br_1200k/v1788007009/WhatsApp_Video_2026-08-29_at_14.32.10_qj6xhy.mp4';
 
 (function () {
   if (!SS_MOBILE_HERO_VIDEO) return;
