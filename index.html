@@ -216,13 +216,29 @@
 
     /* Mobile header */
     .mobile-header {
-      display: flex; padding: 16px 20px; text-align: center;
+      display: flex; padding: 10px 14px 10px 16px;
       border-bottom: 1px solid var(--surf-2);
       position: sticky; top: 0; z-index: 100; background: var(--black);
-      justify-content: center; align-items: center;
+      justify-content: space-between; align-items: center;
+      padding-top: calc(10px + env(safe-area-inset-top));
     }
-    .mobile-logo { cursor: pointer; }
-    .mobile-logo img { height: 64px; object-fit: contain; transition: filter .35s ease; }
+    .mobile-logo { cursor: pointer; flex-shrink: 0; }
+    .m-head-actions { display: flex; align-items: center; gap: 2px; }
+    .m-head-btn {
+      position: relative; background: none; border: none; cursor: pointer;
+      color: var(--white); padding: 9px; display: flex; align-items: center;
+      min-width: 42px; min-height: 42px; justify-content: center;
+    }
+    .m-head-btn svg { width: 21px; height: 21px; }
+    .m-head-badge {
+      position: absolute; top: 3px; right: 3px;
+      min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px;
+      background: var(--gold); color: var(--ink);
+      font-size: 10px; font-weight: 700; line-height: 16px; text-align: center;
+      display: none;
+    }
+    .m-head-badge.on { display: block; }
+    .mobile-logo img { height: 46px; object-fit: contain; transition: filter .35s ease; }
     /* Light mode: the black box is gone, so the header colour shows through
        and the lettering is rendered solid black instead of gold on beige,
        which had almost no contrast. */
@@ -1383,11 +1399,32 @@
     /* The photo carries its own gradient on ::after, but that sits UNDER the
        video. So the video gets a matching scrim of its own, shown only when
        a video is actually playing. */
+    /* Much lighter than the photo's own scrim: the video is the point, so it
+       only gets darkened where type actually sits — a band at the very top
+       and one at the bottom. The middle stays clear. */
     .m-hero-scrim {
       position: absolute; inset: 0; z-index: 1; pointer-events: none; display: none;
-      background: radial-gradient(ellipse 78% 58% at 50% 46%, rgba(10,9,5,.66) 0%, rgba(10,9,5,.5) 45%, rgba(10,9,5,.22) 78%, rgba(10,9,5,0) 100%),
-                  linear-gradient(180deg, rgba(10,9,5,.45) 0%, rgba(10,9,5,.15) 30%, rgba(10,9,5,.96) 100%);
+      background: linear-gradient(180deg,
+                    rgba(10,9,5,.55) 0%, rgba(10,9,5,.12) 22%,
+                    rgba(10,9,5,0) 42%, rgba(10,9,5,0) 52%,
+                    rgba(10,9,5,.45) 74%, rgba(10,9,5,.92) 100%);
     }
+
+    /* With a video running, the block over it is trimmed to the headline and
+       one button. The eyebrow, the strapline and the rule were three extra
+       layers of text on top of moving footage, which is what made the clip
+       impossible to see. They come back the moment the video is not playing. */
+    .m-hero.has-video .m-hero-eyebrow,
+    .m-hero.has-video .m-hero-sub,
+    .m-hero.has-video .m-hero-rule { display: none; }
+    .m-hero.has-video .m-hero-title {
+      font-size: clamp(38px, 12vw, 54px);
+      text-shadow: 0 2px 24px rgba(0,0,0,.55);
+    }
+    .m-hero.has-video .m-hero-btns { margin-top: 26px; }
+    .m-hero.has-video .m-hero-alt { display: none; }
+    /* push the whole block down so the clip breathes above it */
+    .m-hero.has-video { justify-content: flex-end; padding-bottom: 76px; }
 
       .m-hero-eyebrow {
         font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
@@ -2046,14 +2083,33 @@
 <!-- ══════════════════════════════════════════
      MOBILE LAYOUT
 ══════════════════════════════════════════ -->
-<header class="mobile-header" style="position:relative">
+<header class="mobile-header">
+  <!-- Logo left, actions right — the layout every shopping app uses, so the
+       thumb always finds search and the cart in the same corner. -->
   <div class="mobile-logo" onclick="mGoTo('home')">
     <img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=3" alt="Shirt Société">
   </div>
-  <button type="button" onclick="toggleSiteTheme()" title="Toggle light / dark mode" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--white);cursor:pointer;padding:6px;display:flex">
-    <svg id="m-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-    <svg id="m-theme-icon-light" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-  </button>
+
+  <div class="m-head-actions">
+    <button type="button" class="m-head-btn" onclick="mGoTo('shop');setTimeout(function(){var i=document.getElementById('m-search-input');if(i){i.focus();}},80)" aria-label="Search">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+
+    <button type="button" class="m-head-btn" onclick="mGoTo('wishlist')" aria-label="Saved">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span class="m-head-badge" id="m-head-wishlist"></span>
+    </button>
+
+    <button type="button" class="m-head-btn" onclick="mGoTo('cart')" aria-label="Cart">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="m-head-badge" id="m-head-cart"></span>
+    </button>
+
+    <button type="button" class="m-head-btn" onclick="toggleSiteTheme()" aria-label="Toggle light and dark mode">
+      <svg id="m-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <svg id="m-theme-icon-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
 </header>
 
 <!-- MOBILE HOME -->
@@ -5334,6 +5390,9 @@
     document.getElementById('cart-badge').classList.toggle('visible', count > 0);
     const dc = document.getElementById('d-cart-count');
     dc.textContent = count; dc.classList.toggle('visible', count > 0);
+    // the new badge in the mobile header
+    const mh = document.getElementById('m-head-cart');
+    if (mh) { mh.textContent = count; mh.classList.toggle('on', count > 0); }
   }
 
   function getCartTotal() { return cart.reduce((s, i) => s + parseFloat(i.price), 0); }
@@ -6174,6 +6233,8 @@
     const icon = document.getElementById('wishlist-tab-icon');
     if (mb) { mb.textContent = count; mb.classList.toggle('visible', count > 0); }
     if (db) { db.textContent = count; db.classList.toggle('visible', count > 0); }
+    const mhw = document.getElementById('m-head-wishlist');
+    if (mhw) { mhw.textContent = count; mhw.classList.toggle('on', count > 0); }
     if (icon) {
       if (count > 0) {
         icon.style.width = '26px'; icon.style.height = '26px';
@@ -8115,80 +8176,95 @@
 </script>
 <!-- ═══ MOBILE HERO VIDEO ═══ -->
 <script>
-/*  Paste a Cloudinary video URL here and the mobile hero plays it over the
-    photo, muted and looping, the way an app does it. Leave it empty and the
-    photo stays exactly as it is now.
+/*  Two clips. One plays in full, then the next one starts. Add or remove
+    entries and everything below adapts; leave the list empty and the photo
+    stays exactly as it is now.
 
-    Upload the clip to Cloudinary, then use the delivery URL with these
-    transformations so it stays small on mobile data:
-
-      https://res.cloudinary.com/dinpfdojh/video/upload/
-        q_auto,f_auto,w_900,br_1200k/v0000000000/your-clip.mp4
-
-    Keep it under about 8 seconds and 3 MB. It loops, so it should not have
-    an obvious beginning or end.                                            */
-var SS_MOBILE_HERO_VIDEO = 'https://res.cloudinary.com/dinpfdojh/video/upload/q_auto,f_auto,w_900,br_1200k/v1788007009/WhatsApp_Video_2026-08-29_at_14.32.10_qj6xhy.mp4';
+    Keep each clip under about 8 seconds and 3 MB.                          */
+var SS_MOBILE_HERO_VIDEOS = [
+  'https://res.cloudinary.com/dinpfdojh/video/upload/q_auto,f_auto,w_900,br_1200k/v1788007009/WhatsApp_Video_2026-08-29_at_14.32.10_qj6xhy.mp4',
+  'https://res.cloudinary.com/dinpfdojh/video/upload/q_auto,f_auto,w_900,br_1200k/v1788030959/WhatsApp_Video_2026-08-29_at_21.14.48_iilvhk.mp4'
+];
 
 (function () {
-  if (!SS_MOBILE_HERO_VIDEO) return;
+  if (!SS_MOBILE_HERO_VIDEOS.length) return;
   var v = document.getElementById('m-hero-video');
   var scrim = document.getElementById('m-hero-scrim');
-  if (!v) return;
+  var hero = document.querySelector('.m-hero');
+  if (!v || !hero) return;
 
   // Never on a desktop, and never when the visitor asked for less motion.
   if (window.innerWidth >= 768) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  // Save-Data means the visitor is on a metered or slow connection. A hero
-  // video is exactly the thing to skip there.
+  // Save-Data means a metered or slow connection. Two hero clips are exactly
+  // the thing to skip there.
   var conn = navigator.connection || navigator.webkitConnection;
   if (conn && (conn.saveData || /^(slow-)?2g$/.test(conn.effectiveType || ''))) return;
 
-  // iOS only honours muted autoplay when muted is set as a PROPERTY, not
-  // just as an attribute in the HTML. Same for playsInline. Without these
-  // two lines Safari silently refuses to start.
+  // iOS only honours muted autoplay when muted is set as a PROPERTY, not just
+  // as an attribute in the HTML. Same for playsInline.
   v.muted = true;
   v.defaultMuted = true;
   v.playsInline = true;
   v.setAttribute('muted', '');
+  v.loop = false;              // each clip runs once, then the other follows
+  v.removeAttribute('loop');
 
-  v.src = SS_MOBILE_HERO_VIDEO;
-  v.preload = 'auto';
-  v.load();
-
+  // Start on a random one, so a returning visitor does not always see the
+  // same clip first.
+  var i = Math.floor(Math.random() * SS_MOBILE_HERO_VIDEOS.length);
   var shown = false;
+
   function reveal() {
     if (shown) return;
     shown = true;
     v.style.display = 'block';
     if (scrim) scrim.style.display = 'block';
+    hero.classList.add('has-video');
     var p = v.play();
-    if (p && p.catch) p.catch(function () {
-      // autoplay refused: fall back to the photo rather than a frozen frame
-      shown = false;
-      v.style.display = 'none';
-      if (scrim) scrim.style.display = 'none';
-    });
+    if (p && p.catch) p.catch(fallback);
   }
 
-  // canplay does not always fire on iOS. loadeddata does, and a timer catches
-  // the rest — Cloudinary transcodes a freshly uploaded clip on first request,
-  // which can take a few seconds the very first time it is asked for.
+  function fallback() {
+    shown = false;
+    v.style.display = 'none';
+    if (scrim) scrim.style.display = 'none';
+    hero.classList.remove('has-video');
+  }
+
+  function load(index, autoplay) {
+    v.src = SS_MOBILE_HERO_VIDEOS[index % SS_MOBILE_HERO_VIDEOS.length];
+    v.preload = 'auto';
+    v.load();
+    if (autoplay) {
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { /* keep showing the last frame */ });
+    }
+  }
+
+  // canplay does not always fire on iOS; loadeddata does, and the timer
+  // catches the rest. Cloudinary also transcodes a freshly uploaded clip on
+  // its first request, which can take a few seconds that one time.
   v.addEventListener('loadeddata', reveal, { once: true });
   v.addEventListener('canplay', reveal, { once: true });
   setTimeout(function () { if (v.readyState >= 2) reveal(); }, 2500);
 
-  v.addEventListener('error', function () {
-    v.style.display = 'none';
-    if (scrim) scrim.style.display = 'none';
+  // when one finishes, the next begins — that is the whole alternation
+  v.addEventListener('ended', function () {
+    i = (i + 1) % SS_MOBILE_HERO_VIDEOS.length;
+    load(i, true);
   });
 
-  // Pause when the tab is hidden; a looping video in the background costs
-  // battery for nothing.
+  v.addEventListener('error', fallback);
+
   document.addEventListener('visibilitychange', function () {
-    if (v.style.display === 'none') return;
-    if (document.hidden) v.pause(); else v.play().catch(function () {});
+    if (!shown) return;
+    if (document.hidden) v.pause();
+    else v.play().catch(function () {});
   });
+
+  load(i, false);
 })();
 </script>
 
