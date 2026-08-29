@@ -42,6 +42,8 @@
     } catch (e) {}
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Verify which version your browser has: view source and look for this line. -->
+<meta name="ss-build" content="2026-08-29-video-swipe-sheet">
   <!-- Trustpilot domain verification -->
   <meta name="trustpilot-one-time-domain-verification-id" content="70dd859d-1eb5-43e1-aa8c-4b3327e5c44f"/>
   <title>Vintage &amp; Match Worn Football Shirts | Shirt Société</title>
@@ -8142,21 +8144,39 @@ var SS_MOBILE_HERO_VIDEO = 'https://res.cloudinary.com/dinpfdojh/video/upload/q_
   var conn = navigator.connection || navigator.webkitConnection;
   if (conn && (conn.saveData || /^(slow-)?2g$/.test(conn.effectiveType || ''))) return;
 
+  // iOS only honours muted autoplay when muted is set as a PROPERTY, not
+  // just as an attribute in the HTML. Same for playsInline. Without these
+  // two lines Safari silently refuses to start.
+  v.muted = true;
+  v.defaultMuted = true;
+  v.playsInline = true;
+  v.setAttribute('muted', '');
+
   v.src = SS_MOBILE_HERO_VIDEO;
   v.preload = 'auto';
+  v.load();
 
-  // Only reveal it once it can actually play. Until then the photo shows,
-  // so there is never a black rectangle where the hero should be.
-  v.addEventListener('canplay', function () {
+  var shown = false;
+  function reveal() {
+    if (shown) return;
+    shown = true;
     v.style.display = 'block';
     if (scrim) scrim.style.display = 'block';
     var p = v.play();
     if (p && p.catch) p.catch(function () {
       // autoplay refused: fall back to the photo rather than a frozen frame
+      shown = false;
       v.style.display = 'none';
       if (scrim) scrim.style.display = 'none';
     });
-  }, { once: true });
+  }
+
+  // canplay does not always fire on iOS. loadeddata does, and a timer catches
+  // the rest — Cloudinary transcodes a freshly uploaded clip on first request,
+  // which can take a few seconds the very first time it is asked for.
+  v.addEventListener('loadeddata', reveal, { once: true });
+  v.addEventListener('canplay', reveal, { once: true });
+  setTimeout(function () { if (v.readyState >= 2) reveal(); }, 2500);
 
   v.addEventListener('error', function () {
     v.style.display = 'none';
