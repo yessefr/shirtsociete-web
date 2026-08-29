@@ -1377,7 +1377,15 @@
       background: radial-gradient(ellipse 78% 58% at 50% 46%, rgba(10,9,5,.72) 0%, rgba(10,9,5,.5) 45%, rgba(10,9,5,.2) 78%, rgba(10,9,5,0) 100%),
                   linear-gradient(180deg, rgba(10,9,5,.45) 0%, rgba(10,9,5,.15) 30%, rgba(10,9,5,.96) 100%);
     }
-    .m-hero > *:not(.m-hero-bg) { position: relative; z-index: 2; }
+    .m-hero > *:not(.m-hero-bg):not(.m-hero-video):not(.m-hero-scrim) { position: relative; z-index: 2; }
+    /* The photo carries its own gradient on ::after, but that sits UNDER the
+       video. So the video gets a matching scrim of its own, shown only when
+       a video is actually playing. */
+    .m-hero-scrim {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none; display: none;
+      background: radial-gradient(ellipse 78% 58% at 50% 46%, rgba(10,9,5,.66) 0%, rgba(10,9,5,.5) 45%, rgba(10,9,5,.22) 78%, rgba(10,9,5,0) 100%),
+                  linear-gradient(180deg, rgba(10,9,5,.45) 0%, rgba(10,9,5,.15) 30%, rgba(10,9,5,.96) 100%);
+    }
 
       .m-hero-eyebrow {
         font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
@@ -1640,6 +1648,45 @@
       .story-figures { grid-template-columns: 1fr; }
       .story-fig { border-right: none; border-bottom: 1px solid rgba(20,18,11,.16); }
       .story-fig:last-child { border-bottom: none; }
+    }
+
+    /* video layer over the mobile hero photo */
+    .m-hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 0; pointer-events: none;
+    }
+    .m-hero-video + .m-hero-eyebrow { position: relative; }
+
+    /* ─── CONTACT BLOCK (bottom of Our Story) ─── */
+    .contact-band { border-top: 1px solid var(--surf-2); }
+    .contact-inner { max-width: 1180px; margin: 0 auto; padding: 76px 52px 84px; }
+    .contact-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 64px; align-items: start; }
+    .contact-h {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+      font-size: clamp(26px, 2.6vw, 38px); line-height: 1.1; margin: 0 0 16px;
+    }
+    .contact-lead { font-size: 15px; line-height: 1.9; color: var(--text-muted-2); max-width: 460px; margin: 0 0 28px; }
+    .contact-cta {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: var(--gold); color: var(--ink); text-decoration: none;
+      padding: 14px 26px; border-radius: 2px;
+      font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    }
+    .contact-dl { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 32px; }
+    .contact-dl dt {
+      font-size: 9.5px; letter-spacing: 2.4px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 6px;
+    }
+    .contact-dl dd { margin: 0; font-size: 14px; line-height: 1.75; color: var(--text-muted-2); }
+    .contact-dl a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(200,169,80,.28); }
+    .contact-note { grid-column: 1 / -1; font-size: 13px; line-height: 1.8; color: var(--text-muted); margin: 0; }
+    @media (max-width: 1000px) {
+      .contact-inner { padding: 52px 32px 60px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+    }
+    @media (max-width: 767px) {
+      .contact-inner { padding: 38px 20px 44px; }
+      .contact-dl { grid-template-columns: 1fr; gap: 20px; }
     }
 
     /* ─── MOBILE FOOTER ───
@@ -1955,6 +2002,12 @@
   </div>
   <div class="m-hero">
     <div class="m-hero-bg"></div>
+    <!-- Optional video layer. Fill in SS_MOBILE_HERO_VIDEO at the bottom of
+         this file and it plays over the photo; leave it empty and nothing
+         changes. The photo stays as the poster, so there is never a blank
+         frame while the video loads. -->
+    <video class="m-hero-video" id="m-hero-video" muted loop playsinline webkit-playsinline preload="none" style="display:none"></video>
+    <div class="m-hero-scrim" id="m-hero-scrim"></div>
     <!-- compact pills -->
     
     <div class="m-hero-eyebrow"><i></i>Est. 2025 &middot; Harderwijk, NL<i></i></div>
@@ -2565,7 +2618,10 @@
 </section>
 
 <!-- SCENE 3: DOLLY (camera pushes in from the hero shot into the stand) -->
-<div id="cin-dolly-pin" style="position:relative;height:420vh">
+<!-- The pin height IS the scroll distance: 420vh meant four and a bit screens
+     of scrolling to get past this one section. 210vh keeps the whole camera
+     move intact but halves how long you are held there. -->
+<div id="cin-dolly-pin" style="position:relative;height:210vh">
   <section id="cin-dolly" style="position:relative;height:100vh;overflow:hidden;background:var(--black)">
 
     <!-- FRAME 1: wide (identical to the hero photo, so the transition is seamless) -->
@@ -3262,6 +3318,44 @@
 
       </div>
 
+      <!-- CONTACT — the last thing on Our Story, so a visitor who has read
+           this far knows exactly how to reach a person. -->
+      <div class="contact-band">
+        <div class="contact-inner">
+          <div class="contact-grid">
+            <div>
+              <div class="story-label">Get in touch</div>
+              <h2 class="contact-h">A question about a shirt?<br>Ask the person who bought it.</h2>
+              <p class="contact-lead">Provenance, sizing, condition, or a shirt you would like us to look for. Every message is answered by us, usually within one business day.</p>
+              <a class="contact-cta" href="/contact.html">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg>
+                Contact us
+              </a>
+            </div>
+
+            <dl class="contact-dl">
+              <div>
+                <dt>Email</dt>
+                <dd><a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a></dd>
+              </div>
+              <div>
+                <dt>Instagram</dt>
+                <dd><a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a></dd>
+              </div>
+              <div>
+                <dt>Based in</dt>
+                <dd>Korhoenlaan 1-190<br>3847 LL Harderwijk<br>The Netherlands</dd>
+              </div>
+              <div>
+                <dt>Registration</dt>
+                <dd>KvK 97828408<br>VAT NL005290775B10</dd>
+              </div>
+              <p class="contact-note">We are an online shop, not a walk-in store. If you would like to see the shirts in person, come and find our stand at one of the vintage football fairs.</p>
+            </dl>
+          </div>
+        </div>
+      </div>
+
       <!-- INSTAGRAM FEED (Our Story) -->
       <div style="max-width:1100px;margin:0 auto;padding:64px 52px 20px">
         <div style="text-align:center;margin-bottom:36px">
@@ -3505,6 +3599,39 @@
           <div style="font-size:17px;font-weight:700;color:var(--white)">Leipzig</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
           <a href="https://www.instagram.com/p/Da-wkVJjOm1/?img_index=1" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-size:11px;font-style:italic;letter-spacing:1px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.4);padding-bottom:2px">to be continued →</a>
+        </div>
+      </div>
+
+      <!-- CONTACT — same block as the desktop Our Story, stacked -->
+      <div class="contact-band" style="margin-top:34px">
+        <div class="contact-inner" style="padding-left:0;padding-right:0">
+          <div class="story-label">Get in touch</div>
+          <h2 class="contact-h" style="font-size:24px">A question about a shirt?<br>Ask the person who bought it.</h2>
+          <p class="contact-lead" style="font-size:14px">Provenance, sizing, condition, or a shirt you would like us to look for. Every message is answered by us, usually within one business day.</p>
+          <a class="contact-cta" href="/contact.html" style="width:100%;justify-content:center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg>
+            Contact us
+          </a>
+
+          <dl class="contact-dl" style="margin-top:30px">
+            <div>
+              <dt>Email</dt>
+              <dd><a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a></dd>
+            </div>
+            <div>
+              <dt>Instagram</dt>
+              <dd><a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a></dd>
+            </div>
+            <div>
+              <dt>Based in</dt>
+              <dd>Korhoenlaan 1-190<br>3847 LL Harderwijk<br>The Netherlands</dd>
+            </div>
+            <div>
+              <dt>Registration</dt>
+              <dd>KvK 97828408<br>VAT NL005290775B10</dd>
+            </div>
+            <p class="contact-note">We are an online shop, not a walk-in store. Come and find our stand at one of the vintage football fairs.</p>
+          </dl>
         </div>
       </div>
     </div>
@@ -6696,7 +6823,7 @@
         var dolTl = gsap.timeline({
           scrollTrigger: {
             trigger: '#cin-dolly-pin', pin: '#cin-dolly', anticipatePin: 1,
-            start: 'top top', end: 'bottom bottom', scrub: 1.1,
+            start: 'top top', end: 'bottom bottom', scrub: 0.5,
             onUpdate: function(self) {
               var f = document.getElementById('dolly-fill');
               if (f) f.style.width = (self.progress * 100) + '%';
@@ -7711,6 +7838,67 @@
     }, { passive: true });
   })();
 </script>
+<!-- ═══ MOBILE HERO VIDEO ═══ -->
+<script>
+/*  Paste a Cloudinary video URL here and the mobile hero plays it over the
+    photo, muted and looping, the way an app does it. Leave it empty and the
+    photo stays exactly as it is now.
+
+    Upload the clip to Cloudinary, then use the delivery URL with these
+    transformations so it stays small on mobile data:
+
+      https://res.cloudinary.com/dinpfdojh/video/upload/
+        q_auto,f_auto,w_900,br_1200k/v0000000000/your-clip.mp4
+
+    Keep it under about 8 seconds and 3 MB. It loops, so it should not have
+    an obvious beginning or end.                                            */
+var SS_MOBILE_HERO_VIDEO = '';
+
+(function () {
+  if (!SS_MOBILE_HERO_VIDEO) return;
+  var v = document.getElementById('m-hero-video');
+  var scrim = document.getElementById('m-hero-scrim');
+  if (!v) return;
+
+  // Never on a desktop, and never when the visitor asked for less motion.
+  if (window.innerWidth >= 768) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // Save-Data means the visitor is on a metered or slow connection. A hero
+  // video is exactly the thing to skip there.
+  var conn = navigator.connection || navigator.webkitConnection;
+  if (conn && (conn.saveData || /^(slow-)?2g$/.test(conn.effectiveType || ''))) return;
+
+  v.src = SS_MOBILE_HERO_VIDEO;
+  v.preload = 'auto';
+
+  // Only reveal it once it can actually play. Until then the photo shows,
+  // so there is never a black rectangle where the hero should be.
+  v.addEventListener('canplay', function () {
+    v.style.display = 'block';
+    if (scrim) scrim.style.display = 'block';
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {
+      // autoplay refused: fall back to the photo rather than a frozen frame
+      v.style.display = 'none';
+      if (scrim) scrim.style.display = 'none';
+    });
+  }, { once: true });
+
+  v.addEventListener('error', function () {
+    v.style.display = 'none';
+    if (scrim) scrim.style.display = 'none';
+  });
+
+  // Pause when the tab is hidden; a looping video in the background costs
+  // battery for nothing.
+  document.addEventListener('visibilitychange', function () {
+    if (v.style.display === 'none') return;
+    if (document.hidden) v.pause(); else v.play().catch(function () {});
+  });
+})();
+</script>
+
 <!-- ═══ INSTAGRAM: LIVE FOLLOWER COUNT + REELS ═══ -->
 <script>
 /*  INSTAGRAM: LIVE FOLLOWER COUNT + REELS
