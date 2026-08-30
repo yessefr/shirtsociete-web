@@ -93,6 +93,14 @@
     /* ── MOBILE ── keep the admin usable on phones */
     .mobile-only-inline { display: none; }
 
+    .up-drop { border: 1px dashed var(--grey-light); border-radius: 6px; padding: 14px; }
+    .up-hint { font-size: 11.5px; color: var(--text-muted); margin-top: 9px; line-height: 1.6; }
+    .up-status { font-size: 12.5px; margin-top: 9px; min-height: 1px; }
+    .up-status.err { color: #e07a6a; }
+    .up-status.ok { color: var(--gold); }
+    .up-thumbs { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; }
+    .up-thumbs img { width: 54px; height: 54px; object-fit: cover; border-radius: 3px; border: 1px solid var(--grey-light); }
+
     @media (max-width: 768px) {
       /* ── The admin becomes an app on a phone: a title bar at the top and a
          fixed tab bar at the bottom, the way a native app works. The sidebar
@@ -831,6 +839,24 @@
           <div style="display:flex;gap:10px;margin-top:8px">
             <button type="button" class="btn btn-secondary" style="font-size:12px" onclick="refreshPhotoStrip()">Refresh preview</button>
             <span id="m-photo-count" style="font-size:12px;color:#888070;align-self:center"></span>
+          </div>
+        </div>
+
+        <!-- ── UPLOAD FROM THIS DEVICE ──
+             Twelve URL fields is fine on a laptop and miserable on a phone.
+             This picks photos straight from the camera roll, uploads them to
+             Cloudinary and fills the fields below in order. -->
+        <div class="form-group full" id="up-block">
+          <label class="form-label">Photos</label>
+          <div class="up-drop">
+            <input type="file" id="up-input" accept="image/*" multiple style="display:none" onchange="ssUploadPhotos(this.files)">
+            <button type="button" class="btn btn-primary" style="width:100%" onclick="document.getElementById('up-input').click()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload photos from this device
+            </button>
+            <div class="up-hint">Pick several at once. They fill the first empty slots below, in the order you choose them.</div>
+            <div class="up-status" id="up-status"></div>
+            <div class="up-thumbs" id="up-thumbs"></div>
           </div>
         </div>
 
@@ -2361,6 +2387,86 @@
     var vtail = ['Vintage Original'];
     if (has(f.size)) vtail.push('Size ' + String(f.size).trim());
     return out.join(' ') + ' — ' + vtail.join(', ');
+  }
+
+  /*  DIRECT UPLOAD
+      Needs one unsigned Cloudinary preset. Create it once:
+        cloudinary.com → Settings → Upload → Upload presets → Add
+        name: shirt_admin     signing mode: Unsigned     folder: shirts
+      Then the button works from your phone: pick photos, they upload and
+      the URL fields fill themselves.                                      */
+  var SS_CLOUD_NAME = 'dinpfdojh';
+  var SS_UPLOAD_PRESET = 'shirt_admin';
+
+  function ssUploadPhotos(files) {
+    if (!files || !files.length) return;
+    var status = document.getElementById('up-status');
+    var thumbs = document.getElementById('up-thumbs');
+    var list = Array.prototype.slice.call(files);
+    var done = 0, failed = 0;
+
+    // NOTE: the first field is called m-image, not m-image1. Looping from 1
+    // to 12 silently skipped the main photo.
+    function slots() {
+      var free = [];
+      var ids = ['m-image'];
+      for (var n = 2; n <= 12; n++) ids.push('m-image' + n);
+      ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el && !el.value.trim()) free.push(el);
+      });
+      return free;
+    }
+    var free = slots();
+    if (!free.length) {
+      status.className = 'up-status err';
+      status.textContent = 'All twelve photo slots are already filled.';
+      return;
+    }
+    if (list.length > free.length) {
+      list = list.slice(0, free.length);
+    }
+
+    status.className = 'up-status';
+    status.textContent = 'Uploading 0 of ' + list.length + '...';
+
+    // one at a time, so the fields fill in the order you picked them and a
+    // phone on a weak connection is not asked to send ten files at once
+    function next(i) {
+      if (i >= list.length) {
+        status.className = failed ? 'up-status err' : 'up-status ok';
+        status.textContent = failed
+          ? (done + ' uploaded, ' + failed + ' failed — try the failed ones again')
+          : (done + ' photo' + (done === 1 ? '' : 's') + ' uploaded');
+        return;
+      }
+      var fd = new FormData();
+      fd.append('file', list[i]);
+      fd.append('upload_preset', SS_UPLOAD_PRESET);
+
+      fetch('https://api.cloudinary.com/v1_1/' + SS_CLOUD_NAME + '/image/upload', {
+        method: 'POST', body: fd
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        if (!data || !data.secure_url) throw new Error((data && data.error && data.error.message) || 'upload failed');
+        var target = slots()[0];
+        if (target) target.value = data.secure_url;
+        var img = document.createElement('img');
+        img.src = data.secure_url;
+        thumbs.appendChild(img);
+        done++;
+      }).catch(function (e) {
+        failed++;
+        console.error('upload failed:', e);
+        if (/preset/i.test(String(e && e.message))) {
+          status.className = 'up-status err';
+          status.textContent = 'Cloudinary rejected the preset "' + SS_UPLOAD_PRESET + '". Create it as an UNSIGNED preset first.';
+        }
+      }).then(function () {
+        status.textContent = 'Uploading ' + (i + 1) + ' of ' + list.length + '...';
+        next(i + 1);
+      });
+    }
+    next(0);
   }
 
   function ssSuggestTitle() {
