@@ -1405,26 +1405,35 @@
     .m-hero-scrim {
       position: absolute; inset: 0; z-index: 1; pointer-events: none; display: none;
       background: linear-gradient(180deg,
-                    rgba(10,9,5,.55) 0%, rgba(10,9,5,.12) 22%,
-                    rgba(10,9,5,0) 42%, rgba(10,9,5,0) 52%,
-                    rgba(10,9,5,.45) 74%, rgba(10,9,5,.92) 100%);
+                    rgba(10,9,5,.42) 0%, rgba(10,9,5,.06) 18%,
+                    rgba(10,9,5,0) 38%, rgba(10,9,5,0) 58%,
+                    rgba(10,9,5,.32) 78%, rgba(10,9,5,.9) 100%);
     }
 
-    /* With a video running, the block over it is trimmed to the headline and
-       one button. The eyebrow, the strapline and the rule were three extra
-       layers of text on top of moving footage, which is what made the clip
-       impossible to see. They come back the moment the video is not playing. */
+    /* With the video running there are TWO words and ONE button over it, and
+       nothing else. Every other layer — eyebrow, rule, strapline, the third
+       headline line, the second button — is what was hiding the footage.
+       All of it returns the moment there is no video. */
     .m-hero.has-video .m-hero-eyebrow,
     .m-hero.has-video .m-hero-sub,
-    .m-hero.has-video .m-hero-rule { display: none; }
-    .m-hero.has-video .m-hero-title {
-      font-size: clamp(38px, 12vw, 54px);
-      text-shadow: 0 2px 24px rgba(0,0,0,.55);
-    }
-    .m-hero.has-video .m-hero-btns { margin-top: 26px; }
+    .m-hero.has-video .m-hero-rule,
     .m-hero.has-video .m-hero-alt { display: none; }
-    /* push the whole block down so the clip breathes above it */
-    .m-hero.has-video { justify-content: flex-end; padding-bottom: 76px; }
+
+    /* "Vintage football" drops away; only the gold word stays. */
+    .m-hero.has-video .m-hero-title .cin-line:nth-child(1),
+    .m-hero.has-video .m-hero-title .cin-line:nth-child(2) { display: none; }
+    .m-hero.has-video .m-hero-title {
+      font-size: clamp(40px, 13vw, 58px);
+      text-shadow: 0 2px 28px rgba(0,0,0,.6);
+    }
+    .m-hero.has-video .m-hero-btns { margin-top: 20px; }
+    .m-hero.has-video .m-hero-btns .btn-primary {
+      background: rgba(10,9,5,.5); border: 1px solid rgba(245,240,232,.55);
+      color: var(--on-photo); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      padding: 13px 26px;
+    }
+    /* everything sits low, so the clip has the whole upper two thirds */
+    .m-hero.has-video { justify-content: flex-end; padding-bottom: 72px; }
 
       .m-hero-eyebrow {
         font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
@@ -1695,6 +1704,32 @@
       object-fit: cover; z-index: 0; pointer-events: none;
     }
     .m-hero-video + .m-hero-eyebrow { position: relative; }
+
+    /* ─── PINNED BUY BAR (mobile product) ─── */
+    .m-buybar {
+      position: fixed; left: 0; right: 0; bottom: 64px; z-index: 150;
+      display: none; align-items: center; gap: 12px;
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(10,9,5,.92);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border-top: 1px solid var(--surf-2);
+    }
+    .screen#screen-detail.active .m-buybar { display: flex; }
+    .m-buybar-price { flex: 1; min-width: 0; line-height: 1.25; }
+    .m-buybar-price span { display: block; font-size: 19px; font-weight: 600; color: var(--gold); }
+    .m-buybar-price em {
+      display: block; font-style: normal; font-size: 11px;
+      letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted);
+    }
+    .m-buybar button {
+      flex: 0 0 auto; background: var(--gold); color: var(--ink); border: none;
+      border-radius: 2px; padding: 15px 26px; min-height: 50px;
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 1.6px; text-transform: uppercase; cursor: pointer;
+    }
+    .m-buybar button:disabled { background: var(--surf-2); color: var(--text-muted); }
+    /* the page needs room so the bar never covers the last line */
+    #screen-detail { padding-bottom: 150px !important; }
 
     /* ─── FILTER SHEET (mobile) ───
        Three dropdowns in a scrolling row meant the native picker covered the
@@ -2309,7 +2344,20 @@
     <div id="m-detail-specs" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px"></div>
     <p id="m-detail-desc" style="font-size:14px;line-height:1.7;color:var(--text-muted-2);margin-bottom:24px"></p>
     <div id="m-detail-measurements" style="margin-bottom:24px"></div>
-    <button id="m-detail-add-btn" style="width:100%;padding:16px;background:var(--gold);color:var(--ink);border:none;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:1px;text-transform:uppercase" onclick="addToCartFromDetail()">Add to Cart</button>
+    <!-- the in-page button stays for the flow of the page, but the real one
+         is the pinned bar below, which is always within thumb reach -->    <button id="m-detail-add-btn" style="width:100%;padding:16px;background:var(--gold);color:var(--ink);border:none;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:1px;text-transform:uppercase" onclick="addToCartFromDetail()">Add to Cart</button>
+  </div>
+
+  <!-- ── PINNED BUY BAR ──
+       In an app the price and the buy button never scroll away. This bar sits
+       above the tab bar and mirrors the button above, so there is only one
+       piece of logic to maintain. -->
+  <div class="m-buybar" id="m-buybar">
+    <div class="m-buybar-price">
+      <span id="m-buybar-amount"></span>
+      <em id="m-buybar-size"></em>
+    </div>
+    <button type="button" id="m-buybar-btn" onclick="document.getElementById('m-detail-add-btn').click()">Add to cart</button>
   </div>
 </div>
 
@@ -4070,6 +4118,30 @@
     mSheetPreview();
   });
 
+  // The pinned bar is a mirror of #m-detail-add-btn: it never decides
+  // anything itself, it only reflects that button's state. One source of
+  // truth, so the two can never disagree about whether a shirt is sold.
+  function mSyncBuyBar(shirt) {
+    var src = document.getElementById('m-detail-add-btn');
+    var btn = document.getElementById('m-buybar-btn');
+    var amount = document.getElementById('m-buybar-amount');
+    var size = document.getElementById('m-buybar-size');
+    if (!src || !btn) return;
+
+    btn.textContent = src.textContent;
+    btn.disabled = src.disabled;
+
+    if (shirt) {
+      if (amount) amount.textContent = '\u20AC' + parseFloat(shirt.price).toFixed(2);
+      if (size) {
+        var bits = [];
+        if (shirt.size) bits.push('Size ' + shirt.size);
+        if (shirt.season) bits.push(String(shirt.season).replace(/^season\s*/i, ''));
+        size.textContent = bits.join(' \u00B7 ');
+      }
+    }
+  }
+
   function renderMobileGrid() {
     const search = document.getElementById('m-search-input')?.value.toLowerCase() || '';
     const sizeFilter = document.getElementById('m-filter-size')?.value || '';
@@ -4938,6 +5010,7 @@
       btn.disabled = soldOut || inCart;
       btn.style.opacity = soldOut ? '.5' : '';
       btn.style.cursor = soldOut ? 'not-allowed' : '';
+      mSyncBuyBar(shirt);
       mGoTo('detail');
     } else {
       currentImages = images;
@@ -5351,6 +5424,7 @@
   function addToCartFromDetail() {
     if (!currentShirt) return;
     addToCart(currentShirt);
+    mSyncBuyBar();
     document.querySelectorAll('#m-detail-add-btn, #d-detail-add-btn').forEach(btn => {
       btn.textContent = 'Added to Cart ✓'; btn.disabled = true;
     });
@@ -8182,8 +8256,7 @@
 
     Keep each clip under about 8 seconds and 3 MB.                          */
 var SS_MOBILE_HERO_VIDEOS = [
-  'https://res.cloudinary.com/dinpfdojh/video/upload/q_auto,f_auto,w_900,br_1200k/v1788007009/WhatsApp_Video_2026-08-29_at_14.32.10_qj6xhy.mp4',
-  'https://res.cloudinary.com/dinpfdojh/video/upload/q_auto,f_auto,w_900,br_1200k/v1788030959/WhatsApp_Video_2026-08-29_at_21.14.48_iilvhk.mp4'
+  'https://res.cloudinary.com/dinpfdojh/video/upload/q_auto,f_auto,w_900,br_1200k/v1788007009/WhatsApp_Video_2026-08-29_at_14.32.10_qj6xhy.mp4'
 ];
 
 (function () {
@@ -8208,8 +8281,10 @@ var SS_MOBILE_HERO_VIDEOS = [
   v.defaultMuted = true;
   v.playsInline = true;
   v.setAttribute('muted', '');
-  v.loop = false;              // each clip runs once, then the other follows
-  v.removeAttribute('loop');
+  // One clip loops; two or more play in turn.
+  var single = SS_MOBILE_HERO_VIDEOS.length === 1;
+  v.loop = single;
+  if (single) v.setAttribute('loop', ''); else v.removeAttribute('loop');
 
   // Start on a random one, so a returning visitor does not always see the
   // same clip first.
