@@ -2737,6 +2737,19 @@
   // of relying on every individual shirt to rank on its own. Each page links
   // straight down to the product pages, which is how Google understands the
   // hierarchy of an ecommerce site.
+  // Some rows store the season as "Season 2016/17" instead of "2016/17".
+  // Printing that under a field already labelled Season gave "Season Season
+  // 2016/17". Stripping it here means every page is right even if a stray
+  // value slips into the database later.
+  //
+  // NOTE: this MUST stay at top level. It was nested inside buildProductPage,
+  // which meant Check data, the title builder and the collection pages could
+  // not see it at all — "ssSeason is not defined".
+  function ssSeason(v) {
+    v = String(v == null ? '' : v).trim();
+    return /^season\b[\s:]*/i.test(v) ? v.replace(/^season\b[\s:]*/i, '').trim() : v;
+  }
+
   function ssSlugify(str) {
     return String(str || '').toLowerCase()
       .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -3705,15 +3718,6 @@
     var img = (s.images && s.images[0]) ? s.images[0] : '';
     var price = (s.price != null) ? parseFloat(s.price).toFixed(2) : '';
     var avail = (s.available === false) ? 'SoldOut' : 'InStock';
-    // Some rows store the season as "Season 2016/17" instead of "2016/17".
-    // Printing that under a field already labelled Season gave "Season Season
-    // 2016/17" (audit 19). Stripping it here means the page is right even if a
-    // stray value slips into the database later.
-    function ssSeason(v) {
-      v = String(v == null ? '' : v).trim();
-      return /^season\b[\s:]*/i.test(v) ? v.replace(/^season\b[\s:]*/i, '').trim() : v;
-    }
-
     // The label shown on the page mirrors the exact classification whenever the
     // data has one, so the H1, the badge, the passport and the schema all agree.
     var cat = s.category === 'match_worn'
