@@ -214,7 +214,7 @@
     .cart-badge.visible { display: flex; }
     /* Floating "Collector List" button — shown above the tab bar on every mobile screen */
     .drop-alert-fab {
-      position: fixed; right: 16px; bottom: 80px; z-index: 210;
+      position: fixed; right: 16px; bottom: 80px; z-index: 150;
       display: flex; align-items: center; gap: 7px;
       background: linear-gradient(135deg, rgba(200,169,80,.95), rgba(176,141,62,.95));
       color:var(--ink); border: none; border-radius: 100px;
@@ -1829,6 +1829,13 @@
     }
     .m-fair-name { font-size: 11.5px; line-height: 1.45; color: rgba(var(--on-photo-rgb),.6); margin-top: 4px; }
     .m-fair-go { font-size: 11px; font-weight: 700; color: var(--gold); margin-top: 8px; letter-spacing: .6px; }
+
+    /* The Collector List button sat on top of the buy bar and the checkout.
+       It disappears on the screens where something more important is asked
+       of the visitor. */
+    .screen#screen-detail.active ~ .drop-alert-fab,
+    .screen#screen-cart.active ~ .drop-alert-fab,
+    .screen#screen-checkout.active ~ .drop-alert-fab { display: none; }
 
     /* ─── PINNED BUY BAR (mobile product) ─── */
     .m-buybar {
@@ -4005,10 +4012,9 @@
     const clubs = allShirts.filter(s => s.category === 'clubs');
     renderNewIn();
     renderFairs();
-    renderMobileRow('m-featured-row', featured.length ? featured : allShirts.slice(0,4));
+    // Only the match worn row is left on the mobile home; the rest was
+    // replaced by the New in grid.
     renderMobileRow('m-matchworn-row', matchWorn);
-    renderMobileRow('m-national-row', national);
-    renderMobileRow('m-clubs-row', clubs);
   }
 
   // Newest first, sold shirts included so the grid is never thin — a sold
@@ -4126,6 +4132,9 @@
 
   function renderMobileRow(id, shirts) {
     const el = document.getElementById(id);
+    // A row that is no longer on the page used to throw here, which stopped
+    // every render after it — including the shirts on the home screen.
+    if (!el) return;
     if (!shirts.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:20px">Nothing here yet.</div>'; return; }
     el.innerHTML = shirts.map(s => {
       const isLiked = wishlist.includes(s.id);
