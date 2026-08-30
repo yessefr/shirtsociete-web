@@ -2341,10 +2341,10 @@
        Legend Collection band does in the MatchWornShirt app ═══ -->
   <section class="m-fairs">
     <div class="m-fairs-head">
-      <div class="m-fairs-flag">Upcoming</div>
-      <h2 class="m-fairs-title">Meet us at the fairs</h2>
-      <p class="m-fairs-sub">Two dates coming up. Come by the stand, handle the shirts, ask anything.</p>
-      <a class="m-fairs-link" href="/?p=about" onclick="mGoTo('about');return false;">See where we have been &rsaquo;</a>
+      <div class="m-fairs-flag"></div>
+      <h2 class="m-fairs-title"></h2>
+      <p class="m-fairs-sub"></p>
+      <a class="m-fairs-link" href="/?p=about"></a>
     </div>
     <div class="m-fairs-grid" id="m-fairs-grid"></div>
   </section>
@@ -4013,36 +4013,69 @@
 
   // Newest first, sold shirts included so the grid is never thin — a sold
   // shirt still shows what passes through here.
-  /*  ═══ UPCOMING FAIRS ═══
-      EDIT ONLY THIS LIST. Everything else builds itself from it.
+  /*  ═══ UPCOMING FAIRS ═══════════════════════════════════════════
+      ALLES van dit blok staat hieronder. Tekst, links en foto's. Wil je
+      iets veranderen, dan hoef je nergens anders te zijn.
 
-      photo:  a Cloudinary URL. I cannot read Instagram, so these two are
-              stand-ins from your own library — swap them for the right shots.
-              Paste the delivery URL and add w_600,h_750,c_fill,q_auto,f_auto
-              after /upload/ so it loads fast on a phone.
-      href:   where the card goes when tapped.                              */
+      Een beurs toevoegen: kopieer een blok tussen de accolades en pas aan.
+      Een beurs weghalen: verwijder dat blok. De rest schikt zich vanzelf.
+
+      photo:  Cloudinary-URL. Zet achter /upload/ een van deze twee:
+                w_600,h_750,c_fill,g_auto,q_auto,f_auto   → foto's, snijdt bij
+                w_600,h_750,c_pad,b_rgb:0b0906,q_auto,f_auto → posters, past in
+              Een poster met tekst moet je NIET bijsnijden, want dan valt de
+              helft van het ontwerp weg.                                     */
+  var SS_FAIRS_TEXT = {
+    flag:  'Upcoming',
+    title: 'Meet us at the fairs',
+    sub:   'Where to find us over the coming weeks. Come by the stand, handle the shirts, ask anything.',
+    link:  'Our fairs and events',
+    href:  'about'          // 'about' opent Our Story; of een volledige URL
+  };
+
   var SS_FAIRS = [
     {
       date:  '26 Sep',
       city:  'Hamburg',
-      name:  'STANDS · Millerntor-Stadion, St. Pauli',
+      name:  'STANDS \u00b7 Millerntor-Stadion, St. Pauli',
       go:    'stands.hamburg',
       href:  'https://stands.hamburg',
-      photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,q_auto,f_auto/v1788117168/iZ0QS6sLgS5DihDx8mA8QxhiA_xk90sr.png'
+      photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_pad,b_rgb:0b0906,q_auto,f_auto/v1788117168/iZ0QS6sLgS5DihDx8mA8QxhiA_xk90sr.png'
     },
     {
       date:  '4 Oct',
       city:  'Leipzig',
       name:  'Vintage Fu\u00dfballb\u00f6rse',
-      go:    '@vintagefussballboerse',
-      href:  'https://www.instagram.com/vintagefussballboerse/',
-      photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,q_auto,f_auto/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg'
+      go:    '@vintagefussball',
+      href:  'https://www.instagram.com/vintagefussball/',
+      photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,g_auto,q_auto,f_auto/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg'
     }
   ];
 
   function renderFairs() {
     var el = document.getElementById('m-fairs-grid');
     if (!el) return;
+
+    // the headings come from the config as well, so there is one place to edit
+    var t = SS_FAIRS_TEXT || {};
+    var set = function (sel, val) { var n = document.querySelector(sel); if (n && val) n.textContent = val; };
+    set('.m-fairs-flag', t.flag);
+    set('.m-fairs-title', t.title);
+    set('.m-fairs-sub', t.sub);
+    var link = document.querySelector('.m-fairs-link');
+    if (link && t.link) {
+      link.textContent = t.link + ' \u203A';
+      if (/^https?:/.test(t.href || '')) {
+        link.setAttribute('href', t.href);
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener');
+        link.onclick = null;
+      } else {
+        link.setAttribute('href', '/?p=' + (t.href || 'about'));
+        link.onclick = function (e) { e.preventDefault(); mGoTo(t.href || 'about'); };
+      }
+    }
+
     el.innerHTML = SS_FAIRS.map(function (f) {
       var external = /^https?:/.test(f.href);
       return '<a class="m-fair" href="' + f.href + '"'
