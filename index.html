@@ -185,7 +185,11 @@
       position: fixed; bottom: 0; left: 0; right: 0;
       background: var(--surf-1);
       border-top: 1px solid var(--surf-2);
-      display: flex; z-index: 200;
+      display: flex; align-items: stretch; z-index: 200;
+      /* iOS keeps painting below a fixed bar while the page bounces. This
+         extends the bar's own colour past the bottom edge so there is
+         nothing left to show through. */
+      box-shadow: 0 40px 0 40px var(--surf-1);
       /* The page used to show through beneath the bar on iPhones, because the
          bar stopped at 64px while the screen carries on into the home-
          indicator area. It now extends into that strip and paints it. */
@@ -1395,11 +1399,11 @@
       /* pulled up under the fixed header so the clip starts at the very top */
       margin-top: calc(-66px - env(safe-area-inset-top));
       padding-top: calc(66px + env(safe-area-inset-top));
-      min-height: 68vh; padding-left: 22px; padding-right: 22px; padding-bottom: 40px;
+      min-height: 80vh; padding-left: 22px; padding-right: 22px; padding-bottom: 40px;
       display: flex; flex-direction: column;
       justify-content: center; align-items: center; text-align: center;
     }
-    @supports (min-height: 68svh) { .m-hero { min-height: 68svh; } }
+    @supports (min-height: 80svh) { .m-hero { min-height: 80svh; } }
     .m-hero-bg {
       position: absolute; inset: 0;
       background: url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;
@@ -1778,53 +1782,53 @@
     .m-newin-price { font-size: 14px; font-weight: 600; color: var(--gold); margin-top: 4px; }
 
     /* ─── UPCOMING FAIRS (mobile) ───
-       Built like the Legend Collection band in the MatchWornShirt app: a
-       solid dark block that interrupts the scroll, a short claim, then a row
-       of cards you swipe. Gold instead of their yellow. */
+       A block in its own colour that interrupts the scroll, a flag that says
+       what it is, then two cards side by side. Same idea as the app's Legend
+       Collection band, in gold and near-black instead of yellow. */
     .m-fairs {
-      background: #080704; border-top: 1px solid var(--surf-2);
-      border-bottom: 1px solid var(--surf-2);
-      padding: 30px 0 26px; margin: 26px 0;
+      background: linear-gradient(180deg, #14110a 0%, #0b0906 100%);
+      border-top: 1px solid rgba(200,169,80,.28);
+      border-bottom: 1px solid rgba(200,169,80,.28);
+      padding: 24px 0 22px; margin: 30px 0;
     }
-    .m-fairs-head { padding: 0 20px 18px; }
-    .m-fairs-eyebrow {
-      font-size: 9px; letter-spacing: 3.2px; text-transform: uppercase;
-      color: var(--gold); font-weight: 700; margin-bottom: 10px;
+    .m-fairs-head { padding: 0 16px 16px; }
+    .m-fairs-flag {
+      display: inline-block; background: var(--gold); color: var(--ink);
+      font-size: 9.5px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+      padding: 5px 10px; border-radius: 2px; margin-bottom: 12px;
     }
     .m-fairs-title {
-      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
-      font-size: 27px; line-height: 1.08; color: var(--on-photo); margin: 0 0 10px;
+      font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 23px;
+      line-height: 1.1; letter-spacing: -.3px; color: var(--on-photo);
+      text-transform: uppercase; margin: 0 0 8px;
     }
-    .m-fairs-sub { font-size: 13.5px; line-height: 1.7; color: rgba(var(--on-photo-rgb),.6); margin: 0; }
-    .m-fairs-row {
-      display: flex; gap: 12px; overflow-x: auto; padding: 0 20px 4px;
-      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-      touch-action: pan-x; overscroll-behavior-x: contain; scrollbar-width: none;
+    .m-fairs-sub { font-size: 13px; line-height: 1.6; color: rgba(var(--on-photo-rgb),.62); margin: 0 0 12px; }
+    .m-fairs-link {
+      font-size: 12px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase;
+      color: var(--gold); text-decoration: none;
     }
-    .m-fairs-row::-webkit-scrollbar { display: none; }
+
+    .m-fairs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px; }
     .m-fair {
-      position: relative; flex: 0 0 74%; aspect-ratio: 4/5;
-      border-radius: 3px; overflow: hidden; scroll-snap-align: start;
-      border: 1px solid rgba(200,169,80,.28); text-decoration: none; color: inherit;
+      position: relative; display: block; text-decoration: none; color: inherit;
+      border: 1px solid rgba(200,169,80,.45); border-radius: 4px; overflow: hidden;
       background: var(--surf-2);
     }
-    .m-fair img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .m-fair::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(8,7,4,.15) 0%, rgba(8,7,4,.05) 40%, rgba(8,7,4,.92) 100%);
+    .m-fair-photo { position: relative; aspect-ratio: 4/5; overflow: hidden; }
+    .m-fair-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .m-fair-date {
+      position: absolute; top: 8px; left: 8px; z-index: 2;
+      background: var(--gold); color: var(--ink);
+      font-size: 9.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+      padding: 4px 8px; border-radius: 2px;
     }
-    .m-fair-body { position: absolute; left: 14px; right: 14px; bottom: 13px; z-index: 2; }
-    .m-fair-when {
-      display: inline-block; background: var(--gold); color: var(--ink);
-      font-size: 9.5px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase;
-      padding: 4px 9px; border-radius: 2px; margin-bottom: 9px;
-    }
+    .m-fair-info { padding: 10px 11px 12px; background: #0b0906; }
     .m-fair-city {
-      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
-      font-size: 24px; line-height: 1.05; color: var(--on-photo); margin-bottom: 4px;
+      font-size: 15px; font-weight: 700; color: var(--on-photo);
+      text-transform: uppercase; letter-spacing: .2px; line-height: 1.15;
     }
-    .m-fair-where { font-size: 12px; line-height: 1.5; color: rgba(var(--on-photo-rgb),.72); }
-    .m-fair-note { font-size: 11.5px; color: var(--gold); margin-top: 7px; }
+    .m-fair-name { font-size: 11.5px; line-height: 1.45; color: rgba(var(--on-photo-rgb),.6); margin-top: 4px; }
+    .m-fair-go { font-size: 11px; font-weight: 700; color: var(--gold); margin-top: 8px; letter-spacing: .6px; }
 
     /* ─── PINNED BUY BAR (mobile product) ─── */
     .m-buybar {
@@ -2333,55 +2337,21 @@
     <div class="loading" style="grid-column:1/-1;padding:24px">Loading...</div>
   </div>
 
-  <!-- Drop banner (mobile) -->
-  
-  <div class="m-section-label">Featured Pieces</div>
-  <div id="m-featured-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
-  <div class="m-divider"></div>
+  <!-- ═══ UPCOMING FAIRS — a block that steps out of the page, the way the
+       Legend Collection band does in the MatchWornShirt app ═══ -->
+  <section class="m-fairs">
+    <div class="m-fairs-head">
+      <div class="m-fairs-flag">Upcoming</div>
+      <h2 class="m-fairs-title">Meet us at the fairs</h2>
+      <p class="m-fairs-sub">Two dates coming up. Come by the stand, handle the shirts, ask anything.</p>
+      <a class="m-fairs-link" href="/?p=about" onclick="mGoTo('about');return false;">See where we have been &rsaquo;</a>
+    </div>
+    <div class="m-fairs-grid" id="m-fairs-grid"></div>
+  </section>
+
   <div class="m-section-label">Match Worn / Issued</div>
   <div id="m-matchworn-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
-  <div class="m-divider"></div>
-  <div class="m-section-label">International Shirts</div>
-  <div id="m-national-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
-  <div class="m-divider"></div>
-  <div class="m-section-label">Club Shirts</div>
-  <div id="m-clubs-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
 
-  <!-- Words: Timeless / Original / Rare (mobile) -->
-  <div style="position:relative;padding:64px 20px;text-align:center;overflow:hidden">
-    <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;filter:brightness(var(--photo-dim)) saturate(.5)"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.35),rgba(8,7,5,.9))"></div>
-    <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:6px">
-      <div class="m-word" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:38px;line-height:1;color:var(--on-photo)">Timeless.</div>
-      <div class="m-word" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:38px;line-height:1;color:transparent;-webkit-text-stroke:1.2px rgba(200,169,80,.5)">Original.</div>
-      <div class="m-word" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:38px;line-height:1;color:var(--gold)">Rare.</div>
-    </div>
-  </div>
-
-  <!-- Category cards (mobile version of the sweep) -->
-  <div style="padding:32px 20px;display:flex;flex-direction:column;gap:14px">
-    <div onclick="mShopCategory('clubs')" style="position:relative;height:180px;border-radius:3px;overflow:hidden;cursor:pointer">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top">
-      <div style="position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,9,5,.9))"></div>
-      <div style="position:absolute;bottom:16px;left:16px;font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--on-photo);text-shadow:0 2px 16px rgba(0,0,0,.7)">Club Classics</div>
-    </div>
-    <div onclick="mShopCategory('national')" style="position:relative;height:180px;border-radius:3px;overflow:hidden;cursor:pointer">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top">
-      <div style="position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,9,5,.9))"></div>
-      <div style="position:absolute;bottom:16px;left:16px;font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--on-photo);text-shadow:0 2px 16px rgba(0,0,0,.7)">International Shirts</div>
-    </div>
-    <div onclick="mGoTo('about')" style="position:relative;height:180px;border-radius:3px;overflow:hidden;cursor:pointer">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top">
-      <div style="position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,9,5,.9))"></div>
-      <div style="position:absolute;bottom:16px;left:16px">
-        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:20px;color:var(--gold);text-shadow:0 2px 16px rgba(0,0,0,.7)">Our Story</div>
-        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;color:var(--on-photo);text-shadow:0 2px 16px rgba(0,0,0,.7)">Who We Are</div>
-      </div>
-    </div>
-  </div>
-
-  
-  <!-- ═══ INSTAGRAM REELS (live from Behold) ═══ -->
   <section class="ss-reels-sec" id="m-reels-sec" style="display:none">
     <div class="ss-reels-head">
       <div>
@@ -2395,36 +2365,7 @@
   </section>
 
 
-  <!-- ═══ UPCOMING FAIRS ═══ -->
-  <section class="m-fairs">
-    <div class="m-fairs-head">
-      <div class="m-fairs-eyebrow">On the road</div>
-      <h2 class="m-fairs-title">See the shirts<br>in person.</h2>
-      <p class="m-fairs-sub">Two fairs coming up. Come by the stand, handle the shirts, and ask anything you want about them.</p>
-    </div>
 
-    <div class="m-fairs-row">
-      <a class="m-fair" href="https://stands.hamburg" target="_blank" rel="noopener">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/w_800,h_1000,c_fill,q_auto,f_auto/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg" alt="Shirt Société at a vintage football fair" loading="lazy">
-        <div class="m-fair-body">
-          <span class="m-fair-when">26 Sep 2026</span>
-          <div class="m-fair-city">Hamburg</div>
-          <div class="m-fair-where">STANDS &middot; Millerntor-Stadion, St. Pauli<br>Kit &amp; streetfashion flea market</div>
-          <div class="m-fair-note">Neighborhood Party &middot; 12:00&ndash;22:00</div>
-        </div>
-      </a>
-
-      <a class="m-fair" href="/?p=about" onclick="mGoTo('about');return false;">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/w_800,h_1000,c_fill,q_auto,f_auto/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg" alt="Shirt Société stand at Vintage Fussballboerse" loading="lazy">
-        <div class="m-fair-body">
-          <span class="m-fair-when">4 Oct 2026</span>
-          <div class="m-fair-city">Leipzig</div>
-          <div class="m-fair-where">Vintage Fu&szlig;ballb&ouml;rse<br>Our regular stand</div>
-          <div class="m-fair-note">Vintage &amp; match worn on the rail</div>
-        </div>
-      </a>
-    </div>
-  </section>
 
   <!-- Early access signup (mobile) -->
   <section style="position:relative;margin-top:32px;padding:44px 20px;border-top:1px solid var(--surf-2);overflow:hidden;text-align:center">
@@ -4063,6 +4004,7 @@
     const national = allShirts.filter(s => s.category === 'national');
     const clubs = allShirts.filter(s => s.category === 'clubs');
     renderNewIn();
+    renderFairs();
     renderMobileRow('m-featured-row', featured.length ? featured : allShirts.slice(0,4));
     renderMobileRow('m-matchworn-row', matchWorn);
     renderMobileRow('m-national-row', national);
@@ -4071,6 +4013,52 @@
 
   // Newest first, sold shirts included so the grid is never thin — a sold
   // shirt still shows what passes through here.
+  /*  ═══ UPCOMING FAIRS ═══
+      EDIT ONLY THIS LIST. Everything else builds itself from it.
+
+      photo:  a Cloudinary URL. I cannot read Instagram, so these two are
+              stand-ins from your own library — swap them for the right shots.
+              Paste the delivery URL and add w_600,h_750,c_fill,q_auto,f_auto
+              after /upload/ so it loads fast on a phone.
+      href:   where the card goes when tapped.                              */
+  var SS_FAIRS = [
+    {
+      date:  '26 Sep',
+      city:  'Hamburg',
+      name:  'STANDS · Millerntor-Stadion, St. Pauli',
+      go:    'stands.hamburg',
+      href:  'https://stands.hamburg',
+      photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,q_auto,f_auto/v1788117168/iZ0QS6sLgS5DihDx8mA8QxhiA_xk90sr.png'
+    },
+    {
+      date:  '4 Oct',
+      city:  'Leipzig',
+      name:  'Vintage Fu\u00dfballb\u00f6rse',
+      go:    '@vintagefussballboerse',
+      href:  'https://www.instagram.com/vintagefussballboerse/',
+      photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,q_auto,f_auto/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg'
+    }
+  ];
+
+  function renderFairs() {
+    var el = document.getElementById('m-fairs-grid');
+    if (!el) return;
+    el.innerHTML = SS_FAIRS.map(function (f) {
+      var external = /^https?:/.test(f.href);
+      return '<a class="m-fair" href="' + f.href + '"'
+        + (external ? ' target="_blank" rel="noopener"' : '') + '>'
+        + '<div class="m-fair-photo">'
+        +   '<div class="m-fair-date">' + f.date + '</div>'
+        +   '<img src="' + f.photo + '" alt="' + f.city + '" loading="lazy">'
+        + '</div>'
+        + '<div class="m-fair-info">'
+        +   '<div class="m-fair-city">' + f.city + '</div>'
+        +   '<div class="m-fair-name">' + f.name + '</div>'
+        +   '<div class="m-fair-go">' + f.go + ' \u203A</div>'
+        + '</div></a>';
+    }).join('');
+  }
+
   function renderNewIn() {
     var el = document.getElementById('m-newin-grid');
     if (!el || !allShirts) return;
@@ -8420,7 +8408,7 @@ var SS_MOBILE_HERO_VIDEOS = [
   // q_auto:eco and a forced bitrate made it visibly soft. Back to
   // q_auto:good at 1080 wide — Cloudinary picks the bitrate itself, which
   // keeps it sharp without shipping the full original.
-  'https://res.cloudinary.com/dinpfdojh/video/upload/q_auto:good,f_auto,w_1080,c_limit/v1788007009/WhatsApp_Video_2026-08-29_at_14.32.10_qj6xhy.mp4'
+  'https://res.cloudinary.com/dinpfdojh/video/upload/q_auto:good,f_auto,w_1200,c_limit/v1788007009/WhatsApp_Video_2026-08-29_at_14.32.10_qj6xhy.mp4'
 ];
 
 (function () {
