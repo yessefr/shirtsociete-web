@@ -188,7 +188,21 @@
       }
       .modal-header > div[style*="margin-left:auto"] .btn { flex: 1; min-height: 40px; }
 
-      .modal-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px 14px 20px !important; }
+      .modal-body {
+        flex: 1; padding: 16px 14px 20px !important;
+        overflow-y: auto; overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        /* keeps the bounce inside the sheet instead of dragging the page
+           behind it, which is what made this feel like it was fighting you */
+        overscroll-behavior: contain;
+        /* the sheet is the only thing that scrolls here, so tell the browser
+           it can hand the gesture straight to the compositor */
+        touch-action: pan-y;
+        will-change: scroll-position;
+      }
+      /* a 39-field form re-laying out on every keystroke is what makes typing
+         feel sticky; each group gets its own layer to settle in */
+      .modal-body .form-group { contain: layout style; }
       .form-grid { display: block !important; }
       .form-group { margin-bottom: 16px; gap: 8px; }
       .form-label { font-size: 12px; letter-spacing: .6px; color: var(--white); }
@@ -2430,25 +2444,26 @@
     status.className = 'up-status';
     status.textContent = 'Uploading 0 of ' + list.length + '...';
 
-    // one at a time, so the fields fill in the order you picked them and a
-    // phone on a weak connection is not asked to send ten files at once
+    // Three at a time instead of one. Ten photos used to take ten round
+    // trips end to end; this cuts the wait to roughly a third while still
+    // being gentle enough for a phone on fair wifi. The order in which the
+    // fields fill is preserved by claiming a slot before the upload starts.
+    var CONCURRENT = 3;
     function next(i) {
-      if (i >= list.length) {
-        status.className = failed ? 'up-status err' : 'up-status ok';
-        status.textContent = failed
-          ? (done + ' uploaded, ' + failed + ' failed — try the failed ones again')
-          : (done + ' photo' + (done === 1 ? '' : 's') + ' uploaded');
-        return;
-      }
+      if (i >= list.length) return Promise.resolve();
+      // claim the field first, so photo 4 cannot land in slot 2 just because
+      // it happened to finish sooner
+      var target = slots()[0];
+      if (target) target.value = 'uploading...';
+
       var fd = new FormData();
       fd.append('file', list[i]);
       fd.append('upload_preset', SS_UPLOAD_PRESET);
 
-      fetch('https://api.cloudinary.com/v1_1/' + SS_CLOUD_NAME + '/image/upload', {
+      return fetch('https://api.cloudinary.com/v1_1/' + SS_CLOUD_NAME + '/image/upload', {
         method: 'POST', body: fd
       }).then(function (r) { return r.json(); }).then(function (data) {
         if (!data || !data.secure_url) throw new Error((data && data.error && data.error.message) || 'upload failed');
-        var target = slots()[0];
         if (target) target.value = data.secure_url;
         var img = document.createElement('img');
         img.src = data.secure_url;
@@ -2456,17 +2471,31 @@
         done++;
       }).catch(function (e) {
         failed++;
+        if (target) target.value = '';
         console.error('upload failed:', e);
         if (/preset/i.test(String(e && e.message))) {
           status.className = 'up-status err';
           status.textContent = 'Cloudinary rejected the preset "' + SS_UPLOAD_PRESET + '". Create it as an UNSIGNED preset first.';
         }
       }).then(function () {
-        status.textContent = 'Uploading ' + (i + 1) + ' of ' + list.length + '...';
-        next(i + 1);
+        status.textContent = 'Uploading ' + (done + failed) + ' of ' + list.length + '...';
       });
     }
-    next(0);
+
+    // start three, and each one that finishes picks up the next in line
+    var cursor = 0;
+    function pump() {
+      if (cursor >= list.length) return Promise.resolve();
+      var mine = cursor++;
+      return next(mine).then(pump);
+    }
+    Promise.all(new Array(Math.min(CONCURRENT, list.length)).fill(0).map(pump))
+      .then(function () {
+        status.className = failed ? 'up-status err' : 'up-status ok';
+        status.textContent = failed
+          ? (done + ' uploaded, ' + failed + ' failed — try the failed ones again')
+          : (done + ' photo' + (done === 1 ? '' : 's') + ' uploaded');
+      });
   }
 
   function ssSuggestTitle() {
