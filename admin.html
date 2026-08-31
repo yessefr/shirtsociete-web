@@ -1743,14 +1743,44 @@
   async function deleteShirt(id) {
     if (!confirm('Are you sure you want to delete this shirt?')) return;
     try {
-      await fetch(`${SUPABASE.url}/rest/v1/shirts?id=eq.${id}`, {
+      // This used to fire and forget: no status check, no look at what came
+      // back. A delete that Supabase refused still reported "Shirt deleted"
+      // and the shirt stayed exactly where it was.
+      //
+      // return=representation makes Supabase send back the rows it actually
+      // removed. An empty array means the row was filtered out by a row
+      // level security policy — the request succeeded, it just deleted
+      // nothing. That is the case worth naming, because it looks identical
+      // to success from the outside.
+      const res = await fetch(`${SUPABASE.url}/rest/v1/shirts?id=eq.${encodeURIComponent(id)}`, {
         method: 'DELETE',
-        headers: { 'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}` }
+        headers: {
+          'apikey': SUPABASE.key,
+          'Authorization': `Bearer ${authToken}`,
+          'Prefer': 'return=representation'
+        }
       });
+
+      if (!res.ok) {
+        const body = await res.text();
+        throw new Error('Supabase ' + res.status + ': ' + (body || res.statusText));
+      }
+
+      let removed = [];
+      try { removed = await res.json(); } catch (e) { removed = []; }
+
+      if (!Array.isArray(removed) || removed.length === 0) {
+        showToast('Nothing was deleted — your account is not allowed to delete this shirt', 'error');
+        return;
+      }
+
       showToast('Shirt deleted', 'success');
       await loadShirts();
       updateDashboard();
-    } catch (err) { showToast('Error deleting shirt', 'error'); }
+    } catch (err) {
+      console.error('delete failed:', err);
+      showToast('Delete failed: ' + (err && err.message ? err.message : err), 'error');
+    }
   }
 
   async function markSold(id) {
