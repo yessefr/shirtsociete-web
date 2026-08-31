@@ -1733,6 +1733,38 @@
     }
     .m-hero-video + .m-hero-eyebrow { position: relative; }
 
+    /* Native momentum scrolling, and a bounce that stops at the page edge
+       instead of dragging the whole document with it. */
+    @media (max-width: 767px) {
+      html { -webkit-text-size-adjust: 100%; }
+      body { -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; }
+      .m-hero-bg { background-attachment: scroll; }
+
+      /* ── OUR STORY on a phone ──
+         Reordered with flex order instead of moving markup: the fairs come
+         first, the long story sits underneath. Same HTML, so nothing that
+         reads or writes these elements can break. */
+      /* Only DIRECT children of the flex container take an order, so every
+         rule below targets a direct child. The last block holds both the
+         fairs strip and the contact card, so it moves as one. */
+      #screen-about > div { display: flex; flex-direction: column; }
+      #screen-about > div > .detail-back    { order: 0; }
+      #screen-about > div > .page-head      { order: 1; }
+      #screen-about > div > div:last-child  { order: 2; }   /* fairs + contact */
+      #screen-about > div > .story-figures  { order: 3; }
+      #screen-about > div > .story-label    { order: 4; }
+      #screen-about > div > h2              { order: 5; }
+      #screen-about > div > p               { order: 6; }
+      #screen-about > div > .story-purpose  { order: 7; }
+      #screen-about > div > div             { order: 8; }   /* anything else */
+      #screen-about > div > a               { order: 9; }
+
+      /* Saved opens with its shirts, not with a paragraph */
+      #screen-wishlist > div { display: flex; flex-direction: column; }
+      #screen-wishlist > div > .page-head { order: 0; }
+      #screen-wishlist > div > p { order: 9; margin-top: 24px; }
+    }
+
     /* ═══════════════════════════════════════════════════════════════
        MOBILE APP LAYOUT
        One system for the whole phone site, built the way MatchWornShirt
@@ -1867,11 +1899,16 @@
        what it is, then two cards side by side. Same idea as the app's Legend
        Collection band, in gold and near-black instead of yellow. */
     .m-fairs {
-      background: linear-gradient(180deg, #14110a 0%, #0b0906 100%);
-      border-top: 1px solid rgba(200,169,80,.28);
-      border-bottom: 1px solid rgba(200,169,80,.28);
+      background: linear-gradient(165deg, var(--gold) 0%, #b08d3e 100%);
       padding: 24px 0 22px; margin: 30px 0;
     }
+    /* on gold, everything switches to the dark ink */
+    .m-fairs-flag { background: var(--ink); color: var(--gold); }
+    .m-fairs-title { color: var(--ink); }
+    .m-fairs-sub { color: rgba(20,18,11,.72); }
+    .m-fairs-link { color: var(--ink); }
+    .m-fair { border-color: rgba(20,18,11,.3); background: var(--ink); }
+    .m-fair-date { background: var(--ink); color: var(--gold); }
     .m-fairs-head { padding: 0 16px 16px; }
     .m-fairs-flag {
       display: inline-block; background: var(--gold); color: var(--ink);
@@ -3703,7 +3740,7 @@
               <h2 class="contact-h">A question about a shirt?</h2>
             </div>
             <div>
-              <a class="contact-cta" href="/contact.html">
+              <a class="contact-cta" href="/contact.html" onclick="if(typeof openContactModal==='function'){event.preventDefault();openContactModal();}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg>
                 Contact us
               </a>
@@ -3967,7 +4004,7 @@
         <div class="contact-inner" style="padding-left:0;padding-right:0">
           <div class="story-label">Get in touch</div>
           <h2 class="contact-h" style="font-size:24px;margin-bottom:20px">A question about a shirt?</h2>
-          <a class="contact-cta" href="/contact.html" style="width:100%;justify-content:center">
+          <a class="contact-cta" href="/contact.html" style="width:100%;justify-content:center" onclick="if(typeof openContactModal==='function'){event.preventDefault();openContactModal();}">
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg>
             Contact us
           </a>
@@ -7338,13 +7375,21 @@
       var prog = Math.max(0, Math.min(1, -rect.top / rect.height));
       bg.style.transform = 'scale(1.06) translateY(' + (prog * 14) + '%)';
     }
-    if (main) main.addEventListener('scroll', onScroll, {passive:true});
-    else window.addEventListener('scroll', onScroll, {passive:true});
+    // same reason: this drives a desktop element
+    if (window.innerWidth >= 768) {
+      if (main) main.addEventListener('scroll', onScroll, {passive:true});
+      else window.addEventListener('scroll', onScroll, {passive:true});
+    }
   })();
 
   // ── CINEMATIC HOME ANIMATIONS ──
   (function() {
     function boot() {
+      // Every element these animations drive lives in the desktop layout,
+      // which is display:none on a phone. Running sixteen ScrollTriggers
+      // against hidden elements cost a measurement on every scroll frame and
+      // made the whole page feel like it was dragging. Phones skip it.
+      if (window.innerWidth < 768) return;
       if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return setTimeout(boot, 80);
       gsap.registerPlugin(ScrollTrigger);
 
