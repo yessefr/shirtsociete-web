@@ -1258,35 +1258,104 @@
     writePhotoUrls(urls);
     refreshPhotoStrip();
   }
+  // Moves one photo to another position and writes the new order back.
+  function movePhoto(from, to) {
+    if (isNaN(from) || isNaN(to) || from === to) return;
+    var urls = readPhotoUrls();
+    if (from < 0 || from >= urls.length || to < 0 || to >= urls.length) return;
+    var moved = urls.splice(from, 1)[0];
+    urls.splice(to, 0, moved);
+    writePhotoUrls(urls);
+    refreshPhotoStrip();
+    showToast('Photo order updated — press Save to keep it', 'success');
+  }
+
   function enablePhotoDrag() {
     var strip = document.getElementById('m-photo-strip');
     if (!strip) return;
     var dragIdx = null;
-    strip.querySelectorAll('.ph-item').forEach(function(el) {
-      el.addEventListener('dragstart', function(e) {
+
+    strip.querySelectorAll('.ph-item').forEach(function (el) {
+      // ── mouse: the browser's own drag and drop ──
+      el.addEventListener('dragstart', function (e) {
         dragIdx = parseInt(el.getAttribute('data-idx'));
         el.style.opacity = '.4';
         try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragIdx)); } catch (err) {}
       });
-      el.addEventListener('dragend', function() { el.style.opacity = '1'; });
-      el.addEventListener('dragover', function(e) { e.preventDefault(); el.style.borderColor = '#c8a950'; });
-      el.addEventListener('dragleave', function() {
+      el.addEventListener('dragend', function () { el.style.opacity = '1'; });
+      el.addEventListener('dragover', function (e) { e.preventDefault(); el.style.borderColor = '#c8a950'; });
+      el.addEventListener('dragleave', function () {
         el.style.borderColor = parseInt(el.getAttribute('data-idx')) === 0 ? '#c8a950' : '#2a2820';
       });
-      el.addEventListener('drop', function(e) {
+      el.addEventListener('drop', function (e) {
         e.preventDefault();
         var from = dragIdx;
         if (from === null || isNaN(from)) { try { from = parseInt(e.dataTransfer.getData('text/plain')); } catch (err) { return; } }
-        var to = parseInt(el.getAttribute('data-idx'));
-        if (isNaN(from) || isNaN(to) || from === to) return;
-        var urls = readPhotoUrls();
-        var moved = urls.splice(from, 1)[0];
-        urls.splice(to, 0, moved);
-        writePhotoUrls(urls);
-        refreshPhotoStrip();
-        showToast('Photo order updated — press Save to keep it', 'success');
+        movePhoto(from, parseInt(el.getAttribute('data-idx')));
       });
     });
+
+    // ── touch: phones never fire the events above ──
+    // HTML5 drag and drop simply does not exist on a touchscreen, which is
+    // why reordering worked on a laptop and did nothing on a phone. This
+    // follows the finger and works out which thumbnail is underneath it.
+    if (strip._touchBound) return;
+    strip._touchBound = true;
+
+    var startIdx = null, held = null, holdTimer = null, lastOver = null;
+
+    function clearHighlights() {
+      strip.querySelectorAll('.ph-item').forEach(function (n) {
+        n.style.borderColor = parseInt(n.getAttribute('data-idx')) === 0 ? '#c8a950' : '#2a2820';
+      });
+    }
+
+    function itemAt(x, y) {
+      var n = document.elementFromPoint(x, y);
+      return n && n.closest ? n.closest('.ph-item') : null;
+    }
+
+    strip.addEventListener('touchstart', function (e) {
+      var el = e.target.closest && e.target.closest('.ph-item');
+      if (!el) return;
+      // A short press before dragging starts, so an ordinary scroll of the
+      // strip is not mistaken for a drag.
+      holdTimer = setTimeout(function () {
+        held = el;
+        startIdx = parseInt(el.getAttribute('data-idx'));
+        el.style.opacity = '.45';
+        el.style.transform = 'scale(1.06)';
+        if (navigator.vibrate) navigator.vibrate(12);
+      }, 180);
+    }, { passive: true });
+
+    strip.addEventListener('touchmove', function (e) {
+      if (holdTimer && !held) { clearTimeout(holdTimer); holdTimer = null; return; }
+      if (!held) return;
+      e.preventDefault();                       // now the strip must not scroll
+      var t = e.touches[0];
+      var over = itemAt(t.clientX, t.clientY);
+      if (over && over !== lastOver) {
+        clearHighlights();
+        over.style.borderColor = '#c8a950';
+        lastOver = over;
+      }
+    }, { passive: false });
+
+    function endTouch(e) {
+      clearTimeout(holdTimer); holdTimer = null;
+      if (!held) return;
+      held.style.opacity = '1';
+      held.style.transform = '';
+      var t = (e.changedTouches && e.changedTouches[0]) || null;
+      var over = t ? itemAt(t.clientX, t.clientY) : null;
+      var from = startIdx;
+      held = null; startIdx = null; lastOver = null;
+      clearHighlights();
+      if (over) movePhoto(from, parseInt(over.getAttribute('data-idx')));
+    }
+    strip.addEventListener('touchend', endTouch);
+    strip.addEventListener('touchcancel', endTouch);
   }
 
   function openShirtModal(shirt = null) {
@@ -2087,38 +2156,56 @@
   // Content of the announcement: teases the drop without giving everything away.
   // No promised clock time — the list is told it goes live tonight, not at 20:00,
   // so a delay never turns into a broken promise.
+  /*  ═══ DROP EMAILS ═══════════════════════════════════════════════
+      Two mails, one list to edit. The announcement goes out the evening
+      before; the live mail goes out the moment the shirts are actually
+      online — not a minute earlier, because it says they are there.
+
+      EDIT THESE FOUR LINES and both mails follow:                       */
+  var SS_DROP = {
+    count:   18,                                   // hoeveel shirts er live gaan
+    vintage: 10,                                   // waarvan vintage
+    worn:    8,                                    // waarvan match worn of issued
+    when:    'Friday 4 September at 19:00 CET'      // wanneer ze online komen
+  };
+
+  // The announcement: what is coming, without promising a clock time. A
+  // delay of an hour then never turns into a broken promise.
   function announcementPayload() {
     return {
       secret: 'ss-drop-2026',
-      subject: 'Twelve shirts, tonight',
+      subject: SS_DROP.count + ' shirts, ' + SS_DROP.when,
       eyebrow: 'Drop announcement',
-      heading: 'Twelve new shirts<br>go live tonight',
+      heading: SS_DROP.count + ' new shirts<br>go live on<br>' + SS_DROP.when,
       lines: [
-        'The next collection goes online this evening. Twelve shirts, each one a single piece.',
+        'The next collection goes online on ' + SS_DROP.when + '. '
+          + SS_DROP.count + ' shirts, each one a single piece in a single size.',
+        SS_DROP.vintage + ' vintage originals and ' + SS_DROP.worn
+          + ' match worn or issued pieces, from the 1980s through to last season.',
+        'Leading the collection: a signed Bastian Schweinsteiger shirt from 2011/12, '
+          + 'the season that ended with the Champions League final at Bayern\u2019s own ground.',
         'The rest stays quiet until it is online.'
       ],
-      highlight: 'You see them first. The moment the shirts go live, this list gets the email. Instagram follows an hour later.',
+      highlight: 'This time is only on the Collector List. Instagram finds out when the shirts are already online, so you have the first look at all of them.',
       ctaText: 'Visit the shop',
       ctaUrl: 'https://shirtsociete.com'
     };
   }
 
-  // Content of the live email, sent when the shirts are actually online.
-  // Keep it short: the list opted in for early access, not for a newsletter.
+  // The live mail. Sendable as it stands — nothing below needs filling in.
+  // The Schweinsteiger leads this drop, so it is named in both mails. Take
+  // the line out if you would rather keep it quiet.
   function liveDropPayload() {
     return {
       secret: 'ss-drop-2026',
-      subject: 'Twelve shirts, live now',
+      subject: SS_DROP.count + ' shirts, live now',
       eyebrow: 'The Collector List',
-      heading: 'Twelve shirts<br>are online now',
-      // Sendable as it stands: nothing below needs filling in. The two optional
-      // lines underneath are there if you want to be specific tonight; paste one
-      // into the array and it appears as its own paragraph.
-      //   'Three match worn pieces and nine vintage originals, mostly nineties.'
-      //   'Leading the collection: {club} {season}, {the fact that makes it worth a look}.'
+      heading: SS_DROP.count + ' shirts<br>are online now',
       lines: [
-        'The new collection is live in the shop. You are seeing it first; Instagram follows an hour from now.',
-        'Twelve shirts, each a single piece in a single size.'
+        'The new collection is live in the shop. You knew the time; Instagram is finding out now.',
+        SS_DROP.vintage + ' vintage originals and ' + SS_DROP.worn
+          + ' match worn or issued pieces. Every one is a single shirt in a single size.',
+        'Leading the collection: a signed Bastian Schweinsteiger shirt from 2011/12.'
       ],
       highlight: '',
       ctaText: 'See the new shirts',
