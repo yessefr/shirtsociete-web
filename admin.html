@@ -1175,6 +1175,14 @@
   }
 
   // ── SHIRTS ──
+  // Load a 96px thumbnail, not the full 2000px product photo. Sixty rows
+  // each pulling a multi-megabyte image was most of the slowness.
+  function ssThumb(url) {
+    if (!url) return '';
+    // only Cloudinary URLs can be transformed; anything else passes through
+    return url.replace(/\/upload\/(?!.*\/upload\/)/, '/upload/w_96,h_96,c_fill,q_auto,f_auto/');
+  }
+
   function renderShirts(filter = '') {
     const search = document.getElementById('shirt-search')?.value.toLowerCase() || '';
     const cat = document.getElementById('shirt-filter-cat')?.value || '';
@@ -1187,7 +1195,7 @@
 
     document.getElementById('shirts-tbody').innerHTML = shirts.length ? shirts.map(s => `
       <tr>
-        <td data-label="" class="cell-thumb"><img src="${s.images?.[0] || ''}" class="shirt-thumb" onerror="this.style.background='var(--grey-mid)'"></td>
+        <td data-label="" class="cell-thumb"><img src="${ssThumb(s.images?.[0])}" class="shirt-thumb" loading="lazy" decoding="async" onerror="this.style.background='var(--grey-mid)'"></td>
         <td data-label="Title" class="cell-title" style="font-weight:500;max-width:200px">${s.title}</td>
         <td data-label="Club">${s.club || '—'}</td>
         <td data-label="Category"><span class="badge badge-${s.category}">${s.category?.replace('_',' ') || '—'}</span></td>
@@ -1205,7 +1213,13 @@
     `).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:40px">No shirts found</td></tr>';
   }
 
-  function filterShirtsTable() { renderShirts(); }
+  // Rebuilding sixty rows on every keystroke made typing in the search box
+  // stutter. Wait until you pause.
+  var _shirtSearchTimer = null;
+  function filterShirtsTable() {
+    clearTimeout(_shirtSearchTimer);
+    _shirtSearchTimer = setTimeout(function () { renderShirts(); }, 160);
+  }
 
   // ── PHOTO ORDER STRIP ──
   // Shows all filled image URLs as thumbnails you can drag to reorder.
