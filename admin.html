@@ -690,7 +690,7 @@
     <div style="background:rgba(200,169,80,0.06);border:1px solid rgba(200,169,80,0.2);border-radius:2px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#888070">
       <strong style="color:var(--gold)">Everyone gets their own separate email</strong> — nobody sees the other addresses.<br><br>
       <strong style="color:var(--gold)">Send test to myself</strong> — sends the announcement to one address so you can check how it looks.<br>
-      <strong style="color:var(--gold)">Send announcement</strong> — tells the list the drop is coming (Thursday 6 August, 16:00), without giving away all the shirts.<br>
+      <strong style="color:var(--gold)">Send announcement</strong> — tells the list the drop is coming (<span id="drop-explainer-when">check SS_DROP.when</span>), without giving away all the shirts.<br>
       <strong style="color:var(--gold)">Send Drop Live Email</strong> — tells them the shirts are online. Only press this when the drop is actually live.
     </div>
     <div id="drop-signups-list"><div class="loading">Loading...</div></div>
@@ -2182,6 +2182,15 @@
     worn:    7,                                    // waarvan match worn of issued
     when:    'Friday 4 September at 19:00 CET'      // wanneer ze online komen
   };
+
+  // The explainer text next to the buttons used to be a separate hand-typed
+  // sentence with its own date in it. It went stale every time SS_DROP.when
+  // changed, which is exactly what you just caught. It now always reads
+  // straight from SS_DROP, so there is only one date to ever update.
+  document.addEventListener('DOMContentLoaded', function () {
+    var el = document.getElementById('drop-explainer-when');
+    if (el) el.textContent = SS_DROP.when;
+  });
 
   // The announcement: what is coming, without promising a clock time. A
   // delay of an hour then never turns into a broken promise.
