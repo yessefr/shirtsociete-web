@@ -7,7 +7,11 @@
     (function() {
       try {
         var saved = localStorage.getItem('ss-theme');
-        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+        // Phones default to the beige (light) theme like the app; a visitor
+        // who picks dark keeps it. Desktop stays dark by default.
+        var isPhone = window.matchMedia('(max-width: 767px)').matches;
+        var theme = saved || (isPhone ? 'light' : 'dark');
+        if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
       } catch (e) {}
     })();
   </script>
@@ -1741,6 +1745,36 @@
       object-fit: cover; z-index: 0; pointer-events: none;
     }
     .m-hero-video + .m-hero-eyebrow { position: relative; }
+
+    /* ── shirt cards on beige: a clean white panel like the app ── */
+    html[data-theme="light"] .m-newin-img,
+    html[data-theme="light"] .m-shirt-card-sm img { background: #fbf6ec; }
+    html[data-theme="light"] .m-newin-card,
+    html[data-theme="light"] .m-shirt-card-sm {
+      background: #fbf6ec; border-color: #d8c8a2;
+    }
+    html[data-theme="light"] .m-newin-price { color: #7a5a12; }
+    html[data-theme="light"] .m-tag { background: #efe3c8; border-color: #d8c8a2; color: #5a5038; }
+    html[data-theme="light"] .m-section-label { color: #241d12; }
+    html[data-theme="light"] .m-newin-tag { background: var(--gold); color: #14120b; }
+
+    /* ── blocks that stay dark even in the beige theme ──
+       The app keeps its accent blocks (Legend Collection) black on a white
+       page. These do the same: they are fixed colours, not theme colours, so
+       they read the same in either mode. ── */
+    html[data-theme="light"] .m-fairs { background: linear-gradient(165deg, var(--gold) 0%, #b08d3e 100%); }
+    html[data-theme="light"] .m-hero { background: #0a0905; }
+    html[data-theme="light"] .m-hero-title { color: #f5f0e8; }
+    html[data-theme="light"] .m-hero-sub { color: rgba(245,240,232,.62); }
+    html[data-theme="light"] .m-hero-eyebrow { color: var(--gold); }
+    /* the mobile header and tab bar: dark chrome, beige page between them,
+       exactly the app's split */
+    html[data-theme="light"] .mobile-header { background: #0a0905; }
+    html[data-theme="light"] .mobile-header .m-head-btn { color: #f5f0e8; }
+    html[data-theme="light"] .mobile-logo img { filter: none; }
+    html[data-theme="light"] .tab-bar { background: #0a0905; border-top-color: #1a1815; box-shadow: 0 40px 0 40px #0a0905; }
+    html[data-theme="light"] .tab { color: #888070; }
+    html[data-theme="light"] .tab.active { color: var(--gold); }
 
     /* Native momentum scrolling, and a bounce that stops at the page edge
        instead of dragging the whole document with it. */
