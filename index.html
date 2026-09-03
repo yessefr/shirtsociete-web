@@ -4310,14 +4310,21 @@
     el.innerHTML = list.map(function (s) {
       var sold = s.available === false;
       var isNew = s.created_at && new Date(s.created_at).getTime() >= cut;
+      var isLiked = wishlist.indexOf(s.id) !== -1;
       var bits = [];
       if (s.size) bits.push('Size ' + s.size);
       if (s.season) bits.push(String(s.season).replace(/^season\s*/i, ''));
+      // Same heart button markup and behaviour as the Shop grid and the
+      // horizontal rows, so "New in" is not the one place on the home
+      // screen where you cannot save a shirt without opening it first.
       return '<div class="m-newin-card" onclick="openDetail(\'' + s.id + '\',\'m\')">'
         + '<div class="m-newin-img">'
         +   (sold ? '<div class="m-newin-sold">Sold</div>'
                   : (isNew ? '<div class="m-newin-tag">New</div>' : ''))
         +   '<img src="' + getImg(s) + '" alt="' + (s.title || '') + '" loading="lazy">'
+        +   '<button class="like-btn ' + (isLiked ? 'liked' : '') + '" onclick="event.stopPropagation();toggleLike(\'' + s.id + '\')" style="top:6px;right:6px;width:28px;height:28px;z-index:3">'
+        +     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="' + (isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)') + '" stroke="' + (isLiked ? 'var(--gold)' : 'var(--on-photo)') + '" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>'
+        +   '</button>'
         + '</div>'
         + mTags(s)
         + '<div class="m-newin-name">' + (s.title || '') + '</div>'
