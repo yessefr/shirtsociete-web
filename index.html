@@ -6965,7 +6965,15 @@
   }
 
   updateCountdown();
-  setInterval(updateCountdown, 60000);
+  // Same pattern as the drop countdown: this kept re-checking a Frankfurt
+  // fair date from 4 July every 60 seconds, forever, on every visit. It now
+  // stops once the fair's own end time has passed.
+  var _fairCdTimer = setInterval(function () {
+    updateCountdown();
+    if (new Date() >= new Date('2026-07-04T17:00:00+02:00')) {
+      clearInterval(_fairCdTimer);
+    }
+  }, 60000);
 
   // Init animations after DOM ready
   document.addEventListener('DOMContentLoaded', initScrollAnimations);
@@ -7147,7 +7155,16 @@
   }
 
   updateDropCountdown();
-  setInterval(updateDropCountdown, 1000);
+  // This used to run every second forever, for every visitor, even long
+  // after the 22 July drop had already passed — the function noticed the
+  // date had passed and hid the banner, but kept ticking regardless. It now
+  // clears its own interval the moment there is nothing left to update.
+  var _dropCdTimer = setInterval(function () {
+    updateDropCountdown();
+    if (new Date() >= new Date("2026-07-22T17:00:00+02:00")) {
+      clearInterval(_dropCdTimer);
+    }
+  }, 1000);
 
   // ── URL ROUTING (query-param based, SEO-clean) ──
   function screenToUrl(screen, id) {
@@ -7725,8 +7742,18 @@
         set('drop-hours', pad(Math.floor((d%86400000)/3600000)));
         set('drop-mins', pad(Math.floor((d%3600000)/60000)));
       }
-      cinCd(); dropCd();
-      setInterval(cinCd, 30000); setInterval(dropCd, 30000);
+      // dropCd() used to run alongside this, ticking every 30s toward the
+      // same 22 July date that updateDropCountdown() elsewhere already
+      // handles for the same #drop-days/#drop-hours/#drop-mins elements —
+      // two independent timers doing the same expired countdown forever.
+      // Removed here; kept in the one place that already owns it.
+      cinCd();
+      var _cinCdTimer = setInterval(function () {
+        cinCd();
+        if (new Date() >= new Date('2026-10-04T10:00:00+02:00')) {
+          clearInterval(_cinCdTimer);
+        }
+      }, 30000);
     }
 
     // SAFETY NET: if GSAP fails to load/run within 3.5s, force everything visible
@@ -8800,7 +8827,7 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
     return hr === 1 ? '1 hour ago' : hr + ' hours ago';
   }
   function paintAge() {
-    if (!lastFetchedAt) return;
+    if (!lastFetchedAt || document.hidden) return;
     var t = ageText(Date.now() - lastFetchedAt);
     document.querySelectorAll('.live-age').forEach(function (el) { el.textContent = t; });
   }
