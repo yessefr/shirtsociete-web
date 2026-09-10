@@ -988,11 +988,18 @@
     }
     .m-fair-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.85); }
     html[data-theme="light"] .m-fair-card img { filter: brightness(1); }
-    .m-fair-info {
+    /* Scoped to .m-fair-card specifically: this is the older "Our Story"
+       gallery-strip component (Hamburg/Cologne/Dusseldorf/Frankfurt photos
+       that open a lightbox). The unscoped .m-fair-info/.m-fair-city bare
+       class names below were leaking into the newer, unrelated fairs grid
+       on the mobile home screen — the position:absolute here was never
+       cancelled by that later rule, so the city name kept floating over
+       the photo there instead of sitting in the panel below it. */
+    .m-fair-card .m-fair-info {
       position: absolute; left: 14px; right: 14px; bottom: 14px;
       border-left: 2px solid var(--gold); padding-left: 11px;
     }
-    .m-fair-city {
+    .m-fair-card .m-fair-city {
       font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
       font-size: 22px; line-height: 1; color: var(--cream);
       text-shadow: 0 2px 12px rgba(0,0,0,.9);
@@ -1885,8 +1892,10 @@
     .m-tag.signed { background: rgba(200,169,80,.16); color: var(--gold); border-color: rgba(200,169,80,.4); }
     .m-tag.coa    { background: rgba(76,175,125,.14); color: #6ecf9a; border-color: rgba(76,175,125,.35); }
 
-    /* ── the fairs band, same type system ── */
-    .m-fairs-title { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -.2px; }
+    /* ── the fairs band, same type system ──
+       (font-size/layout for .m-fairs-title now lives in one place, further
+       down — this used to be an earlier, dead duplicate at a different
+       size that the later rule silently overrode) */
     .m-fairs { margin: 24px 0; }
 
     /* ─── NEW IN grid (mobile home) ───
@@ -1918,11 +1927,20 @@
       background: var(--surf-2); border: 1px solid var(--line); border-radius: 3px;
     }
     .m-newin-img img { width: 100%; height: 100%; object-fit: contain; padding: 7px; }
+    /* Same treatment as the desktop and Shop-grid cards: the photo itself
+       dims and desaturates, and the "Sold" mark sits as a rotated stamp in
+       the centre rather than a flat corner label — this card used to be the
+       one place on the site that looked different once a shirt sold. */
+    .m-newin-card.is-sold .m-newin-img img { filter: grayscale(.55) brightness(.45); }
+    .m-newin-card.is-sold { opacity: .85; }
     .m-newin-sold {
-      position: absolute; top: 8px; left: 8px; z-index: 2;
-      background: rgba(10,9,5,.8); color: var(--on-photo);
-      font-size: 9px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase;
-      padding: 4px 8px; border-radius: 2px;
+      position: absolute; top: 50%; left: 50%; z-index: 3;
+      transform: translate(-50%,-50%) rotate(-8deg);
+      background: rgba(10,9,5,.86); border: 1px solid rgba(200,169,80,.55);
+      color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; padding: 6px 14px; border-radius: 2px;
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      white-space: nowrap; pointer-events: none;
     }
     .m-newin-tag {
       position: absolute; top: 8px; left: 8px; z-index: 2;
@@ -1957,21 +1975,27 @@
     .m-fair-city   { color: #f5f0e8; }
     .m-fair-name   { color: rgba(245,240,232,.62); }
     .m-fair-go     { color: var(--gold); }
+    /* NOTE: this used to be a second, later definition of .m-fairs-flag/
+       -title/-sub/-link that duplicated the selectors above with the wrong
+       colours (gold-on-gold, light text on gold) — later in the file wins
+       the cascade, so it silently undid the near-black fix above it every
+       time. Merged into one definition per selector so this cannot happen
+       again: layout comes from here, colour comes from the block above. */
     .m-fairs-head { padding: 0 16px 16px; }
     .m-fairs-flag {
-      display: inline-block; background: var(--gold); color: var(--ink);
+      display: inline-block;
       font-size: 9.5px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
       padding: 5px 10px; border-radius: 2px; margin-bottom: 12px;
     }
     .m-fairs-title {
       font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 23px;
-      line-height: 1.1; letter-spacing: -.3px; color: var(--on-photo);
+      line-height: 1.1; letter-spacing: -.3px;
       text-transform: uppercase; margin: 0 0 8px;
     }
-    .m-fairs-sub { font-size: 13px; line-height: 1.6; color: rgba(var(--on-photo-rgb),.62); margin: 0 0 12px; }
+    .m-fairs-sub { font-size: 13px; line-height: 1.6; margin: 0 0 12px; }
     .m-fairs-link {
       font-size: 12px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase;
-      color: var(--gold); text-decoration: none;
+      text-decoration: none;
     }
 
     .m-fairs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px; }
@@ -2907,7 +2931,8 @@
   var SS_ANNOUNCEMENTS = [
     { text: 'New shirts online now &middot; <b>See the latest</b>', href: '/?p=shop&sort=new' },
     { text: 'Free shipping on EU orders over <b>&euro;150</b>' },
-    { text: 'Authentic vintage &amp; match worn football shirts &middot; <b>One of one</b>' }
+    { text: 'Authentic vintage &amp; match worn football shirts &middot; <b>One of one</b>' },
+    { text: 'Meet us in <b>Leipzig</b> &middot; 4 Oct 2026', href: '/?p=about' }
   ];
 
   (function() {
@@ -2979,40 +3004,6 @@
 
 <!-- SCENE 1: HERO -->
 <section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:var(--topbar-h) 52px 0">
-    <!-- Compact event + drop pills (top of page) -->
-    <div id="cin-top-pills" style="position:absolute;top:176px;right:28px;z-index:5;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(-12px)">
-      <div onclick="dGoTo('about')" style="display:flex;align-items:center;gap:8px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(200,169,80,.25);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.6)'" onmouseout="this.style.borderColor='rgba(200,169,80,.25)'">
-        <div style="position:relative;width:8px;height:8px;flex-shrink:0">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
-          <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(200,169,80,.3);animation:pulseRing 1.5s ease-in-out infinite"></div>
-        </div>
-        <div style="line-height:1.2">
-          <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600">Next Event</div>
-          <div style="font-size:13px;color:var(--on-photo);font-weight:600">Leipzig · 4 Oct 2026</div>
-        </div>
-      </div>
-      <div onclick="dShopNewest()" style="display:flex;align-items:center;gap:8px;background:rgba(10,9,5,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(76,175,125,.3);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(76,175,125,.7)'" onmouseout="this.style.borderColor='rgba(76,175,125,.3)'">
-        <div style="position:relative;width:8px;height:8px;flex-shrink:0">
-          <div style="width:8px;height:8px;border-radius:50%;background:#4caf7d;position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
-          <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(76,175,125,.3);animation:pulseRing 1.5s ease-in-out infinite"></div>
-        </div>
-        <div style="line-height:1.2">
-          <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#4caf7d;font-weight:600">New Shirts Added</div>
-          <div style="font-size:13px;color:var(--on-photo);font-weight:600">View the latest</div>
-        </div>
-      </div>
-      <div onclick="document.getElementById('drop-signup-section').scrollIntoView({behavior:'smooth'})" style="display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(200,169,80,.95),rgba(176,141,62,.95));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(200,169,80,.6);border-radius:100px;padding:8px 16px 8px 12px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px rgba(200,169,80,.25)" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 18px rgba(200,169,80,.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(200,169,80,.25)'">
-        <div style="position:relative;width:8px;height:8px;flex-shrink:0">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--black);position:absolute;animation:pulseGlow 1.5s ease-in-out infinite"></div>
-          <div style="position:absolute;inset:-3px;border-radius:50%;background:rgba(10,9,5,.3);animation:pulseRing 1.5s ease-in-out infinite"></div>
-        </div>
-        <div style="line-height:1.2">
-          <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#3a2f12;font-weight:700">Collector List</div>
-          <div style="font-size:13px;color:var(--ink);font-weight:700">Join the list</div>
-        </div>
-      </div>
-    </div>
-
   <!-- Spotlight hero carousel: 2 slides, each a base image + a cinematic reveal under a moving spotlight -->
   <div id="cin-hero-carousel" style="position:absolute;inset:0;overflow:hidden">
     <div class="cin-slide" data-base="https://res.cloudinary.com/dinpfdojh/image/upload/w_2200,q_auto:best,e_sharpen:60,f_auto/v1785670927/59eabcb1a851578358659a0424dde374_i9pcwi.jpg" data-reveal="https://res.cloudinary.com/dinpfdojh/image/upload/w_2200,q_auto:best,e_sharpen:60,f_auto/v1785670935/ChatGPT_Image_2_aug_2026_13_38_09_vpvlln.png" style="position:absolute;inset:0;opacity:1;transition:opacity 1.1s ease">
@@ -4219,7 +4210,7 @@
       name:  'STANDS \u00b7 Millerntor-Stadion, St. Pauli',
       go:    'stands.hamburg',
       href:  'https://stands.hamburg',
-      photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_pad,b_rgb:0b0906,q_auto,f_auto/v1788117168/iZ0QS6sLgS5DihDx8mA8QxhiA_xk90sr.png'
+      photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,g_auto,q_auto,f_auto/v1788117168/iZ0QS6sLgS5DihDx8mA8QxhiA_xk90sr.png'
     },
     {
       date:  '4 Oct',
@@ -4227,7 +4218,7 @@
       name:  'Vintage Fu\u00dfballb\u00f6rse',
       go:    '@vintagefussball',
       href:  'https://www.instagram.com/vintagefussball/',
-      photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,g_auto,q_auto,f_auto/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg'
+      photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,g_auto,q_auto,f_auto/v1785782587/ChatGPT_Image_3_aug_2026_20_39_38_nrsnwk.png'
     }
   ];
 
@@ -4317,7 +4308,7 @@
       // Same heart button markup and behaviour as the Shop grid and the
       // horizontal rows, so "New in" is not the one place on the home
       // screen where you cannot save a shirt without opening it first.
-      return '<div class="m-newin-card" onclick="openDetail(\'' + s.id + '\',\'m\')">'
+      return '<div class="m-newin-card' + (sold ? ' is-sold' : '') + '" onclick="openDetail(\'' + s.id + '\',\'m\')">'
         + '<div class="m-newin-img">'
         +   (sold ? '<div class="m-newin-sold">Sold</div>'
                   : (isNew ? '<div class="m-newin-tag">New</div>' : ''))
@@ -7505,8 +7496,7 @@
         .to('#cin-sub-rule', { width: 44,        duration: 0.9, ease: 'power2.out' }, '-=0.85')
         .to('#cin-sub-wrap', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '-=0.85')
         .to('#cin-btns',     { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.55')
-        .to('#cin-cue',      { opacity: 1,       duration: 0.5                     }, '-=0.20')
-        .to('#cin-top-pills',{ opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.35');
+        .to('#cin-cue',      { opacity: 1,       duration: 0.5                     }, '-=0.20');
 
       gsap.to('#cin-cue', { y: 8, repeat: -1, yoyo: true, duration: 1.3, ease: 'sine.inOut', delay: 2.5 });
 
@@ -7763,7 +7753,7 @@
       // if hero text is still invisible, GSAP didn't run — reveal all
       var h1 = document.getElementById('cin-h1');
       if (h1 && getComputedStyle(h1).opacity === '0') {
-        ['cin-ew','cin-h1','cin-sub-wrap','cin-btns','cin-cue','cin-top-pills'].forEach(function(id){
+        ['cin-ew','cin-h1','cin-sub-wrap','cin-btns','cin-cue'].forEach(function(id){
           var el = document.getElementById(id);
           if (el) { el.style.opacity = '1'; el.style.transform = 'none'; el.style.filter = 'none'; }
         });
