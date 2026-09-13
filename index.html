@@ -2394,6 +2394,37 @@
     @media (prefers-reduced-motion: reduce) { .cin-kenburns { animation: none; } }
 
     /* pulsing dots for the Next Event / New Shirts Added pills */
+@keyframes ssMarqueeScroll {
+  from { transform: translate3d(0,0,0); }
+  to   { transform: translate3d(-50%,0,0); }
+}
+.ss-ticker {
+  overflow: hidden; white-space: nowrap;
+  border-bottom: 1px solid var(--line);
+  background: var(--surf-1);
+}
+.ss-ticker-track {
+  display: inline-flex; width: max-content;
+  animation: ssMarqueeScroll 42s linear infinite;
+  will-change: transform; backface-visibility: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ss-ticker-track { animation: none; }
+}
+.ss-ticker-item {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 11px 34px; font-family: 'DM Sans', sans-serif;
+  font-size: 11.5px; font-weight: 700; letter-spacing: 1.4px;
+  text-transform: uppercase; color: var(--text-muted-2); white-space: nowrap;
+}
+.ss-ticker-item a { color: inherit; text-decoration: none; }
+.ss-ticker-item a:hover { color: var(--gold); }
+.ss-ticker-item b { color: var(--gold); font-weight: 700; }
+.ss-ticker-item i {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--gold);
+  flex-shrink: 0; animation: pulseGlow 1.5s ease-in-out infinite;
+}
+
     @keyframes pulseGlow {
       0%, 100% { opacity: 1;   transform: scale(1); }
       50%      { opacity: .45; transform: scale(.82); }
@@ -2404,8 +2435,8 @@
       100% { opacity: 0;   transform: scale(2.6); }
     }
   </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -2931,8 +2962,7 @@
   var SS_ANNOUNCEMENTS = [
     { text: 'New shirts online now &middot; <b>See the latest</b>', href: '/?p=shop&sort=new' },
     { text: 'Free shipping on EU orders over <b>&euro;150</b>' },
-    { text: 'Authentic vintage &amp; match worn football shirts &middot; <b>One of one</b>' },
-    { text: 'Meet us in <b>Leipzig</b> &middot; 4 Oct 2026', href: '/?p=about' }
+    { text: 'Authentic vintage &amp; match worn football shirts &middot; <b>One of one</b>' }
   ];
 
   (function() {
@@ -3112,28 +3142,22 @@
   </section>
 </div>
 
-<!-- SCENE 5: NEXT EVENT — kept subtle and low-key -->
-<div id="cin-event-banner" style="opacity:0;transform:translateY(20px);padding:22px 52px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-    <div style="position:relative;flex-shrink:0;width:8px;height:8px">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulseGlow 1.5s ease-in-out infinite;position:absolute"></div>
+<!-- Budds-style moving ticker. Its own border-bottom is the only divider
+     before the next section — the old banner used to be followed by a
+     second, inset gradient line a few pixels below it, and the gap between
+     two mismatched lines was the "small black strip" that made the join
+     look unfinished. Each repeat carries two real links: the story text to
+     Our Story, the handle to the actual Instagram account, same two
+     destinations the old static banner pointed to. -->
+<div class="ss-ticker">
+  <div class="ss-ticker-track">
+    <span class="ss-ticker-item"><i></i><a href="/?p=about" onclick="dGoTo('about');return false;">A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026</a> <b>&middot;</b> <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener">@vintagefussball</a></span>
+    <span class="ss-ticker-item"><i></i><a href="/?p=about" onclick="dGoTo('about');return false;">A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026</a> <b>&middot;</b> <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener">@vintagefussball</a></span>
+    <span class="ss-ticker-item"><i></i><a href="/?p=about" onclick="dGoTo('about');return false;">A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026</a> <b>&middot;</b> <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener">@vintagefussball</a></span>
+    <span class="ss-ticker-item" aria-hidden="true"><i></i>A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026 <b>&middot;</b> @vintagefussball</span>
+    <span class="ss-ticker-item" aria-hidden="true"><i></i>A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026 <b>&middot;</b> @vintagefussball</span>
+    <span class="ss-ticker-item" aria-hidden="true"><i></i>A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026 <b>&middot;</b> @vintagefussball</span>
     </div>
-    <div id="ev-eyebrow" style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;opacity:0;transform:translateY(8px)">Next Event</div>
-    <div id="ev-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:15px;color:var(--white);opacity:0;transform:translateY(8px)">Leipzig</div>
-    <div id="ev-date" style="font-size:12.5px;color:var(--text-muted);opacity:0;transform:translateY(8px)">Vintage Fußballbörse &middot; Sunday 4 October 2026 &middot; 10:00 to 17:00</div>
-    <div id="ev-btns" style="margin-left:auto;display:flex;align-items:center;gap:20px;opacity:0;transform:translateY(8px)">
-      <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener" style="color:var(--text-muted);text-decoration:none;font-size:11px;transition:color .2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">@vintagefussball</a>
-      <button onclick="dGoTo('about')" style="background:none;border:none;color:var(--gold);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;padding:0">
-        Event timeline
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Divider between Next Event and New Shirts Added -->
-<div style="padding:0 48px">
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(200,169,80,.25),transparent);margin:8px 0"></div>
 </div>
 
 <!-- SCENE 7: FEATURED SHIRTS (from Supabase) -->
@@ -7570,23 +7594,6 @@
         .to('#sw2', { xPercent: 0, rotation: 0, opacity: 1, scale: 1, duration: 0.18, ease: 'power2.out' }, 0.70)
         .to('#sw2', { scale: 1.06, opacity: 0, duration: 0.12, ease: 'power2.in' }, 0.96);
 
-      // ── BANNERS REVEAL ──
-      ['#cin-event-banner'].forEach(function(id) {
-        var el = document.querySelector(id);
-        if (!el) return;
-        gsap.to(el, {
-          opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
-        });
-        // word-by-word for event banner sub-elements
-        var kids = el.querySelectorAll('#ev-eyebrow, #ev-title, #ev-date, #db-eyebrow, #db-title, #db-sub');
-        kids.forEach(function(k, i) {
-          gsap.to(k, { opacity: 1, x: 0, y: 0, duration: 0.6, delay: i * 0.1, ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
-          });
-        });
-      });
-
       // ── SECTION HEADERS REVEAL ──
       ['#feat-header','#mw-header','#nat-header','#cl-header'].forEach(function(id) {
         var el = document.querySelector(id);
@@ -7629,7 +7636,7 @@
       // (hero mouse-tracking parallax removed)
 
       // ── 3D SCROLL TILT (banners tip upright as they enter) ──
-      ['#cin-event-banner', '#cin-drop-banner'].forEach(function(sel) {
+      ['#cin-drop-banner'].forEach(function(sel) {
         var el = document.querySelector(sel);
         if (!el) return;
         gsap.fromTo(el,
@@ -7681,25 +7688,7 @@
           scrollTrigger: { trigger: pair[1], start: 'top bottom', end: 'bottom top', scrub: true } });
       });
 
-      // ── EVENT + DROP BANNER REVEALS ──
-      // Leipzig event banner: rises + fades in when scrolled into view
-      var evBanner = document.getElementById('cin-event-banner');
-      if (evBanner) {
-        gsap.fromTo(evBanner,
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
-            scrollTrigger: { trigger: evBanner, start: 'top 88%', toggleActions: 'play none none none' } });
-        // Countdown digits pop in with a stagger
-        gsap.fromTo(evBanner.querySelectorAll('#ev-eyebrow, #ev-title, #ev-date, #ev-btns'),
-          { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, x: 0, duration: 0.6, stagger: 0.07, ease: 'power3.out',
-            scrollTrigger: { trigger: evBanner, start: 'top 86%', toggleActions: 'play none none none' } });
-        gsap.fromTo(evBanner.querySelectorAll('#cin-days, #cin-hours, #cin-mins'),
-          { opacity: 0, y: 12, scale: 0.9 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.08, ease: 'back.out(1.6)',
-            scrollTrigger: { trigger: evBanner, start: 'top 82%', toggleActions: 'play none none none' } });
-      }
-
+      // ── DROP BANNER REVEAL ──
       // Drop banner: rises + fades in when scrolled into view
       var drBanner = document.getElementById('cin-drop-banner');
       if (drBanner) {
