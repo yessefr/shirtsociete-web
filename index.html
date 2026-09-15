@@ -244,6 +244,32 @@
       min-width: 42px; min-height: 42px; justify-content: center;
     }
     .m-head-btn svg { width: 21px; height: 21px; }
+
+    /* ── theme switch: a real pill toggle, fixed gold/black/white in both
+       states, sliding on nothing but the existing html[data-theme]
+       attribute — no JS added or changed to make this work. ── */
+    .m-theme-switch {
+      background: none; border: none; cursor: pointer; padding: 9px 6px;
+      display: flex; align-items: center; min-height: 42px;
+    }
+    .m-theme-track {
+      position: relative; display: block;
+      width: 42px; height: 23px; border-radius: 100px;
+      background: #0a0905; border: 1px solid rgba(200,169,80,.45);
+      transition: border-color .25s ease;
+    }
+    .m-theme-thumb {
+      position: absolute; top: 2px; left: 2px;
+      width: 17px; height: 17px; border-radius: 50%;
+      background: #c8a950; color: #0a0905;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .3s cubic-bezier(.34,1.4,.64,1);
+    }
+    .m-theme-thumb svg { width: 11px; height: 11px; }
+    /* light mode: the html attribute alone slides the thumb across, and
+       the two existing icons still swap by their own display:none/block
+       exactly as before — the thumb never needs to know which one is on */
+    html[data-theme="light"] .m-theme-thumb { transform: translateX(19px); }
     .m-head-badge {
       position: absolute; top: 3px; right: 3px;
       min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px;
@@ -2492,9 +2518,22 @@
     <button type="button" class="m-head-btn" onclick="mGoTo('shop');setTimeout(function(){var i=document.getElementById('m-search-input');if(i){i.focus();}},80)" aria-label="Search">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </button>
-    <button type="button" class="m-head-btn" onclick="toggleSiteTheme()" aria-label="Toggle light and dark mode">
-      <svg id="m-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-      <svg id="m-theme-icon-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <!-- A real switch instead of a plain icon button: a black pill track
+         with a gold thumb that slides between the two ends. Purely CSS-
+         driven off the existing html[data-theme] attribute, so none of
+         toggleSiteTheme()/applyThemeIcons() needed to change — the same
+         two SVGs still just get shown/hidden by id, only now they sit
+         inside a moving thumb instead of swapping in place. Colours are
+         fixed (not the theme's own gold/ink variables), so the switch
+         itself always reads the same gold/black/white regardless of
+         which state it's showing. -->
+    <button type="button" class="m-theme-switch" onclick="toggleSiteTheme()" aria-label="Toggle light and dark mode">
+      <span class="m-theme-track">
+        <span class="m-theme-thumb">
+          <svg id="m-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <svg id="m-theme-icon-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </span>
+      </span>
     </button>
     <button type="button" class="m-head-btn" onclick="mGoTo('wishlist')" aria-label="Saved">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
