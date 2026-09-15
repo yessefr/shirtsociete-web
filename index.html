@@ -244,32 +244,6 @@
       min-width: 42px; min-height: 42px; justify-content: center;
     }
     .m-head-btn svg { width: 21px; height: 21px; }
-
-    /* ── theme switch: a real pill toggle, fixed gold/black/white in both
-       states, sliding on nothing but the existing html[data-theme]
-       attribute — no JS added or changed to make this work. ── */
-    .m-theme-switch {
-      background: none; border: none; cursor: pointer; padding: 9px 6px;
-      display: flex; align-items: center; min-height: 42px;
-    }
-    .m-theme-track {
-      position: relative; display: block;
-      width: 42px; height: 23px; border-radius: 100px;
-      background: #0a0905; border: 1px solid rgba(200,169,80,.45);
-      transition: border-color .25s ease;
-    }
-    .m-theme-thumb {
-      position: absolute; top: 2px; left: 2px;
-      width: 17px; height: 17px; border-radius: 50%;
-      background: #c8a950; color: #0a0905;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform .3s cubic-bezier(.34,1.4,.64,1);
-    }
-    .m-theme-thumb svg { width: 11px; height: 11px; }
-    /* light mode: the html attribute alone slides the thumb across, and
-       the two existing icons still swap by their own display:none/block
-       exactly as before — the thumb never needs to know which one is on */
-    html[data-theme="light"] .m-theme-thumb { transform: translateX(19px); }
     .m-head-badge {
       position: absolute; top: 3px; right: 3px;
       min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px;
@@ -1839,6 +1813,17 @@
       #screen-wishlist > div { display: flex; flex-direction: column; }
       #screen-wishlist > div > .page-head { order: 0; }
       #screen-wishlist > div > p { order: 9; margin-top: 24px; }
+
+      /* Archive opened with two paragraphs of intro text and two contact
+         buttons before a single shirt was visible. Same reordering
+         technique as Our Story: the filters and the actual grid move to
+         the top, the story moves to the bottom. Direct children only, and
+         #m-archive-intro/-filters/-grid are the three real direct children
+         of #screen-archive, so this is unambiguous. */
+      #screen-archive { display: flex; flex-direction: column; }
+      #screen-archive > #m-archive-filters { order: 0; }
+      #screen-archive > #m-archive-grid    { order: 1; }
+      #screen-archive > #m-archive-intro   { order: 2; margin-top: 20px; }
     }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -2044,9 +2029,9 @@
        where nothing has to compete with it. */
     .m-fair-date {
       display: inline-block;
-      background: #c8a950; color: var(--ink);
-      font-size: 9.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
-      padding: 4px 8px; border-radius: 2px; margin-bottom: 7px;
+      background: #c8a950; color: #0a0905;
+      font-size: 12px; font-weight: 800; letter-spacing: .5px;
+      padding: 5px 10px; border-radius: 2px; margin-bottom: 8px;
     }
     .m-fair-info { padding: 10px 11px 12px; background: #0b0906; }
     .m-fair-city {
@@ -2518,22 +2503,9 @@
     <button type="button" class="m-head-btn" onclick="mGoTo('shop');setTimeout(function(){var i=document.getElementById('m-search-input');if(i){i.focus();}},80)" aria-label="Search">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </button>
-    <!-- A real switch instead of a plain icon button: a black pill track
-         with a gold thumb that slides between the two ends. Purely CSS-
-         driven off the existing html[data-theme] attribute, so none of
-         toggleSiteTheme()/applyThemeIcons() needed to change — the same
-         two SVGs still just get shown/hidden by id, only now they sit
-         inside a moving thumb instead of swapping in place. Colours are
-         fixed (not the theme's own gold/ink variables), so the switch
-         itself always reads the same gold/black/white regardless of
-         which state it's showing. -->
-    <button type="button" class="m-theme-switch" onclick="toggleSiteTheme()" aria-label="Toggle light and dark mode">
-      <span class="m-theme-track">
-        <span class="m-theme-thumb">
-          <svg id="m-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-          <svg id="m-theme-icon-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        </span>
-      </span>
+    <button type="button" class="m-head-btn" onclick="toggleSiteTheme()" aria-label="Toggle light and dark mode">
+      <svg id="m-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <svg id="m-theme-icon-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
     </button>
     <button type="button" class="m-head-btn" onclick="mGoTo('wishlist')" aria-label="Saved">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
@@ -2825,7 +2797,7 @@
 
 <!-- MOBILE ARCHIVE -->
 <div id="screen-archive" class="screen" style="padding-bottom:90px">
-  <div style="padding:28px 20px 20px;text-align:center;border-bottom:1px solid var(--surf-2)">
+  <div id="m-archive-intro" style="padding:28px 20px 20px;text-align:center;border-bottom:1px solid var(--surf-2)">
     <div style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500">Private Collection</div>
     <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;line-height:1.05;margin-bottom:14px">The Shirt Société Archive</h1>
     <p style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.75;color:var(--text-muted-2);margin-bottom:12px">What drives us are beautiful football shirts. Some shirts simply mean too much to let go: rare specs, match worn jerseys and personal grails that tell the story of the game we love.</p>
@@ -4275,7 +4247,7 @@
 
   var SS_FAIRS = [
     {
-      date:  '26 Sep',
+      date:  '26-09',
       city:  'Hamburg',
       name:  'STANDS \u00b7 Millerntor-Stadion, St. Pauli',
       go:    'stands.hamburg',
@@ -4283,7 +4255,7 @@
       photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,g_auto,q_auto,f_auto/v1788117168/iZ0QS6sLgS5DihDx8mA8QxhiA_xk90sr.png'
     },
     {
-      date:  '4 Oct',
+      date:  '04-10',
       city:  'Leipzig',
       name:  'Vintage Fu\u00dfballb\u00f6rse',
       go:    '@vintagefussball',
