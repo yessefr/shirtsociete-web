@@ -2529,11 +2529,23 @@
   <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c8a950;font-weight:600;margin-bottom:18px" id="ss-fairday-eyebrow">On the road today</div>
   <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(30px,8vw,46px);line-height:1.08;max-width:640px;margin-bottom:18px" id="ss-fairday-title">We&rsquo;re at the fair</div>
   <p style="font-size:14.5px;line-height:1.8;color:rgba(245,240,232,.72);max-width:440px;margin-bottom:26px" id="ss-fairday-body"></p>
-  <div style="font-size:11px;letter-spacing:.5px;color:rgba(245,240,232,.5);margin-bottom:22px">The shop is closed for the day &mdash; back online tomorrow.</div>
-  <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:#c8a950;padding:11px 20px;border-radius:100px;font-size:12px;font-weight:600;text-decoration:none">
+  <div style="font-size:11px;letter-spacing:.5px;color:rgba(245,240,232,.5);margin-bottom:22px">The shop is closed for the day &mdash; back online tomorrow. You can still read our story or browse the archive.</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:16px">
+    <button type="button" onclick="ssFairDayOpen('about')" style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:#c8a950;padding:11px 20px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Read Our Story</button>
+    <button type="button" onclick="ssFairDayOpen('archive')" style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:#c8a950;padding:11px 20px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">See the Archive</button>
+  </div>
+  <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;color:rgba(245,240,232,.6);padding:8px 14px;font-size:12px;font-weight:600;text-decoration:none">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
     @shirtsociete on Instagram
   </a>
+</div>
+<!-- Small, non-blocking reminder shown on top of Our Story and the Archive
+     on a fair day, so those two pages stay reachable but a visitor still
+     knows why the rest of the shop is not. Filled in by the same script
+     that runs the takeover below. -->
+<div id="ss-fairday-banner" style="display:none;position:sticky;top:0;z-index:400;background:#0a0905;border-bottom:1px solid rgba(200,169,80,.4);color:#f5f0e8;padding:10px 16px;text-align:center;font-size:12px;line-height:1.5">
+  <b style="color:#c8a950" id="ss-fairday-banner-text"></b>
+  <button type="button" onclick="ssFairDayShowTakeover()" style="background:none;border:none;color:rgba(245,240,232,.65);font-size:11px;text-decoration:underline;cursor:pointer;margin-left:8px;font-family:inherit">Back</button>
 </div>
 <script>
 (function () {
@@ -2564,12 +2576,52 @@
   }
 
   var todayEvent = SS_FAIR_DAYS[todayISO()];
-  if (todayEvent) {
+  window.ssFairDayEvent = todayEvent || null;   // read by the mGoTo/dGoTo gate further down
+
+  function fillTakeover() {
     document.getElementById('ss-fairday-eyebrow').textContent = todayEvent.eyebrow;
     document.getElementById('ss-fairday-title').innerHTML = todayEvent.title;
     document.getElementById('ss-fairday-body').textContent = todayEvent.body;
-    document.getElementById('ss-fairday-takeover').style.display = 'flex';
+    document.getElementById('ss-fairday-banner-text').textContent = todayEvent.title.replace(/<[^>]+>/g, '') + ' — the shop is closed today.';
+  }
+
+  // Called by mGoTo/dGoTo once those exist (see further down): hides the
+  // full takeover, shows the small banner instead. Screen is 'about' or
+  // 'archive' — nothing else reaches here.
+  window.ssFairDayReveal = function () {
+    var t = document.getElementById('ss-fairday-takeover');
+    if (t) t.style.display = 'none';
+    document.documentElement.style.overflow = '';
+    var b = document.getElementById('ss-fairday-banner');
+    if (b) b.style.display = 'block';
+  };
+  window.ssFairDayShowTakeover = function () {
+    var t = document.getElementById('ss-fairday-takeover');
+    if (t) t.style.display = 'flex';
     document.documentElement.style.overflow = 'hidden';
+    var b = document.getElementById('ss-fairday-banner');
+    if (b) b.style.display = 'none';
+  };
+  // The takeover's own two buttons — defined here, used once mGoTo/dGoTo
+  // are wrapped further down, which is guaranteed by the time a visitor
+  // can actually click anything.
+  window.ssFairDayOpen = function (screen) {
+    var go = window.innerWidth >= 768 ? window.dGoTo : window.mGoTo;
+    if (typeof go === 'function') go(screen);
+  };
+
+  if (todayEvent) {
+    fillTakeover();
+    // A direct link to Our Story or the Archive goes straight there, with
+    // just the small banner — the full takeover is only the default view,
+    // not a wall in front of the two pages that should stay open.
+    var earlyParam = (new URLSearchParams(window.location.search).get('p') || '').toLowerCase();
+    if (earlyParam === 'about' || earlyParam === 'archive') {
+      window.ssFairDayReveal();
+    } else {
+      document.getElementById('ss-fairday-takeover').style.display = 'flex';
+      document.documentElement.style.overflow = 'hidden';
+    }
   }
 })();
 </script>
@@ -6443,6 +6495,27 @@
     }
   }
   function dGoBack() { dGoTo(dPrevScreen); }
+
+  // ── FAIR DAY GATE ──
+  // On a fair day only Our Story and the Archive are allowed through; every
+  // other destination shows the full takeover instead of actually
+  // navigating there. This wraps the two functions everything else in the
+  // site already calls to change screen — the tab bar, the header nav, the
+  // footer, deep links, back/forward — so nothing needed to change at each
+  // of those call sites individually.
+  (function () {
+    var realMGoTo = mGoTo, realDGoTo = dGoTo;
+    var ALLOWED = { about: true, archive: true };
+
+    function gate(realFn, screen) {
+      if (!window.ssFairDayEvent) { realFn(screen); return; }   // not a fair day: unchanged
+      if (ALLOWED[screen]) { realFn(screen); window.ssFairDayReveal(); return; }
+      window.ssFairDayShowTakeover();
+      // no navigation — whatever is already behind the takeover does not matter
+    }
+    mGoTo = function (screen) { gate(realMGoTo, screen); };
+    dGoTo = function (screen) { gate(realDGoTo, screen); };
+  })();
 
   // ── SHIRT SOCIÉTÉ ARCHIVE (private collection) ──
   var archiveItems = null;      // cached fetch
