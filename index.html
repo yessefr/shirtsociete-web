@@ -108,6 +108,11 @@
   <meta name="theme-color" content="var(--black)">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- open the connections to the image host and the database before they
+       are needed, so the first photos and the shirt list do not have to
+       wait for a fresh handshake -->
+  <link rel="preconnect" href="https://res.cloudinary.com">
+  <link rel="preconnect" href="https://hzwmjbsfmdkmaoikezoc.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -2471,6 +2476,65 @@
 </script>
 </head>
 <body>
+
+<!-- ═══ FAIR DAY TAKEOVER ═══
+     On the two dates below, the whole site is replaced by this one page
+     for every visitor, all day, in the shop's own timezone — not the
+     visitor's device timezone, so it switches on and off at the right
+     moment regardless of who is looking or where they are. Hidden by
+     default; a small script right after this decides whether to show it,
+     before anything else on the page runs. Add a future fair by adding
+     one more entry to SS_FAIR_DAYS further down — nothing else needs to
+     change. -->
+<div id="ss-fairday-takeover" style="display:none;position:fixed;inset:0;z-index:99999;background:#0a0905;color:#f5f0e8;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;font-family:'DM Sans',sans-serif">
+  <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c8a950;font-weight:600;margin-bottom:18px" id="ss-fairday-eyebrow">On the road today</div>
+  <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(30px,8vw,46px);line-height:1.08;max-width:640px;margin-bottom:18px" id="ss-fairday-title">We&rsquo;re at the fair</div>
+  <p style="font-size:14.5px;line-height:1.8;color:rgba(245,240,232,.72);max-width:440px;margin-bottom:26px" id="ss-fairday-body"></p>
+  <div style="font-size:11px;letter-spacing:.5px;color:rgba(245,240,232,.5);margin-bottom:22px">The shop is closed for the day &mdash; back online tomorrow.</div>
+  <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:#c8a950;padding:11px 20px;border-radius:100px;font-size:12px;font-weight:600;text-decoration:none">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    @shirtsociete on Instagram
+  </a>
+</div>
+<script>
+(function () {
+  // Configure future fair-day takeovers here — one line per date. Nothing
+  // else in this file needs to change to add or remove one.
+  var SS_FAIR_DAYS = {
+    '2026-09-26': {
+      eyebrow: 'On the road today',
+      title:   'We\u2019re at STANDS, Hamburg',
+      body:    'Shirt Soci\u00e9t\u00e9 is at STANDS today, held at the Millerntor-Stadion in St. Pauli, Hamburg, Germany. Come find our stand and see the shirts in person.'
+    },
+    '2026-10-04': {
+      eyebrow: 'On the road today',
+      title:   'We\u2019re at the Vintage Fu\u00dfballb\u00f6rse, Leipzig',
+      body:    'Shirt Soci\u00e9t\u00e9 is at the Vintage Fu\u00dfballb\u00f6rse in Leipzig, Germany today. Come find our stand and see the shirts in person.'
+    }
+  };
+
+  // "Today" in the shop's own timezone, not the visitor's device timezone —
+  // a browser set to a different region should not see a different day.
+  function todayISO() {
+    var parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Europe/Amsterdam', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(new Date());
+    var map = {};
+    parts.forEach(function (p) { map[p.type] = p.value; });
+    return map.year + '-' + map.month + '-' + map.day;
+  }
+
+  var todayEvent = SS_FAIR_DAYS[todayISO()];
+  if (todayEvent) {
+    document.getElementById('ss-fairday-eyebrow').textContent = todayEvent.eyebrow;
+    document.getElementById('ss-fairday-title').innerHTML = todayEvent.title;
+    document.getElementById('ss-fairday-body').textContent = todayEvent.body;
+    document.getElementById('ss-fairday-takeover').style.display = 'flex';
+    document.documentElement.style.overflow = 'hidden';
+  }
+})();
+</script>
+
 <noscript>
   <div style="background:var(--black);color:var(--white);padding:40px;font-family:sans-serif;max-width:800px;margin:0 auto">
     <h1>Shirt Société — Vintage &amp; Match Worn Football Shirts</h1>
@@ -2496,7 +2560,7 @@
   <!-- Logo left, actions right — the layout every shopping app uses, so the
        thumb always finds search and the cart in the same corner. -->
   <div class="mobile-logo" onclick="mGoTo('home')">
-    <img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=3" alt="Shirt Société">
+    <img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/c_limit,h_200/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=3" alt="Shirt Société">
   </div>
 
   <div class="m-head-actions">
@@ -2922,7 +2986,7 @@
       </div>
 
       <div class="topbar-logo" onclick="dGoTo('home')">
-        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=3" alt="Shirt Soci&eacute;t&eacute;">
+        <img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/c_limit,h_200/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=3" alt="Shirt Soci&eacute;t&eacute;">
       </div>
 
       <div class="topbar-actions topbar-icons">
@@ -3054,16 +3118,16 @@
 <section id="cin-s1" style="position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:var(--topbar-h) 52px 0">
   <!-- Spotlight hero carousel: 2 slides, each a base image + a cinematic reveal under a moving spotlight -->
   <div id="cin-hero-carousel" style="position:absolute;inset:0;overflow:hidden">
-    <div class="cin-slide" data-base="https://res.cloudinary.com/dinpfdojh/image/upload/w_2200,q_auto:best,e_sharpen:60,f_auto/v1785670927/59eabcb1a851578358659a0424dde374_i9pcwi.jpg" data-reveal="https://res.cloudinary.com/dinpfdojh/image/upload/w_2200,q_auto:best,e_sharpen:60,f_auto/v1785670935/ChatGPT_Image_2_aug_2026_13_38_09_vpvlln.png" style="position:absolute;inset:0;opacity:1;transition:opacity 1.1s ease">
+    <div class="cin-slide" data-base="https://res.cloudinary.com/dinpfdojh/image/upload/w_1920,q_auto:good,f_auto/v1785670927/59eabcb1a851578358659a0424dde374_i9pcwi.jpg" data-reveal="https://res.cloudinary.com/dinpfdojh/image/upload/w_1920,q_auto:good,f_auto/v1785670935/ChatGPT_Image_2_aug_2026_13_38_09_vpvlln.png" style="position:absolute;inset:0;opacity:1;transition:opacity 1.1s ease">
       <div class="cin-base cin-kenburns" style="position:absolute;inset:0;background-position:center 20%;background-size:cover;background-repeat:no-repeat"></div>
       <div class="cin-reveal cin-kenburns" style="position:absolute;inset:0;background-position:center 20%;background-size:cover;background-repeat:no-repeat;opacity:0;transition:opacity .4s ease"></div>
     </div>
-    <div class="cin-slide" data-base="https://res.cloudinary.com/dinpfdojh/image/upload/w_2200,q_auto:best,e_sharpen:60,f_auto/v1785781646/cfe9350f-868b-4da7-900e-8cf96c8c82f9_yhzifu.png" data-reveal="https://res.cloudinary.com/dinpfdojh/image/upload/w_2200,q_auto:best,e_sharpen:60,f_auto/v1785782587/ChatGPT_Image_3_aug_2026_20_39_38_nrsnwk.png" style="position:absolute;inset:0;opacity:0;transition:opacity 1.1s ease">
+    <div class="cin-slide" data-base="https://res.cloudinary.com/dinpfdojh/image/upload/w_1920,q_auto:good,f_auto/v1785781646/cfe9350f-868b-4da7-900e-8cf96c8c82f9_yhzifu.png" data-reveal="https://res.cloudinary.com/dinpfdojh/image/upload/w_1920,q_auto:good,f_auto/v1785782587/ChatGPT_Image_3_aug_2026_20_39_38_nrsnwk.png" style="position:absolute;inset:0;opacity:0;transition:opacity 1.1s ease">
       <div class="cin-base cin-kenburns" style="position:absolute;inset:0;background-position:35% 30%;background-size:cover;background-repeat:no-repeat"></div>
       <div class="cin-reveal cin-kenburns" style="position:absolute;inset:0;background-position:35% 30%;background-size:cover;background-repeat:no-repeat;opacity:0;transition:opacity .4s ease"></div>
     </div>
   <!-- third slide: same base + reveal pairing as the other two -->
-    <div class="cin-slide" data-base="https://res.cloudinary.com/dinpfdojh/image/upload/w_2200,q_auto:best,e_sharpen:60,f_auto/v1787732790/header-rijkaard-artikel-1920_rqadsh.jpg" data-reveal="https://res.cloudinary.com/dinpfdojh/image/upload/w_2200,q_auto:best,e_sharpen:60,f_auto/v1787736509/ChatGPT_Image_26_aug_2026_11_27_30_h70nbj.png" style="position:absolute;inset:0;opacity:0;transition:opacity 1.1s ease">
+    <div class="cin-slide" data-base="https://res.cloudinary.com/dinpfdojh/image/upload/w_1920,q_auto:good,f_auto/v1787732790/header-rijkaard-artikel-1920_rqadsh.jpg" data-reveal="https://res.cloudinary.com/dinpfdojh/image/upload/w_1920,q_auto:good,f_auto/v1787736509/ChatGPT_Image_26_aug_2026_11_27_30_h70nbj.png" style="position:absolute;inset:0;opacity:0;transition:opacity 1.1s ease">
       <div class="cin-base cin-kenburns" style="position:absolute;inset:0;background-position:center 25%;background-size:cover;background-repeat:no-repeat"></div>
       <div class="cin-reveal cin-kenburns" style="position:absolute;inset:0;background-position:center 25%;background-size:cover;background-repeat:no-repeat;opacity:0;transition:opacity .4s ease"></div>
     </div>
@@ -4016,28 +4080,28 @@
 
       <div class="m-fair-row">
         <div class="m-fair-card" onclick="openEventGallery('hamburg')">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg" alt="Hamburg Vintage Fußballbörse" loading="lazy">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/c_limit,w_600,q_auto,f_auto/v1782647123/WhatsApp_Image_2026-06-28_at_13.39.48_kc6nqw.jpg" alt="Hamburg Vintage Fußballbörse" loading="lazy">
           <div class="m-fair-info">
             <div class="m-fair-city">Hamburg</div>
             <div class="m-fair-date">04.02.2026</div>
           </div>
         </div>
         <div class="m-fair-card" onclick="openEventGallery('cologne')">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="Cologne Vintage Fußballbörse" loading="lazy">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/c_limit,w_600,q_auto,f_auto/v1782464482/WhatsApp_Image_2026-06-26_at_11.00.04_1_piofvi.jpg" alt="Cologne Vintage Fußballbörse" loading="lazy">
           <div class="m-fair-info">
             <div class="m-fair-city">Cologne</div>
             <div class="m-fair-date">31.05.2026</div>
           </div>
         </div>
         <div class="m-fair-card" onclick="openEventGallery('dusseldorf')">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" alt="Düsseldorf Vintage Fußballbörse" loading="lazy">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/c_limit,w_600,q_auto,f_auto/v1782464482/WhatsApp_Image_2026-06-26_at_10.59.21_wrmt7z.jpg" alt="Düsseldorf Vintage Fußballbörse" loading="lazy">
           <div class="m-fair-info">
             <div class="m-fair-city">Düsseldorf</div>
             <div class="m-fair-date">13.06.2026</div>
           </div>
         </div>
         <div class="m-fair-card" onclick="openEventGallery('frankfurt')">
-          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg" alt="Frankfurt Vintage Fußballbörse" loading="lazy">
+          <img src="https://res.cloudinary.com/dinpfdojh/image/upload/c_limit,w_600,q_auto,f_auto/v1783254945/WhatsApp_Image_2026-07-05_at_14.23.31_3_wciswg.jpg" alt="Frankfurt Vintage Fußballbörse" loading="lazy">
           <div class="m-fair-info">
             <div class="m-fair-city">Frankfurt</div>
             <div class="m-fair-date">04.07.2026</div>
@@ -4200,6 +4264,26 @@
     return `https://via.placeholder.com/400x400/1e1c17/c8a950?text=${encodeURIComponent(shirt.club||'Shirt')}`;
   }
 
+  // Every photo is stored as Cloudinary's untouched original (often several
+  // megabytes). Cards, thumbnails and even the big product photo were all
+  // loading that original, which is what made the shop slow and made images
+  // fail to appear on a weak connection. This asks Cloudinary for a version
+  // sized for where the photo is actually shown, in the best format the
+  // browser supports. c_limit means it never enlarges a small original.
+  // A URL that already carries its own transformation is left alone, so
+  // nothing can be double-resized. The original is never modified, and the
+  // zoom view still uses it at full size.
+  function cldSize(url, w) {
+    if (!url) return url;
+    var marker = '/upload/';
+    var i = url.indexOf(marker);
+    if (i === -1) return url;
+    var cut = i + marker.length;
+    if (!/^v\d+\//.test(url.slice(cut))) return url;
+    return url.slice(0, cut) + 'c_limit,w_' + (w || 400) + ',q_auto,f_auto/' + url.slice(cut);
+  }
+  function getThumb(shirt, w) { return cldSize(getImg(shirt), w || 400); }
+
   function renderAll() {
     renderMobileHome();
     renderMobileGrid();
@@ -4354,7 +4438,7 @@
         + '<div class="m-newin-img">'
         +   (sold ? '<div class="m-newin-sold">Sold</div>'
                   : (isNew ? '<div class="m-newin-tag">New</div>' : ''))
-        +   '<img src="' + getImg(s) + '" alt="' + (s.title || '') + '" loading="lazy">'
+        +   '<img src="' + getThumb(s, 500) + '" alt="' + (s.title || '') + '" loading="lazy">'
         +   '<button class="like-btn ' + (isLiked ? 'liked' : '') + '" onclick="event.stopPropagation();toggleLike(\'' + s.id + '\')" style="top:6px;right:6px;width:28px;height:28px;z-index:3">'
         +     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="' + (isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)') + '" stroke="' + (isLiked ? 'var(--gold)' : 'var(--on-photo)') + '" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>'
         +   '</button>'
@@ -4377,7 +4461,7 @@
       const isLiked = wishlist.includes(s.id);
       return `
       <div class="m-shirt-card-sm" onclick="openDetail('${s.id}','m')" style="position:relative">
-        <img src="${getImg(s)}" alt="${s.title}" loading="lazy">
+        <img src="${getThumb(s, 500)}" alt="${s.title}" loading="lazy">
         <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')"
           style="top:6px;right:6px;width:28px;height:28px;z-index:3">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -4407,11 +4491,11 @@
   // plain image, so a shirt with a single shot behaves exactly as before.
   function mSwipeStrip(s) {
     var imgs = (s.images || []).filter(Boolean).slice(0, 5);
-    if (!imgs.length) return '<img src="' + getImg(s) + '" alt="' + (s.title || '') + '" loading="lazy">';
-    if (imgs.length === 1) return '<img src="' + imgs[0] + '" alt="' + (s.title || '') + '" loading="lazy">';
+    if (!imgs.length) return '<img src="' + getThumb(s, 600) + '" alt="' + (s.title || '') + '" loading="lazy">';
+    if (imgs.length === 1) return '<img src="' + cldSize(imgs[0], 600) + '" alt="' + (s.title || '') + '" loading="lazy">';
 
     var slides = imgs.map(function (src, i) {
-      return '<div><img src="' + src + '" alt="' + (s.title || '') + (i ? ' — photo ' + (i + 1) : '') + '" loading="lazy"></div>';
+      return '<div><img src="' + cldSize(src, 600) + '" alt="' + (s.title || '') + (i ? ' — photo ' + (i + 1) : '') + '" loading="lazy"></div>';
     }).join('');
     var dots = imgs.map(function (_, i) { return '<i class="' + (i === 0 ? 'on' : '') + '"></i>'; }).join('');
 
@@ -4657,8 +4741,8 @@
       if (s.condition) meta.push(s.condition);
       var href = shirtPath(s);
       var imgs = (s.images && s.images.length) ? s.images : [];
-      var front = getImg(s);
-      var back = imgs.length > 1 ? imgs[1] : null;
+      var front = getThumb(s, 700);
+      var back = imgs.length > 1 ? cldSize(imgs[1], 700) : null;
       return ''
         + '<a class="la-card" href="' + href + '" onclick="openDetail(\'' + s.id + '\',\'d\');return false;">'
         +   '<div class="la-img">'
@@ -4776,7 +4860,7 @@
     const el = document.getElementById(id);
     if (!shirts.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:20px">Nothing here yet.</div>'; return; }
     el.innerHTML = shirts.map((s, idx) => {
-      const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
+      const img2 = s.images && s.images.length > 1 ? cldSize(s.images[1], 700) : null;
       const isLiked = wishlist.includes(s.id);
       const rowDelay = 'delay-' + ((idx % 4) + 1);
       const isSold = s.available === false;
@@ -4784,7 +4868,7 @@
       <div class="shirt-card-sm anim-ready fade-up ${rowDelay}${isSold ? ' is-sold' : ''}" onclick="openDetail('${s.id}','d')">
         <div class="sm-card-img">
           ${isSold ? '<div class="sold-overlay">Sold</div>' : ''}
-          <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
+          <img class="img-main" src="${getThumb(s, 700)}" alt="${s.title}" loading="lazy">
           ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
           ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
           <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:8px;right:8px;width:28px;height:28px;z-index:3">
@@ -5061,7 +5145,7 @@
     grid.className = 'shirt-grid' + (shopView === 'list' ? ' list-view' : '');
     grid.innerHTML = pageShirts.map((s, idx) => {
       const inCart = cart.some(c => c.id === s.id);
-      const img2 = s.images && s.images.length > 1 ? s.images[1] : null;
+      const img2 = s.images && s.images.length > 1 ? cldSize(s.images[1], 700) : null;
       const isLiked = wishlist.includes(s.id);
       const delay = idx < 6 ? 'delay-' + ((idx % 5) + 1) : '';
       const isSold = s.available === false;
@@ -5069,7 +5153,7 @@
         <div class="shirt-card anim-ready scale-up ${delay}${isSold ? ' is-sold' : ''}" onclick="openDetail('${s.id}','d')">
           <div class="shirt-card-img">
             ${isSold ? '<div class="sold-overlay">Sold</div>' : ''}
-            <img class="img-main" src="${getImg(s)}" alt="${s.title}" loading="lazy">
+            <img class="img-main" src="${getThumb(s, 700)}" alt="${s.title}" loading="lazy">
             ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
             ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
             <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" title="Save shirt" style="top:8px;right:8px;width:30px;height:30px;z-index:3">
@@ -5422,7 +5506,7 @@
       currentImages = images;
       currentImgIndex = 0;
       mPrevScreen = document.querySelector('.screen.active')?.id?.replace('screen-','') || 'shop';
-      document.getElementById('m-detail-main-img').src = images[0];
+      document.getElementById('m-detail-main-img').src = cldSize(images[0], 1400);
       document.getElementById('m-detail-category').textContent = (shirt.category||'').replace('_',' ').toUpperCase();
       document.getElementById('m-detail-title').textContent = shirt.title;
       document.getElementById('m-detail-club').textContent = shirt.club||'';
@@ -5430,7 +5514,7 @@
       document.getElementById('m-detail-desc').textContent = shirt.description||'';
       document.getElementById('m-detail-specs').innerHTML = buildSpecs(shirt);
       document.getElementById('m-detail-measurements').innerHTML = buildProvenance(shirt) + buildMeasurements(shirt);
-      document.getElementById('m-detail-thumbs').innerHTML = images.length > 1 ? images.map((img,i) => `<img src="${img}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','m-detail-main-img')" loading="lazy">`).join('') : '';
+      document.getElementById('m-detail-thumbs').innerHTML = images.length > 1 ? images.map((img,i) => `<img src="${cldSize(img, 200)}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','m-detail-main-img')" loading="lazy">`).join('') : '';
       const btn = document.getElementById('m-detail-add-btn');
       const inCart = cart.some(c => c.id === shirt.id);
       var soldOut = shirt.available === false;
@@ -5444,7 +5528,7 @@
       currentImages = images;
       currentImgIndex = 0;
       dPrevScreen = document.querySelector('.dscreen.active')?.id?.replace('d-screen-','') || 'shop';
-      document.getElementById('d-detail-main-img').src = images[0];
+      document.getElementById('d-detail-main-img').src = cldSize(images[0], 1400);
       document.getElementById('d-detail-category').textContent = (shirt.category||'').replace('_',' ').toUpperCase();
       document.getElementById('d-detail-title').textContent = shirt.title;
       document.getElementById('d-detail-club').textContent = shirt.club||'';
@@ -5452,7 +5536,7 @@
       document.getElementById('d-detail-desc').textContent = shirt.description||'';
       document.getElementById('d-detail-specs').innerHTML = buildSpecs(shirt);
       document.getElementById('d-detail-measurements').innerHTML = buildProvenance(shirt) + buildMeasurements(shirt);
-      document.getElementById('d-detail-thumbs').innerHTML = images.map((img,i) => `<img src="${img}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','d-detail-main-img')" loading="lazy">`).join('');
+      document.getElementById('d-detail-thumbs').innerHTML = images.map((img,i) => `<img src="${cldSize(img, 200)}" class="gallery-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}','d-detail-main-img')" loading="lazy">`).join('');
       renderRelatedShirts(shirt);
       const btn = document.getElementById('d-detail-add-btn');
       const inCart = cart.some(c => c.id === shirt.id);
@@ -5615,7 +5699,7 @@
     currentImgIndex = (currentImgIndex + dir + currentImages.length) % currentImages.length;
     const src = currentImages[currentImgIndex];
     const mainId = ctx === 'm' ? 'm-detail-main-img' : 'd-detail-main-img';
-    document.getElementById(mainId).src = src;
+    document.getElementById(mainId).src = cldSize(src, 1400);
     // Update active thumb
     const thumbsId = ctx === 'm' ? 'm-detail-thumbs' : 'd-detail-thumbs';
     document.getElementById(thumbsId).querySelectorAll('.gallery-thumb').forEach((t,i) => {
@@ -5658,9 +5742,9 @@
     // sync main detail image too
     var mainId = document.getElementById('d-detail-main-img') ? 'd-detail-main-img' : 'm-detail-main-img';
     var mainEl = document.getElementById(mainId);
-    if (mainEl) mainEl.src = currentImages[currentImgIndex];
+    if (mainEl) mainEl.src = cldSize(currentImages[currentImgIndex], 1400);
     var adMain = document.getElementById('ad-main-img');
-    if (adMain) adMain.src = currentImages[currentImgIndex];
+    if (adMain) adMain.src = cldSize(currentImages[currentImgIndex], 1400);
   }
   function zoomJumpTo(i) { zoomShowImage(i); }
   function openZoom() {
@@ -5843,7 +5927,7 @@
   })();
 
   function switchImg(el, src, mainId) {
-    document.getElementById(mainId).src = src;
+    document.getElementById(mainId).src = cldSize(src, 1400);
     currentImgIndex = currentImages.indexOf(src);
     el.closest('.gallery-thumbs, #m-detail-thumbs, #d-detail-thumbs').querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
@@ -5861,7 +5945,7 @@
   // ── CART ──
   function addToCart(shirt, srcEl) {
     if (cart.some(c => c.id === shirt.id)) { showToast('Already in cart'); return; }
-    cart.push({ id: shirt.id, title: shirt.title, price: shirt.price, image: getImg(shirt), club: shirt.club, size: shirt.size });
+    cart.push({ id: shirt.id, title: shirt.title, price: shirt.price, image: getThumb(shirt, 240), club: shirt.club, size: shirt.size });
     saveCart(); updateCartBadge(); showToast('Added to cart \u2713');
     ssTrack('add_to_cart', { currency: 'EUR', value: parseFloat(shirt.price) || 0, items: [ssItem(shirt)] });
     renderMobileGrid(); renderDesktopGrid();
@@ -6268,7 +6352,12 @@
     if (dm) dm.textContent = p(Math.floor((d % 3600000) / 60000));
   }
   mDropCountdown();
-  setInterval(mDropCountdown, 30000);
+  // Was ticking every 30 seconds towards 22 July long after that date; it
+  // now stops on its own once the date has passed.
+  var _mDropTimer = setInterval(function () {
+    mDropCountdown();
+    if (new Date() >= new Date('2026-07-22T17:00:00+02:00')) clearInterval(_mDropTimer);
+  }, 30000);
 
   function mGoBack() { mGoTo(mPrevScreen); }
 
@@ -6513,7 +6602,7 @@
         return ''
           + '<div onclick="openArchiveItem(\'' + s.id + '\')" style="cursor:pointer">'
           +   '<div style="position:relative;aspect-ratio:3/4;background:var(--surf-1);border-radius:3px;overflow:hidden">'
-          +     '<img src="' + main + '" alt="' + (s.title||'') + '" loading="lazy" style="width:100%;height:100%;object-fit:cover">'
+          +     '<img src="' + cldSize(main, 500) + '" alt="' + (s.title||'') + '" loading="lazy" style="width:100%;height:100%;object-fit:cover">'
           +     '<div style="position:absolute;top:8px;left:8px;background:rgba(10,9,5,.8);color:var(--gold);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px">Archive</div>'
           +   '</div>'
           +   '<div style="padding:8px 2px 4px">'
@@ -6558,8 +6647,8 @@
       return ''
         + '<div class="shirt-card anim-ready scale-up ' + delay + '" onclick="openArchiveItem(\'' + s.id + '\')">'
         +   '<div class="shirt-card-img">'
-        +     '<img class="img-main" src="' + main + '" alt="' + (s.title||'') + '" loading="lazy">'
-        +     (img2 ? '<img class="img-hover" src="' + img2 + '" alt="' + (s.title||'') + '" loading="lazy">' : '')
+        +     '<img class="img-main" src="' + cldSize(main, 700) + '" alt="' + (s.title||'') + '" loading="lazy">'
+        +     (img2 ? '<img class="img-hover" src="' + cldSize(img2, 700) + '" alt="' + (s.title||'') + '" loading="lazy">' : '')
         +     '<div class="shirt-cat-badge">Archive</div>'
         +   '</div>'
         +   '<div class="shirt-card-body">'
@@ -6613,7 +6702,7 @@
               + '</div>';
           }).join('');
     })();
-    document.getElementById('ad-main-img').src = imgs[0] || '';
+    document.getElementById('ad-main-img').src = cldSize(imgs[0] || '', 1400);
     document.getElementById('ad-thumbs').innerHTML = imgs.map(function(img, i){
       return '<img src="' + img + '" onclick="archiveSwitchImg(' + i + ')" style="width:56px;height:56px;object-fit:cover;border-radius:2px;cursor:pointer;border:1px solid ' + (i===0?'var(--gold)':'var(--line)') + '" data-ai="' + i + '">';
     }).join('');
@@ -6636,7 +6725,7 @@
   function archiveSwitchImg(i) {
     if (!currentImages[i]) return;
     currentImgIndex = i;
-    document.getElementById('ad-main-img').src = currentImages[i];
+    document.getElementById('ad-main-img').src = cldSize(currentImages[i], 1400);
     document.querySelectorAll('#ad-thumbs img').forEach(function(t){
       t.style.borderColor = (parseInt(t.getAttribute('data-ai')) === i) ? 'var(--gold)' : 'var(--line)';
     });
@@ -6765,7 +6854,7 @@
       if (likedShirts.length) {
         html += likedShirts.map(s => `
           <div style="display:flex;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--surf-2);cursor:pointer" onclick="openDetail('${s.id}','d')">
-            <img src="${getImg(s)}" style="width:80px;height:80px;object-fit:cover;border-radius:2px;background:var(--grey);flex-shrink:0">
+            <img src="${getThumb(s, 200)}" style="width:80px;height:80px;object-fit:cover;border-radius:2px;background:var(--grey);flex-shrink:0">
             <div style="flex:1">
               <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">${s.club||''}</div>
               <div style="font-size:15px;font-weight:500;margin-bottom:4px">${s.title}</div>
@@ -7020,13 +7109,33 @@
     var slides = Array.prototype.slice.call(carousel.querySelectorAll('.cin-slide'));
     if (!slides.length) return;
 
-    // preload the images into each slide's base/reveal layers
-    slides.forEach(function (slide) {
+    // All six hero images (three slides, two layers each) used to be
+    // requested at once, at 2200px and the highest quality, before anything
+    // else had a chance. Now the first slide's picture loads immediately,
+    // the rest wait until the page itself has finished loading, and a phone
+    // — which never shows this hero — does not fetch any of them.
+    function loadSlide(slide, withReveal) {
       var base = slide.querySelector('.cin-base');
       var reveal = slide.querySelector('.cin-reveal');
-      if (base) base.style.backgroundImage = "url('" + slide.getAttribute('data-base') + "')";
-      if (reveal) reveal.style.backgroundImage = "url('" + slide.getAttribute('data-reveal') + "')";
-    });
+      if (base && !base.style.backgroundImage) base.style.backgroundImage = "url('" + slide.getAttribute('data-base') + "')";
+      if (withReveal && reveal && !reveal.style.backgroundImage) reveal.style.backgroundImage = "url('" + slide.getAttribute('data-reveal') + "')";
+    }
+    var heroImagesStarted = false;
+    function startHeroImages() {
+      if (heroImagesStarted) return;
+      heroImagesStarted = true;
+      loadSlide(slides[0], false);
+      var rest = function () { slides.forEach(function (sl) { loadSlide(sl, true); }); };
+      if (document.readyState === 'complete') setTimeout(rest, 600);
+      else window.addEventListener('load', function () { setTimeout(rest, 600); });
+    }
+    if (window.innerWidth >= 768) {
+      startHeroImages();
+    } else {
+      window.addEventListener('resize', function onHeroResize() {
+        if (window.innerWidth >= 768) { window.removeEventListener('resize', onHeroResize); startHeroImages(); }
+      });
+    }
 
     var R = 180;               // spotlight radius in px
     var current = 0;
@@ -7793,7 +7902,7 @@
     var from = fromEl.getBoundingClientRect();
     var to = badge.getBoundingClientRect();
 
-    fly.style.backgroundImage = "url('" + getImg(shirt) + "')";
+    fly.style.backgroundImage = "url('" + getThumb(shirt, 160) + "')";
     fly.classList.add('on');
 
     gsap.set(fly, {
