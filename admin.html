@@ -780,7 +780,7 @@
         </div>
         <div class="form-group full">
           <label class="form-label">Player photo URL <span style="color:#888070;font-weight:400">— shows a "Shop the Player" block on the product page. Only use images you own or have licensed.</span></label>
-          <input type="text" class="form-input" id="m-mw_player_img" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-mw_player_img" placeholder="https://...">
         </div>
         <div class="form-group full">
           <label class="form-label">Player photo credit <span style="color:#888070;font-weight:400">— shown under the photo, e.g. "Photo: own archive" or the licence holder.</span></label>
@@ -868,7 +868,11 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               Upload photos from this device
             </button>
-            <div class="up-hint">Pick several at once. They fill the first empty slots below, in the order you choose them.</div>
+            <div class="up-hint">Pick several at once. They fill the first empty slots below, in the order you choose them. Photos are shrunk on your phone first, so this is quick even on weak wifi.</div>
+            <div id="up-notice" style="display:none;margin-top:10px;padding:10px 12px;border:1px solid rgba(224,122,109,.5);border-radius:4px;color:#e07a6a;font-size:12.5px;line-height:1.6">
+              This shirt still has photos on Cloudinary, which are offline. Tap <b>Remove all photos</b>, then upload them again from your gallery.
+            </div>
+            <button type="button" class="btn btn-secondary" style="width:100%;margin-top:10px;font-size:12px" onclick="ssClearAllPhotos()">Remove all photos</button>
             <div class="up-status" id="up-status"></div>
             <div class="up-thumbs" id="up-thumbs"></div>
           </div>
@@ -876,51 +880,51 @@
 
         <div class="form-group full">
           <label class="form-label">Image 1 — Main photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
           <label class="form-label">Image 2 — Hover photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image2" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image2" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
           <label class="form-label">Image 3 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image3" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image3" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
           <label class="form-label">Image 4 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image4" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image4" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
           <label class="form-label">Image 5 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image5" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image5" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
           <label class="form-label">Image 6 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image6" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image6" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
           <label class="form-label">Image 7 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image7" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image7" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
           <label class="form-label">Image 8 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image8" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image8" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
           <label class="form-label">Image 9 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image9" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image9" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
           <label class="form-label">Image 10 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image10" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image10" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
           <label class="form-label">Image 11 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image11" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image11" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
           <label class="form-label">Image 12 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image12" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-image12" placeholder="Filled in by the upload button">
         </div>
         <input type="hidden" id="m-existing-images" value="[]">
         <div class="form-group full">
@@ -1179,6 +1183,10 @@
   // each pulling a multi-megabyte image was most of the slowness.
   function ssThumb(url) {
     if (!url) return '';
+    // photos stored in Supabase have a small twin next to them (name_t.jpg)
+    if (url.indexOf('/storage/v1/object/public/shirt-photos/') !== -1) {
+      return (/\.jpg$/i.test(url) && !/_t\.jpg$/i.test(url)) ? url.replace(/\.jpg$/i, '_t.jpg') : url;
+    }
     // only Cloudinary URLs can be transformed; anything else passes through
     return url.replace(/\/upload\/(?!.*\/upload\/)/, '/upload/w_96,h_96,c_fill,q_auto,f_auto/');
   }
@@ -1196,7 +1204,7 @@
     document.getElementById('shirts-tbody').innerHTML = shirts.length ? shirts.map(s => `
       <tr>
         <td data-label="" class="cell-thumb"><img src="${ssThumb(s.images?.[0])}" class="shirt-thumb" loading="lazy" decoding="async" onerror="this.style.background='var(--grey-mid)'"></td>
-        <td data-label="Title" class="cell-title" style="font-weight:500;max-width:200px">${s.title}</td>
+        <td data-label="Title" class="cell-title" style="font-weight:500;max-width:200px">${s.title}${ssHasOldPhotos(s.images) ? '<div style="margin-top:4px;font-size:11px;font-weight:600;color:#e07a6a">Photos offline — re-upload</div>' : (!(s.images && s.images.length) ? '<div style="margin-top:4px;font-size:11px;font-weight:600;color:#b0a898">No photos yet</div>' : '')}</td>
         <td data-label="Club">${s.club || '—'}</td>
         <td data-label="Category"><span class="badge badge-${s.category}">${s.category?.replace('_',' ') || '—'}</span></td>
         <td data-label="Size">${s.size || '—'}</td>
@@ -1249,10 +1257,11 @@
     var strip = document.getElementById('m-photo-strip');
     if (!strip) return;
     var urls = readPhotoUrls();
+    ssUpdatePhotoNotice();
     var cnt = document.getElementById('m-photo-count');
     if (cnt) cnt.textContent = urls.length ? urls.length + ' photo' + (urls.length === 1 ? '' : 's') : '';
     if (!urls.length) {
-      strip.innerHTML = '<div style="color:#5a544a;font-size:12px;padding:10px">No photos yet — paste Cloudinary URLs in the fields below, then press Refresh preview.</div>';
+      strip.innerHTML = '<div style="color:#5a544a;font-size:12px;padding:10px">No photos yet — use the upload button above.</div>';
       return;
     }
     strip.innerHTML = urls.map(function(u, i) {
@@ -2543,29 +2552,105 @@
     return out.join(' ') + ' — ' + vtail.join(', ');
   }
 
-  /*  DIRECT UPLOAD
-      Needs one unsigned Cloudinary preset. Create it once:
-        cloudinary.com → Settings → Upload → Upload presets → Add
-        name: shirt_admin     signing mode: Unsigned     folder: shirts
-      Then the button works from your phone: pick photos, they upload and
-      the URL fields fill themselves.                                      */
-  var SS_CLOUD_NAME = 'dinpfdojh';
-  var SS_UPLOAD_PRESET = 'shirt_admin';
+  /*  DIRECT UPLOAD  →  Supabase Storage, bucket "shirt-photos"
+      No Cloudinary involved. Each photo is shrunk in the browser first, so a
+      6 MB camera-roll picture is roughly 300 KB by the time it leaves the
+      phone, and two files are stored per photo:
+          name.jpg     full size, for the product page and zoom (max 1600 px)
+          name_t.jpg   small version, for the cards in the shop  (max 640 px)
+      The bucket and its rules are created once by supabase-foto-opslag.sql. */
+  var SS_BUCKET = 'shirt-photos';
+  var SS_FULL_MAX = 1600, SS_THUMB_MAX = 640;
+
+  function ssPublicUrl(path) {
+    return SUPABASE.url + '/storage/v1/object/public/' + SS_BUCKET + '/' + path;
+  }
+  function ssNewPhotoPath() {
+    var d = new Date();
+    var ym = d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2);
+    var id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    return 'shirts/' + ym + '/' + id;          // ".jpg" / "_t.jpg" are added per file
+  }
+
+  // Decode a picked file. createImageBitmap applies the phone's rotation
+  // flag, so portrait photos do not come out sideways.
+  function ssDecodeImage(file) {
+    function viaImg() {
+      return new Promise(function (resolve, reject) {
+        var url = URL.createObjectURL(file);
+        var im = new Image();
+        im.onload = function () { URL.revokeObjectURL(url); resolve(im); };
+        im.onerror = function () { URL.revokeObjectURL(url); reject(new Error('This file is not an image the browser can read')); };
+        im.src = url;
+      });
+    }
+    if (window.createImageBitmap) {
+      return createImageBitmap(file, { imageOrientation: 'from-image' }).catch(viaImg);
+    }
+    return viaImg();
+  }
+
+  // Never enlarge: a small original stays small.
+  function ssFitSize(w, h, maxSide) {
+    var longest = Math.max(w, h);
+    if (longest <= maxSide) return { w: w, h: h };
+    var k = maxSide / longest;
+    return { w: Math.max(1, Math.round(w * k)), h: Math.max(1, Math.round(h * k)) };
+  }
+
+  function ssToJpegBlob(src, maxSide, quality) {
+    var sw = src.naturalWidth || src.width, sh = src.naturalHeight || src.height;
+    var t = ssFitSize(sw, sh, maxSide);
+    var canvas = document.createElement('canvas');
+    canvas.width = t.w; canvas.height = t.h;
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffffff';                 // a transparent PNG must not turn black
+    ctx.fillRect(0, 0, t.w, t.h);
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(src, 0, 0, t.w, t.h);
+    return new Promise(function (resolve, reject) {
+      canvas.toBlob(function (b) { b ? resolve(b) : reject(new Error('Could not compress the photo')); }, 'image/jpeg', quality);
+    });
+  }
+
+  function ssStoragePut(path, blob) {
+    return fetch(SUPABASE.url + '/storage/v1/object/' + SS_BUCKET + '/' + path, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE.key,
+        'Authorization': 'Bearer ' + authToken,
+        'Content-Type': 'image/jpeg',
+        'x-upsert': 'false',
+        // the file name is unique, so the browser and the CDN may keep it for a year
+        'cache-control': 'max-age=31536000'
+      },
+      body: blob
+    }).then(function (r) {
+      if (r.ok) return r;
+      return r.text().then(function (t) { throw new Error('Storage ' + r.status + ': ' + t); });
+    });
+  }
+
+  // Turns a raw failure into something you can act on.
+  function ssUploadErrorText(e) {
+    var m = String((e && e.message) || e);
+    if (/Bucket not found|404/i.test(m)) return 'The photo bucket does not exist yet. Run supabase-foto-opslag.sql once in Supabase.';
+    if (/row-level security|403|Unauthorized|401|exp|JWT/i.test(m)) return 'Not allowed to upload. Sign out of the admin and back in, then try again.';
+    if (/413|too large|exceeded/i.test(m)) return 'A photo was too large for the bucket.';
+    return m;
+  }
 
   function ssUploadPhotos(files) {
     if (!files || !files.length) return;
     var status = document.getElementById('up-status');
     var thumbs = document.getElementById('up-thumbs');
     var list = Array.prototype.slice.call(files);
-    var done = 0, failed = 0;
+    var done = 0, failed = 0, lastError = '';
 
-    // NOTE: the first field is called m-image, not m-image1. Looping from 1
-    // to 12 silently skipped the main photo.
+    // NOTE: the first field is called m-image, not m-image1.
     function slots() {
       var free = [];
-      var ids = ['m-image'];
-      for (var n = 2; n <= 12; n++) ids.push('m-image' + n);
-      ids.forEach(function (id) {
+      getPhotoFieldIds().forEach(function (id) {
         var el = document.getElementById(id);
         if (el && !el.value.trim()) free.push(el);
       });
@@ -2577,65 +2662,89 @@
       status.textContent = 'All twelve photo slots are already filled.';
       return;
     }
-    if (list.length > free.length) {
-      list = list.slice(0, free.length);
-    }
+    var skipped = 0;
+    if (list.length > free.length) { skipped = list.length - free.length; list = list.slice(0, free.length); }
 
     status.className = 'up-status';
-    status.textContent = 'Uploading 0 of ' + list.length + '...';
+    status.textContent = 'Preparing ' + list.length + ' photo' + (list.length === 1 ? '' : 's') + '...';
 
-    // Three at a time instead of one. Ten photos used to take ten round
-    // trips end to end; this cuts the wait to roughly a third while still
-    // being gentle enough for a phone on fair wifi. The order in which the
-    // fields fill is preserved by claiming a slot before the upload starts.
+    // Three at a time keeps a phone on weak wifi responsive. Each photo
+    // claims its slot before it starts, so the order you picked them in is
+    // the order they end up in, however fast each one finishes.
     var CONCURRENT = 3;
-    function next(i) {
-      if (i >= list.length) return Promise.resolve();
-      // claim the field first, so photo 4 cannot land in slot 2 just because
-      // it happened to finish sooner
+    function one(i) {
       var target = slots()[0];
       if (target) target.value = 'uploading...';
-
-      var fd = new FormData();
-      fd.append('file', list[i]);
-      fd.append('upload_preset', SS_UPLOAD_PRESET);
-
-      return fetch('https://api.cloudinary.com/v1_1/' + SS_CLOUD_NAME + '/image/upload', {
-        method: 'POST', body: fd
-      }).then(function (r) { return r.json(); }).then(function (data) {
-        if (!data || !data.secure_url) throw new Error((data && data.error && data.error.message) || 'upload failed');
-        if (target) target.value = data.secure_url;
+      var base = ssNewPhotoPath();
+      return ssDecodeImage(list[i]).then(function (src) {
+        return Promise.all([
+          ssToJpegBlob(src, SS_FULL_MAX, 0.82),
+          ssToJpegBlob(src, SS_THUMB_MAX, 0.80)
+        ]).then(function (blobs) {
+          if (src.close) src.close();
+          // the small one first: if only one of the two lands, a card still has a picture
+          return ssStoragePut(base + '_t.jpg', blobs[1]).then(function () {
+            return ssStoragePut(base + '.jpg', blobs[0]);
+          });
+        });
+      }).then(function () {
+        var url = ssPublicUrl(base + '.jpg');
+        if (target) target.value = url;
         var img = document.createElement('img');
-        img.src = data.secure_url;
+        img.src = ssPublicUrl(base + '_t.jpg');
         thumbs.appendChild(img);
         done++;
       }).catch(function (e) {
         failed++;
+        lastError = ssUploadErrorText(e);
         if (target) target.value = '';
         console.error('upload failed:', e);
-        if (/preset/i.test(String(e && e.message))) {
-          status.className = 'up-status err';
-          status.textContent = 'Cloudinary rejected the preset "' + SS_UPLOAD_PRESET + '". Create it as an UNSIGNED preset first.';
-        }
       }).then(function () {
         status.textContent = 'Uploading ' + (done + failed) + ' of ' + list.length + '...';
       });
     }
 
-    // start three, and each one that finishes picks up the next in line
     var cursor = 0;
     function pump() {
       if (cursor >= list.length) return Promise.resolve();
       var mine = cursor++;
-      return next(mine).then(pump);
+      return one(mine).then(pump);
     }
-    Promise.all(new Array(Math.min(CONCURRENT, list.length)).fill(0).map(pump))
-      .then(function () {
-        status.className = failed ? 'up-status err' : 'up-status ok';
-        status.textContent = failed
-          ? (done + ' uploaded, ' + failed + ' failed — try the failed ones again')
-          : (done + ' photo' + (done === 1 ? '' : 's') + ' uploaded');
-      });
+    Promise.all(new Array(Math.min(CONCURRENT, list.length)).fill(0).map(pump)).then(function () {
+      // keep the hidden field and the drag-to-reorder strip in step with the fields
+      writePhotoUrls(readPhotoUrls());
+      refreshPhotoStrip();
+      var input = document.getElementById('up-input');
+      if (input) input.value = '';               // picking the same file again must work
+      status.className = failed ? 'up-status err' : 'up-status ok';
+      var msg = done + ' photo' + (done === 1 ? '' : 's') + ' uploaded';
+      if (failed) msg += ', ' + failed + ' failed: ' + lastError;
+      if (skipped) msg += ' (' + skipped + ' skipped, only twelve slots)';
+      status.textContent = msg;
+    });
+  }
+
+  // Wipes all photo slots. The hidden backup field is cleared too — when a
+  // shirt is saved with no photos, the form falls back to that backup, which
+  // would otherwise quietly bring the old, dead links back.
+  function ssClearAllPhotos() {
+    if (!confirm('Remove all photos from this shirt? You can upload new ones straight after.')) return;
+    writePhotoUrls([]);
+    var thumbs = document.getElementById('up-thumbs');
+    if (thumbs) thumbs.innerHTML = '';
+    refreshPhotoStrip();
+    var status = document.getElementById('up-status');
+    if (status) { status.className = 'up-status'; status.textContent = 'Photos removed. Upload the new ones, then Save.'; }
+  }
+
+  // Shirts whose photos still point at Cloudinary are offline right now.
+  function ssHasOldPhotos(urls) {
+    return (urls || []).some(function (u) { return /res\.cloudinary\.com/.test(u || ''); });
+  }
+  function ssUpdatePhotoNotice() {
+    var n = document.getElementById('up-notice');
+    if (!n) return;
+    n.style.display = ssHasOldPhotos(readPhotoUrls()) ? 'block' : 'none';
   }
 
   function ssSuggestTitle() {
@@ -3949,10 +4058,16 @@
     var imgs = (s.images || []).filter(Boolean);
     // turn a Cloudinary URL into a resized variant; non-Cloudinary URLs pass through
     function ssCld(u, w) {
-      if (!u || u.indexOf('/upload/') === -1) return u;
+      if (!u) return u;
+      if (u.indexOf('/storage/v1/object/public/shirt-photos/') !== -1) {
+        // small twin for small sizes; the full 1600px file otherwise
+        return (w <= 700 && /\.jpg$/i.test(u) && !/_t\.jpg$/i.test(u)) ? u.replace(/\.jpg$/i, '_t.jpg') : u;
+      }
+      if (u.indexOf('/upload/') === -1) return u;
       return u.replace('/upload/', '/upload/f_auto,q_auto,w_' + w + '/');
     }
     function ssSrcset(u, widths) {
+      // Supabase photos come in two sizes, not a range, so no srcset for them
       if (!u || u.indexOf('/upload/') === -1) return '';
       return widths.map(function(w) { return ssCld(u, w) + ' ' + w + 'w'; }).join(', ');
     }
