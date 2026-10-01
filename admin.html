@@ -3101,16 +3101,41 @@
     return { w: Math.max(1, Math.round(w * k)), h: Math.max(1, Math.round(h * k)) };
   }
 
+  // Shrinking a 4000px phone photo down to 640px in a single drawImage call
+  // is more than a 5x reduction in one step, which is exactly when a
+  // browser's canvas resize produces visible banding and moiré — most
+  // noticeable on anything with a repeating pattern, like a striped shirt,
+  // which is what showed up as stripes/streaks that were not there before.
+  // Halving the image repeatedly until close to the target size, then doing
+  // one final precise draw, is the standard fix: each individual step is a
+  // clean 2x reduction a browser can do without artifacts.
+  function ssStepDown(src, targetW, targetH) {
+    var w = src.naturalWidth || src.width, h = src.naturalHeight || src.height;
+    var current = src;
+    while (w > targetW * 2 && h > targetH * 2) {
+      w = Math.max(targetW, Math.round(w / 2));
+      h = Math.max(targetH, Math.round(h / 2));
+      var step = document.createElement('canvas');
+      step.width = w; step.height = h;
+      var stepCtx = step.getContext('2d');
+      stepCtx.imageSmoothingQuality = 'high';
+      stepCtx.drawImage(current, 0, 0, w, h);
+      current = step;
+    }
+    return current;
+  }
+
   function ssToJpegBlob(src, maxSide, quality) {
     var sw = src.naturalWidth || src.width, sh = src.naturalHeight || src.height;
     var t = ssFitSize(sw, sh, maxSide);
+    var stepped = ssStepDown(src, t.w, t.h);
     var canvas = document.createElement('canvas');
     canvas.width = t.w; canvas.height = t.h;
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, t.w, t.h);
     ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(src, 0, 0, t.w, t.h);
+    ctx.drawImage(stepped, 0, 0, t.w, t.h);
     return new Promise(function (resolve, reject) {
       canvas.toBlob(function (b) { b ? resolve(b) : reject(new Error('Could not compress the photo')); }, 'image/jpeg', quality);
     });
