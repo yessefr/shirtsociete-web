@@ -80,6 +80,21 @@
     .sidebar-footer {
       margin-top: auto; padding: 16px 20px; border-top: 1px solid var(--grey-light);
     }
+    .sp-section-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      color: #c8a950; margin: 26px 0 10px;
+    }
+    .sp-section-title:first-of-type { margin-top: 4px; }
+    .sp-list { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
+    .sp-row { background: #1a1715; border: 1px solid #2a2820; border-radius: 4px; padding: 14px 16px; }
+    .sp-label { font-size: 12.5px; font-weight: 600; color: var(--white); margin-bottom: 10px; }
+    .sp-body { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .sp-preview { width: 44px; height: 44px; object-fit: cover; border-radius: 3px; background: #0a0905; flex-shrink: 0; }
+    .sp-url { flex: 1; min-width: 160px; background: #0a0905; border: 1px solid #2a2820; border-radius: 3px; color: #b0a898; font-size: 11.5px; padding: 8px 10px; }
+    .sp-status { font-size: 11.5px; margin-top: 8px; min-height: 1px; }
+    .sp-status.err { color: #e05a4d; }
+    .sp-status.ok { color: #4caf7d; }
+
     .logout-btn {
       display: flex; align-items: center; gap: 8px;
       color: var(--text-muted); cursor: pointer; font-size: 13px;
@@ -478,6 +493,10 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Drop Signups
       </div>
+      <div class="nav-item" id="nav-sitephotos" onclick="switchTab('sitephotos')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        Site Photos
+      </div>
       <div class="nav-item" id="nav-messages" onclick="switchTab('messages')">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         Messages
@@ -493,6 +512,420 @@
 
   <!-- Main -->
   <div class="main-content">
+
+    <!-- SITE PHOTOS TAB -->
+    <div class="tab-content" id="tab-sitephotos">
+      <div class="page-header">
+        <div>
+          <h1>Site Photos</h1>
+          <p style="color:#888070;font-size:13px;margin-top:4px;max-width:640px">
+            These photos belong to the site itself, not to one shirt, so they are not in the shirt list.
+            Upload one, wait for the link to appear, tap <b>Copy link</b>, and paste that link into the
+            chat with Claude along with which one it is. Claude puts it in the right place on the site;
+            this page cannot do that last step by itself. You do not need to do these all at once.
+          </p>
+          <p style="color:#e0a24d;font-size:12.5px;margin-top:10px;max-width:640px">
+            Three of the old files were videos (two at the Frankfurt gallery, one the My Wardrobe intro),
+            which this page does not handle yet — photos only for now. Ask separately for those.
+          </p>
+        </div>
+      </div>
+      <div class="sp-section-title">Logo</div>
+      <div class="sp-list">
+          <div class="sp-row" id="sp-row-logo">
+            <div class="sp-label">Logo (header, every page)</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-logo" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-logo" style="display:none" onchange="ssUploadSitePhoto('logo', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-logo').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-logo" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-logo" onclick="ssCopySitePhotoUrl('logo')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-logo"></div>
+          </div>
+      </div>
+
+      <div class="sp-section-title">Homepage — hero</div>
+      <div class="sp-list">
+          <div class="sp-row" id="sp-row-hero1-base">
+            <div class="sp-label">Slide 1 — main photo</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-hero1-base" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-hero1-base" style="display:none" onchange="ssUploadSitePhoto('hero1-base', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-hero1-base').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-hero1-base" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-hero1-base" onclick="ssCopySitePhotoUrl('hero1-base')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-hero1-base"></div>
+          </div>
+          <div class="sp-row" id="sp-row-hero1-reveal">
+            <div class="sp-label">Slide 1 — reveal photo</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-hero1-reveal" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-hero1-reveal" style="display:none" onchange="ssUploadSitePhoto('hero1-reveal', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-hero1-reveal').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-hero1-reveal" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-hero1-reveal" onclick="ssCopySitePhotoUrl('hero1-reveal')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-hero1-reveal"></div>
+          </div>
+          <div class="sp-row" id="sp-row-hero2-base">
+            <div class="sp-label">Slide 2 — main photo</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-hero2-base" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-hero2-base" style="display:none" onchange="ssUploadSitePhoto('hero2-base', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-hero2-base').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-hero2-base" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-hero2-base" onclick="ssCopySitePhotoUrl('hero2-base')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-hero2-base"></div>
+          </div>
+          <div class="sp-row" id="sp-row-hero2-reveal">
+            <div class="sp-label">Slide 2 — reveal photo</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-hero2-reveal" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-hero2-reveal" style="display:none" onchange="ssUploadSitePhoto('hero2-reveal', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-hero2-reveal').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-hero2-reveal" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-hero2-reveal" onclick="ssCopySitePhotoUrl('hero2-reveal')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-hero2-reveal"></div>
+          </div>
+          <div class="sp-row" id="sp-row-hero3-base">
+            <div class="sp-label">Slide 3 — main photo</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-hero3-base" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-hero3-base" style="display:none" onchange="ssUploadSitePhoto('hero3-base', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-hero3-base').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-hero3-base" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-hero3-base" onclick="ssCopySitePhotoUrl('hero3-base')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-hero3-base"></div>
+          </div>
+          <div class="sp-row" id="sp-row-hero3-reveal">
+            <div class="sp-label">Slide 3 — reveal photo</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-hero3-reveal" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-hero3-reveal" style="display:none" onchange="ssUploadSitePhoto('hero3-reveal', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-hero3-reveal').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-hero3-reveal" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-hero3-reveal" onclick="ssCopySitePhotoUrl('hero3-reveal')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-hero3-reveal"></div>
+          </div>
+      </div>
+
+      <div class="sp-section-title">Homepage — scroll effects</div>
+      <div class="sp-list">
+          <div class="sp-row" id="sp-row-dolly">
+            <div class="sp-label">Camera push-in photo (the full-screen shot as you scroll)</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-dolly" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-dolly" style="display:none" onchange="ssUploadSitePhoto('dolly', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-dolly').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-dolly" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-dolly" onclick="ssCopySitePhotoUrl('dolly')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-dolly"></div>
+          </div>
+          <div class="sp-row" id="sp-row-sweep0">
+            <div class="sp-label">Shirt sweep — background 1</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-sweep0" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-sweep0" style="display:none" onchange="ssUploadSitePhoto('sweep0', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-sweep0').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-sweep0" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-sweep0" onclick="ssCopySitePhotoUrl('sweep0')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-sweep0"></div>
+          </div>
+          <div class="sp-row" id="sp-row-sweep1">
+            <div class="sp-label">Shirt sweep — background 2</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-sweep1" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-sweep1" style="display:none" onchange="ssUploadSitePhoto('sweep1', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-sweep1').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-sweep1" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-sweep1" onclick="ssCopySitePhotoUrl('sweep1')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-sweep1"></div>
+          </div>
+      </div>
+
+      <div class="sp-section-title">Fairs — upcoming (homepage card)</div>
+      <div class="sp-list">
+          <div class="sp-row" id="sp-row-fair-hamburg">
+            <div class="sp-label">Hamburg — STANDS, 26-09</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-fair-hamburg" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-fair-hamburg" style="display:none" onchange="ssUploadSitePhoto('fair-hamburg', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-fair-hamburg').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-fair-hamburg" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-fair-hamburg" onclick="ssCopySitePhotoUrl('fair-hamburg')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-fair-hamburg"></div>
+          </div>
+          <div class="sp-row" id="sp-row-fair-leipzig">
+            <div class="sp-label">Leipzig — Vintage Fußballbörse, 04-10</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-fair-leipzig" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-fair-leipzig" style="display:none" onchange="ssUploadSitePhoto('fair-leipzig', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-fair-leipzig').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-fair-leipzig" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-fair-leipzig" onclick="ssCopySitePhotoUrl('fair-leipzig')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-fair-leipzig"></div>
+          </div>
+      </div>
+
+      <div class="sp-section-title">Our Story — Frankfurt gallery (04.07.2026)</div>
+      <div class="sp-list">
+          <div class="sp-row" id="sp-row-ev-frankfurt-1">
+            <div class="sp-label">Photo 1</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-frankfurt-1" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-frankfurt-1" style="display:none" onchange="ssUploadSitePhoto('ev-frankfurt-1', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-frankfurt-1').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-frankfurt-1" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-frankfurt-1" onclick="ssCopySitePhotoUrl('ev-frankfurt-1')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-frankfurt-1"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-frankfurt-2">
+            <div class="sp-label">Photo 2</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-frankfurt-2" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-frankfurt-2" style="display:none" onchange="ssUploadSitePhoto('ev-frankfurt-2', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-frankfurt-2').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-frankfurt-2" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-frankfurt-2" onclick="ssCopySitePhotoUrl('ev-frankfurt-2')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-frankfurt-2"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-frankfurt-3">
+            <div class="sp-label">Photo 3</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-frankfurt-3" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-frankfurt-3" style="display:none" onchange="ssUploadSitePhoto('ev-frankfurt-3', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-frankfurt-3').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-frankfurt-3" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-frankfurt-3" onclick="ssCopySitePhotoUrl('ev-frankfurt-3')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-frankfurt-3"></div>
+          </div>
+      </div>
+
+      <div class="sp-section-title">Our Story — Hamburg gallery (04.02.2026)</div>
+      <div class="sp-list">
+          <div class="sp-row" id="sp-row-ev-hamburg-1">
+            <div class="sp-label">Photo 1</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-hamburg-1" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-hamburg-1" style="display:none" onchange="ssUploadSitePhoto('ev-hamburg-1', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-hamburg-1').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-hamburg-1" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-hamburg-1" onclick="ssCopySitePhotoUrl('ev-hamburg-1')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-hamburg-1"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-hamburg-2">
+            <div class="sp-label">Photo 2</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-hamburg-2" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-hamburg-2" style="display:none" onchange="ssUploadSitePhoto('ev-hamburg-2', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-hamburg-2').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-hamburg-2" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-hamburg-2" onclick="ssCopySitePhotoUrl('ev-hamburg-2')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-hamburg-2"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-hamburg-3">
+            <div class="sp-label">Photo 3</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-hamburg-3" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-hamburg-3" style="display:none" onchange="ssUploadSitePhoto('ev-hamburg-3', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-hamburg-3').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-hamburg-3" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-hamburg-3" onclick="ssCopySitePhotoUrl('ev-hamburg-3')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-hamburg-3"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-hamburg-4">
+            <div class="sp-label">Photo 4</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-hamburg-4" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-hamburg-4" style="display:none" onchange="ssUploadSitePhoto('ev-hamburg-4', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-hamburg-4').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-hamburg-4" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-hamburg-4" onclick="ssCopySitePhotoUrl('ev-hamburg-4')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-hamburg-4"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-hamburg-5">
+            <div class="sp-label">Photo 5</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-hamburg-5" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-hamburg-5" style="display:none" onchange="ssUploadSitePhoto('ev-hamburg-5', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-hamburg-5').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-hamburg-5" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-hamburg-5" onclick="ssCopySitePhotoUrl('ev-hamburg-5')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-hamburg-5"></div>
+          </div>
+      </div>
+
+      <div class="sp-section-title">Our Story — Cologne gallery (31.05.2026)</div>
+      <div class="sp-list">
+          <div class="sp-row" id="sp-row-ev-cologne-1">
+            <div class="sp-label">Photo 1</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-cologne-1" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-cologne-1" style="display:none" onchange="ssUploadSitePhoto('ev-cologne-1', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-cologne-1').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-cologne-1" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-cologne-1" onclick="ssCopySitePhotoUrl('ev-cologne-1')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-cologne-1"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-cologne-2">
+            <div class="sp-label">Photo 2</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-cologne-2" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-cologne-2" style="display:none" onchange="ssUploadSitePhoto('ev-cologne-2', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-cologne-2').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-cologne-2" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-cologne-2" onclick="ssCopySitePhotoUrl('ev-cologne-2')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-cologne-2"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-cologne-3">
+            <div class="sp-label">Photo 3</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-cologne-3" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-cologne-3" style="display:none" onchange="ssUploadSitePhoto('ev-cologne-3', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-cologne-3').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-cologne-3" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-cologne-3" onclick="ssCopySitePhotoUrl('ev-cologne-3')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-cologne-3"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-cologne-4">
+            <div class="sp-label">Photo 4</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-cologne-4" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-cologne-4" style="display:none" onchange="ssUploadSitePhoto('ev-cologne-4', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-cologne-4').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-cologne-4" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-cologne-4" onclick="ssCopySitePhotoUrl('ev-cologne-4')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-cologne-4"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-cologne-5">
+            <div class="sp-label">Photo 5</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-cologne-5" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-cologne-5" style="display:none" onchange="ssUploadSitePhoto('ev-cologne-5', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-cologne-5').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-cologne-5" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-cologne-5" onclick="ssCopySitePhotoUrl('ev-cologne-5')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-cologne-5"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-cologne-6">
+            <div class="sp-label">Photo 6</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-cologne-6" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-cologne-6" style="display:none" onchange="ssUploadSitePhoto('ev-cologne-6', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-cologne-6').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-cologne-6" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-cologne-6" onclick="ssCopySitePhotoUrl('ev-cologne-6')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-cologne-6"></div>
+          </div>
+      </div>
+
+      <div class="sp-section-title">Our Story — Düsseldorf gallery (13.06.2026)</div>
+      <div class="sp-list">
+          <div class="sp-row" id="sp-row-ev-dusseldorf-1">
+            <div class="sp-label">Photo 1</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-dusseldorf-1" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-dusseldorf-1" style="display:none" onchange="ssUploadSitePhoto('ev-dusseldorf-1', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-dusseldorf-1').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-dusseldorf-1" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-dusseldorf-1" onclick="ssCopySitePhotoUrl('ev-dusseldorf-1')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-dusseldorf-1"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-dusseldorf-2">
+            <div class="sp-label">Photo 2</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-dusseldorf-2" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-dusseldorf-2" style="display:none" onchange="ssUploadSitePhoto('ev-dusseldorf-2', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-dusseldorf-2').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-dusseldorf-2" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-dusseldorf-2" onclick="ssCopySitePhotoUrl('ev-dusseldorf-2')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-dusseldorf-2"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-dusseldorf-3">
+            <div class="sp-label">Photo 3</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-dusseldorf-3" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-dusseldorf-3" style="display:none" onchange="ssUploadSitePhoto('ev-dusseldorf-3', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-dusseldorf-3').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-dusseldorf-3" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-dusseldorf-3" onclick="ssCopySitePhotoUrl('ev-dusseldorf-3')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-dusseldorf-3"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-dusseldorf-4">
+            <div class="sp-label">Photo 4</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-dusseldorf-4" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-dusseldorf-4" style="display:none" onchange="ssUploadSitePhoto('ev-dusseldorf-4', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-dusseldorf-4').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-dusseldorf-4" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-dusseldorf-4" onclick="ssCopySitePhotoUrl('ev-dusseldorf-4')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-dusseldorf-4"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-dusseldorf-5">
+            <div class="sp-label">Photo 5</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-dusseldorf-5" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-dusseldorf-5" style="display:none" onchange="ssUploadSitePhoto('ev-dusseldorf-5', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-dusseldorf-5').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-dusseldorf-5" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-dusseldorf-5" onclick="ssCopySitePhotoUrl('ev-dusseldorf-5')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-dusseldorf-5"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-dusseldorf-6">
+            <div class="sp-label">Photo 6</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-dusseldorf-6" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-dusseldorf-6" style="display:none" onchange="ssUploadSitePhoto('ev-dusseldorf-6', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-dusseldorf-6').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-dusseldorf-6" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-dusseldorf-6" onclick="ssCopySitePhotoUrl('ev-dusseldorf-6')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-dusseldorf-6"></div>
+          </div>
+          <div class="sp-row" id="sp-row-ev-dusseldorf-7">
+            <div class="sp-label">Photo 7</div>
+            <div class="sp-body">
+              <img class="sp-preview" id="sp-preview-ev-dusseldorf-7" style="display:none">
+              <input type="file" accept="image/*" id="sp-file-ev-dusseldorf-7" style="display:none" onchange="ssUploadSitePhoto('ev-dusseldorf-7', this.files[0])">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('sp-file-ev-dusseldorf-7').click()">Upload photo</button>
+              <input type="text" class="sp-url" id="sp-url-ev-dusseldorf-7" readonly placeholder="Uploads here, then copy the link below" onclick="this.select()">
+              <button type="button" class="btn btn-secondary" id="sp-copy-ev-dusseldorf-7" onclick="ssCopySitePhotoUrl('ev-dusseldorf-7')" disabled>Copy link</button>
+            </div>
+            <div class="sp-status" id="sp-status-ev-dusseldorf-7"></div>
+          </div>
+      </div>
+
+    </div>
 
     <!-- DASHBOARD TAB -->
     <div class="tab-content active" id="tab-dashboard">
@@ -2553,14 +2986,17 @@
   }
 
   /*  DIRECT UPLOAD  →  Supabase Storage, bucket "shirt-photos"
-      No Cloudinary involved. Each photo is shrunk in the browser first, so a
-      6 MB camera-roll picture is roughly 300 KB by the time it leaves the
-      phone, and two files are stored per photo:
-          name.jpg     full size, for the product page and zoom (max 1600 px)
-          name_t.jpg   small version, for the cards in the shop  (max 640 px)
+      No Cloudinary involved. Each photo is shrunk in the browser first.
+      Two files are stored per shirt photo:
+          name.jpg     full size, for the product page and the zoom view,
+                       which opens this exact file with no further limit —
+                       2400px at quality 0.92 so zooming in on stitching
+                       and fabric still looks sharp (was 1600px/0.82,
+                       visibly softer once zoomed)
+          name_t.jpg   small version, 640px, for the cards in the shop
       The bucket and its rules are created once by supabase-foto-opslag.sql. */
   var SS_BUCKET = 'shirt-photos';
-  var SS_FULL_MAX = 1600, SS_THUMB_MAX = 640;
+  var SS_FULL_MAX = 2400, SS_THUMB_MAX = 640;
 
   function ssPublicUrl(path) {
     return SUPABASE.url + '/storage/v1/object/public/' + SS_BUCKET + '/' + path;
@@ -2569,11 +3005,9 @@
     var d = new Date();
     var ym = d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2);
     var id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-    return 'shirts/' + ym + '/' + id;          // ".jpg" / "_t.jpg" are added per file
+    return 'shirts/' + ym + '/' + id;
   }
 
-  // Decode a picked file. createImageBitmap applies the phone's rotation
-  // flag, so portrait photos do not come out sideways.
   function ssDecodeImage(file) {
     function viaImg() {
       return new Promise(function (resolve, reject) {
@@ -2590,7 +3024,6 @@
     return viaImg();
   }
 
-  // Never enlarge: a small original stays small.
   function ssFitSize(w, h, maxSide) {
     var longest = Math.max(w, h);
     if (longest <= maxSide) return { w: w, h: h };
@@ -2604,7 +3037,7 @@
     var canvas = document.createElement('canvas');
     canvas.width = t.w; canvas.height = t.h;
     var ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#ffffff';                 // a transparent PNG must not turn black
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, t.w, t.h);
     ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(src, 0, 0, t.w, t.h);
@@ -2621,7 +3054,6 @@
         'Authorization': 'Bearer ' + authToken,
         'Content-Type': 'image/jpeg',
         'x-upsert': 'false',
-        // the file name is unique, so the browser and the CDN may keep it for a year
         'cache-control': 'max-age=31536000'
       },
       body: blob
@@ -2631,7 +3063,6 @@
     });
   }
 
-  // Turns a raw failure into something you can act on.
   function ssUploadErrorText(e) {
     var m = String((e && e.message) || e);
     if (/Bucket not found|404/i.test(m)) return 'The photo bucket does not exist yet. Run supabase-foto-opslag.sql once in Supabase.';
@@ -2647,7 +3078,6 @@
     var list = Array.prototype.slice.call(files);
     var done = 0, failed = 0, lastError = '';
 
-    // NOTE: the first field is called m-image, not m-image1.
     function slots() {
       var free = [];
       getPhotoFieldIds().forEach(function (id) {
@@ -2668,9 +3098,6 @@
     status.className = 'up-status';
     status.textContent = 'Preparing ' + list.length + ' photo' + (list.length === 1 ? '' : 's') + '...';
 
-    // Three at a time keeps a phone on weak wifi responsive. Each photo
-    // claims its slot before it starts, so the order you picked them in is
-    // the order they end up in, however fast each one finishes.
     var CONCURRENT = 3;
     function one(i) {
       var target = slots()[0];
@@ -2678,11 +3105,10 @@
       var base = ssNewPhotoPath();
       return ssDecodeImage(list[i]).then(function (src) {
         return Promise.all([
-          ssToJpegBlob(src, SS_FULL_MAX, 0.82),
+          ssToJpegBlob(src, SS_FULL_MAX, 0.92),
           ssToJpegBlob(src, SS_THUMB_MAX, 0.80)
         ]).then(function (blobs) {
           if (src.close) src.close();
-          // the small one first: if only one of the two lands, a card still has a picture
           return ssStoragePut(base + '_t.jpg', blobs[1]).then(function () {
             return ssStoragePut(base + '.jpg', blobs[0]);
           });
@@ -2711,11 +3137,10 @@
       return one(mine).then(pump);
     }
     Promise.all(new Array(Math.min(CONCURRENT, list.length)).fill(0).map(pump)).then(function () {
-      // keep the hidden field and the drag-to-reorder strip in step with the fields
       writePhotoUrls(readPhotoUrls());
       refreshPhotoStrip();
       var input = document.getElementById('up-input');
-      if (input) input.value = '';               // picking the same file again must work
+      if (input) input.value = '';
       status.className = failed ? 'up-status err' : 'up-status ok';
       var msg = done + ' photo' + (done === 1 ? '' : 's') + ' uploaded';
       if (failed) msg += ', ' + failed + ' failed: ' + lastError;
@@ -2724,9 +3149,6 @@
     });
   }
 
-  // Wipes all photo slots. The hidden backup field is cleared too — when a
-  // shirt is saved with no photos, the form falls back to that backup, which
-  // would otherwise quietly bring the old, dead links back.
   function ssClearAllPhotos() {
     if (!confirm('Remove all photos from this shirt? You can upload new ones straight after.')) return;
     writePhotoUrls([]);
@@ -2737,7 +3159,6 @@
     if (status) { status.className = 'up-status'; status.textContent = 'Photos removed. Upload the new ones, then Save.'; }
   }
 
-  // Shirts whose photos still point at Cloudinary are offline right now.
   function ssHasOldPhotos(urls) {
     return (urls || []).some(function (u) { return /res\.cloudinary\.com/.test(u || ''); });
   }
@@ -2745,6 +3166,48 @@
     var n = document.getElementById('up-notice');
     if (!n) return;
     n.style.display = ssHasOldPhotos(readPhotoUrls()) ? 'block' : 'none';
+  }
+
+  function ssUploadSitePhoto(slotId, file) {
+    if (!file) return;
+    var status = document.getElementById('sp-status-' + slotId);
+    var urlField = document.getElementById('sp-url-' + slotId);
+    var preview = document.getElementById('sp-preview-' + slotId);
+    var copyBtn = document.getElementById('sp-copy-' + slotId);
+    status.className = 'sp-status'; status.textContent = 'Uploading...';
+    copyBtn.disabled = true;
+
+    var base = 'site/' + slotId + '-' + Date.now().toString(36);
+    ssDecodeImage(file).then(function (src) {
+      return ssToJpegBlob(src, 2400, 0.92).then(function (blob) {
+        if (src.close) src.close();
+        return ssStoragePut(base + '.jpg', blob);
+      });
+    }).then(function () {
+      var url = ssPublicUrl(base + '.jpg');
+      urlField.value = url;
+      preview.src = url; preview.style.display = 'inline-block';
+      copyBtn.disabled = false;
+      status.className = 'sp-status ok';
+      status.textContent = 'Uploaded. Tap Copy link, then paste it in the chat with Claude.';
+    }).catch(function (e) {
+      status.className = 'sp-status err';
+      status.textContent = ssUploadErrorText(e);
+      console.error('site photo upload failed:', e);
+    });
+  }
+
+  function ssCopySitePhotoUrl(slotId) {
+    var field = document.getElementById('sp-url-' + slotId);
+    var status = document.getElementById('sp-status-' + slotId);
+    field.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(field.value).catch(function () {});
+    }
+    status.className = 'sp-status ok';
+    status.textContent = ok ? 'Link copied — paste it in the chat with Claude.' : 'Link selected — copy it and paste it in the chat with Claude.';
   }
 
   function ssSuggestTitle() {
