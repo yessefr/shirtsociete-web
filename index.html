@@ -2578,7 +2578,13 @@
     return map.year + '-' + map.month + '-' + map.day;
   }
 
-  var todayEvent = SS_FAIR_DAYS[todayISO()];
+  // Preview without changing anything on your phone: open the site with
+  // ?preview-fair=2026-10-04 added to the link (any date already in
+  // SS_FAIR_DAYS above works). Shows that day's takeover to you only — it
+  // reads the date from the link, not the real clock, so nobody else sees
+  // anything different and nothing needs to be switched back off after.
+  var previewFairDate = new URLSearchParams(window.location.search).get('preview-fair');
+  var todayEvent = SS_FAIR_DAYS[previewFairDate] || SS_FAIR_DAYS[todayISO()];
   window.ssFairDayEvent = todayEvent || null;   // read by the mGoTo/dGoTo gate further down
 
   function fillTakeover() {
