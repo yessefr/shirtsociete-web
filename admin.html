@@ -505,6 +505,10 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
         Site Photos
       </div>
+      <div class="nav-item" id="nav-archive" onclick="switchTab('archive')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Archive
+      </div>
       <div class="nav-item" id="nav-messages" onclick="switchTab('messages')">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         Messages
@@ -520,6 +524,22 @@
 
   <!-- Main -->
   <div class="main-content">
+
+    <!-- ARCHIVE TAB -->
+    <div class="tab-content" id="tab-archive">
+      <div class="page-header">
+        <div>
+          <h1>Archive</h1>
+          <p style="color:#888070;font-size:13px;margin-top:4px;max-width:640px">
+            The private collection shown on the Archive page. Tap a piece to add or remove photos —
+            uploads come straight from your gallery and are live right away. Everything else about a
+            piece (title, club, story) is still edited through SQL, not here.
+          </p>
+        </div>
+      </div>
+      <div id="arc-list"><div class="loading">Loading the archive...</div></div>
+      <div id="arc-editor" style="display:none;margin-top:18px"></div>
+    </div>
 
     <!-- SITE PHOTOS TAB -->
     <div class="tab-content" id="tab-sitephotos">
@@ -2130,6 +2150,7 @@
     if (tab === 'dropsignups') loadDropSignups();
     if (tab === 'messages') loadMessages();
     if (tab === 'sitephotos') ssInitSitePhotosTab();
+    if (tab === 'archive') ssInitArchiveTab();
   }
 
   async function loadMessages() {
@@ -2886,6 +2907,140 @@
       if (e && e.authExpired) { handleAuthExpired(); return; }
       if (root) root.innerHTML = '<div style="padding:40px;text-align:center;color:#e05a4d">Could not load site photos: ' + ssUploadErrorText(e) + '</div>';
       console.error('site photos load failed:', e);
+    }
+  }
+
+  // ── ARCHIVE PHOTOS ──
+  // Same mechanics as Site Photos (resize in the browser, step-down to
+  // avoid banding, store in Supabase, PATCH the database) but targeting
+  // my_collection instead of site_images — one archive piece per row,
+  // identified by its id rather than a fixed slug.
+  var ssArchiveCache = [];
+
+  async function ssInitArchiveTab() {
+    var root = document.getElementById('arc-list');
+    document.getElementById('arc-editor').style.display = 'none';
+    try {
+      ssArchiveCache = await sbFetch('my_collection', '?select=id,title,club,season,images&order=club.asc,season.desc');
+      ssRenderArchiveList();
+    } catch (e) {
+      if (e && e.authExpired) { handleAuthExpired(); return; }
+      if (root) root.innerHTML = '<div style="padding:40px;text-align:center;color:#e05a4d">Could not load the archive: ' + ssUploadErrorText(e) + '</div>';
+      console.error('archive load failed:', e);
+    }
+  }
+
+  function ssRenderArchiveList() {
+    var root = document.getElementById('arc-list');
+    if (!root) return;
+    if (!ssArchiveCache.length) { root.innerHTML = '<div style="padding:30px;color:#888070">No archive pieces yet.</div>'; return; }
+    root.innerHTML = '<div class="sp-list">' + ssArchiveCache.map(function (it) {
+      var n = (it.images || []).length;
+      return '<div class="sp-row">'
+        + '<div class="sp-label">' + [it.title, it.club, it.season].filter(Boolean).join(' · ')
+        +   ' <span class="sp-multi-tag">' + n + (n === 1 ? ' photo' : ' photos') + '</span></div>'
+        + '<div class="sp-body"><button type="button" class="btn btn-secondary" onclick="ssOpenArchiveEditor(\'' + it.id + '\')">Manage photos</button></div>'
+        + '</div>';
+    }).join('') + '</div>';
+  }
+
+  function ssOpenArchiveEditor(id) {
+    var it = ssArchiveCache.filter(function (x) { return x.id === id; })[0];
+    if (!it) return;
+    var panel = document.getElementById('arc-editor');
+    var urls = it.images || [];
+    var thumbs = urls.map(function (u, i) {
+      return '<span class="sp-thumb-wrap"><img class="sp-thumb" src="' + u + '">'
+        + '<button type="button" class="sp-thumb-x" title="Remove this photo" onclick="ssRemoveArchivePhoto(\'' + id + '\',' + i + ')">&times;</button></span>';
+    }).join('');
+    panel.innerHTML = ''
+      + '<div class="sp-row">'
+      +   '<div class="sp-label">' + [it.title, it.club, it.season].filter(Boolean).join(' · ') + '</div>'
+      +   '<div class="sp-thumbs" id="arc-thumbs">' + (thumbs || '<span class="sp-empty">No photo yet</span>') + '</div>'
+      +   '<div class="sp-body">'
+      +     '<input type="file" accept="image/*" multiple id="arc-file" style="display:none" onchange="ssUploadArchivePhotos(\'' + id + '\', this.files)">'
+      +     '<button type="button" class="btn btn-secondary" onclick="document.getElementById(\'arc-file\').click()">Add photos</button>'
+      +     '<button type="button" class="btn btn-secondary" onclick="document.getElementById(\'arc-editor\').style.display=\'none\'">Close</button>'
+      +   '</div>'
+      +   '<div class="sp-status" id="arc-status"></div>'
+      + '</div>';
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  async function ssSaveArchiveImages(id, urls) {
+    var res = await fetch(SUPABASE.url + '/rest/v1/my_collection?id=eq.' + encodeURIComponent(id), {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE.key, 'Authorization': 'Bearer ' + authToken,
+        'Content-Type': 'application/json', 'Prefer': 'return=representation'
+      },
+      body: JSON.stringify({ images: urls })
+    });
+    if (!res.ok) { var body = await res.text(); throw new Error('Supabase ' + res.status + ': ' + body); }
+    var rows = await res.json();
+    if (!rows.length) throw new Error('No archive piece with that id.');
+    var it = ssArchiveCache.filter(function (x) { return x.id === id; })[0];
+    if (it) it.images = urls;
+  }
+
+  async function ssUploadArchivePhotos(id, fileList) {
+    var files = Array.prototype.slice.call(fileList || []);
+    if (!files.length) return;
+    var status = document.getElementById('arc-status');
+    status.className = 'sp-status';
+    status.textContent = 'Uploading ' + files.length + ' photo' + (files.length === 1 ? '' : 's') + '...';
+
+    var uploaded = [], failed = 0, lastError = '';
+    for (var i = 0; i < files.length; i++) {
+      status.textContent = 'Uploading ' + (i + 1) + ' of ' + files.length + '...';
+      try {
+        var base = 'archive/' + id + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        var src = await ssDecodeImage(files[i]);
+        var blob = await ssToJpegBlob(src, 2400, 0.92);
+        if (src.close) src.close();
+        await ssStoragePut(base + '.jpg', blob);
+        uploaded.push(ssPublicUrl(base + '.jpg'));
+      } catch (e) {
+        failed++; lastError = ssUploadErrorText(e);
+        console.error('archive photo upload failed:', e);
+      }
+    }
+
+    if (uploaded.length) {
+      var it = ssArchiveCache.filter(function (x) { return x.id === id; })[0];
+      var newUrls = (it && it.images ? it.images : []).concat(uploaded);
+      try {
+        await ssSaveArchiveImages(id, newUrls);
+      } catch (e) {
+        status.className = 'sp-status err';
+        status.textContent = 'Uploaded, but could not save: ' + ssUploadErrorText(e);
+        return;
+      }
+    }
+
+    ssRenderArchiveList();
+    ssOpenArchiveEditor(id);
+    var status2 = document.getElementById('arc-status');
+    if (status2) {
+      status2.className = failed ? 'sp-status err' : 'sp-status ok';
+      status2.textContent = failed
+        ? (uploaded.length + ' saved, ' + failed + ' failed: ' + lastError)
+        : (uploaded.length + ' photo' + (uploaded.length === 1 ? '' : 's') + ' live on the site now.');
+    }
+  }
+
+  async function ssRemoveArchivePhoto(id, index) {
+    if (!confirm('Remove this photo from the archive piece?')) return;
+    var it = ssArchiveCache.filter(function (x) { return x.id === id; })[0];
+    var urls = (it && it.images ? it.images : []).slice();
+    urls.splice(index, 1);
+    try {
+      await ssSaveArchiveImages(id, urls);
+      ssRenderArchiveList();
+      ssOpenArchiveEditor(id);
+    } catch (e) {
+      alert('Could not remove the photo: ' + ssUploadErrorText(e));
     }
   }
 
