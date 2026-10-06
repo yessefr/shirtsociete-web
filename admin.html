@@ -2830,7 +2830,10 @@
       { slug: 'logo',    label: 'Logo (header, every page)' },
       { slug: 'favicon', label: 'Favicon (browser tab icon)' }
     ]},
-    { section: 'Homepage — hero', items: [
+    { section: 'Homepage — hero on a phone', items: [
+      { slug: 'mobile-hero', label: 'Phone hero — photo behind the video' }
+    ]},
+    { section: 'Homepage — hero (computer only, not shown on a phone)', items: [
       { slug: 'hero-1-base',   label: 'Slide 1 — main photo' },
       { slug: 'hero-1-reveal', label: 'Slide 1 — reveal photo' },
       { slug: 'hero-2-base',   label: 'Slide 2 — main photo' },
@@ -2838,7 +2841,7 @@
       { slug: 'hero-3-base',   label: 'Slide 3 — main photo' },
       { slug: 'hero-3-reveal', label: 'Slide 3 — reveal photo' }
     ]},
-    { section: 'Homepage — scroll effects', items: [
+    { section: 'Homepage — scroll effects (computer only, not shown on a phone)', items: [
       { slug: 'dolly-close', label: 'Camera push-in — frame 1 (wide)' },
       { slug: 'dolly-wide',  label: 'Camera push-in — frame 2 (close up)' },
       { slug: 'sweep-0',  label: 'Shirt sweep — background 1' },
@@ -3044,21 +3047,26 @@
     }
   }
 
+  // Upsert instead of PATCH: a PATCH on a row that does not exist matches
+  // nothing and used to end in "No row for ...", which meant every new spot
+  // needed a line of SQL first. This creates the row if it is missing and
+  // updates it if it is there, so new spots just work.
   async function ssSaveSiteImages(slug, urls) {
-    var res = await fetch(SUPABASE.url + '/rest/v1/site_images?slug=eq.' + encodeURIComponent(slug), {
-      method: 'PATCH',
+    var res = await fetch(SUPABASE.url + '/rest/v1/site_images?on_conflict=slug', {
+      method: 'POST',
       headers: {
         'apikey': SUPABASE.key, 'Authorization': 'Bearer ' + authToken,
-        'Content-Type': 'application/json', 'Prefer': 'return=representation'
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates,return=representation'
       },
-      body: JSON.stringify({ urls: urls, updated_at: new Date().toISOString() })
+      body: JSON.stringify({ slug: slug, urls: urls, updated_at: new Date().toISOString() })
     });
     if (!res.ok) {
       var body = await res.text();
       throw new Error('Supabase ' + res.status + ': ' + body);
     }
     var rows = await res.json();
-    if (!rows.length) throw new Error('No row for "' + slug + '" — run site-images-tabel.sql once in Supabase.');
+    if (!rows.length) throw new Error('The database did not confirm the save for "' + slug + '".');
     ssSiteImagesCache[slug] = urls;
   }
 
