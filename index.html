@@ -2056,6 +2056,48 @@
     .screen#screen-cart.active ~ .drop-alert-fab,
     .screen#screen-checkout.active ~ .drop-alert-fab { display: none; }
 
+    /* ─── ARCHIVE + OUR STORY bands (mobile home) ─── */
+    .m-band {
+      background: #080704; margin: 22px 0 0; padding: 24px 0 22px;
+      border-top: 1px solid rgba(200,169,80,.28); border-bottom: 1px solid rgba(200,169,80,.28);
+    }
+    .m-band-story { background: #0d0b08; border-left: 3px solid #c8a950; }
+    .m-band-head { padding: 0 16px; }
+    .m-band-eyebrow { font-size: 9.5px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; color: #c8a950; margin-bottom: 10px; }
+    .m-band-title {
+      font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 22px; line-height: 1.12;
+      letter-spacing: -.2px; text-transform: uppercase; color: #f5f0e8; margin: 0 0 10px;
+    }
+    .m-band-text { font-size: 13.5px; line-height: 1.7; color: rgba(245,240,232,.64); margin: 0 0 14px; }
+    .m-band-link {
+      background: none; border: none; padding: 4px 0; cursor: pointer; font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #c8a950;
+    }
+    .m-band-row {
+      display: flex; gap: 10px; overflow-x: auto; padding: 18px 16px 2px; scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .m-band-row::-webkit-scrollbar { display: none; }
+    .m-band-card { flex: 0 0 40%; scroll-snap-align: start; cursor: pointer; }
+    .m-band-card-img { aspect-ratio: 3/4; background: #14110b; border: 1px solid rgba(200,169,80,.3); border-radius: 3px; overflow: hidden; }
+    .m-band-card-img img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .m-band-card-title { font-size: 12px; font-weight: 600; line-height: 1.35; color: #f5f0e8; margin-top: 8px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .m-band-card-meta { font-size: 10.5px; color: rgba(245,240,232,.5); margin-top: 2px; }
+
+    /* ─── PRODUCT PAGE (mobile): big edge-to-edge photo, swipe, dots ─── */
+    @media (max-width: 767px) {
+      #m-detail-gallery { padding: 0 !important; }
+      #m-detail-gallery .gallery-arrow { display: none; }
+      #m-detail-main-img { border-radius: 0 !important; padding: 0 !important; aspect-ratio: 4/5 !important; }
+      .m-dots { position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px; pointer-events: none; }
+      .m-dots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(245,240,232,.45); transition: width .2s, background .2s; }
+      .m-dots i.on { width: 18px; background: #c8a950; }
+      #m-detail-thumbs { flex-wrap: nowrap !important; overflow-x: auto; padding: 0 16px; scrollbar-width: none; }
+      #m-detail-thumbs::-webkit-scrollbar { display: none; }
+      #m-detail-thumbs img { flex-shrink: 0; }
+    }
+
     /* ─── PINNED BUY BAR (mobile product) ─── */
     .m-buybar {
       position: fixed; left: 0; right: 0; bottom: 64px; z-index: 150;
@@ -2521,9 +2563,11 @@
     if (!img || img.getAttribute('data-ss-done')) return;
     img.setAttribute('data-ss-done', '1');
     var t = document.createElement('span');
+    t.className = 'ss-logo-text';
     t.textContent = 'Shirt Soci\u00e9t\u00e9';
     t.style.cssText = "font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:22px;letter-spacing:.3px;color:#c8a950;white-space:nowrap;line-height:1";
-    img.replaceWith(t);
+    img.style.display = 'none';          // hidden, not removed: the real logo can still come back
+    img.parentNode.insertBefore(t, img.nextSibling);
   };
 })();
 </script>
@@ -2769,6 +2813,29 @@
   <div class="m-section-label">Match Worn / Issued</div>
   <div id="m-matchworn-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
 
+  <!-- ═══ ARCHIVE + OUR STORY (mobile home) ═══
+       Two dark bands in the same shape as the fairs block above them: a flag,
+       a short bold heading, two lines of text, one link. Fixed dark/gold
+       colours, so they read the same in either theme. -->
+  <section class="m-band" id="m-band-archive">
+    <div class="m-band-head">
+      <div class="m-band-eyebrow">The Archive</div>
+      <h2 class="m-band-title">Pieces we keep</h2>
+      <p class="m-band-text">Some shirts simply mean too much to let go. Browse our private collection, each piece with its own story.</p>
+      <button type="button" class="m-band-link" onclick="mGoTo('archive')">See the archive &rsaquo;</button>
+    </div>
+    <div class="m-band-row" id="m-band-archive-row" style="display:none"></div>
+  </section>
+
+  <section class="m-band m-band-story" id="m-band-story">
+    <div class="m-band-head">
+      <div class="m-band-eyebrow">Our Story</div>
+      <h2 class="m-band-title">A collector&rsquo;s eye, a curator&rsquo;s touch</h2>
+      <p class="m-band-text">We find, verify and document vintage and match worn shirts, and we sell them with the evidence attached.</p>
+      <button type="button" class="m-band-link" onclick="mGoTo('about')">Read our story &rsaquo;</button>
+    </div>
+  </section>
+
   <section class="ss-reels-sec" id="m-reels-sec" style="display:none">
     <div class="ss-reels-head">
       <div>
@@ -2846,6 +2913,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
       <img id="m-detail-main-img" src="" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;border-radius:2px;background:var(--surf-2);padding:12px">
+      <div class="m-dots" id="m-detail-dots"></div>
       <button class="gallery-arrow next" onclick="event.stopPropagation();galleryNav('m',1)" style="right:8px">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
       </button>
@@ -4332,6 +4400,110 @@
   const dbHost = 'https://hzwmjbsfmdkmaoikezoc.supabase.co';
   const dbToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6d21qYnNmbWRrbWFvaWtlem9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTczNDIsImV4cCI6MjA5MzEzMzM0Mn0.5-ToRrtP3bhkN_qmSMmLM5YXQgE5kWoE0wVpsksqIMs';
 
+  // ── SITE IMAGES ──
+  // The hero, the fair cards, the Our Story galleries, the logo and the
+  // favicon used to be fixed Cloudinary links written into this file. They
+  // now live in the site_images table, which the admin's Site Photos page
+  // writes to directly; this reads it on every visit and fills in whatever
+  // is there. An empty slot leaves the existing fallback untouched.
+  //
+  // NOTE: EVENT_GALLERIES is a top-level `const`, and a top-level const is
+  // NOT a property of window — so every check below uses `typeof X`, never
+  // `window.X`. (SS_FAIRS is a `var`, but is treated the same way.)
+  var ssSiteImagesReady = false;
+
+  function ssSetBg(el, url) {
+    if (!el || !url) return;
+    var current = el.style.backgroundImage || '';
+    var rest = current.replace(/^url\([^)]*\)\s*/, '');   // keep what follows the url(): position, size, gradients
+    el.style.backgroundImage = "url('" + url + "') " + rest;
+  }
+
+  async function ssLoadAndApplySiteImages() {
+    try {
+      var res = await fetch(dbHost + '/rest/v1/site_images?select=slug,urls', {
+        headers: { apikey: dbToken, Authorization: 'Bearer ' + dbToken }
+      });
+      if (!res.ok) throw new Error('site_images fetch failed: ' + res.status);
+      var rows = await res.json();
+      var bySlug = {};
+      rows.forEach(function (r) { if (r.urls && r.urls.length) bySlug[r.slug] = r.urls; });
+
+      // logo: every <img data-ss-logo>. If the old image already failed and the
+      // text fallback took its place, bring the image back and drop the text.
+      if (bySlug.logo) {
+        document.querySelectorAll('img[data-ss-logo]').forEach(function (img) {
+          img.removeAttribute('data-ss-done');
+          img.style.display = '';
+          img.src = bySlug.logo[0];
+          var t = img.nextElementSibling;
+          if (t && t.classList && t.classList.contains('ss-logo-text')) t.remove();
+        });
+      }
+      // favicon: the type attribute says svg on the built-in one; drop it so a jpg works
+      if (bySlug.favicon) {
+        document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach(function (l) {
+          l.removeAttribute('type');
+          l.href = bySlug.favicon[0];
+        });
+      }
+      // phone hero: the photo behind the video (.m-hero-bg). Its URL sits in the
+      // stylesheet as a shorthand with position and size, so only the image
+      // is replaced inline and the rest of the shorthand keeps applying.
+      if (bySlug['mobile-hero']) ssSetBg(document.querySelector('.m-hero-bg'), bySlug['mobile-hero'][0]);
+      // hero slides: the carousel reads these data-* attributes when it starts
+      var slides = document.querySelectorAll('.cin-slide');
+      [1, 2, 3].forEach(function (n) {
+        var slide = slides[n - 1];
+        if (!slide) return;
+        if (bySlug['hero-' + n + '-base'])   slide.setAttribute('data-base',   bySlug['hero-' + n + '-base'][0]);
+        if (bySlug['hero-' + n + '-reveal']) slide.setAttribute('data-reveal', bySlug['hero-' + n + '-reveal'][0]);
+      });
+      // dolly + sweep backgrounds
+      if (bySlug['dolly-close']) ssSetBg(document.getElementById('dolly-close'), bySlug['dolly-close'][0]);
+      if (bySlug['dolly-wide'])  ssSetBg(document.getElementById('dolly-wide'),  bySlug['dolly-wide'][0]);
+      if (bySlug['sweep-0']) ssSetBg(document.getElementById('swbg0'), bySlug['sweep-0'][0]);
+      if (bySlug['sweep-1']) ssSetBg(document.getElementById('swbg1'), bySlug['sweep-1'][0]);
+
+      // fair cards: patch the photo, then render again so the card shows it
+      if (typeof SS_FAIRS !== 'undefined') {
+        var fairSlugs = { Hamburg: 'fair-hamburg', Leipzig: 'fair-leipzig' };
+        SS_FAIRS.forEach(function (f) {
+          var slug = fairSlugs[f.city];
+          if (slug && bySlug[slug]) f.photo = bySlug[slug][0];
+        });
+        if (typeof renderFairs === 'function') renderFairs();
+      }
+      // Our Story galleries
+      if (typeof EVENT_GALLERIES !== 'undefined') ssApplyGalleryPhotos(bySlug);
+    } catch (e) {
+      console.error('site images: could not load, keeping existing fallbacks', e);
+    } finally {
+      ssSiteImagesReady = true;
+    }
+  }
+
+  // EVENT_GALLERIES[city].photos is a flat list of URL strings: photos and the
+  // few videos mixed together. Videos are not part of this system yet, so they
+  // are kept as they are; only the photo URLs are replaced.
+  function ssIsVideoUrl(u) {
+    return /\/video\/upload\//.test(u) || /\.(mp4|mov|webm)(\?|$)/i.test(u);
+  }
+  function ssApplyGalleryPhotos(bySlug) {
+    var map = {
+      frankfurt: 'gallery-frankfurt', hamburg: 'gallery-hamburg-feb',
+      cologne: 'gallery-cologne', dusseldorf: 'gallery-dusseldorf'
+    };
+    Object.keys(map).forEach(function (city) {
+      var newPhotos = bySlug[map[city]];
+      var entry = EVENT_GALLERIES[city];
+      if (!newPhotos || !entry || !entry.photos) return;
+      entry.photos = newPhotos.concat(entry.photos.filter(ssIsVideoUrl));
+    });
+  }
+
+  var ssSiteImagesPromise = ssLoadAndApplySiteImages();
+
   // ── STATE ──
   let allShirts = [];
   let cart = JSON.parse(localStorage.getItem('ss_cart') || '[]');
@@ -4391,9 +4563,38 @@
   }
   function getThumb(shirt, w) { return cldSize(getImg(shirt), w || 400); }
 
+
+  // Archive teaser on the mobile home: up to eight pieces from the archive,
+  // reusing fetchArchive() so it costs nothing extra once the Archive page has
+  // loaded (and vice versa). Pieces whose first photo is still on the dead
+  // Cloudinary host are left out, so the row never shows a run of placeholders;
+  // if none have a working photo yet, the row stays hidden and the band is
+  // just its heading and link.
+  function renderHomeTeasers() {
+    var row = document.getElementById('m-band-archive-row');
+    if (!row || typeof fetchArchive !== 'function') return;
+    function esc(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    fetchArchive(function (items) {
+      var list = (items || []).filter(function (it) {
+        var u = it.images && it.images[0];
+        return u && !/res\.cloudinary\.com/.test(u);
+      }).slice(0, 8);
+      if (!list.length) { row.style.display = 'none'; row.innerHTML = ''; return; }
+      row.style.display = '';
+      row.innerHTML = list.map(function (it) {
+        return '<div class="m-band-card" onclick="openArchiveItem(\'' + esc(it.id) + '\')">'
+          + '<div class="m-band-card-img"><img src="' + esc(cldSize(it.images[0], 500)) + '" alt="' + esc(it.title) + '" loading="lazy"></div>'
+          + '<div class="m-band-card-title">' + esc(it.title) + '</div>'
+          + '<div class="m-band-card-meta">' + esc([it.club, it.season].filter(Boolean).join(' \u00b7 ')) + '</div>'
+          + '</div>';
+      }).join('');
+    });
+  }
+
   function renderAll() {
     renderMobileHome();
     renderMobileGrid();
+    renderHomeTeasers();
     renderDesktopHome();
     buildShopFilterOptions();
     renderDesktopGrid();
@@ -6505,6 +6706,40 @@
   }
   function dGoBack() { dGoTo(dPrevScreen); }
 
+
+  // ── Product page on a phone: swipe between photos, dots show where you are ──
+  // Reuses galleryNav() and currentImages/currentImgIndex exactly as they are,
+  // so the arrows on desktop, the thumbnails and the zoom view all keep working.
+  // The dots follow the photo itself: whenever its src changes, they repaint.
+  (function () {
+    var img = document.getElementById('m-detail-main-img');
+    var dots = document.getElementById('m-detail-dots');
+    if (!img || !dots) return;
+
+    function paint() {
+      var n = (typeof currentImages !== 'undefined' && currentImages) ? currentImages.length : 0;
+      if (n < 2) { dots.innerHTML = ''; return; }
+      var html = '';
+      for (var i = 0; i < n; i++) html += '<i' + (i === currentImgIndex ? ' class="on"' : '') + '></i>';
+      dots.innerHTML = html;
+    }
+    new MutationObserver(paint).observe(img, { attributes: true, attributeFilter: ['src'] });
+
+    var x0 = null, y0 = null;
+    var box = img.parentNode;
+    box.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) { x0 = null; return; }
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+    }, { passive: true });
+    box.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+      x0 = null;
+      // a clear sideways swipe only; a mostly vertical move is the page scrolling
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) galleryNav('m', dx < 0 ? 1 : -1);
+    }, { passive: true });
+  })();
+
   // ── FAIR DAY GATE ──
   // On a fair day only Our Story and the Archive are allowed through; every
   // other destination shows the full takeover instead of actually
@@ -7740,6 +7975,8 @@
       // made the whole page feel like it was dragging. Phones skip it.
       if (window.innerWidth < 768) return;
       if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return setTimeout(boot, 80);
+      // also wait for the hero/dolly/sweep photos from the database
+      if (!ssSiteImagesReady) return setTimeout(boot, 80);
       gsap.registerPlugin(ScrollTrigger);
 
       // Page scrolls via window (.desktop-main has no own overflow),
