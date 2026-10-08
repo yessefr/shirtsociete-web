@@ -2849,7 +2849,14 @@
     ]},
     { section: 'Fairs — upcoming (homepage card)', items: [
       { slug: 'fair-hamburg', label: 'Hamburg — STANDS, 26-09', multi: true },
-      { slug: 'fair-leipzig', label: 'Leipzig — Vintage Fußballbörse, 04-10', multi: true }
+      { slug: 'fair-leipzig', label: 'Leipzig — Vintage Fußballbörse, 04-10', multi: true },
+      { slug: 'fair-essen',   label: 'Essen — Vintage Fußballbörse, 14-11', multi: true }
+    ]},
+    { section: 'Journal — article photos (then press Generate journal, and upload the journal folder)', items: [
+      { slug: 'journal-netherlands-88',      label: 'Netherlands 88 (landscape/wide)' },
+      { slug: 'journal-match-worn-guide',    label: 'Match worn guide (portrait)' },
+      { slug: 'journal-vintage-fussballborse', label: 'Vintage Fußballbörse (portrait)' },
+      { slug: 'journal-how-to-collect',      label: 'How to collect (landscape)' }
     ]},
     { section: 'Our Story — fair galleries', items: [
       { slug: 'gallery-frankfurt',      label: 'Frankfurt (04.07.2026)', multi: true },
@@ -3822,6 +3829,16 @@
           };
         }).filter(function(p) { return p.id && p.title; });
 
+        // Photos uploaded under Site Photos > Journal win over the one in journal-data.html
+        return fetch(SUPABASE.url + '/rest/v1/site_images?select=slug,urls&slug=like.journal-*', {
+          headers: { apikey: SUPABASE.key, Authorization: 'Bearer ' + SUPABASE.key }
+        }).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; })
+        .then(function (rows) {
+        rows.forEach(function (r) {
+          var id = String(r.slug).replace(/^journal-/, '');
+          posts.forEach(function (p) { if (p.id === id && r.urls && r.urls[0]) p.image = r.urls[0]; });
+        });
+
         posts.forEach(function(p, idx) {
           var url = base + '/journal/' + p.id + '/';
           var prev = posts[idx - 1], next = posts[idx + 1];
@@ -3936,6 +3953,7 @@
           document.getElementById('sitemap-output').value = made.join('\n');
           box.classList.add('open');
           showToast(made.length + ' journal pages generated', 'success');
+        });
         });
       })
       .catch(function(e) {
