@@ -348,5 +348,21 @@
   window.location.replace(target);
 })();
 </script>
+<script>
+// Journal photos uploaded in admin (Site Photos > Journal) replace the card photos.
+(function () {
+  var host = 'https://hzwmjbsfmdkmaoikezoc.supabase.co';
+  var key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6d21qYnNmbWRrbWFvaWtlem9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTczNDIsImV4cCI6MjA5MzEzMzM0Mn0.5-ToRrtP3bhkN_qmSMmLM5YXQgE5kWoE0wVpsksqIMs';
+  fetch(host + '/rest/v1/site_images?select=slug,urls&slug=like.journal-*', { headers: { apikey: key, Authorization: 'Bearer ' + key } })
+    .then(function (r) { return r.ok ? r.json() : []; })
+    .then(function (rows) {
+      rows.forEach(function (r) {
+        var id = String(r.slug).replace(/^journal-/, '');
+        var img = document.querySelector('a.post-card[href="/journal/' + id + '/"] .post-img img');
+        if (img && r.urls && r.urls[0]) img.src = r.urls[0];
+      });
+    }).catch(function () {});
+})();
+</script>
 </body>
 </html>
