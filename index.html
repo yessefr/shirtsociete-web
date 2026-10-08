@@ -1828,10 +1828,11 @@
          the top, the story moves to the bottom. Direct children only, and
          #m-archive-intro/-filters/-grid are the three real direct children
          of #screen-archive, so this is unambiguous. */
-      #screen-archive { display: flex; flex-direction: column; }
-      #screen-archive > #m-archive-filters { order: 0; }
-      #screen-archive > #m-archive-grid    { order: 1; }
-      #screen-archive > #m-archive-intro   { order: 2; margin-top: 20px; }
+      #screen-archive.active { display: flex; flex-direction: column; }
+      #screen-archive:not(.active) { display: none; }
+      #screen-archive > #m-archive-intro   { order: 0; }
+      #screen-archive > #m-archive-filters { order: 1; }
+      #screen-archive > #m-archive-grid    { order: 2; }
     }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -1979,26 +1980,18 @@
        what it is, then two cards side by side. Same idea as the app's Legend
        Collection band, in gold and near-black instead of yellow. */
     .m-fairs {
-      background: linear-gradient(165deg, #c8a950 0%, #b08d3e 100%);
-      padding: 24px 0 22px; margin: 30px 0;
+      background: #0a0905;
+      padding: 28px 0 26px; margin: 30px 0;
     }
-    /* On gold, EVERY colour has to be restated. Anything still using a gold
-       or a muted grey disappears into the background — that is what made the
-       text unreadable. These are all deliberately near-black. */
-    .m-fairs-flag  { background: #14120b; color: #c8a950; }
-    .m-fairs-title { color: #14120b; }
-    .m-fairs-sub   { color: rgba(20,18,11,.8); }
-    .m-fairs-link  { color: #14120b; font-weight: 800; border-bottom: 1px solid rgba(20,18,11,.4); padding-bottom: 2px; }
+    .m-fairs-flag  { background: #c8a950; color: #14120b; }
+    .m-fairs-title { color: #f5f0e8; }
+    .m-fairs-sub   { color: rgba(245,240,232,.72); }
+    .m-fairs-link  { color: #c8a950; font-weight: 800; border-bottom: 1px solid rgba(200,169,80,.5); padding-bottom: 2px; }
     .m-fair-date   { background: #c8a950; color: #14120b; }
     .m-fair-city   { color: #f5f0e8; }
-    .m-fair-name   { color: rgba(245,240,232,.62); }
+    .m-fair-name   { color: rgba(245,240,232,.68); }
     .m-fair-go     { color: #c8a950; }
-    /* NOTE: this used to be a second, later definition of .m-fairs-flag/
-       -title/-sub/-link that duplicated the selectors above with the wrong
-       colours (gold-on-gold, light text on gold) — later in the file wins
-       the cascade, so it silently undid the near-black fix above it every
-       time. Merged into one definition per selector so this cannot happen
-       again: layout comes from here, colour comes from the block above. */
+    .m-fairs-grid:has(.m-fair:only-child) { grid-template-columns: 1fr; }
     .m-fairs-head { padding: 0 16px 16px; }
     .m-fairs-flag {
       display: inline-block;
@@ -2087,6 +2080,19 @@
     .m-menu-foot { margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(200,169,80,.25); display: flex; flex-direction: column; }
     .m-menu-foot a { color: #c8a950; }
     @media (min-width: 768px) { .m-menu, .m-menu-overlay { display: none; } .mobile-header { display: none !important; } }
+
+
+    /* Mobile homepage in white (the dark blocks - hero, fairs, bands - keep their own colours) */
+    @media (max-width: 767px) {
+      #screen-home {
+        --black: #ffffff; --white: #14120b; --white-rgb: 20,18,11; --cream: #14120b;
+        --grey: #f3f1ec; --grey-mid: #d9d3c4; --surf-1: #f6f4ef; --surf-2: #e8e4da;
+        --line: #d9d3c4; --line-soft: #cfc7b3; --text-muted: #6f6858; --text-muted-2: #4a4538;
+        --gold: #8f6f1a;
+        background: #ffffff; color: #14120b;
+      }
+      #screen-home .m-fairs, #screen-home .m-band-story { --gold: #c8a950; }
+    }
 
     /* ─── ARCHIVE + OUR STORY bands (mobile home) ─── */
     .m-band {
@@ -3377,8 +3383,8 @@
 
     <!-- caption that lands at the end of the pull-back -->
     <div id="dolly-cap" style="position:absolute;bottom:52px;left:50%;transform:translate(-50%,16px);text-align:center;z-index:6;opacity:0">
-      <div style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:7px">Vintage Fußballbörse · Frankfurt</div>
-      <div style="font-size:13px;font-weight:300;color:rgba(var(--on-photo-rgb),.65)">Our stand, 4 July 2026</div>
+      <div style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:7px">Vintage Fußballbörse · 04-10-2026</div>
+      <div style="font-size:13px;font-weight:300;color:rgba(var(--on-photo-rgb),.65)">Felsenkeller, Leipzig</div>
     </div>
 
     <!-- progress -->
@@ -3398,12 +3404,12 @@
      destinations the old static banner pointed to. -->
 <div class="ss-ticker">
   <div class="ss-ticker-track">
-    <span class="ss-ticker-item"><i></i><a href="/?p=about" onclick="dGoTo('about');return false;">A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026</a> <b>&middot;</b> <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener">@vintagefussball</a></span>
-    <span class="ss-ticker-item"><i></i><a href="/?p=about" onclick="dGoTo('about');return false;">A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026</a> <b>&middot;</b> <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener">@vintagefussball</a></span>
-    <span class="ss-ticker-item"><i></i><a href="/?p=about" onclick="dGoTo('about');return false;">A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026</a> <b>&middot;</b> <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener">@vintagefussball</a></span>
-    <span class="ss-ticker-item" aria-hidden="true"><i></i>A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026 <b>&middot;</b> @vintagefussball</span>
-    <span class="ss-ticker-item" aria-hidden="true"><i></i>A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026 <b>&middot;</b> @vintagefussball</span>
-    <span class="ss-ticker-item" aria-hidden="true"><i></i>A new fair incoming &middot; Vintage Fu&szlig;ballb&ouml;rse Leipzig 04/10/2026 <b>&middot;</b> @vintagefussball</span>
+    <span class="ss-ticker-item"><i></i><a href="/?p=about" onclick="dGoTo('about');return false;">Next fair &middot; Vintage Fu&szlig;ballb&ouml;rse Essen 14/11/2026</a> <b>&middot;</b> <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener">@vintagefussball</a></span>
+    <span class="ss-ticker-item"><i></i><a href="/?p=about" onclick="dGoTo('about');return false;">Next fair &middot; Vintage Fu&szlig;ballb&ouml;rse Essen 14/11/2026</a> <b>&middot;</b> <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener">@vintagefussball</a></span>
+    <span class="ss-ticker-item"><i></i><a href="/?p=about" onclick="dGoTo('about');return false;">Next fair &middot; Vintage Fu&szlig;ballb&ouml;rse Essen 14/11/2026</a> <b>&middot;</b> <a href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener">@vintagefussball</a></span>
+    <span class="ss-ticker-item" aria-hidden="true"><i></i>Next fair &middot; Vintage Fu&szlig;ballb&ouml;rse Essen 14/11/2026 <b>&middot;</b> @vintagefussball</span>
+    <span class="ss-ticker-item" aria-hidden="true"><i></i>Next fair &middot; Vintage Fu&szlig;ballb&ouml;rse Essen 14/11/2026 <b>&middot;</b> @vintagefussball</span>
+    <span class="ss-ticker-item" aria-hidden="true"><i></i>Next fair &middot; Vintage Fu&szlig;ballb&ouml;rse Essen 14/11/2026 <b>&middot;</b> @vintagefussball</span>
     </div>
 </div>
 
@@ -4514,10 +4520,11 @@
 
       // fair cards: patch the photo, then render again so the card shows it
       if (typeof SS_FAIRS !== 'undefined') {
-        var fairSlugs = { Hamburg: 'fair-hamburg', Leipzig: 'fair-leipzig' };
+        var fairSlugs = { Hamburg: 'fair-hamburg', Leipzig: 'fair-leipzig', Essen: 'fair-essen' };
         SS_FAIRS.forEach(function (f) {
           var slug = fairSlugs[f.city];
-          if (slug && bySlug[slug]) f.photo = bySlug[slug][0];
+          var u = slug && (bySlug[slug] || (f.city === 'Essen' ? bySlug['fair-leipzig'] : null));
+          if (u) f.photo = u[0];
         });
         if (typeof renderFairs === 'function') renderFairs();
       }
@@ -4684,8 +4691,11 @@
     href:  'about'          // 'about' opent Our Story; of een volledige URL
   };
 
-  var SS_FAIRS = [
+  // iso = the day of the fair. A fair disappears from the list on its own
+  // the day after (Europe/Amsterdam), so nothing needs removing by hand.
+  var SS_FAIRS_ALL = [
     {
+      iso:   '2026-09-26',
       date:  '26-09',
       city:  'Hamburg',
       name:  'STANDS \u00b7 Millerntor-Stadion, St. Pauli',
@@ -4694,14 +4704,29 @@
       photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,g_auto,q_auto,f_auto/v1788117168/iZ0QS6sLgS5DihDx8mA8QxhiA_xk90sr.png'
     },
     {
+      iso:   '2026-10-04',
       date:  '04-10',
       city:  'Leipzig',
+      name:  'Vintage Fu\u00dfballb\u00f6rse \u00b7 Felsenkeller',
+      go:    '@vintagefussball',
+      href:  'https://www.instagram.com/vintagefussball/',
+      photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,g_auto,q_auto,f_auto/v1785782587/ChatGPT_Image_3_aug_2026_20_39_38_nrsnwk.png'
+    },
+    {
+      iso:   '2026-11-14',
+      date:  '14-11',
+      city:  'Essen',
       name:  'Vintage Fu\u00dfballb\u00f6rse',
       go:    '@vintagefussball',
       href:  'https://www.instagram.com/vintagefussball/',
       photo: 'https://res.cloudinary.com/dinpfdojh/image/upload/w_600,h_750,c_fill,g_auto,q_auto,f_auto/v1785782587/ChatGPT_Image_3_aug_2026_20_39_38_nrsnwk.png'
     }
   ];
+  var SS_FAIRS = (function () {
+    var today = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Amsterdam' });
+    var up = SS_FAIRS_ALL.filter(function (f) { return f.iso >= today; });
+    return up.length ? up : SS_FAIRS_ALL.slice(-1);
+  })();
 
   function renderFairs() {
     var el = document.getElementById('m-fairs-grid');
