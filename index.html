@@ -1575,7 +1575,7 @@
 
     /* ─── TOAST ─── */
     .toast {
-      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
       background: var(--gold); color:var(--ink);
       padding: 12px 24px; border-radius: 2px;
       font-size: 13px; font-weight: 500;
@@ -2060,6 +2060,34 @@
     .topbar-logo .ss-wordmark { font-size: 31px; color: var(--gold); text-shadow: 0 1px 6px rgba(0,0,0,.55); }
     .mobile-logo .ss-wordmark { font-size: 25px; color: #c8a950; }
 
+
+    /* ─── Side menu + minimal header (Sense of Goal style): no bottom bar ─── */
+    .tab-bar { display: none !important; }
+    .mobile-header { display: grid !important; grid-template-columns: 1fr auto 1fr; align-items: center; }
+    .m-burger { justify-self: start; background: none; border: none; cursor: pointer; width: 44px; height: 44px; display: flex; flex-direction: column; justify-content: center; gap: 7px; padding: 0 6px 0 0; }
+    .m-burger span { display: block; height: 1.5px; width: 30px; background: #f5f0e8; }
+    .m-bag { justify-self: end; background: none; border: none; cursor: pointer; color: #f5f0e8; font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 12px; letter-spacing: 1.6px; text-transform: uppercase; padding: 12px 0 12px 8px; }
+    .m-bag span { color: var(--gold); }
+    .drop-alert-fab { bottom: calc(18px + env(safe-area-inset-bottom)); }
+    .screen { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+    .m-foot { padding-bottom: 40px; }
+    .m-menu-overlay { position: fixed; inset: 0; z-index: 900; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+    .m-menu { position: fixed; top: 0; bottom: 0; left: 0; width: min(86vw, 360px); z-index: 910; background: #0a0905; color: #f5f0e8; transform: translateX(-102%); transition: transform .32s cubic-bezier(.22,.8,.2,1); display: flex; flex-direction: column; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: calc(14px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom)); }
+    body.m-menu-open .m-menu { transform: none; }
+    body.m-menu-open .m-menu-overlay { opacity: 1; pointer-events: auto; }
+    .m-menu-top { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid rgba(200,169,80,.25); }
+    .m-menu-top .ss-wordmark { font-size: 24px; color: #c8a950; }
+    .m-menu-close { background: none; border: none; color: #f5f0e8; font-size: 34px; line-height: 1; cursor: pointer; padding: 0 4px; }
+    .m-menu-main { display: flex; flex-direction: column; padding: 18px 0 8px; }
+    .m-menu-main a { font-family: 'Playfair Display', serif; font-size: 27px; color: #f5f0e8; text-decoration: none; padding: 11px 0; border-bottom: 1px solid rgba(245,240,232,.08); }
+    .m-menu-main a:active { color: #c8a950; }
+    .m-menu-sub { display: flex; flex-direction: column; padding: 14px 0; }
+    .m-menu-sub a, .m-menu-sub button, .m-menu-foot a, .m-menu-foot button { background: none; border: none; text-align: left; font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(245,240,232,.72); text-decoration: none; padding: 9px 0; cursor: pointer; }
+    .m-menu-sub a:active, .m-menu-sub button:active { color: #c8a950; }
+    .m-menu-foot { margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(200,169,80,.25); display: flex; flex-direction: column; }
+    .m-menu-foot a { color: #c8a950; }
+    @media (min-width: 768px) { .m-menu, .m-menu-overlay { display: none; } .mobile-header { display: none !important; } }
+
     /* ─── ARCHIVE + OUR STORY bands (mobile home) ─── */
     .m-band {
       background: #080704; margin: 22px 0 0; padding: 24px 0 22px;
@@ -2104,7 +2132,7 @@
 
     /* ─── PINNED BUY BAR (mobile product) ─── */
     .m-buybar {
-      position: fixed; left: 0; right: 0; bottom: 64px; z-index: 150;
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 150;
       display: none; align-items: center; gap: 12px;
       padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
       background: rgba(10,9,5,.92);
@@ -2254,6 +2282,7 @@
        Center and consumer law both expect them to be one tap away. */
     /* bottom padding clears the fixed tab bar so the legal line stays readable */
     .m-foot { padding: 34px 20px 96px; border-top: 1px solid var(--surf-2); background: var(--surf-1); }
+    body[data-screen="detail"] .m-foot, body[data-screen="cart"] .m-foot, body[data-screen="checkout"] .m-foot { display: none !important; }
     .m-foot-brand { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 20px; margin-bottom: 6px; }
     .m-foot-tag { font-size: 12px; color: var(--text-muted-2); line-height: 1.7; margin-bottom: 22px; }
     .m-foot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 16px; }
@@ -2705,26 +2734,43 @@
      MOBILE LAYOUT
 ══════════════════════════════════════════ -->
 <header class="mobile-header">
-  <!-- Logo left, actions right — the layout every shopping app uses, so the
-       thumb always finds search and the cart in the same corner. -->
+  <button type="button" class="m-burger" onclick="mOpenMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
   <div class="mobile-logo" onclick="mGoTo('home')">
     <span class="ss-wordmark">Shirt Soci&eacute;t&eacute;</span>
   </div>
-
-  <div class="m-head-actions">
-    <button type="button" class="m-head-btn" onclick="mGoTo('shop');setTimeout(function(){var i=document.getElementById('m-search-input');if(i){i.focus();}},80)" aria-label="Search">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    </button>
-    <button type="button" class="m-head-btn" onclick="toggleSiteTheme()" aria-label="Toggle light and dark mode">
-      <svg id="m-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-      <svg id="m-theme-icon-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    </button>
-    <button type="button" class="m-head-btn" onclick="mGoTo('wishlist')" aria-label="Saved">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-      <span class="m-head-badge" id="m-head-wishlist"></span>
-    </button>
-  </div>
+  <button type="button" class="m-bag" onclick="mGoTo('cart')" aria-label="Bag">Bag: <span id="m-head-cart">0</span></button>
 </header>
+
+<!-- SIDE MENU (slides in from the left) -->
+<div class="m-menu-overlay" id="m-menu-overlay" onclick="mCloseMenu()"></div>
+<aside class="m-menu" id="m-menu" aria-hidden="true">
+  <div class="m-menu-top">
+    <span class="ss-wordmark">Shirt Soci&eacute;t&eacute;</span>
+    <button type="button" class="m-menu-close" onclick="mCloseMenu()" aria-label="Close menu">&times;</button>
+  </div>
+  <nav class="m-menu-main">
+    <a href="/?p=shop" onclick="mMenuGo(function(){mGoTo('shop')});return false;">Shop</a>
+    <a href="/?p=shop&cat=match_worn" onclick="mMenuGo(function(){mShopCategory('match_worn')});return false;">Match Worn / Issued</a>
+    <a href="/?p=archive" onclick="mMenuGo(function(){mGoTo('archive')});return false;">Archive</a>
+    <a href="/?p=about" onclick="mMenuGo(function(){mGoTo('about')});return false;">Our Story</a>
+    <a href="/blog.html">Journal</a>
+  </nav>
+  <nav class="m-menu-sub">
+    <a href="/?p=shop&cat=clubs" onclick="mMenuGo(function(){mShopCategory('clubs')});return false;">Clubs</a>
+    <a href="/?p=shop&cat=national" onclick="mMenuGo(function(){mShopCategory('national')});return false;">International shirts</a>
+    <a href="/collections/">Collections</a>
+    <a href="/sell-your-shirt.html">Sell your shirt</a>
+    <a href="/want-list.html">Want list</a>
+    <a href="/faq.html">FAQ</a>
+    <a href="/?p=wishlist" onclick="mMenuGo(function(){mGoTo('wishlist')});return false;">Saved shirts</a>
+    <button type="button" onclick="mMenuGo(function(){mGoTo('shop');setTimeout(function(){var i=document.getElementById('m-search-input');if(i)i.focus();},80)})">Search</button>
+    <button type="button" onclick="toggleSiteTheme()">Light / dark</button>
+  </nav>
+  <div class="m-menu-foot">
+    <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a>
+    <button type="button" onclick="mMenuGo(openContactModal)">info@shirtsociete.com</button>
+  </div>
+</aside>
 
 <!-- MOBILE HOME -->
 <div id="screen-home" class="screen active">
@@ -3055,55 +3101,6 @@
   </div>
 </div>
 
-<!-- MOBILE FOOTER -->
-<footer class="m-foot">
-  <div class="m-foot-brand">Shirt Soci&eacute;t&eacute;</div>
-  <div class="m-foot-tag">Vintage &amp; match worn football shirts. Every piece one of one.</div>
-
-  <div class="m-foot-grid">
-    <div class="m-foot-col">
-      <div class="m-foot-head">Shop</div>
-      <a href="/?p=shop&cat=match_worn" onclick="mGoTo('shop');mSetFilter('match_worn');return false;">Match Worn / Issued</a>
-      <a href="/?p=shop&cat=clubs" onclick="mGoTo('shop');mSetFilter('clubs');return false;">Clubs</a>
-      <a href="/?p=shop&cat=national" onclick="mGoTo('shop');mSetFilter('national');return false;">International Shirts</a>
-      <a href="/collections/">Collections</a>
-      <a href="/?p=archive" onclick="mGoTo('archive');return false;">Archive</a>
-    </div>
-
-    <div class="m-foot-col">
-      <div class="m-foot-head">Shirt Soci&eacute;t&eacute;</div>
-      <a href="/?p=about" onclick="mGoTo('about');return false;">Our Story</a>
-      <a href="/blog.html">Journal</a>
-      <a href="/sell-your-shirt.html">Sell your shirt</a>
-      <a href="/want-list.html">Want list</a>
-      <a href="/faq.html">FAQ</a>
-    </div>
-
-    <div class="m-foot-col">
-      <div class="m-foot-head">Legal</div>
-      <a href="/shipping.html">Shipping policy</a>
-      <a href="/refund.html">Refund policy</a>
-      <a href="/terms.html">Terms of service</a>
-      <a href="/privacy.html">Privacy policy</a>
-      <a href="/legal.html">Legal notice</a>
-      <button type="button" onclick="ssOpenCookieSettings()">Cookie preferences</button>
-    </div>
-
-    <div class="m-foot-col">
-      <div class="m-foot-head">Contact</div>
-      <button type="button" onclick="openContactModal()">info@shirtsociete.com</button>
-      <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a>
-      <a href="/de/vintage-fussballtrikots.html" hreflang="de">Deutsch</a>
-    </div>
-  </div>
-
-  <div class="m-foot-legal">
-    Shirt Soci&eacute;t&eacute; &middot; Harderwijk, Netherlands<br>
-    KvK 97828408 &middot; BTW NL005290775B10<br>
-    &copy; 2026 Shirt Soci&eacute;t&eacute;. All rights reserved.
-  </div>
-</footer>
-
 <!-- MOBILE TAB BAR -->
 <button type="button" class="drop-alert-fab" onclick="openDropAlertModal()">
   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 6 12 13 2 6"/></svg>
@@ -3305,13 +3302,9 @@
     </div>
   </div>
   <!-- atmospheric embers / dust drifting over the hero -->
-  <canvas id="cin-embers" style="position:absolute;inset:0;z-index:3;pointer-events:none;opacity:.9"></canvas>
-  <!-- subtle cinematic glow: warm light from upper area, soft vignette at edges -->
-  <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 50% 30%, rgba(255,180,110,0.10) 0%, rgba(255,150,90,0.04) 35%, rgba(0,0,0,0) 70%), radial-gradient(ellipse 120% 100% at 50% 50%, rgba(0,0,0,0) 55%, rgba(10,9,5,0.35) 100%);mix-blend-mode:screen"></div>
-  <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 120% 100% at 50% 50%, rgba(0,0,0,0) 60%, rgba(6,5,4,0.45) 100%)"></div>
   <!-- slide dots (centered, enlarged, clickable) -->
   <div id="cin-hero-dots" style="position:absolute;bottom:30px;left:0;right:0;z-index:3;display:flex;gap:14px;justify-content:center"></div>
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 62% 60% at 50% 47%, rgba(10,9,5,.82) 0%, rgba(10,9,5,.6) 42%, rgba(10,9,5,.2) 74%, rgba(10,9,5,0) 100%),linear-gradient(180deg,rgba(10,9,5,.3) 0%,rgba(10,9,5,0) 32%,rgba(10,9,5,.96) 100%)"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,9,5,.38) 0%,rgba(10,9,5,.06) 22%,rgba(10,9,5,.06) 62%,rgba(10,9,5,.5) 100%)"></div>
   <div id="cin-hero-text" style="position:relative;z-index:6;width:100%;max-width:860px;margin:0 auto;text-align:center">
    <div id="cin-hero-inner">
     <div id="cin-ew" style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:26px;display:flex;align-items:center;justify-content:center;gap:14px;opacity:0;transform:translateY(16px)">
@@ -4395,6 +4388,55 @@
   <div style="padding:24px 20px 16px;font-size:20px;font-weight:500">My Wishlist</div>
   <div id="m-wishlist-content" style="padding:0 20px"></div>
 </div>
+
+<!-- MOBILE FOOTER -->
+<footer class="m-foot">
+  <div class="m-foot-brand">Shirt Soci&eacute;t&eacute;</div>
+  <div class="m-foot-tag">Vintage &amp; match worn football shirts. Every piece one of one.</div>
+
+  <div class="m-foot-grid">
+    <div class="m-foot-col">
+      <div class="m-foot-head">Shop</div>
+      <a href="/?p=shop&cat=match_worn" onclick="mGoTo('shop');mSetFilter('match_worn');return false;">Match Worn / Issued</a>
+      <a href="/?p=shop&cat=clubs" onclick="mGoTo('shop');mSetFilter('clubs');return false;">Clubs</a>
+      <a href="/?p=shop&cat=national" onclick="mGoTo('shop');mSetFilter('national');return false;">International Shirts</a>
+      <a href="/collections/">Collections</a>
+      <a href="/?p=archive" onclick="mGoTo('archive');return false;">Archive</a>
+    </div>
+
+    <div class="m-foot-col">
+      <div class="m-foot-head">Shirt Soci&eacute;t&eacute;</div>
+      <a href="/?p=about" onclick="mGoTo('about');return false;">Our Story</a>
+      <a href="/blog.html">Journal</a>
+      <a href="/sell-your-shirt.html">Sell your shirt</a>
+      <a href="/want-list.html">Want list</a>
+      <a href="/faq.html">FAQ</a>
+    </div>
+
+    <div class="m-foot-col">
+      <div class="m-foot-head">Legal</div>
+      <a href="/shipping.html">Shipping policy</a>
+      <a href="/refund.html">Refund policy</a>
+      <a href="/terms.html">Terms of service</a>
+      <a href="/privacy.html">Privacy policy</a>
+      <a href="/legal.html">Legal notice</a>
+      <button type="button" onclick="ssOpenCookieSettings()">Cookie preferences</button>
+    </div>
+
+    <div class="m-foot-col">
+      <div class="m-foot-head">Contact</div>
+      <button type="button" onclick="openContactModal()">info@shirtsociete.com</button>
+      <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener">@shirtsociete</a>
+      <a href="/de/vintage-fussballtrikots.html" hreflang="de">Deutsch</a>
+    </div>
+  </div>
+
+  <div class="m-foot-legal">
+    Shirt Soci&eacute;t&eacute; &middot; Harderwijk, Netherlands<br>
+    KvK 97828408 &middot; BTW NL005290775B10<br>
+    &copy; 2026 Shirt Soci&eacute;t&eacute;. All rights reserved.
+  </div>
+</footer>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -6581,11 +6623,19 @@
     }
   }
 
+  // ── MOBILE SIDE MENU ──
+  function mOpenMenu() { document.body.classList.add('m-menu-open'); document.body.style.overflow = 'hidden'; var m = document.getElementById('m-menu'); if (m) m.setAttribute('aria-hidden', 'false'); }
+  function mCloseMenu() { document.body.classList.remove('m-menu-open'); document.body.style.overflow = ''; var m = document.getElementById('m-menu'); if (m) m.setAttribute('aria-hidden', 'true'); }
+  function mMenuGo(fn) { mCloseMenu(); setTimeout(fn, 60); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') mCloseMenu(); });
+
   // ── MOBILE NAV ──
   function mGoTo(screen) {
+    mCloseMenu();
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById('screen-'+screen).classList.add('active');
+    document.body.setAttribute('data-screen', screen);
     const tab = document.getElementById('m-tab-'+screen);
     if (tab) tab.classList.add('active');
     if (screen === 'about') document.getElementById('m-tab-profile').classList.add('active');
@@ -6673,6 +6723,20 @@
   }, 30000);
 
   function mGoBack() { mGoTo(mPrevScreen); }
+
+  // Plain links to /?p=about, /?p=archive ... (fair card, fair block, anywhere
+  // without its own onclick) used to reload the whole page. Open them inside
+  // the app instead, on the right layout for the screen size.
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    var a = e.target.closest && e.target.closest('a[href^="/?p="]');
+    if (!a) return;
+    var m = a.getAttribute('href').match(/[?&]p=([a-z]+)/);
+    if (!m || ['about', 'archive', 'shop', 'wishlist', 'cart'].indexOf(m[1]) < 0) return;
+    e.preventDefault();
+    if (window.innerWidth >= 768) dGoTo(m[1]); else mGoTo(m[1]);
+  });
+
 
   // ── DESKTOP NAV ──
   function dGoTo(screen) {
