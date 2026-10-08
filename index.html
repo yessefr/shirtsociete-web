@@ -2056,6 +2056,10 @@
     .screen#screen-cart.active ~ .drop-alert-fab,
     .screen#screen-checkout.active ~ .drop-alert-fab { display: none; }
 
+    .ss-wordmark { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; letter-spacing: .2px; line-height: 1; white-space: nowrap; display: block; }
+    .topbar-logo .ss-wordmark { font-size: 31px; color: var(--gold); text-shadow: 0 1px 6px rgba(0,0,0,.55); }
+    .mobile-logo .ss-wordmark { font-size: 25px; color: #c8a950; }
+
     /* ─── ARCHIVE + OUR STORY bands (mobile home) ─── */
     .m-band {
       background: #080704; margin: 22px 0 0; padding: 24px 0 22px;
@@ -2704,7 +2708,7 @@
   <!-- Logo left, actions right — the layout every shopping app uses, so the
        thumb always finds search and the cart in the same corner. -->
   <div class="mobile-logo" onclick="mGoTo('home')">
-    <img data-ss-logo="1" onerror="ssLogoFallback(this)" src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/c_limit,h_200/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=3" alt="Shirt Société">
+    <span class="ss-wordmark">Shirt Soci&eacute;t&eacute;</span>
   </div>
 
   <div class="m-head-actions">
@@ -3154,7 +3158,7 @@
       </div>
 
       <div class="topbar-logo" onclick="dGoTo('home')">
-        <img data-ss-logo="1" onerror="ssLogoFallback(this)" src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/c_limit,h_200/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png?v=3" alt="Shirt Soci&eacute;t&eacute;">
+        <span class="ss-wordmark">Shirt Soci&eacute;t&eacute;</span>
       </div>
 
       <div class="topbar-actions topbar-icons">
@@ -4459,6 +4463,7 @@
         if (bySlug['hero-' + n + '-base'])   slide.setAttribute('data-base',   bySlug['hero-' + n + '-base'][0]);
         if (bySlug['hero-' + n + '-reveal']) slide.setAttribute('data-reveal', bySlug['hero-' + n + '-reveal'][0]);
       });
+      if (typeof window.ssHeroRefresh === 'function') window.ssHeroRefresh();
       // dolly + sweep backgrounds
       if (bySlug['dolly-close']) ssSetBg(document.getElementById('dolly-close'), bySlug['dolly-close'][0]);
       if (bySlug['dolly-wide'])  ssSetBg(document.getElementById('dolly-wide'),  bySlug['dolly-wide'][0]);
@@ -7477,21 +7482,38 @@
     // else had a chance. Now the first slide's picture loads immediately,
     // the rest wait until the page itself has finished loading, and a phone
     // — which never shows this hero — does not fetch any of them.
-    function loadSlide(slide, withReveal) {
-      var base = slide.querySelector('.cin-base');
-      var reveal = slide.querySelector('.cin-reveal');
-      if (base && !base.style.backgroundImage) base.style.backgroundImage = "url('" + slide.getAttribute('data-base') + "')";
-      if (withReveal && reveal && !reveal.style.backgroundImage) reveal.style.backgroundImage = "url('" + slide.getAttribute('data-reveal') + "')";
+    function setLayer(el, url) {
+      if (!el || !url) return;
+      if (el.getAttribute('data-applied') === url) return;      // already showing this one
+      el.setAttribute('data-applied', url);
+      el.style.backgroundImage = "url('" + url + "')";
     }
-    var heroImagesStarted = false;
+    function loadSlide(slide, withReveal) {
+      setLayer(slide.querySelector('.cin-base'), slide.getAttribute('data-base'));
+      if (withReveal) setLayer(slide.querySelector('.cin-reveal'), slide.getAttribute('data-reveal'));
+    }
+    var heroImagesStarted = false, heroRestLoaded = false;
     function startHeroImages() {
       if (heroImagesStarted) return;
       heroImagesStarted = true;
-      loadSlide(slides[0], false);
-      var rest = function () { slides.forEach(function (sl) { loadSlide(sl, true); }); };
-      if (document.readyState === 'complete') setTimeout(rest, 600);
-      else window.addEventListener('load', function () { setTimeout(rest, 600); });
+      // The photo addresses come from the Site Photos table, so wait for that
+      // (max 4 s) before the first picture is requested; otherwise the old,
+      // dead address goes in first and the slide stays black.
+      var ready = (typeof ssSiteImagesPromise !== 'undefined')
+        ? Promise.race([ssSiteImagesPromise, new Promise(function (r) { setTimeout(r, 4000); })])
+        : Promise.resolve();
+      ready.then(function () {
+        loadSlide(slides[0], true);
+        var rest = function () { heroRestLoaded = true; slides.forEach(function (sl) { loadSlide(sl, true); }); };
+        if (document.readyState === 'complete') setTimeout(rest, 600);
+        else window.addEventListener('load', function () { setTimeout(rest, 600); });
+      });
     }
+    // called when the Site Photos arrive late (after the 4 s wait)
+    window.ssHeroRefresh = function () {
+      if (!heroImagesStarted) return;
+      slides.forEach(function (sl, i) { if (i === 0 || heroRestLoaded) loadSlide(sl, true); });
+    };
     if (window.innerWidth >= 768) {
       startHeroImages();
     } else {
