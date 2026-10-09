@@ -932,7 +932,7 @@
             </button>
             <div class="up-hint">Pick several at once. They fill the first empty slots below, in the order you choose them. Photos are shrunk on your phone first, so this is quick even on weak wifi.</div>
             <div id="up-notice" style="display:none;margin-top:10px;padding:10px 12px;border:1px solid rgba(224,122,109,.5);border-radius:4px;color:#e07a6a;font-size:12.5px;line-height:1.6">
-              This shirt still has photos on Cloudinary, which are offline. Tap <b>Remove all photos</b>, then upload them again from your gallery.
+              This shirt still has old photos that are offline. Tap <b>Remove all photos</b>, then upload them again from your gallery.
             </div>
             <button type="button" class="btn btn-secondary" style="width:100%;margin-top:10px;font-size:12px" onclick="ssClearAllPhotos()">Remove all photos</button>
             <div class="up-status" id="up-status"></div>
@@ -941,51 +941,51 @@
         </div>
 
         <div class="form-group full">
-          <label class="form-label">Image 1 — Main photo (Cloudinary URL)</label>
+          <label class="form-label">Image 1 — Main photo (photo link)</label>
           <input type="text" class="form-input" id="m-image" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 2 — Hover photo (Cloudinary URL)</label>
+          <label class="form-label">Image 2 — Hover photo (photo link)</label>
           <input type="text" class="form-input" id="m-image2" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 3 — Extra photo (Cloudinary URL)</label>
+          <label class="form-label">Image 3 — Extra photo (photo link)</label>
           <input type="text" class="form-input" id="m-image3" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 4 — Extra photo (Cloudinary URL)</label>
+          <label class="form-label">Image 4 — Extra photo (photo link)</label>
           <input type="text" class="form-input" id="m-image4" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 5 — Extra photo (Cloudinary URL)</label>
+          <label class="form-label">Image 5 — Extra photo (photo link)</label>
           <input type="text" class="form-input" id="m-image5" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 6 — Extra photo (Cloudinary URL)</label>
+          <label class="form-label">Image 6 — Extra photo (photo link)</label>
           <input type="text" class="form-input" id="m-image6" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 7 — Extra photo (Cloudinary URL)</label>
+          <label class="form-label">Image 7 — Extra photo (photo link)</label>
           <input type="text" class="form-input" id="m-image7" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 8 — Extra photo (Cloudinary URL)</label>
+          <label class="form-label">Image 8 — Extra photo (photo link)</label>
           <input type="text" class="form-input" id="m-image8" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 9 — Extra photo (Cloudinary URL)</label>
+          <label class="form-label">Image 9 — Extra photo (photo link)</label>
           <input type="text" class="form-input" id="m-image9" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 10 — Extra photo (Cloudinary URL)</label>
+          <label class="form-label">Image 10 — Extra photo (photo link)</label>
           <input type="text" class="form-input" id="m-image10" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 11 — Extra photo (Cloudinary URL)</label>
+          <label class="form-label">Image 11 — Extra photo (photo link)</label>
           <input type="text" class="form-input" id="m-image11" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 12 — Extra photo (Cloudinary URL)</label>
+          <label class="form-label">Image 12 — Extra photo (photo link)</label>
           <input type="text" class="form-input" id="m-image12" placeholder="Filled in by the upload button">
         </div>
         <input type="hidden" id="m-existing-images" value="[]">
@@ -2456,6 +2456,7 @@
     // real SEO landing pages (generated by "Generate collections")
     addUrl(base + '/collections/', 'weekly', '0.8');
     addUrl(base + '/journal/', 'weekly', '0.7');
+    addUrl(base + '/sold-football-shirts/', 'weekly', '0.5');
     addUrl(base + '/de/vintage-fussballtrikots.html', 'monthly', '0.7');
     addUrl(base + '/de/matchworn-trikots.html', 'monthly', '0.65');
     addUrl(base + '/sell-your-shirt.html', 'monthly', '0.6');
@@ -2702,13 +2703,13 @@
     });
   }
 
-  function ssStoragePut(path, blob) {
+  function ssStoragePut(path, blob, contentType) {
     return fetch(SUPABASE.url + '/storage/v1/object/' + SS_BUCKET + '/' + path, {
       method: 'POST',
       headers: {
         'apikey': SUPABASE.key,
         'Authorization': 'Bearer ' + authToken,
-        'Content-Type': 'image/jpeg',
+        'Content-Type': contentType || 'image/jpeg',
         'x-upsert': 'false',
         'cache-control': 'max-age=31536000'
       },
@@ -2723,7 +2724,8 @@
     var m = String((e && e.message) || e);
     if (/Bucket not found|404/i.test(m)) return 'The photo bucket does not exist yet. Run supabase-foto-opslag.sql once in Supabase.';
     if (/row-level security|403|Unauthorized|401|exp|JWT/i.test(m)) return 'Not allowed to upload. Sign out of the admin and back in, then try again.';
-    if (/413|too large|exceeded/i.test(m)) return 'A photo was too large for the bucket.';
+    if (/mime|not supported|415/i.test(m)) return 'This file type is not allowed yet. Run supabase-video-opslag.sql once in Supabase.';
+    if (/413|too large|exceeded/i.test(m)) return 'A file was too large (limit 50 MB per video, 5 MB per photo).';
     return m;
   }
 
@@ -2831,9 +2833,11 @@
       { slug: 'favicon', label: 'Favicon (browser tab icon)' }
     ]},
     { section: 'Homepage — hero on a phone', items: [
-      { slug: 'mobile-hero', label: 'Phone hero — photo behind the video' }
+      { slug: 'mobile-hero', label: 'Phone hero — photo behind the video' },
+      { slug: 'hero-video-mobile', label: 'Phone hero videos (vertical, with sound, max 50 MB each; several play in turn)', multi: true }
     ]},
     { section: 'Homepage — hero (computer only, not shown on a phone)', items: [
+      { slug: 'hero-video-desktop', label: 'Laptop hero videos (horizontal, with sound, max 50 MB each; they join the slides)', multi: true },
       { slug: 'hero-1-base',   label: 'Slide 1 — main photo' },
       { slug: 'hero-1-reveal', label: 'Slide 1 — reveal photo' },
       { slug: 'hero-2-base',   label: 'Slide 2 — main photo' },
@@ -2863,7 +2867,8 @@
       { slug: 'gallery-hamburg-feb',    label: 'Hamburg (04.02.2026)', multi: true },
       { slug: 'gallery-cologne',        label: 'Cologne (31.05.2026)', multi: true },
       { slug: 'gallery-dusseldorf',     label: 'Düsseldorf (13.06.2026)', multi: true },
-      { slug: 'gallery-hamburg-stands', label: 'Hamburg, STANDS at St. Pauli (26-09-2026)', multi: true }
+      { slug: 'gallery-hamburg-stands', label: 'Hamburg, STANDS at St. Pauli (26-09-2026)', multi: true },
+      { slug: 'gallery-leipzig',        label: 'Leipzig, Vintage Fußballbörse (04-10-2026)', multi: true }
     ]}
   ];
 
@@ -2885,20 +2890,22 @@
         var urls = ssSiteImagesCache[item.slug] || [];
         var thumbs = urls.map(function (u, i) {
           return '<span class="sp-thumb-wrap">'
-            + '<img class="sp-thumb" src="' + u + '">'
-            + '<button type="button" class="sp-thumb-x" title="Remove this photo" '
+            + (/\.(mp4|mov|webm|m4v)(\?|$)/i.test(u)
+                ? '<video class="sp-thumb" src="' + u + '#t=0.5" muted playsinline preload="metadata"></video>'
+                : '<img class="sp-thumb" src="' + u + '">')
+            + '<button type="button" class="sp-thumb-x" title="Remove this file" '
             +   'onclick="ssRemoveSitePhoto(\'' + item.slug + '\',' + i + ')">&times;</button>'
             + '</span>';
         }).join('');
         html += ''
           + '<div class="sp-row" id="sp-row-' + item.slug + '">'
           +   '<div class="sp-label">' + item.label + (item.multi ? ' <span class="sp-multi-tag">multiple</span>' : '') + '</div>'
-          +   '<div class="sp-thumbs" id="sp-thumbs-' + item.slug + '">' + (thumbs || '<span class="sp-empty">No photo yet</span>') + '</div>'
+          +   '<div class="sp-thumbs" id="sp-thumbs-' + item.slug + '">' + (thumbs || '<span class="sp-empty">Nothing yet</span>') + '</div>'
           +   '<div class="sp-body">'
-          +     '<input type="file" accept="image/*"' + (item.multi ? ' multiple' : '') + ' id="sp-file-' + item.slug + '" style="display:none" '
+          +     '<input type="file" accept="image/*,video/*"' + (item.multi ? ' multiple' : '') + ' id="sp-file-' + item.slug + '" style="display:none" '
           +       'onchange="ssUploadSitePhoto(\'' + item.slug + '\', this.files)">'
           +     '<button type="button" class="btn btn-secondary" onclick="document.getElementById(\'sp-file-' + item.slug + '\').click()">'
-          +       (item.multi ? 'Add photos' : (urls.length ? 'Replace photo' : 'Upload photo')) + '</button>'
+          +       (item.multi ? 'Add photos / videos' : (urls.length ? 'Replace photo' : 'Upload photo')) + '</button>'
           +   '</div>'
           +   '<div class="sp-status" id="sp-status-' + item.slug + '"></div>'
           + '</div>';
@@ -2999,7 +3006,7 @@
     if (!files.length) return;
     var status = document.getElementById('arc-status');
     status.className = 'sp-status';
-    status.textContent = 'Uploading ' + files.length + ' photo' + (files.length === 1 ? '' : 's') + '...';
+    status.textContent = 'Uploading ' + files.length + ' file' + (files.length === 1 ? '' : 's') + '...';
 
     var uploaded = [], failed = 0, lastError = '';
     for (var i = 0; i < files.length; i++) {
@@ -3036,7 +3043,7 @@
       status2.className = failed ? 'sp-status err' : 'sp-status ok';
       status2.textContent = failed
         ? (uploaded.length + ' saved, ' + failed + ' failed: ' + lastError)
-        : (uploaded.length + ' photo' + (uploaded.length === 1 ? '' : 's') + ' live on the site now.');
+        : (uploaded.length + ' file' + (uploaded.length === 1 ? '' : 's') + ' live on the site now.');
     }
   }
 
@@ -3094,11 +3101,24 @@
       status.textContent = 'Uploading ' + (i + 1) + ' of ' + files.length + '...';
       try {
         var base = 'site/' + slug + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-        var src = await ssDecodeImage(files[i]);
-        var blob = await ssToJpegBlob(src, 2400, 0.92);
-        if (src.close) src.close();
-        await ssStoragePut(base + '.jpg', blob);
-        uploaded.push(ssPublicUrl(base + '.jpg'));
+        var f = files[i];
+        var ext = ((f.name || '').split('.').pop() || '').toLowerCase();
+        var isVid = /^video\//.test(f.type) || /^(mp4|mov|m4v|webm)$/.test(ext);
+        if (isVid) {
+          // videos are stored as they are (no re-encoding in the browser)
+          if (f.size > 50 * 1024 * 1024) throw new Error('"' + f.name + '" is ' + Math.round(f.size / 1048576) + ' MB. The limit is 50 MB. Shorten or compress the video first.');
+          var vext = /^(mp4|mov|m4v|webm)$/.test(ext) ? ext : 'mp4';
+          var vtype = vext === 'webm' ? 'video/webm' : (vext === 'mov' ? 'video/quicktime' : 'video/mp4');
+          status.textContent = 'Uploading video ' + (i + 1) + ' of ' + files.length + ' (' + Math.round(f.size / 1048576) + ' MB)...';
+          await ssStoragePut(base + '.' + vext, f, vtype);
+          uploaded.push(ssPublicUrl(base + '.' + vext));
+        } else {
+          var src = await ssDecodeImage(f);
+          var blob = await ssToJpegBlob(src, 2400, 0.92);
+          if (src.close) src.close();
+          await ssStoragePut(base + '.jpg', blob);
+          uploaded.push(ssPublicUrl(base + '.jpg'));
+        }
       } catch (e) {
         failed++; lastError = ssUploadErrorText(e);
         console.error('site photo upload failed:', e);
@@ -3127,7 +3147,7 @@
   }
 
   async function ssRemoveSitePhoto(slug, index) {
-    if (!confirm('Remove this photo from the site?')) return;
+    if (!confirm('Remove this file from the site?')) return;
     var urls = (ssSiteImagesCache[slug] || []).slice();
     urls.splice(index, 1);
     try {
@@ -3577,6 +3597,13 @@
       { slug: 'match-worn-football-shirts', name: 'Match Worn Football Shirts',
         h1: 'Match Worn &amp; Match Issued Football Shirts',
         intro: 'Shirts that were actually worn or issued to players, each one a single piece with its own documented history.',
+        extra: '<h2>Match worn or match issued?</h2>'
+          + '<p class="intro">A match worn shirt is documented as worn by a player in a specific match. A match issued shirt was prepared for a player or a squad for a match, but cannot be shown to have been worn on the pitch. When the evidence cannot separate the two, we list the shirt as Match Worn / Issued instead of choosing the more flattering label.</p>'
+          + '<h2>How we document our shirts</h2>'
+          + '<p class="intro">Every match worn or issued shirt comes with a Shirt Passport: the player, club, season, competition and fixture, the certificate of authenticity where one exists, and any photo match or NFC tag. What is not listed in the passport, we do not claim.</p>'
+          + '<h2>Not every fixture can be confirmed</h2>'
+          + '<p class="intro">Some shirts come with a player and a season but not an exact match. We show those as Not confirmed rather than guessing. A shirt with an honest gap is worth more to a collector than one with an invented story.</p>'
+          + '<div class="links"><a href="/journal/what-is-a-coa/">What is a certificate of authenticity?</a><a href="/journal/match-worn-guide/">Match worn guide</a><a href="/journal/bayern-match-worn-guide/">Bayern match worn guide</a><a href="/want-list.html">Want list</a><a href="/sell-your-shirt.html">Sell your shirt</a></div>',
         filter: function(s) { return s.category === 'match_worn'; } },
       { slug: 'vintage-club-shirts', name: 'Vintage Club Football Shirts',
         h1: 'Vintage Club Football Shirts',
@@ -3620,6 +3647,7 @@
         + '<div class="count">' + avail.length + ' available'
           + (items.length - avail.length ? ' &middot; ' + (items.length - avail.length) + ' sold' : '') + '</div>'
         + '<div class="grid">' + items.map(ssCard).join('') + '</div>'
+        + (c.extra || '')
         + '<h2>Browse further</h2><div class="links">'
         +   collections.filter(function(o) { return o.slug !== c.slug; })
               .map(function(o) { return '<a href="/collections/' + o.slug + '/">' + htmlEscape(o.name) + '</a>'; }).join('')
@@ -3672,6 +3700,16 @@
         var related = SS_JOURNAL_LINKS.filter(function(j) {
           return j.clubs.some(function(c) { return name.toLowerCase().indexOf(c) !== -1; });
         });
+        // guides that apply to every club or country
+        var guides = [
+          { slug: 'spot-a-fake', title: 'How to spot a fake football shirt' },
+          { slug: 'vintage-shirt-sizing', title: 'Vintage shirt sizing explained' }
+        ];
+        if (mw.length || related.some(function(j) { return j.slug === 'bayern-match-worn-guide'; })) {
+          guides.unshift({ slug: 'what-is-a-coa', title: 'What is a certificate of authenticity?' },
+                         { slug: 'match-worn-guide', title: 'What is a match worn football shirt?' });
+        }
+        related = related.concat(guides.filter(function(g) { return !related.some(function(j) { return j.slug === g.slug; }); }));
 
         var intro = 'Vintage and match worn ' + name + ' shirts, each one a single piece with its own '
           + 'documented history. Every shirt is checked on labels, stitching and badges before it is listed.';
@@ -3689,6 +3727,12 @@
               : '<h2>Nothing available right now</h2>'
                 + '<p class="intro">No ' + htmlEscape(name) + ' shirt is in stock at the moment. '
                 + 'Tell us what you are looking for and you will hear from us when one arrives.</p>')
+
+          + (mw.length
+              ? '<h2>Match worn &amp; match issued ' + htmlEscape(name) + '</h2>'
+                + '<p class="intro">' + mw.length + ' documented piece' + (mw.length > 1 ? 's' : '') + ', each with its own Shirt Passport. See the <a href="/collections/match-worn-football-shirts/">full match worn collection</a>.</p>'
+                + '<div class="links">' + mw.map(function(s) { return '<a href="/products/' + ssShirtSlug(s) + '.html">' + htmlEscape(s.title || '') + '</a>'; }).join('') + '</div>'
+              : '')
 
           + (sold.length
               ? '<h2>Previously sold</h2>'
@@ -3740,6 +3784,30 @@
     var clubNames = hubGroup(pub.filter(function(s) { return s.category !== 'national'; }), 'clubs', 'Club', 1);
     var natNames = hubGroup(pub.filter(function(s) { return s.category === 'national'; }), 'national-teams', 'National Team', 1);
 
+    // ── sold shirts: every sold piece stays as a record, one page that lists them ──
+    var soldItems = pub.filter(function(s) { return s.available === false; });
+    if (soldItems.length) {
+      var soldBody = '<div class="crumb"><a href="/">Home</a> / <a href="/collections/">Collections</a> / Sold shirts</div>'
+        + '<div class="eyebrow">Sold</div><h1>Sold Football Shirts</h1>'
+        + '<p class="intro">Shirts that have found an owner. Every one keeps its photos, its history and its Shirt Passport here as a record of what has passed through Shirt Soci&eacute;t&eacute;. Unique pieces are not restocked, but similar shirts do turn up.</p>'
+        + '<div class="count">' + soldItems.length + ' sold</div>'
+        + '<div class="grid">' + soldItems.map(ssCard).join('') + '</div>'
+        + '<h2>Find something similar</h2><div class="links">'
+        +   '<a href="/want-list.html">Add it to the want list</a>'
+        +   '<a href="/collections/vintage-football-shirts/">Shirts available now</a>'
+        +   '<a href="/collections/match-worn-football-shirts/">Match worn collection</a>'
+        +   '<a href="/sell-your-shirt.html">Sell us your shirt</a>'
+        + '</div>';
+      zip.folder('sold-football-shirts').file('index.html', ssPageShell({
+        title: 'Sold Football Shirts | Shirt Soci\u00e9t\u00e9',
+        url: base + '/sold-football-shirts/',
+        desc: 'Vintage and match worn football shirts that have been sold, kept as a record with photos, history and Shirt Passport.',
+        image: (soldItems[0] && soldItems[0].images && soldItems[0].images[0]) || '',
+        schema: ssListSchema('Sold football shirts', base + '/sold-football-shirts/', soldItems), body: soldBody
+      }));
+      made.push('/sold-football-shirts/');
+    }
+
     // ── collections index ──
     var idxBody = '<div class="crumb"><a href="/">Home</a> / Collections</div>'
       + '<div class="eyebrow">Browse</div><h1>Collections</h1>'
@@ -3753,7 +3821,7 @@
       + (natNames.length ? '<h2>By national team</h2><div class="links">'
           + natNames.map(function(n) { return '<a href="/national-teams/' + ssSlugify(n) + '/">' + htmlEscape(n) + '</a>'; }).join('')
           + '</div>' : '')
-      + '<h2>Also see</h2><div class="links"><a href="/products/">Full shirt index</a><a href="/?p=archive">Private archive</a></div>';
+      + '<h2>Also see</h2><div class="links"><a href="/products/">Full shirt index</a><a href="/?p=archive">Private archive</a>' + (soldItems.length ? '<a href="/sold-football-shirts/">Sold shirts</a>' : '') + '</div>';
     colDir.file('index.html', ssPageShell({
       title: 'Collections | Vintage & Match Worn Football Shirts | Shirt Société',
       url: base + '/collections/',
@@ -4304,16 +4372,16 @@
     }
     var schema = {
       "@context": "https://schema.org", "@type": "CollectionPage",
-      "name": "All shirts | Shirt Societe",
-      "description": "Every vintage and match worn football shirt at Shirt Societe.",
+      "name": "All shirts | Shirt Soci\u00e9t\u00e9",
+      "description": "Every vintage and match worn football shirt at Shirt Soci\u00e9t\u00e9.",
       "url": base + "/products/"
     };
     return '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
       + '<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
-      + '<title>All Shirts | Shirt Societe &mdash; Vintage &amp; Match Worn Football Shirts</title>\n'
-      + '<meta name="description" content="Browse every vintage and match worn football shirt at Shirt Societe. Original club, international and match worn shirts for collectors.">\n'
+      + '<title>All Shirts | Shirt Soci\u00e9t\u00e9 &mdash; Vintage &amp; Match Worn Football Shirts</title>\n'
+      + '<meta name="description" content="Browse every vintage and match worn football shirt at Shirt Soci\u00e9t\u00e9. Original club, international and match worn shirts for collectors.">\n'
       + '<link rel="canonical" href="' + base + '/products/">\n'
-      + '<meta property="og:title" content="All Shirts | Shirt Societe">\n'
+      + '<meta property="og:title" content="All Shirts | Shirt Soci\u00e9t\u00e9">\n'
       + '<meta property="og:description" content="Every vintage and match worn football shirt in the collection.">\n'
       + '<meta property="og:url" content="' + base + '/products/">\n'
       + '<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">\n'
@@ -4340,16 +4408,16 @@
       +   'footer{border-top:1px solid #1e1c17;padding:26px 32px;text-align:center;font-size:12px;color:#888070}'
       + '</style>\n</head>\n<body>\n'
       + '<header class="topbar">'
-      +   '<a href="/"><img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png" alt="Shirt Societe"></a>'
+      +   '<a href="/"><img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png" alt="Shirt Soci\u00e9t\u00e9"></a>'
       +   '<nav class="topnav"><a href="/">Home</a><a href="/?p=shop">Shop</a><a href="/?p=archive">Archive</a><a href="/blog.html">Journal</a><a href="/?p=about">Our Story</a></nav>'
       + '</header>\n'
       + '<div class="wrap">\n'
       + '<h1>All shirts</h1>\n'
-      + '<p class="lead">Every vintage and match worn football shirt in the Shirt Societe collection. Each shirt is a single, unique piece, photographed and checked in detail.</p>\n'
+      + '<p class="lead">Every vintage and match worn football shirt in the Shirt Soci\u00e9t\u00e9 collection. Each shirt is a single, unique piece, photographed and checked in detail.</p>\n'
       + (shirts.length ? '<h2>In the shop</h2><div class="grid">' + shirts.map(function(s){ return card(s, false); }).join('') + '</div>' : '')
       + (archive.length ? '<h2>From the archive &mdash; not for sale</h2><div class="grid">' + archive.map(function(s){ return card(s, true); }).join('') + '</div>' : '')
       + '</div>\n'
-      + '<footer>Shirt Societe &middot; Harderwijk, Netherlands &middot; <a href="/?p=about">Our Story</a> &middot; <a href="/shipping.html">Shipping</a></footer>\n'
+      + '<footer>Shirt Soci\u00e9t\u00e9 &middot; Harderwijk, Netherlands &middot; <a href="/?p=about">Our Story</a> &middot; <a href="/shipping.html">Shipping</a></footer>\n'
       + '</body>\n</html>';
   }
 
@@ -4589,20 +4657,29 @@
       });
       var sameClub = s.club ? pool.filter(function(o) { return o.club === s.club; }) : [];
       var sameCat = pool.filter(function(o) { return o.category === s.category && sameClub.indexOf(o) === -1; });
-      var related = sameClub.concat(sameCat).slice(0, 4);
-      if (related.length) {
-        relHtml = '<section class="related"><h2>You might also like</h2><div class="related-grid">'
-          + related.map(function(o) {
-              var oSlug = ssShirtSlug(o);
-              var oImg = (o.images && o.images[0]) ? o.images[0] : '';
-              var oPrice = (o.price != null) ? parseFloat(o.price).toFixed(2) : '';
-              return '<a class="related-card" href="/products/' + oSlug + '.html">'
-                + (oImg ? '<img src="' + htmlEscape(oImg) + '" alt="' + htmlEscape(o.title || '') + '" loading="lazy">' : '')
-                + '<div class="rc-title">' + htmlEscape(o.title || '') + '</div>'
-                + (oPrice ? '<div class="rc-price">&euro;' + oPrice + '</div>' : '')
-                + '</a>';
-            }).join('')
-          + '</div></section>';
+      var relCard = function(o) {
+        var oSlug = ssShirtSlug(o);
+        var oImg = (o.images && o.images[0]) ? o.images[0] : '';
+        var oPrice = (o.price != null) ? parseFloat(o.price).toFixed(2) : '';
+        return '<a class="related-card" href="/products/' + oSlug + '.html">'
+          + (oImg ? '<img src="' + htmlEscape(oImg) + '" alt="' + htmlEscape(o.title || '') + '" loading="lazy">' : '')
+          + '<div class="rc-title">' + htmlEscape(o.title || '') + '</div>'
+          + (oPrice ? '<div class="rc-price">&euro;' + oPrice + '</div>' : '')
+          + '</a>';
+      };
+      var relRow = function(title, list) {
+        return list.length ? '<section class="related"><h2>' + title + '</h2><div class="related-grid">' + list.map(relCard).join('') + '</div></section>' : '';
+      };
+      var rowClub = sameClub.slice(0, 4);
+      var rowMw = s.category === 'match_worn'
+        ? pool.filter(function(o) { return o.category === 'match_worn' && rowClub.indexOf(o) === -1; }).slice(0, 4)
+        : [];
+      if (rowClub.length) {
+        relHtml = relRow('More ' + htmlEscape(s.club), rowClub) + relRow('Other match worn pieces', rowMw);
+      } else if (rowMw.length) {
+        relHtml = relRow('Other match worn pieces', rowMw);
+      } else {
+        relHtml = relRow('You might also like', sameCat.slice(0, 4));
       }
     }
 
@@ -4702,7 +4779,7 @@
     var props = [];
     if (s.width_cm) props.push({ "@type": "PropertyValue", "name": "Width (pit to pit)", "value": String(s.width_cm) + " cm" });
     if (s.length_cm) props.push({ "@type": "PropertyValue", "name": "Length (shoulder to hem)", "value": String(s.length_cm) + " cm" });
-    if (s.season) props.push({ "@type": "PropertyValue", "name": "Season", "value": String(s.season) });
+    if (s.season) props.push({ "@type": "PropertyValue", "name": "Season", "value": ssSeason(s.season) });
     if (s.condition) props.push({ "@type": "PropertyValue", "name": "Condition", "value": String(s.condition) });
     if (props.length) schema.additionalProperty = props;
     // breadcrumb so Google can show Home › Shop › <shirt> in results
