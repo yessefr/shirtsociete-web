@@ -2557,7 +2557,16 @@
       70%  { opacity: 0;   transform: scale(2.6); }
       100% { opacity: 0;   transform: scale(2.6); }
     }
-  </style>
+  
+    /* sound buttons on the hero videos (phone + laptop) */
+    .m-hero-sound { position: absolute; right: 14px; bottom: 14px; z-index: 5; display: flex; align-items: center; gap: 7px;
+      background: rgba(10,9,5,.55); color: #f5f0e8; border: 1px solid rgba(245,240,232,.4); border-radius: 999px; padding: 8px 13px;
+      font: 700 11px/1 'DM Sans', sans-serif; letter-spacing: 1.5px; text-transform: uppercase; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); cursor: pointer; }
+    .m-hero-sound .w-on { display: none; }
+    .m-hero-sound.on { background: #c8a950; color: #14120b; border-color: #c8a950; }
+    .m-hero-sound.on .w-on { display: inline; }
+    .m-hero-sound.on .w-off { display: none; }
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script type="application/ld+json">
@@ -4599,6 +4608,9 @@ as a personal collection quickly grew into something bigger: a curated platform 
       var rows = await res.json();
       var bySlug = {};
       rows.forEach(function (r) { if (r.urls && r.urls.length) bySlug[r.slug] = r.urls; });
+      // hero videos uploaded in the admin (Site Photos); read by the two hero scripts
+      window.ssHeroVideoMobile  = bySlug['hero-video-mobile']  || [];
+      window.ssHeroVideoDesktop = bySlug['hero-video-desktop'] || [];
 
       // logo: every <img data-ss-logo>. If the old image already failed and the
       // text fallback took its place, bring the image back and drop the text.
@@ -4631,6 +4643,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
         if (bySlug['hero-' + n + '-reveal']) slide.setAttribute('data-reveal', bySlug['hero-' + n + '-reveal'][0]);
       });
       if (typeof window.ssHeroRefresh === 'function') window.ssHeroRefresh();
+      if (typeof window.ssHeroAddVideos === 'function') window.ssHeroAddVideos(window.ssHeroVideoDesktop);
       // dolly + sweep backgrounds
       if (bySlug['dolly-close']) ssSetBg(document.getElementById('dolly-close'), bySlug['dolly-close'][0]);
       if (bySlug['dolly-wide'])  ssSetBg(document.getElementById('dolly-wide'),  bySlug['dolly-wide'][0]);
@@ -4660,8 +4673,9 @@ as a personal collection quickly grew into something bigger: a curated platform 
   // few videos mixed together. Videos are not part of this system yet, so they
   // are kept as they are; only the photo URLs are replaced.
   function ssIsVideoUrl(u) {
-    return /\/video\/upload\//.test(u) || /\.(mp4|mov|webm)(\?|$)/i.test(u);
+    return /\/video\/upload\//.test(u) || /\.(mp4|mov|webm|m4v)(\?|$)/i.test(u);
   }
+  window.ssIsVideoUrl = ssIsVideoUrl;
   function ssApplyGalleryPhotos(bySlug) {
     var map = {
       frankfurt: 'gallery-frankfurt', hamburg: 'gallery-hamburg-feb',
@@ -7533,14 +7547,14 @@ as a personal collection quickly grew into something bigger: a curated platform 
     // Build thumbnails
     const thumbs = document.getElementById('gallery-thumbs');
     thumbs.innerHTML = data.photos.map((url, i) => {
-      const isVideo = url.indexOf('.mp4') !== -1;
-      const thumbSrc = isVideo ? url.replace('.mp4', '.jpg') : url;
+      const isVideo = ssIsVideoUrl(url);
+      const thumbSrc = url;
       const playIcon = isVideo ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><div style="width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center"><svg width="10" height="10" viewBox="0 0 24 24" fill="#fff"><polygon points="6 3 20 12 6 21 6 3"/></svg></div></div>` : '';
       return `
       <div style="position:relative;display:inline-block" onclick="setGalleryPhoto(${i})">
-        <img src="${thumbSrc}"
+        ${isVideo ? `<video src="${thumbSrc}#t=0.5" muted playsinline preload="metadata" style="width:72px;height:72px;object-fit:cover;border-radius:2px;cursor:pointer;opacity:${i===0?1:0.5};transition:opacity 0.2s;border:${i===0?'2px solid #4caf7d':'2px solid transparent'};display:block" id="gallery-thumb-${i}"></video>` : `<img src="${thumbSrc}"
           style="width:72px;height:72px;object-fit:cover;border-radius:2px;cursor:pointer;opacity:${i===0?1:0.5};transition:opacity 0.2s;border:${i===0?'2px solid #4caf7d':'2px solid transparent'};display:block"
-          id="gallery-thumb-${i}">
+          id="gallery-thumb-${i}">`}
         ${playIcon}
       </div>`;
     }).join('');
@@ -7562,7 +7576,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     const img = document.getElementById('gallery-main-img');
     const vid = document.getElementById('gallery-main-video');
     const url = currentGalleryPhotos[currentGalleryIndex];
-    const isVideo = url.indexOf('.mp4') !== -1;
+    const isVideo = ssIsVideoUrl(url);
     if (vid) { vid.pause(); }
     if (isVideo && vid) {
       img.style.display = 'none';
@@ -7819,9 +7833,79 @@ as a personal collection quickly grew into something bigger: a curated platform 
       dots.forEach(function (d, i) { d.style.background = i === current ? 'var(--gold)' : 'rgba(var(--white-rgb),.35)'; });
     }
 
+    // ── Video slides (uploaded in the admin: Site Photos → "Laptop hero videos").
+    // They join the rotation after the photo slides. A video plays to its end
+    // and then the next slide takes over; photos keep their 12 seconds.
+    var heroMuted = true, vidSound = null, vidAdded = {};
+    function curVideo() { return slides[current] && slides[current].querySelector('video'); }
+    function paintVidSound() {
+      if (!vidSound) return;
+      var cv = curVideo();
+      vidSound.style.display = cv ? 'flex' : 'none';
+      vidSound.classList.toggle('on', !heroMuted);
+      vidSound.setAttribute('aria-label', heroMuted ? 'Turn sound on' : 'Turn sound off');
+    }
+    function syncVideos() {
+      slides.forEach(function (sl, i) {
+        var v = sl.querySelector('video');
+        if (!v) return;
+        if (i === current) { v.muted = heroMuted; v.currentTime = 0; var p = v.play(); if (p && p.catch) p.catch(function () { heroMuted = true; v.muted = true; v.play().catch(function () {}); paintVidSound(); }); }
+        else { v.pause(); v.muted = true; }
+      });
+      paintVidSound();
+    }
+    window.ssHeroAddVideos = function (urls) {
+      if (window.innerWidth < 768 || !urls || !urls.length) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!vidSound) {
+        vidSound = document.createElement('button');
+        vidSound.type = 'button';
+        vidSound.className = 'm-hero-sound cin-hero-sound';
+        vidSound.style.cssText = 'display:none;right:36px;bottom:26px;z-index:7';
+        vidSound.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path class="w-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="w-off" d="M16 9l6 6M22 9l-6 6"/></svg><span>Sound</span>';
+        vidSound.addEventListener('click', function (e) {
+          e.stopPropagation();
+          heroMuted = !heroMuted;
+          var cv = curVideo();
+          if (cv) { cv.muted = heroMuted; if (!heroMuted) cv.volume = 0.8; cv.play().catch(function () {}); }
+          paintVidSound();
+        });
+        hero.appendChild(vidSound);
+      }
+      urls.forEach(function (u) {
+        if (vidAdded[u]) return;
+        vidAdded[u] = true;
+        var sl = document.createElement('div');
+        sl.className = 'cin-slide cin-video-slide';
+        sl.style.cssText = 'position:absolute;inset:0;opacity:0;transition:opacity 1s ease;background:#000';
+        var v = document.createElement('video');
+        v.src = u; v.muted = true; v.playsInline = true; v.preload = 'metadata';
+        v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover';
+        v.addEventListener('ended', function () { if (slides[current] === sl) { go(current + 1); resetTimer(); } });
+        sl.appendChild(v);
+        carousel.appendChild(sl);
+        slides.push(sl);
+        var d = document.createElement('div');
+        var idx = slides.length - 1;
+        d.style.cssText = 'width:13px;height:13px;border-radius:50%;background:rgba(var(--white-rgb),.35);cursor:pointer;transition:background .3s,transform .2s;border:1px solid rgba(255,255,255,.4)';
+        d.addEventListener('click', function () { go(idx); resetTimer(); });
+        if (dotsWrap) dotsWrap.appendChild(d);
+        dots.push(d);
+      });
+    };
+    var origGo = go;
+    go = function (n) { origGo(n); syncVideos(); };
+
     var timer = null;
-    function resetTimer() { if (timer) clearInterval(timer); timer = setInterval(function () { go(current + 1); }, 12000); }
+    function resetTimer() {
+      if (timer) clearInterval(timer);
+      timer = null;
+      if (curVideo()) return;            // a video moves on by itself when it ends
+      timer = setInterval(function () { go(current + 1); resetTimer(); }, 12000);
+    }
     resetTimer();
+    // videos that arrived before this script ran
+    if (window.ssHeroVideoDesktop && window.ssHeroVideoDesktop.length) window.ssHeroAddVideos(window.ssHeroVideoDesktop);
   })();
 
   // Atmospheric embers/dust drifting over the hero — cinematic, lightweight
@@ -9417,14 +9501,17 @@ as a personal collection quickly grew into something bigger: a curated platform 
     stays exactly as it is now.
 
     Keep each clip under about 8 seconds and 3 MB.                          */
-var SS_MOBILE_HERO_VIDEOS = [
-  // q_auto:eco and a forced bitrate made it visibly soft. Back to
-  // q_auto:good at 1080 wide — Cloudinary picks the bitrate itself, which
-  // keeps it sharp without shipping the full original.
-  'https://res.cloudinary.com/dinpfdojh/video/upload/q_auto:good,f_auto,w_1200,c_limit/v1788007009/WhatsApp_Video_2026-08-29_at_14.32.10_qj6xhy.mp4'
-];
+var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin instead
 
 (function () {
+  // The clips now come from the admin (Site Photos → "Phone hero videos").
+  // Wait for that list (max 4 s); the list above is only a fallback.
+  var ready = (typeof ssSiteImagesPromise !== 'undefined')
+    ? Promise.race([ssSiteImagesPromise, new Promise(function (r) { setTimeout(r, 4000); })])
+    : Promise.resolve();
+  ready.then(initMobileHero);
+  function initMobileHero() {
+  if (window.ssHeroVideoMobile && window.ssHeroVideoMobile.length) SS_MOBILE_HERO_VIDEOS = window.ssHeroVideoMobile.slice();
   if (!SS_MOBILE_HERO_VIDEOS.length) return;
   var v = document.getElementById('m-hero-video');
   var scrim = document.getElementById('m-hero-scrim');
@@ -9504,7 +9591,37 @@ var SS_MOBILE_HERO_VIDEOS = [
     else v.play().catch(function () {});
   });
 
+  // Sound toggle. Browsers never allow sound to start by itself, so the clip
+  // starts muted and the visitor taps this button to hear it. The choice is
+  // kept while they browse, and sound always stops when they leave the page.
+  var snd = document.createElement('button');
+  snd.type = 'button';
+  snd.className = 'm-hero-sound';
+  snd.setAttribute('aria-label', 'Turn sound on');
+  snd.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path class="w-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="w-off" d="M16 9l6 6M22 9l-6 6"/></svg><span>Sound</span>';
+  snd.style.display = 'none';
+  hero.appendChild(snd);
+  function paintSound() {
+    snd.classList.toggle('on', !v.muted);
+    snd.setAttribute('aria-label', v.muted ? 'Turn sound on' : 'Turn sound off');
+  }
+  snd.addEventListener('click', function (e) {
+    e.stopPropagation();
+    v.muted = !v.muted;
+    if (!v.muted) { v.volume = 0.8; v.play().catch(function () { v.muted = true; paintSound(); }); }
+    paintSound();
+  });
+  // show the button only while the clip is actually on screen
+  setInterval(function () { snd.style.display = (shown && hero.classList.contains('has-video')) ? 'flex' : 'none'; }, 600);
+  // no sound when the visitor is on another page of the site
+  var heroObs = ('IntersectionObserver' in window) ? new IntersectionObserver(function (en) {
+    if (!en[0].isIntersecting && !v.muted) { v.muted = true; paintSound(); }
+  }, { threshold: 0.2 }) : null;
+  if (heroObs) heroObs.observe(hero);
+  paintSound();
+
   load(i, false);
+  }
 })();
 </script>
 
