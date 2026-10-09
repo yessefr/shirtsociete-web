@@ -4636,7 +4636,10 @@
       stands: 'gallery-hamburg-stands', leipzig: 'gallery-leipzig'
     };
     Object.keys(map).forEach(function (city) {
-      var newPhotos = bySlug[map[city]];
+      // Leipzig and STANDS used to have only a homepage-card slot; until photos are
+      // put in their own gallery slot, the card photos fill the gallery too.
+      var fallback = { leipzig: 'fair-leipzig', stands: 'fair-hamburg' }[city];
+      var newPhotos = bySlug[map[city]] || (fallback ? bySlug[fallback] : null);
       var entry = EVENT_GALLERIES[city];
       if (!newPhotos || !entry || !entry.photos) return;
       entry.photos = newPhotos.concat(entry.photos.filter(ssIsVideoUrl));
