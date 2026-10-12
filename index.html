@@ -182,6 +182,39 @@
       --line-soft: #b8a06a;
       --photo-dim: 0.62;
     }
+    /* ── customer account card (My Wardrobe page) ── */
+    .ss-acct-wrap { max-width: 880px; margin: 0 auto; padding: 4px 20px 8px; }
+    @media (min-width: 768px) { .ss-acct-wrap { padding: 36px 48px 0; margin: 0; } }
+    .ss-acct { border: 1px solid var(--line); background: var(--surf-1); border-radius: 4px; padding: 22px 20px; }
+    .ss-acct h3 { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 24px; color: var(--white); margin-bottom: 6px; }
+    .ss-acct .sa-sub { font-size: 13px; line-height: 1.7; color: var(--text-muted); margin-bottom: 16px; }
+    .ss-acct ul { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 7px; }
+    .ss-acct li { font-size: 13px; color: var(--text-muted-2); padding-left: 20px; position: relative; }
+    .ss-acct li::before { content: '\2713'; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+    .ss-acct input { width: 100%; background: var(--black); border: 1px solid var(--line); color: var(--white); font: 14px 'DM Sans', sans-serif; padding: 12px 14px; border-radius: 2px; outline: none; }
+    .ss-acct input:focus { border-color: var(--gold); }
+    .ss-acct .sa-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .ss-acct .sa-row > * { flex: 1 1 200px; }
+    .ss-acct button { background: var(--gold); color: var(--ink); border: none; padding: 12px 20px; border-radius: 2px; font: 700 12px 'DM Sans', sans-serif; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; }
+    .ss-acct button.sa-ghost { background: none; border: 1px solid var(--line); color: var(--text-muted); }
+    .ss-acct .sa-msg { font-size: 13px; margin-top: 12px; color: var(--gold); line-height: 1.6; }
+    .ss-acct .sa-msg.err { color: #e05555; }
+    .ss-acct .sa-fine { font-size: 11px; color: var(--text-muted); margin-top: 12px; line-height: 1.6; }
+    .ss-acct .sa-fine a { color: var(--gold); }
+    .ss-acct .sa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .ss-acct .sa-grid .full { grid-column: 1 / -1; }
+    .ss-acct .sa-who { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+    .ss-acct .sa-who b { color: var(--gold); font-weight: 600; }
+
+    /* Collector List: in light mode a cream panel instead of the black one */
+    html[data-theme="light"] .ss-signup { background: #efe1c4; }
+    html[data-theme="light"] .ss-signup .ss-signup-ph { opacity: .22; filter: saturate(.4) sepia(.35) !important; }
+    html[data-theme="light"] .ss-signup .ss-signup-ov { background: radial-gradient(ellipse at center, rgba(239,225,196,.78), rgba(230,214,176,.96)) !important; }
+    html[data-theme="light"] .ss-signup h2 { color: #241d12 !important; }
+    html[data-theme="light"] .ss-signup p { color: #4f4531 !important; }
+    html[data-theme="light"] .ss-signup input { background: #fbf6ea !important; color: #241d12 !important; border-color: #b8a06a !important; }
+    html[data-theme="light"] .ss-signup input::placeholder { color: #8a7a58; }
+    html[data-theme="light"] .ss-signup button { background: #a1791f !important; color: #fff8e6 !important; }
     html[data-theme="light"] .desktop-footer,
     html[data-theme="light"] #site-footer,
     html[data-theme="light"] #drop-alert-modal > div,
@@ -2947,9 +2980,9 @@
 
 
   <!-- Early access signup (mobile) -->
-  <section style="position:relative;margin-top:32px;padding:44px 20px;border-top:1px solid var(--surf-2);overflow:hidden;text-align:center">
-    <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 40%/cover;filter:brightness(var(--photo-dim)) saturate(.5)"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.55),rgba(8,7,5,.94))"></div>
+  <section class="ss-signup" style="position:relative;margin-top:32px;padding:44px 20px;border-top:1px solid var(--surf-2);overflow:hidden;text-align:center">
+    <div class="ss-signup-ph" style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 40%/cover;filter:brightness(var(--photo-dim)) saturate(.5)"></div>
+    <div class="ss-signup-ov" style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.55),rgba(8,7,5,.94))"></div>
     <div style="position:relative;z-index:2">
       <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600">Early Access</div>
       <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;line-height:1.1;margin-bottom:12px;color:var(--on-photo)">Early access to every new shirt</h2>
@@ -3077,6 +3110,7 @@
     <div class="ph-eyebrow">Your Collection</div>
     <h1>My Wardrobe</h1>
   </div>
+  <div id="ss-acct-m" class="ss-acct-wrap"></div>
   <div id="m-wardrobe-row" style="display:flex;gap:14px;overflow-x:auto;padding:8px 20px 20px;scrollbar-width:none"></div>
   <div id="m-wardrobe-empty" style="display:none;padding:8px 20px 24px;text-align:center">
     <div style="position:relative;width:220px;height:96px;margin:0 auto 18px">
@@ -3548,9 +3582,9 @@
 </section>
 
 <!-- ═══ EARLY ACCESS / DROP SIGNUP ═══ -->
-<section id="drop-signup-section" style="position:relative;padding:72px 52px;border-top:1px solid var(--surf-2);border-bottom:1px solid var(--surf-2);overflow:hidden;text-align:center">
-  <div style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 40%/cover;filter:brightness(var(--photo-dim)) saturate(.5)"></div>
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.55),rgba(8,7,5,.94))"></div>
+<section id="drop-signup-section" class="ss-signup" style="position:relative;padding:72px 52px;border-top:1px solid var(--surf-2);border-bottom:1px solid var(--surf-2);overflow:hidden;text-align:center">
+  <div class="ss-signup-ph" style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 40%/cover;filter:brightness(var(--photo-dim)) saturate(.5)"></div>
+  <div class="ss-signup-ov" style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.55),rgba(8,7,5,.94))"></div>
   <div style="position:relative;z-index:2;max-width:560px;margin:0 auto">
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:600">The Collector List</div>
     <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(26px,3vw,38px);line-height:1.1;margin-bottom:14px;color:var(--on-photo)">Early access to every new shirt</h2>
@@ -3755,6 +3789,7 @@
         <div class="ph-eyebrow">Shirt Société &middot; Your Collection</div>
         <h1>My Wardrobe</h1>
       </section>
+      <div id="ss-acct-d" class="ss-acct-wrap"></div>
 
       <!-- The 3D rail -->
       <div class="prof-section">
@@ -4695,7 +4730,10 @@ as a personal collection quickly grew into something bigger: a curated platform 
       if (cover) {
         var thumb = (typeof cldSize === 'function') ? cldSize(cover, 700) : cover;
         document.querySelectorAll("[onclick=\"openEventGallery('" + city + "')\"] img").forEach(function (im) {
-          im.removeAttribute('data-ss-step'); im.removeAttribute('srcset'); im.src = thumb;
+          im.removeAttribute('data-ss-step'); im.removeAttribute('srcset');
+          im.decoding = 'async';
+          if (thumb !== cover) im.onerror = function () { im.onerror = null; im.src = cover; };
+          im.src = thumb;
         });
       }
     });
@@ -4879,7 +4917,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
         + (external ? ' target="_blank" rel="noopener"' : '') + '>'
         + '<div class="m-fair-photo">'
         +   '<div class="m-fair-date">' + f.date + '</div>'
-        +   (f.photo ? '<img src="' + f.photo + '" alt="' + f.city + '" loading="lazy">'
+        +   (f.photo ? '<img src="' + ((typeof cldSize === 'function' && /\/shirt-photos\//.test(f.photo)) ? cldSize(f.photo, 600) : f.photo) + '" alt="' + f.city + '" loading="lazy" decoding="async" onerror="if(this.dataset.o!==\'1\'){this.dataset.o=\'1\';this.src=\'' + f.photo + '\'}">'
                     : '<div class="m-fair-ph"><span>' + f.city + '</span></div>')
         + '</div>'
         + '<div class="m-fair-info">'
@@ -7390,6 +7428,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
       showToast('Saved ♥');
     }
     localStorage.setItem('ss_wishlist', JSON.stringify(wishlist));
+    if (window.ssAcct) window.ssAcct.like(id, wishlist.includes(id));
     updateWishlistBadge();
     renderMobileGrid();
     renderDesktopGrid();
@@ -7552,7 +7591,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
       const playIcon = isVideo ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><div style="width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center"><svg width="10" height="10" viewBox="0 0 24 24" fill="#fff"><polygon points="6 3 20 12 6 21 6 3"/></svg></div></div>` : '';
       return `
       <div style="position:relative;display:inline-block" onclick="setGalleryPhoto(${i})">
-        ${isVideo ? `<video src="${thumbSrc}#t=0.5" muted playsinline preload="metadata" style="width:72px;height:72px;object-fit:cover;border-radius:2px;cursor:pointer;opacity:${i===0?1:0.5};transition:opacity 0.2s;border:${i===0?'2px solid #4caf7d':'2px solid transparent'};display:block" id="gallery-thumb-${i}"></video>` : `<img src="${thumbSrc}"
+        ${isVideo ? `<video src="${thumbSrc}#t=0.5" muted playsinline preload="metadata" style="width:72px;height:72px;object-fit:cover;border-radius:2px;cursor:pointer;opacity:${i===0?1:0.5};transition:opacity 0.2s;border:${i===0?'2px solid #4caf7d':'2px solid transparent'};display:block" id="gallery-thumb-${i}"></video>` : `<img src="${cldSize(thumbSrc, 200)}" loading="lazy" decoding="async" onerror="if(this.dataset.o!=='1'){this.dataset.o='1';this.src='${thumbSrc}'}"
           style="width:72px;height:72px;object-fit:cover;border-radius:2px;cursor:pointer;opacity:${i===0?1:0.5};transition:opacity 0.2s;border:${i===0?'2px solid #4caf7d':'2px solid transparent'};display:block"
           id="gallery-thumb-${i}">`}
         ${playIcon}
@@ -9851,6 +9890,181 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
     const d = document, s = d.createElement("script"); s.type = "module";
     s.src = "https://w.behold.so/widget.js"; setTimeout(() => { d.head.append(s); }, 0);
   })();
+</script>
+
+<script>
+/*  CUSTOMER ACCOUNTS (Supabase Auth, passwordless)
+    A visitor enters an e-mail address, receives a login link, and is in. Saved
+    shirts then follow them to every device, and their name and address are kept
+    for a faster checkout. Without logging in everything works as before.
+    Needs supabase-klantaccounts.sql (tables + rules) to be run once.      */
+(function () {
+  var LS = 'ss_auth';
+  var sess = null, profile = null, busy = false, msg = '', msgErr = false;
+
+  function load() { try { sess = JSON.parse(localStorage.getItem(LS) || 'null'); } catch (e) { sess = null; } }
+  function save() { try { if (sess) localStorage.setItem(LS, JSON.stringify(sess)); else localStorage.removeItem(LS); } catch (e) {} }
+  function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function raw(path, opts, token) {
+    opts = opts || {};
+    var h = Object.assign({ apikey: dbToken, Authorization: 'Bearer ' + (token || dbToken), 'Content-Type': 'application/json' }, opts.headers || {});
+    return fetch(dbHost + path, { method: opts.method || 'GET', headers: h, body: opts.body ? JSON.stringify(opts.body) : undefined });
+  }
+  async function token() {
+    if (!sess) return null;
+    if (sess.expires_at && sess.expires_at - 60000 < Date.now() && sess.refresh_token) {
+      try {
+        var r = await raw('/auth/v1/token?grant_type=refresh_token', { method: 'POST', body: { refresh_token: sess.refresh_token } });
+        if (!r.ok) throw new Error('refresh');
+        var d = await r.json();
+        sess = { access_token: d.access_token, refresh_token: d.refresh_token, expires_at: Date.now() + (d.expires_in || 3600) * 1000, user: sess.user };
+        save();
+      } catch (e) { sess = null; save(); return null; }
+    }
+    return sess && sess.access_token;
+  }
+  async function api(path, opts) {
+    var t = await token();
+    if (!t) throw new Error('not signed in');
+    return raw(path, opts, t);
+  }
+
+  // coming back from the e-mail link: the tokens sit in the address after the #
+  function readLink() {
+    var h = location.hash || '';
+    if (h.indexOf('access_token=') < 0 && h.indexOf('error_description=') < 0) return;
+    var p = new URLSearchParams(h.replace(/^#/, ''));
+    if (p.get('access_token')) {
+      sess = { access_token: p.get('access_token'), refresh_token: p.get('refresh_token'),
+               expires_at: Date.now() + (parseInt(p.get('expires_in'), 10) || 3600) * 1000 };
+      save();
+      msg = 'You are logged in. Welcome!'; msgErr = false;
+    } else {
+      msg = 'That login link has expired. Request a new one.'; msgErr = true;
+    }
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  }
+
+  async function loadUser() {
+    var r = await api('/auth/v1/user');
+    if (!r.ok) { sess = null; save(); return false; }
+    var u = await r.json();
+    sess.user = { id: u.id, email: u.email };
+    save();
+    return true;
+  }
+  async function loadProfile() {
+    try {
+      var r = await api('/rest/v1/customer_profiles?user_id=eq.' + sess.user.id + '&select=*');
+      if (r.ok) { var rows = await r.json(); profile = rows[0] || {}; }
+    } catch (e) { profile = profile || {}; }
+  }
+  async function syncWishlist() {
+    try {
+      var r = await api('/rest/v1/customer_wishlist?select=shirt_id');
+      if (!r.ok) return;
+      var cloud = (await r.json()).map(function (x) { return x.shirt_id; });
+      var local = (typeof wishlist !== 'undefined') ? wishlist.slice() : [];
+      var merged = cloud.slice();
+      local.forEach(function (id) { if (merged.indexOf(id) < 0) merged.push(id); });
+      var missing = merged.filter(function (id) { return cloud.indexOf(id) < 0; });
+      if (missing.length) {
+        await api('/rest/v1/customer_wishlist', { method: 'POST', headers: { Prefer: 'resolution=ignore-duplicates' },
+          body: missing.map(function (id) { return { user_id: sess.user.id, shirt_id: id }; }) });
+      }
+      if (typeof wishlist !== 'undefined') {
+        wishlist = merged;
+        localStorage.setItem('ss_wishlist', JSON.stringify(wishlist));
+        if (typeof updateWishlistBadge === 'function') updateWishlistBadge();
+        if (typeof renderWishlist === 'function') renderWishlist();
+      }
+    } catch (e) { console.warn('wishlist sync failed', e); }
+  }
+
+  function box() {
+    if (!sess || !sess.user) {
+      return '<div class="ss-acct">'
+        + '<h3>Join Shirt Soci&eacute;t&eacute;</h3>'
+        + '<div class="sa-sub">Create a free account with just your e-mail. No password needed.</div>'
+        + '<ul><li>Saved shirts on every device</li><li>Your details kept for a faster checkout</li><li>First to hear about new drops</li></ul>'
+        + '<div class="sa-row"><input type="email" id="sa-email-%K%" placeholder="your@email.com" autocomplete="email">'
+        + '<button type="button" onclick="ssAcct.login(\'%K%\')"' + (busy ? ' disabled' : '') + '>' + (busy ? 'Sending...' : 'Send me a login link') + '</button></div>'
+        + (msg ? '<div class="sa-msg' + (msgErr ? ' err' : '') + '">' + esc(msg) + '</div>' : '')
+        + '<div class="sa-fine">By continuing you agree to our <a href="/privacy.html">privacy policy</a>. We only use your e-mail to log you in and, if you ask, to tell you about new drops.</div>'
+        + '</div>';
+    }
+    var p = profile || {};
+    return '<div class="ss-acct">'
+      + '<h3>My account</h3>'
+      + '<div class="sa-who">Logged in as <b>' + esc(sess.user.email) + '</b></div>'
+      + (msg ? '<div class="sa-msg' + (msgErr ? ' err' : '') + '" style="margin:0 0 12px">' + esc(msg) + '</div>' : '')
+      + '<div class="sa-grid">'
+      +   '<input class="full" id="sa-name-%K%" placeholder="Full name" value="' + esc(p.full_name) + '" autocomplete="name">'
+      +   '<input class="full" id="sa-street-%K%" placeholder="Street and number" value="' + esc(p.street) + '" autocomplete="street-address">'
+      +   '<input id="sa-zip-%K%" placeholder="Postcode" value="' + esc(p.postcode) + '" autocomplete="postal-code">'
+      +   '<input id="sa-city-%K%" placeholder="City" value="' + esc(p.city) + '" autocomplete="address-level2">'
+      +   '<input id="sa-country-%K%" placeholder="Country" value="' + esc(p.country) + '" autocomplete="country-name">'
+      +   '<input id="sa-phone-%K%" placeholder="Phone (optional)" value="' + esc(p.phone) + '" autocomplete="tel">'
+      + '</div>'
+      + '<div class="sa-row" style="flex-wrap:nowrap"><button type="button" onclick="ssAcct.saveProfile(\'%K%\')">Save details</button>'
+      + '<button type="button" class="sa-ghost" onclick="ssAcct.logout()">Log out</button></div>'
+      + '<div class="sa-fine">Your saved shirts are linked to this account. Want to delete your account and data? E-mail us and we will remove everything.</div>'
+      + '</div>';
+  }
+  function render() {
+    [['ss-acct-m', 'm'], ['ss-acct-d', 'd']].forEach(function (x) {
+      var el = document.getElementById(x[0]);
+      if (el) el.innerHTML = box().split('%K%').join(x[1]);
+    });
+    var ic = document.getElementById('d-nav-profile');
+    if (ic) ic.title = (sess && sess.user) ? 'My account' : 'My Wardrobe / account';
+  }
+  function val(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+
+  window.ssAcct = {
+    login: async function (k) {
+      var email = val('sa-email-' + k);
+      if (!/^\S+@\S+\.\S+$/.test(email)) { msg = 'Please enter a valid e-mail address.'; msgErr = true; render(); return; }
+      busy = true; msg = ''; render();
+      try {
+        var r = await raw('/auth/v1/otp?redirect_to=' + encodeURIComponent(location.origin + '/'), { method: 'POST', body: { email: email, create_user: true } });
+        if (!r.ok) throw new Error(r.status);
+        msg = 'Check your inbox: we sent a login link to ' + email + '. Open it on this device.'; msgErr = false;
+      } catch (e) { msg = 'Could not send the link right now. Try again in a minute.'; msgErr = true; }
+      busy = false; render();
+    },
+    saveProfile: async function (k) {
+      var row = { user_id: sess.user.id, full_name: val('sa-name-' + k), street: val('sa-street-' + k), postcode: val('sa-zip-' + k),
+                  city: val('sa-city-' + k), country: val('sa-country-' + k), phone: val('sa-phone-' + k), updated_at: new Date().toISOString() };
+      try {
+        var r = await api('/rest/v1/customer_profiles', { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates,return=representation' }, body: row });
+        if (!r.ok) throw new Error(r.status);
+        profile = row; msg = 'Details saved.'; msgErr = false;
+      } catch (e) { msg = 'Could not save. Run supabase-klantaccounts.sql once, then try again.'; msgErr = true; }
+      render();
+    },
+    logout: function () { sess = null; profile = null; save(); msg = ''; render(); },
+    like: async function (id, liked) {
+      if (!sess || !sess.user) return;
+      try {
+        if (liked) await api('/rest/v1/customer_wishlist', { method: 'POST', headers: { Prefer: 'resolution=ignore-duplicates' }, body: { user_id: sess.user.id, shirt_id: id } });
+        else await api('/rest/v1/customer_wishlist?shirt_id=eq.' + encodeURIComponent(id), { method: 'DELETE' });
+      } catch (e) { /* the local list still works */ }
+    },
+    profile: function () { return profile; },
+    user: function () { return sess && sess.user; }
+  };
+
+  async function start() {
+    load(); readLink(); render();
+    if (sess) {
+      if (await loadUser()) { await loadProfile(); await syncWishlist(); }
+      render();
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
 </script>
 </body>
 </html>
