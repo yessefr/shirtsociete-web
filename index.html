@@ -3040,7 +3040,7 @@
       <button class="gallery-arrow prev" onclick="event.stopPropagation();galleryNav('m',-1)" style="left:8px">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      <img id="m-detail-main-img" src="" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;border-radius:2px;background:var(--surf-2);padding:12px">
+      <img id="m-detail-main-img" src="" alt="Vintage football shirt photo" style="width:100%;aspect-ratio:3/4;object-fit:contain;border-radius:2px;background:var(--surf-2);padding:12px">
       <div class="m-dots" id="m-detail-dots"></div>
       <button class="gallery-arrow next" onclick="event.stopPropagation();galleryNav('m',1)" style="right:8px">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
@@ -3550,15 +3550,15 @@
 
     <!-- 4 shirts stacked, GSAP moves each one -->
     <div id="sw0" class="sw-shirt" onclick="dShopCategory('clubs')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg" alt="Shirt Société at a vintage football fair" loading="lazy">
       <div class="sw-info"><div class="sw-name">Club Classics</div></div>
     </div>
     <div id="sw1" class="sw-shirt" onclick="dShopCategory('national')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg" alt="Shirt Société at a vintage football fair" loading="lazy">
       <div class="sw-info"><div class="sw-name">International Shirts</div></div>
     </div>
     <div id="sw2" class="sw-shirt" onclick="dGoTo('about')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg">
+      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg" alt="Shirt Société at a vintage football fair" loading="lazy">
       <div class="sw-info"><div class="sw-cat-lg">Our Story</div><div class="sw-name">Who We Are</div></div>
     </div>
     <div id="sw-prog" style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,169,80,.06);z-index:8">
@@ -3680,7 +3680,7 @@
             <button class="gallery-arrow prev" onclick="event.stopPropagation();galleryNav('d',-1)">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
-            <img id="d-detail-main-img" src="" alt="">
+            <img id="d-detail-main-img" src="" alt="Vintage football shirt photo">
             <div class="gallery-zoom-hint"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Click to zoom</div>
             <button class="gallery-arrow next" onclick="event.stopPropagation();galleryNav('d',1)">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
@@ -4978,7 +4978,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
         + '<div class="m-newin-img">'
         +   (sold ? '<div class="m-newin-sold">Sold</div>'
                   : (isNew ? '<div class="m-newin-tag">New</div>' : ''))
-        +   '<img src="' + getThumb(s, 500) + '" alt="' + (s.title || '') + '" loading="lazy">'
+        +   '<img src="' + getThumb(s, 500) + '" alt="' + (s.title || 'Vintage football shirt') + '" loading="lazy">'
         +   '<button class="like-btn ' + (isLiked ? 'liked' : '') + '" onclick="event.stopPropagation();toggleLike(\'' + s.id + '\')" style="top:6px;right:6px;width:28px;height:28px;z-index:3">'
         +     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="' + (isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)') + '" stroke="' + (isLiked ? 'var(--gold)' : 'var(--on-photo)') + '" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>'
         +   '</button>'
@@ -5031,11 +5031,11 @@ as a personal collection quickly grew into something bigger: a curated platform 
   // plain image, so a shirt with a single shot behaves exactly as before.
   function mSwipeStrip(s) {
     var imgs = (s.images || []).filter(Boolean).slice(0, 5);
-    if (!imgs.length) return '<img src="' + getThumb(s, 600) + '" alt="' + (s.title || '') + '" loading="lazy">';
-    if (imgs.length === 1) return '<img src="' + cldSize(imgs[0], 600) + '" alt="' + (s.title || '') + '" loading="lazy">';
+    if (!imgs.length) return '<img src="' + getThumb(s, 600) + '" alt="' + (s.title || 'Vintage football shirt') + '" loading="lazy">';
+    if (imgs.length === 1) return '<img src="' + cldSize(imgs[0], 600) + '" alt="' + (s.title || 'Vintage football shirt') + '" loading="lazy">';
 
     var slides = imgs.map(function (src, i) {
-      return '<div><img src="' + cldSize(src, 600) + '" alt="' + (s.title || '') + (i ? ' — photo ' + (i + 1) : '') + '" loading="lazy"></div>';
+      return '<div><img src="' + cldSize(src, 600) + '" alt="' + (s.title || 'Vintage football shirt') + (i ? ' — photo ' + (i + 1) : '') + '" loading="lazy"></div>';
     }).join('');
     var dots = imgs.map(function (_, i) { return '<i class="' + (i === 0 ? 'on' : '') + '"></i>'; }).join('');
 
@@ -5287,7 +5287,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
         + '<a class="la-card" href="' + href + '" onclick="openDetail(\'' + s.id + '\',\'d\');return false;">'
         +   '<div class="la-img">'
         +     '<span class="la-tag">' + label + '</span>'
-        +     '<img class="la-img-front" src="' + front + '" alt="' + (s.title || '') + '" loading="lazy">'
+        +     '<img class="la-img-front" src="' + front + '" alt="' + (s.title || 'Vintage football shirt') + '" loading="lazy">'
         +     (back ? '<img class="la-img-back" src="' + back + '" alt="' + (s.title || '') + ' back" loading="lazy">' : '')
         +   '</div>'
         +   '<div class="la-body">'
@@ -8701,7 +8701,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     rail.innerHTML = items.map(function(s) {
       return '<div class="ward-shirt" onclick="openDetail(\'' + s.id + '\',\'d\')">' +
                '<div class="ward-hook"></div>' +
-               '<img class="ward-img" src="' + (s.image || '') + '" alt="' + (s.title || '') + '">' +
+               '<img class="ward-img" src="' + (s.image || '') + '" alt="' + (s.title || 'Vintage football shirt') + '">' +
                '<div class="ward-cap">' +
                  '<div class="ward-cap-club">' + (s.club || 'Shirt Société') + '</div>' +
                  '<div class="ward-cap-title">' + (s.title || '') + '</div>' +
@@ -8897,7 +8897,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
   <div class="zoom-nav prev" onclick="zoomNav(event,-1)">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
   </div>
-  <img id="zoom-lightbox-img" src="" alt="" onclick="toggleZoomLevel(event)">
+  <img id="zoom-lightbox-img" src="" alt="Zoomed shirt photo" onclick="toggleZoomLevel(event)">
   <div id="zoom-thumbs" class="zoom-thumbs" onclick="event.stopPropagation()"></div>
   <div id="zoom-hint" style="position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--on-photo-rgb),.45);pointer-events:none;z-index:5;text-align:center;white-space:nowrap">Click the image to zoom</div>
   <div class="zoom-nav next" onclick="zoomNav(event,1)">
@@ -9063,7 +9063,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     <div class="archive-detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0">
       <div style="background:var(--black);padding:24px;display:flex;flex-direction:column;gap:12px">
         <div style="position:relative;background:var(--surf-1);border-radius:3px;overflow:hidden;cursor:zoom-in;max-height:78vh" onclick="openArchiveZoom()">
-          <img id="ad-main-img" src="" alt="" style="width:100%;height:100%;max-height:78vh;object-fit:contain;display:block">
+          <img id="ad-main-img" src="" alt="Vintage football shirt photo" style="width:100%;height:100%;max-height:78vh;object-fit:contain;display:block">
         </div>
         <div id="ad-thumbs" style="display:flex;gap:8px;flex-wrap:wrap"></div>
       </div>
@@ -9098,7 +9098,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
           </div>
           <!-- Navigation arrows + current photo -->
           <div style="position:relative;margin-bottom:16px">
-            <img id="gallery-main-img" src="" alt="" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:var(--surf-1);display:block">
+            <img id="gallery-main-img" src="" alt="Shirt Société gallery photo" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:var(--surf-1);display:block">
             <video id="gallery-main-video" controls playsinline preload="metadata" style="width:100%;max-height:600px;object-fit:contain;border-radius:4px;background:var(--surf-1);display:none"></video>
             <!-- Prev -->
             <button onclick="galleryPrev()" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:var(--white);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">‹</button>
