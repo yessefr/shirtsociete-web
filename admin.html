@@ -80,6 +80,29 @@
     .sidebar-footer {
       margin-top: auto; padding: 16px 20px; border-top: 1px solid var(--grey-light);
     }
+    .sp-section-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      color: #c8a950; margin: 26px 0 10px;
+    }
+    .sp-section-title:first-of-type { margin-top: 4px; }
+    .sp-list { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
+    .sp-row { background: #1a1715; border: 1px solid #2a2820; border-radius: 4px; padding: 14px 16px; }
+    .sp-label { font-size: 12.5px; font-weight: 600; color: var(--white); margin-bottom: 10px; }
+    .sp-body { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .sp-multi-tag { font-size: 9.5px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: #c8a950; background: rgba(200,169,80,.12); border: 1px solid rgba(200,169,80,.35); border-radius: 3px; padding: 2px 6px; margin-left: 6px; vertical-align: middle; }
+    .sp-thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .sp-thumb-wrap { position: relative; width: 60px; height: 60px; flex-shrink: 0; }
+    .sp-thumb { width: 60px; height: 60px; object-fit: cover; border-radius: 3px; background: #0a0905; display: block; }
+    .sp-thumb-x {
+      position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 50%;
+      background: #e05a4d; color: #fff; border: 1px solid #1a1715; font-size: 13px; line-height: 1;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;
+    }
+    .sp-empty { font-size: 12px; color: #6b6355; font-style: italic; }
+    .sp-status { font-size: 11.5px; margin-top: 8px; min-height: 1px; }
+    .sp-status.err { color: #e05a4d; }
+    .sp-status.ok { color: #4caf7d; }
+
     .logout-btn {
       display: flex; align-items: center; gap: 8px;
       color: var(--text-muted); cursor: pointer; font-size: 13px;
@@ -378,6 +401,31 @@
     .modal-body { padding: 24px; }
     .modal-footer { padding: 16px 24px; border-top: 1px solid var(--grey-light); display: flex; justify-content: flex-end; gap: 12px; }
 
+    /* ── KASSA ── */
+    .ks-wrap { display: grid; grid-template-columns: 1fr 360px; gap: 20px; align-items: start; }
+    .ks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 12px; max-height: 70vh; overflow-y: auto; }
+    .ks-card { background: var(--grey); border: 1px solid var(--grey-light); border-radius: 4px; overflow: hidden; cursor: pointer; text-align: left; padding: 0; color: var(--white); font-family: inherit; }
+    .ks-card:active, .ks-card.in { border-color: var(--gold); }
+    .ks-card img { width: 100%; height: 110px; object-fit: cover; display: block; background: #0d0b08; }
+    .ks-card .kt { font-size: 11.5px; padding: 7px 8px 2px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .ks-card .kp { font-size: 13px; color: var(--gold); font-weight: 600; padding: 0 8px 8px; }
+    .ks-right { background: var(--grey); border: 1px solid var(--grey-light); border-radius: 6px; padding: 16px; position: sticky; top: 12px; }
+    .ks-basket { min-height: 60px; margin-bottom: 10px; }
+    .ks-line { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--grey-light); font-size: 13px; }
+    .ks-line .n { flex: 1; min-width: 0; line-height: 1.3; }
+    .ks-line input { width: 82px; background: var(--black); border: 1px solid var(--grey-light); color: var(--white); padding: 6px; border-radius: 3px; text-align: right; font-size: 13px; }
+    .ks-line button { background: none; border: none; color: var(--red); font-size: 18px; cursor: pointer; }
+    .ks-total { display: flex; justify-content: space-between; font-size: 16px; padding: 12px 0; }
+    .ks-total b { color: var(--gold); font-size: 24px; }
+    .ks-actions { display: grid; gap: 8px; }
+    .ks-actions .btn { width: 100%; min-height: 46px; }
+    .ks-status { margin-top: 12px; font-size: 13px; line-height: 1.6; }
+    .ks-status.ok { color: var(--green); } .ks-status.err { color: var(--red); }
+    .ks-status .btn { margin-top: 8px; }
+    .ks-settings { margin-top: 14px; font-size: 13px; color: var(--text-muted); }
+    .ks-set-body { padding-top: 10px; }
+    @media (max-width: 900px) { .ks-wrap { grid-template-columns: 1fr; } .ks-right { position: static; } .ks-grid { max-height: 48vh; } }
+
     /* ── FORM ── */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -478,6 +526,18 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Drop Signups
       </div>
+      <div class="nav-item" id="nav-sitephotos" onclick="switchTab('sitephotos')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        Site Photos
+      </div>
+      <div class="nav-item" id="nav-archive" onclick="switchTab('archive')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Archive
+      </div>
+      <div class="nav-item" id="nav-kassa" onclick="switchTab('kassa')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        Kassa
+      </div>
       <div class="nav-item" id="nav-messages" onclick="switchTab('messages')">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         Messages
@@ -493,6 +553,37 @@
 
   <!-- Main -->
   <div class="main-content">
+
+    <!-- ARCHIVE TAB -->
+    <div class="tab-content" id="tab-archive">
+      <div class="page-header">
+        <div>
+          <h1>Archive</h1>
+          <p style="color:#888070;font-size:13px;margin-top:4px;max-width:640px">
+            The private collection shown on the Archive page. Tap a piece to add or remove photos —
+            uploads come straight from your gallery and are live right away. Everything else about a
+            piece (title, club, story) is still edited through SQL, not here.
+          </p>
+        </div>
+      </div>
+      <div id="arc-list"><div class="loading">Loading the archive...</div></div>
+      <div id="arc-editor" style="display:none;margin-top:18px"></div>
+    </div>
+
+    <!-- SITE PHOTOS TAB -->
+    <div class="tab-content" id="tab-sitephotos">
+      <div class="page-header">
+        <div>
+          <h1>Site Photos</h1>
+          <p style="color:#888070;font-size:13px;margin-top:4px;max-width:640px">
+            Upload straight from your gallery. For a spot with several photos (a fair, a gallery),
+            pick more than one at once — they are all added. This writes directly to the site, so
+            there is nothing further to send or paste anywhere.
+          </p>
+        </div>
+      </div>
+      <div id="sp-container"><div class="loading">Loading current photos...</div></div>
+    </div>
 
     <!-- DASHBOARD TAB -->
     <div class="tab-content active" id="tab-dashboard">
@@ -659,6 +750,34 @@
     </div>
 
   <!-- MESSAGES TAB -->
+  <div class="tab-content" id="tab-kassa">
+    <div class="page-header"><div><h1 class="page-title">Kassa</h1><div class="page-sub" style="color:var(--text-muted);font-size:13px">Sell a shirt in person. It leaves the website the moment it is paid.</div></div></div>
+    <div class="ks-wrap">
+      <div class="ks-left">
+        <input type="text" class="form-input" id="ks-search" placeholder="Search club, player, season..." oninput="ksRenderGrid()">
+        <div class="ks-grid" id="ks-grid"></div>
+      </div>
+      <div class="ks-right">
+        <div class="ks-basket" id="ks-basket"></div>
+        <div class="ks-total">Total <b id="ks-total">€0.00</b></div>
+        <div class="ks-actions">
+          <button class="btn btn-primary" id="ks-pay-solo" onclick="ksPaySolo()">Pay on SumUp Solo</button>
+          <button class="btn btn-secondary" onclick="ksPayPhone()">Tap to Pay on my phone (SumUp app)</button>
+          <button class="btn btn-secondary" onclick="ksConfirm('cash')">Cash / other: paid</button>
+        </div>
+        <div class="ks-status" id="ks-status"></div>
+        <details class="ks-settings"><summary>Solo reader settings</summary>
+          <div class="ks-set-body">
+            <div id="ks-reader-info" style="font-size:12px;color:var(--text-muted);margin-bottom:10px"></div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Pair: on the Solo go to Connections, Wi-Fi, then <b>API</b>, <b>Connect</b>. Type the code here within 5 minutes.</div>
+            <div style="display:flex;gap:8px"><input class="form-input" id="ks-pair-code" placeholder="Pairing code"><button class="btn btn-secondary" onclick="ksPair()">Pair</button></div>
+            <button class="btn btn-secondary" style="margin-top:8px;font-size:12px" onclick="ksLoadReaders()">Refresh readers</button>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
   <div class="tab-content" id="tab-messages">
     <div class="page-header">
       <div>
@@ -780,7 +899,7 @@
         </div>
         <div class="form-group full">
           <label class="form-label">Player photo URL <span style="color:#888070;font-weight:400">— shows a "Shop the Player" block on the product page. Only use images you own or have licensed.</span></label>
-          <input type="text" class="form-input" id="m-mw_player_img" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <input type="text" class="form-input" id="m-mw_player_img" placeholder="https://...">
         </div>
         <div class="form-group full">
           <label class="form-label">Player photo credit <span style="color:#888070;font-weight:400">— shown under the photo, e.g. "Photo: own archive" or the licence holder.</span></label>
@@ -868,59 +987,63 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               Upload photos from this device
             </button>
-            <div class="up-hint">Pick several at once. They fill the first empty slots below, in the order you choose them.</div>
+            <div class="up-hint">Pick several at once. They fill the first empty slots below, in the order you choose them. Photos are shrunk on your phone first, so this is quick even on weak wifi.</div>
+            <div id="up-notice" style="display:none;margin-top:10px;padding:10px 12px;border:1px solid rgba(224,122,109,.5);border-radius:4px;color:#e07a6a;font-size:12.5px;line-height:1.6">
+              This shirt still has old photos that are offline. Tap <b>Remove all photos</b>, then upload them again from your gallery.
+            </div>
+            <button type="button" class="btn btn-secondary" style="width:100%;margin-top:10px;font-size:12px" onclick="ssClearAllPhotos()">Remove all photos</button>
             <div class="up-status" id="up-status"></div>
             <div class="up-thumbs" id="up-thumbs"></div>
           </div>
         </div>
 
         <div class="form-group full">
-          <label class="form-label">Image 1 — Main photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 1 — Main photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 2 — Hover photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image2" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 2 — Hover photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image2" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 3 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image3" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 3 — Extra photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image3" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 4 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image4" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 4 — Extra photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image4" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 5 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image5" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 5 — Extra photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image5" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 6 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image6" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 6 — Extra photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image6" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 7 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image7" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 7 — Extra photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image7" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 8 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image8" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 8 — Extra photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image8" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 9 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image9" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 9 — Extra photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image9" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 10 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image10" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 10 — Extra photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image10" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 11 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image11" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 11 — Extra photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image11" placeholder="Filled in by the upload button">
         </div>
         <div class="form-group full">
-          <label class="form-label">Image 12 — Extra photo (Cloudinary URL)</label>
-          <input type="text" class="form-input" id="m-image12" placeholder="https://res.cloudinary.com/dinpfdojh/image/upload/...">
+          <label class="form-label">Image 12 — Extra photo (photo link)</label>
+          <input type="text" class="form-input" id="m-image12" placeholder="Filled in by the upload button">
         </div>
         <input type="hidden" id="m-existing-images" value="[]">
         <div class="form-group full">
@@ -1179,6 +1302,10 @@
   // each pulling a multi-megabyte image was most of the slowness.
   function ssThumb(url) {
     if (!url) return '';
+    // photos stored in Supabase have a small twin next to them (name_t.jpg)
+    if (url.indexOf('/storage/v1/object/public/shirt-photos/') !== -1) {
+      return (/\.jpg$/i.test(url) && !/_t\.jpg$/i.test(url)) ? url.replace(/\.jpg$/i, '_t.jpg') : url;
+    }
     // only Cloudinary URLs can be transformed; anything else passes through
     return url.replace(/\/upload\/(?!.*\/upload\/)/, '/upload/w_96,h_96,c_fill,q_auto,f_auto/');
   }
@@ -1196,7 +1323,7 @@
     document.getElementById('shirts-tbody').innerHTML = shirts.length ? shirts.map(s => `
       <tr>
         <td data-label="" class="cell-thumb"><img src="${ssThumb(s.images?.[0])}" class="shirt-thumb" loading="lazy" decoding="async" onerror="this.style.background='var(--grey-mid)'"></td>
-        <td data-label="Title" class="cell-title" style="font-weight:500;max-width:200px">${s.title}</td>
+        <td data-label="Title" class="cell-title" style="font-weight:500;max-width:200px">${s.title}${ssHasOldPhotos(s.images) ? '<div style="margin-top:4px;font-size:11px;font-weight:600;color:#e07a6a">Photos offline — re-upload</div>' : (!(s.images && s.images.length) ? '<div style="margin-top:4px;font-size:11px;font-weight:600;color:#b0a898">No photos yet</div>' : '')}</td>
         <td data-label="Club">${s.club || '—'}</td>
         <td data-label="Category"><span class="badge badge-${s.category}">${s.category?.replace('_',' ') || '—'}</span></td>
         <td data-label="Size">${s.size || '—'}</td>
@@ -1233,8 +1360,9 @@
     return getPhotoFieldIds().map(function(id) {
       var el = document.getElementById(id);
       return el ? el.value.trim() : '';
-    }).filter(function(v) { return v; });
+    }).filter(function(v) { return /^https?:\/\//i.test(v); });   // never the temporary "uploading..." text
   }
+  var ssUploadsBusy = 0, ssPhotosDirty = false;
   function writePhotoUrls(urls) {
     var ids = getPhotoFieldIds();
     ids.forEach(function(id, i) {
@@ -1249,10 +1377,11 @@
     var strip = document.getElementById('m-photo-strip');
     if (!strip) return;
     var urls = readPhotoUrls();
+    ssUpdatePhotoNotice();
     var cnt = document.getElementById('m-photo-count');
     if (cnt) cnt.textContent = urls.length ? urls.length + ' photo' + (urls.length === 1 ? '' : 's') : '';
     if (!urls.length) {
-      strip.innerHTML = '<div style="color:#5a544a;font-size:12px;padding:10px">No photos yet — paste Cloudinary URLs in the fields below, then press Refresh preview.</div>';
+      strip.innerHTML = '<div style="color:#5a544a;font-size:12px;padding:10px">No photos yet — use the upload button above.</div>';
       return;
     }
     strip.innerHTML = urls.map(function(u, i) {
@@ -1267,6 +1396,7 @@
     enablePhotoDrag();
   }
   function removePhotoAt(i) {
+    ssPhotosDirty = true;
     var urls = readPhotoUrls();
     urls.splice(i, 1);
     writePhotoUrls(urls);
@@ -1277,6 +1407,7 @@
     if (isNaN(from) || isNaN(to) || from === to) return;
     var urls = readPhotoUrls();
     if (from < 0 || from >= urls.length || to < 0 || to >= urls.length) return;
+    ssPhotosDirty = true;
     var moved = urls.splice(from, 1)[0];
     urls.splice(to, 0, moved);
     writePhotoUrls(urls);
@@ -1378,6 +1509,7 @@
       if (q) { q.checked = localStorage.getItem('ss-quick-list') === '1'; }
     } catch (e) {}
     setTimeout(ssQuickMode, 0);
+    ssPhotosDirty = false;
     editingShirtId = shirt ? shirt.id : null;
     document.getElementById('shirt-modal-title').textContent = shirt ? 'Edit Shirt' : 'Add Shirt';
     document.getElementById('m-title').value = shirt?.title || '';
@@ -1409,7 +1541,10 @@
     if (typeof refreshPhotoStrip === 'function') refreshPhotoStrip();
   }
 
-  function closeShirtModal() {
+  function closeShirtModal(force) {
+    if (!force && ssUploadsBusy > 0) { if (!confirm('Photos are still uploading. Close anyway? Unfinished photos are lost.')) return; }
+    else if (!force && ssPhotosDirty) { if (!confirm('You uploaded or changed photos but did not press Save Shirt. Close anyway? The photos will not be added to the shirt.')) return; }
+    ssPhotosDirty = false;
     document.getElementById('shirt-modal').classList.remove('open');
     for (var gi = 1; gi <= 12; gi++) {
       var el = document.getElementById(gi === 1 ? 'm-image' : 'm-image' + gi);
@@ -1728,6 +1863,7 @@
     const category = document.getElementById('m-category').value;
     const price = document.getElementById('m-price').value;
     if (!title || !category || !price) { showToast('Fill in all required fields', 'error'); return; }
+    if (ssUploadsBusy > 0) { showToast('Photos are still uploading. Wait a moment, then Save.', 'error'); return; }
 
     const btn = document.getElementById('shirt-save-btn');
     btn.disabled = true; btn.textContent = 'Saving...';
@@ -1761,7 +1897,7 @@
         for (var gi = 1; gi <= 12; gi++) {
           var el = document.getElementById(gi === 1 ? 'm-image' : 'm-image' + gi);
           var v = (el && el.value ? el.value.trim() : '');
-          if (v) imgs.push(v);
+          if (/^https?:\/\//i.test(v)) imgs.push(v);
         }
         if (imgs.length > 0) return imgs;
         try { return JSON.parse((document.getElementById('m-existing-images') || {}).value || '[]'); } catch(e) { return []; }
@@ -1774,24 +1910,28 @@
     try {
       // Use Netlify function to bypass RLS (server-side uses service role key)
       const apiBase = 'https://shirtsociete.netlify.app/api';
-      let res;
-      if (editingShirtId) {
-        res = await fetch(`${apiBase}/admin-shirts?id=${editingShirtId}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
-          body: JSON.stringify(payload)
-        });
-      } else {
-        res = await fetch(`${apiBase}/admin-shirts`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
-          body: JSON.stringify(payload)
-        });
-      }
+      let res = null;
+      try {
+        if (editingShirtId) {
+          res = await fetch(`${apiBase}/admin-shirts?id=${editingShirtId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            body: JSON.stringify(payload)
+          });
+        } else {
+          res = await fetch(`${apiBase}/admin-shirts`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            body: JSON.stringify(payload)
+          });
+        }
+      } catch (netErr) { console.warn('Netlify save unreachable, trying direct', netErr); res = null; }
 
-      if (!res.ok) {
-        const errText = await res.text();
-        console.error('Save error:', res.status, errText);
+      if (res && (res.status === 401)) { handleAuthExpired(); throw new Error('Your login expired. Log in again, then Save. Your photos are still in the form.'); }
+
+      if (!res || !res.ok) {
+        const errText = res ? await res.text() : 'no connection to the save function';
+        console.error('Save error:', res && res.status, errText);
         // Fallback: try direct Supabase write
         const method2 = editingShirtId ? 'PATCH' : 'POST';
         const url2 = editingShirtId
@@ -1809,11 +1949,12 @@
         });
         if (!res2.ok) {
           const err2 = await res2.text();
+          if (/JWT|expired|401/i.test(err2) || res2.status === 401) { handleAuthExpired(); throw new Error('Your login expired. Log in again and Save.'); }
           throw new Error(`Save failed: ${err2}`);
         }
       }
       showToast(editingShirtId ? 'Shirt updated!' : 'Shirt added!', 'success');
-      closeShirtModal();
+      closeShirtModal(true);
       await loadShirts();
       updateDashboard();
     } catch (err) {
@@ -2069,6 +2210,136 @@
     `).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:40px">No customers yet</td></tr>';
   }
 
+  // ── KASSA (point of sale for fairs) ──
+  var KS_FN = 'https://shirtsociete.netlify.app/.netlify/functions/sumup';
+  var ksBasket = [];            // [{id,title,price,image}]
+  var ksReaderId = null;
+  try { ksReaderId = localStorage.getItem('ss_pos_reader'); } catch (e) {}
+
+  function ksEsc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function ksMoney(n) { return '€' + (Number(n) || 0).toFixed(2); }
+  function ksStatus(msg, cls) { var e = document.getElementById('ks-status'); if (e) { e.className = 'ks-status ' + (cls || ''); e.innerHTML = msg; } }
+  async function ksCall(body) {
+    var r = await fetch(KS_FN, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + authToken }, body: JSON.stringify(body) });
+    var d = null; try { d = await r.json(); } catch (e) {}
+    if (!r.ok) throw new Error((d && (d.error || d.message || (d.detail))) || ('Error ' + r.status));
+    return d;
+  }
+  function ksInit() {
+    ksRenderGrid(); ksRenderBasket();
+    var info = document.getElementById('ks-reader-info');
+    if (info) info.textContent = ksReaderId ? 'Paired Solo is saved on this device.' : 'No Solo paired on this device yet.';
+  }
+  function ksShirts() {
+    return (Array.isArray(allShirts) ? allShirts : []).filter(function (s) { return s.available !== false && !s.is_draft; });
+  }
+  function ksRenderGrid() {
+    var q = ((document.getElementById('ks-search') || {}).value || '').toLowerCase().trim();
+    var list = ksShirts().filter(function (s) {
+      return !q || [s.title, s.club, s.season, s.mw_player].filter(Boolean).join(' ').toLowerCase().indexOf(q) !== -1;
+    }).slice(0, 120);
+    var grid = document.getElementById('ks-grid');
+    if (!grid) return;
+    grid.innerHTML = list.map(function (s) {
+      var inB = ksBasket.some(function (b) { return b.id === s.id; });
+      var im = (s.images && s.images[0]) ? (s.images[0].replace(/\.jpg$/i, '_t.jpg')) : '';
+      return '<button type="button" class="ks-card' + (inB ? ' in' : '') + '" onclick="ksAdd(\'' + s.id + '\')">'
+        + (im ? '<img loading="lazy" src="' + ksEsc(im) + '" onerror="this.onerror=null;this.src=\'' + ksEsc(s.images[0]) + '\'">' : '<div style="height:110px"></div>')
+        + '<div class="kt">' + ksEsc(s.title) + '</div><div class="kp">' + ksMoney(s.price) + '</div></button>';
+    }).join('') || '<div style="color:var(--text-muted);font-size:13px;padding:14px">No shirts found.</div>';
+  }
+  function ksAdd(id) {
+    var s = (allShirts || []).filter(function (x) { return x.id === id; })[0];
+    if (!s || ksBasket.some(function (b) { return b.id === id; })) { ksRemove(id); return; }
+    ksBasket.push({ id: s.id, title: s.title, price: parseFloat(s.price) || 0 });
+    ksRenderBasket(); ksRenderGrid();
+  }
+  function ksRemove(id) { ksBasket = ksBasket.filter(function (b) { return b.id !== id; }); ksRenderBasket(); ksRenderGrid(); }
+  function ksSetPrice(id, v) { ksBasket.forEach(function (b) { if (b.id === id) b.price = parseFloat(String(v).replace(',', '.')) || 0; }); ksTotal(); }
+  function ksTotalNum() { return ksBasket.reduce(function (a, b) { return a + (Number(b.price) || 0); }, 0); }
+  function ksTotal() { var t = document.getElementById('ks-total'); if (t) t.textContent = ksMoney(ksTotalNum()); }
+  function ksRenderBasket() {
+    var el = document.getElementById('ks-basket');
+    if (!el) return;
+    el.innerHTML = ksBasket.length ? ksBasket.map(function (b) {
+      return '<div class="ks-line"><div class="n">' + ksEsc(b.title) + '</div>'
+        + '<input type="text" inputmode="decimal" value="' + b.price.toFixed(2) + '" onchange="ksSetPrice(\'' + b.id + '\', this.value)" title="Change the price if you agree a deal">'
+        + '<button type="button" onclick="ksRemove(\'' + b.id + '\')">&times;</button></div>';
+    }).join('') : '<div style="color:var(--text-muted);font-size:13px">Tap a shirt to add it.</div>';
+    ksTotal();
+  }
+  function ksNeedBasket() {
+    if (!ksBasket.length || ksTotalNum() <= 0) { ksStatus('Add at least one shirt first.', 'err'); return false; }
+    return true;
+  }
+  async function ksPair() {
+    var code = (document.getElementById('ks-pair-code') || {}).value || '';
+    if (!code.trim()) { ksStatus('Type the pairing code from the Solo first.', 'err'); return; }
+    ksStatus('Pairing...');
+    try {
+      var d = await ksCall({ action: 'pair', pairing_code: code.trim(), name: 'Solo' });
+      ksReaderId = d.id || (d.reader && d.reader.id) || null;
+      if (ksReaderId) { try { localStorage.setItem('ss_pos_reader', ksReaderId); } catch (e) {} }
+      ksStatus(ksReaderId ? 'Solo paired. Check the Solo screen: it asks you to confirm.' : 'Pairing sent. Tap Refresh readers.', 'ok');
+      ksInit();
+    } catch (e) { ksStatus('Pairing failed: ' + ksEsc(e.message), 'err'); }
+  }
+  async function ksLoadReaders() {
+    try {
+      var d = await ksCall({ action: 'readers' });
+      var items = d.items || d.readers || d || [];
+      var r = (Array.isArray(items) ? items : []).filter(function (x) { return x.id; })[0];
+      if (r) { ksReaderId = r.id; try { localStorage.setItem('ss_pos_reader', ksReaderId); } catch (e) {} ksStatus('Found your Solo' + (r.status ? ' (' + ksEsc(r.status) + ')' : '') + '.', 'ok'); }
+      else ksStatus('No paired reader found yet.', 'err');
+      ksInit();
+    } catch (e) { ksStatus('Could not load readers: ' + ksEsc(e.message), 'err'); }
+  }
+  async function ksPaySolo() {
+    if (!ksNeedBasket()) return;
+    if (!ksReaderId) { ksStatus('Pair your Solo first (Solo reader settings below).', 'err'); return; }
+    var cents = Math.round(ksTotalNum() * 100);
+    ksStatus('Sending ' + ksMoney(ksTotalNum()) + ' to the Solo...');
+    try {
+      await ksCall({ action: 'checkout', reader_id: ksReaderId, amount_cents: cents, description: ksBasket.map(function (b) { return b.title; }).join(', '), ref: 'pos-' + Date.now() });
+      ksStatus('Hand the Solo to the customer. They have 60 seconds to tap or insert a card.<br>When the Solo shows <b>approved</b>:'
+        + '<br><button class="btn btn-primary" onclick="ksConfirm(\'solo\')">Approved: mark as sold</button> '
+        + '<button class="btn btn-secondary" onclick="ksCancelSolo()">Cancel payment</button>');
+    } catch (e) { ksStatus('Could not start the payment: ' + ksEsc(e.message), 'err'); }
+  }
+  async function ksCancelSolo() {
+    try { await ksCall({ action: 'terminate', reader_id: ksReaderId }); ksStatus('Payment cancelled on the Solo.', ''); }
+    catch (e) { ksStatus('Could not cancel: ' + ksEsc(e.message) + '. Press the red button on the Solo.', 'err'); }
+  }
+  function ksPayPhone() {
+    if (!ksNeedBasket()) return;
+    ksStatus('Open the <b>SumUp app</b> on your phone, choose Tap to Pay and enter <b style="font-size:20px">' + ksMoney(ksTotalNum()) + '</b>.<br>When the payment is successful:'
+      + '<br><button class="btn btn-primary" onclick="ksConfirm(\'phone\')">Paid: mark as sold</button>');
+  }
+  async function ksConfirm(method) {
+    if (!ksNeedBasket()) return;
+    var ids = ksBasket.map(function (b) { return b.id; });
+    var items = ksBasket.map(function (b) { return { id: b.id, title: b.title, price: b.price }; });
+    ksStatus('Saving the sale...');
+    try {
+      await ksCall({ action: 'sold', shirt_ids: ids, method: method, amount_cents: Math.round(ksTotalNum() * 100), items: items });
+    } catch (e) {
+      // fallback: the normal admin function marks the shirts as sold, without the sale log
+      var failed = 0;
+      for (var i = 0; i < ids.length; i++) {
+        try {
+          var r = await fetch('https://shirtsociete.netlify.app/api/admin-shirts?id=' + ids[i], { method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + authToken }, body: JSON.stringify({ available: false }) });
+          if (!r.ok) failed++;
+        } catch (e2) { failed++; }
+      }
+      if (failed) { ksStatus('Could not mark as sold: ' + ksEsc(e.message) + '. Mark the shirt as sold in Shirts.', 'err'); return; }
+    }
+    ksBasket = [];
+    try { await loadShirts(); } catch (e) {}
+    ksRenderBasket(); ksRenderGrid();
+    ksStatus('Sold! The shirt is off the website.', 'ok');
+    showToast('Sale saved', 'success');
+  }
+
   // ── NAV ──
   function switchTab(tab) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -2078,6 +2349,9 @@
     if (navEl) navEl.classList.add('active');
     if (tab === 'dropsignups') loadDropSignups();
     if (tab === 'messages') loadMessages();
+    if (tab === 'sitephotos') ssInitSitePhotosTab();
+    if (tab === 'archive') ssInitArchiveTab();
+    if (tab === 'kassa') ksInit();
   }
 
   async function loadMessages() {
@@ -2383,6 +2657,7 @@
     // real SEO landing pages (generated by "Generate collections")
     addUrl(base + '/collections/', 'weekly', '0.8');
     addUrl(base + '/journal/', 'weekly', '0.7');
+    addUrl(base + '/sold-football-shirts/', 'weekly', '0.5');
     addUrl(base + '/de/vintage-fussballtrikots.html', 'monthly', '0.7');
     addUrl(base + '/de/matchworn-trikots.html', 'monthly', '0.65');
     addUrl(base + '/sell-your-shirt.html', 'monthly', '0.6');
@@ -2543,29 +2818,128 @@
     return out.join(' ') + ' — ' + vtail.join(', ');
   }
 
-  /*  DIRECT UPLOAD
-      Needs one unsigned Cloudinary preset. Create it once:
-        cloudinary.com → Settings → Upload → Upload presets → Add
-        name: shirt_admin     signing mode: Unsigned     folder: shirts
-      Then the button works from your phone: pick photos, they upload and
-      the URL fields fill themselves.                                      */
-  var SS_CLOUD_NAME = 'dinpfdojh';
-  var SS_UPLOAD_PRESET = 'shirt_admin';
+  /*  DIRECT UPLOAD  →  Supabase Storage, bucket "shirt-photos"
+      No Cloudinary involved. Each photo is shrunk in the browser first.
+      Two files are stored per shirt photo:
+          name.jpg     full size, for the product page and the zoom view,
+                       which opens this exact file with no further limit —
+                       2400px at quality 0.92 so zooming in on stitching
+                       and fabric still looks sharp (was 1600px/0.82,
+                       visibly softer once zoomed)
+          name_t.jpg   small version, 640px, for the cards in the shop
+      The bucket and its rules are created once by supabase-foto-opslag.sql. */
+  var SS_BUCKET = 'shirt-photos';
+  var SS_FULL_MAX = 2000, SS_THUMB_MAX = 640;
+
+  function ssPublicUrl(path) {
+    return SUPABASE.url + '/storage/v1/object/public/' + SS_BUCKET + '/' + path;
+  }
+  function ssNewPhotoPath() {
+    var d = new Date();
+    var ym = d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2);
+    var id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    return 'shirts/' + ym + '/' + id;
+  }
+
+  function ssDecodeImage(file) {
+    function viaImg() {
+      return new Promise(function (resolve, reject) {
+        var url = URL.createObjectURL(file);
+        var im = new Image();
+        im.onload = function () { URL.revokeObjectURL(url); resolve(im); };
+        im.onerror = function () { URL.revokeObjectURL(url); reject(new Error('This file is not an image the browser can read')); };
+        im.src = url;
+      });
+    }
+    if (window.createImageBitmap) {
+      return createImageBitmap(file, { imageOrientation: 'from-image' }).catch(viaImg);
+    }
+    return viaImg();
+  }
+
+  function ssFitSize(w, h, maxSide) {
+    var longest = Math.max(w, h);
+    if (longest <= maxSide) return { w: w, h: h };
+    var k = maxSide / longest;
+    return { w: Math.max(1, Math.round(w * k)), h: Math.max(1, Math.round(h * k)) };
+  }
+
+  // Shrinking a 4000px phone photo down to 640px in a single drawImage call
+  // is more than a 5x reduction in one step, which is exactly when a
+  // browser's canvas resize produces visible banding and moiré — most
+  // noticeable on anything with a repeating pattern, like a striped shirt,
+  // which is what showed up as stripes/streaks that were not there before.
+  // Halving the image repeatedly until close to the target size, then doing
+  // one final precise draw, is the standard fix: each individual step is a
+  // clean 2x reduction a browser can do without artifacts.
+  function ssStepDown(src, targetW, targetH) {
+    var w = src.naturalWidth || src.width, h = src.naturalHeight || src.height;
+    var current = src;
+    while (w > targetW * 2 && h > targetH * 2) {
+      w = Math.max(targetW, Math.round(w / 2));
+      h = Math.max(targetH, Math.round(h / 2));
+      var step = document.createElement('canvas');
+      step.width = w; step.height = h;
+      var stepCtx = step.getContext('2d');
+      stepCtx.imageSmoothingQuality = 'high';
+      stepCtx.drawImage(current, 0, 0, w, h);
+      current = step;
+    }
+    return current;
+  }
+
+  function ssToJpegBlob(src, maxSide, quality) {
+    var sw = src.naturalWidth || src.width, sh = src.naturalHeight || src.height;
+    var t = ssFitSize(sw, sh, maxSide);
+    var stepped = ssStepDown(src, t.w, t.h);
+    var canvas = document.createElement('canvas');
+    canvas.width = t.w; canvas.height = t.h;
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, t.w, t.h);
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(stepped, 0, 0, t.w, t.h);
+    return new Promise(function (resolve, reject) {
+      canvas.toBlob(function (b) { b ? resolve(b) : reject(new Error('Could not compress the photo')); }, 'image/jpeg', quality);
+    });
+  }
+
+  function ssStoragePut(path, blob, contentType) {
+    return fetch(SUPABASE.url + '/storage/v1/object/' + SS_BUCKET + '/' + path, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE.key,
+        'Authorization': 'Bearer ' + authToken,
+        'Content-Type': contentType || 'image/jpeg',
+        'x-upsert': 'false',
+        'cache-control': 'max-age=31536000'
+      },
+      body: blob
+    }).then(function (r) {
+      if (r.ok) return r;
+      return r.text().then(function (t) { throw new Error('Storage ' + r.status + ': ' + t); });
+    });
+  }
+
+  function ssUploadErrorText(e) {
+    var m = String((e && e.message) || e);
+    if (/Bucket not found|404/i.test(m)) return 'The photo bucket does not exist yet. Run supabase-foto-opslag.sql once in Supabase.';
+    if (/row-level security|403|Unauthorized|401|exp|JWT/i.test(m)) return 'Not allowed to upload. Sign out of the admin and back in, then try again.';
+    if (/mime|not supported|415/i.test(m)) return 'This file type is not allowed yet. Run supabase-video-opslag.sql once in Supabase.';
+    if (/413|too large|exceeded/i.test(m)) return 'A file was too large (limit 50 MB per video, 5 MB per photo).';
+    return m;
+  }
 
   function ssUploadPhotos(files) {
     if (!files || !files.length) return;
     var status = document.getElementById('up-status');
     var thumbs = document.getElementById('up-thumbs');
     var list = Array.prototype.slice.call(files);
-    var done = 0, failed = 0;
+    var done = 0, failed = 0, lastError = '';
 
-    // NOTE: the first field is called m-image, not m-image1. Looping from 1
-    // to 12 silently skipped the main photo.
     function slots() {
       var free = [];
-      var ids = ['m-image'];
-      for (var n = 2; n <= 12; n++) ids.push('m-image' + n);
-      ids.forEach(function (id) {
+      getPhotoFieldIds().forEach(function (id) {
         var el = document.getElementById(id);
         if (el && !el.value.trim()) free.push(el);
       });
@@ -2577,65 +2951,420 @@
       status.textContent = 'All twelve photo slots are already filled.';
       return;
     }
-    if (list.length > free.length) {
-      list = list.slice(0, free.length);
-    }
+    ssUploadsBusy++;
+    var skipped = 0;
+    if (list.length > free.length) { skipped = list.length - free.length; list = list.slice(0, free.length); }
 
     status.className = 'up-status';
-    status.textContent = 'Uploading 0 of ' + list.length + '...';
+    status.textContent = 'Preparing ' + list.length + ' photo' + (list.length === 1 ? '' : 's') + '...';
 
-    // Three at a time instead of one. Ten photos used to take ten round
-    // trips end to end; this cuts the wait to roughly a third while still
-    // being gentle enough for a phone on fair wifi. The order in which the
-    // fields fill is preserved by claiming a slot before the upload starts.
     var CONCURRENT = 3;
-    function next(i) {
-      if (i >= list.length) return Promise.resolve();
-      // claim the field first, so photo 4 cannot land in slot 2 just because
-      // it happened to finish sooner
+    function one(i) {
       var target = slots()[0];
       if (target) target.value = 'uploading...';
-
-      var fd = new FormData();
-      fd.append('file', list[i]);
-      fd.append('upload_preset', SS_UPLOAD_PRESET);
-
-      return fetch('https://api.cloudinary.com/v1_1/' + SS_CLOUD_NAME + '/image/upload', {
-        method: 'POST', body: fd
-      }).then(function (r) { return r.json(); }).then(function (data) {
-        if (!data || !data.secure_url) throw new Error((data && data.error && data.error.message) || 'upload failed');
-        if (target) target.value = data.secure_url;
+      var base = ssNewPhotoPath();
+      return ssDecodeImage(list[i]).then(function (src) {
+        return Promise.all([
+          ssToJpegBlob(src, SS_FULL_MAX, 0.88),
+          ssToJpegBlob(src, SS_THUMB_MAX, 0.80)
+        ]).then(function (blobs) {
+          if (src.close) src.close();
+          return ssStoragePut(base + '_t.jpg', blobs[1]).then(function () {
+            return ssStoragePut(base + '.jpg', blobs[0]);
+          });
+        });
+      }).then(function () {
+        var url = ssPublicUrl(base + '.jpg');
+        if (target) target.value = url;
         var img = document.createElement('img');
-        img.src = data.secure_url;
+        img.src = ssPublicUrl(base + '_t.jpg');
         thumbs.appendChild(img);
         done++;
       }).catch(function (e) {
         failed++;
+        lastError = ssUploadErrorText(e);
         if (target) target.value = '';
         console.error('upload failed:', e);
-        if (/preset/i.test(String(e && e.message))) {
-          status.className = 'up-status err';
-          status.textContent = 'Cloudinary rejected the preset "' + SS_UPLOAD_PRESET + '". Create it as an UNSIGNED preset first.';
-        }
       }).then(function () {
         status.textContent = 'Uploading ' + (done + failed) + ' of ' + list.length + '...';
       });
     }
 
-    // start three, and each one that finishes picks up the next in line
     var cursor = 0;
     function pump() {
       if (cursor >= list.length) return Promise.resolve();
       var mine = cursor++;
-      return next(mine).then(pump);
+      return one(mine).then(pump);
     }
-    Promise.all(new Array(Math.min(CONCURRENT, list.length)).fill(0).map(pump))
-      .then(function () {
-        status.className = failed ? 'up-status err' : 'up-status ok';
-        status.textContent = failed
-          ? (done + ' uploaded, ' + failed + ' failed — try the failed ones again')
-          : (done + ' photo' + (done === 1 ? '' : 's') + ' uploaded');
+    Promise.all(new Array(Math.min(CONCURRENT, list.length)).fill(0).map(pump)).then(function () {
+      ssUploadsBusy = Math.max(0, ssUploadsBusy - 1);
+      if (done) ssPhotosDirty = true;
+      writePhotoUrls(readPhotoUrls());
+      refreshPhotoStrip();
+      var input = document.getElementById('up-input');
+      if (input) input.value = '';
+      status.className = failed ? 'up-status err' : 'up-status ok';
+      var msg = done + ' photo' + (done === 1 ? '' : 's') + ' uploaded' + (done ? '. Now press Save Shirt.' : '');
+      if (failed) msg += ', ' + failed + ' failed: ' + lastError;
+      if (skipped) msg += ' (' + skipped + ' skipped, only twelve slots)';
+      status.textContent = msg;
+    });
+  }
+
+  function ssClearAllPhotos() {
+    if (!confirm('Remove all photos from this shirt? You can upload new ones straight after.')) return;
+    ssPhotosDirty = true;
+    writePhotoUrls([]);
+    var thumbs = document.getElementById('up-thumbs');
+    if (thumbs) thumbs.innerHTML = '';
+    refreshPhotoStrip();
+    var status = document.getElementById('up-status');
+    if (status) { status.className = 'up-status'; status.textContent = 'Photos removed. Upload the new ones, then Save.'; }
+  }
+
+  function ssHasOldPhotos(urls) {
+    return (urls || []).some(function (u) { return /res\.cloudinary\.com/.test(u || ''); });
+  }
+  function ssUpdatePhotoNotice() {
+    var n = document.getElementById('up-notice');
+    if (!n) return;
+    n.style.display = ssHasOldPhotos(readPhotoUrls()) ? 'block' : 'none';
+  }
+
+  // ── SITE PHOTOS — database-backed ──
+  var SS_SITE_SLOTS = [
+    { section: 'Logo & favicon', items: [
+      { slug: 'logo',    label: 'Logo (header, every page)' },
+      { slug: 'favicon', label: 'Favicon (browser tab icon)' }
+    ]},
+    { section: 'Homepage — hero on a phone', items: [
+      { slug: 'mobile-hero', label: 'Phone hero — photo behind the video' },
+      { slug: 'hero-video-mobile', label: 'Phone hero videos (vertical, with sound, max 50 MB each; several play in turn)', multi: true }
+    ]},
+    { section: 'Homepage — hero (computer only, not shown on a phone)', items: [
+      { slug: 'hero-video-desktop', label: 'Laptop hero videos (horizontal, with sound, max 50 MB each; they join the slides)', multi: true },
+      { slug: 'hero-1-base',   label: 'Slide 1 — main photo' },
+      { slug: 'hero-1-reveal', label: 'Slide 1 — reveal photo' },
+      { slug: 'hero-2-base',   label: 'Slide 2 — main photo' },
+      { slug: 'hero-2-reveal', label: 'Slide 2 — reveal photo' },
+      { slug: 'hero-3-base',   label: 'Slide 3 — main photo' },
+      { slug: 'hero-3-reveal', label: 'Slide 3 — reveal photo' }
+    ]},
+    { section: 'Homepage — scroll effects (computer only, not shown on a phone)', items: [
+      { slug: 'dolly-close', label: 'Camera push-in — frame 1 (wide)' },
+      { slug: 'dolly-wide',  label: 'Camera push-in — frame 2 (close up)' },
+      { slug: 'sweep-0',  label: 'Shirt sweep — background 1' },
+      { slug: 'sweep-1',  label: 'Shirt sweep — background 2' }
+    ]},
+    { section: 'Fairs — upcoming (homepage card)', items: [
+      { slug: 'fair-hamburg', label: 'Hamburg — STANDS, 26-09', multi: true },
+      { slug: 'fair-leipzig', label: 'Leipzig — Vintage Fußballbörse, 04-10', multi: true },
+      { slug: 'fair-essen',   label: 'Essen — Vintage Fußballbörse, 14-11', multi: true }
+    ]},
+    { section: 'Journal — article photos (then press Generate journal, and upload the journal folder)', items: [
+      { slug: 'journal-netherlands-88',      label: 'Netherlands 88 (landscape/wide)' },
+      { slug: 'journal-match-worn-guide',    label: 'Match worn guide (portrait)' },
+      { slug: 'journal-vintage-fussballborse', label: 'Vintage Fußballbörse (portrait)' },
+      { slug: 'journal-how-to-collect',      label: 'How to collect (landscape)' }
+    ]},
+    { section: 'Our Story — fair galleries', items: [
+      { slug: 'gallery-frankfurt',      label: 'Frankfurt (04.07.2026)', multi: true },
+      { slug: 'gallery-hamburg-feb',    label: 'Hamburg (04.02.2026)', multi: true },
+      { slug: 'gallery-cologne',        label: 'Cologne (31.05.2026)', multi: true },
+      { slug: 'gallery-dusseldorf',     label: 'Düsseldorf (13.06.2026)', multi: true },
+      { slug: 'gallery-hamburg-stands', label: 'Hamburg, STANDS at St. Pauli (26-09-2026)', multi: true },
+      { slug: 'gallery-leipzig',        label: 'Leipzig, Vintage Fußballbörse (04-10-2026)', multi: true }
+    ]}
+  ];
+
+  var ssSiteImagesCache = {};   // slug -> urls[]
+
+  async function ssLoadSiteImages() {
+    var rows = await sbFetch('site_images', '?select=slug,urls');
+    ssSiteImagesCache = {};
+    rows.forEach(function (r) { ssSiteImagesCache[r.slug] = r.urls || []; });
+  }
+
+  function ssRenderSitePhotosTab() {
+    var root = document.getElementById('sp-container');
+    if (!root) return;
+    var html = '';
+    SS_SITE_SLOTS.forEach(function (group) {
+      html += '<div class="sp-section-title">' + group.section + '</div><div class="sp-list">';
+      group.items.forEach(function (item) {
+        var urls = ssSiteImagesCache[item.slug] || [];
+        var thumbs = urls.map(function (u, i) {
+          return '<span class="sp-thumb-wrap">'
+            + (/\.(mp4|mov|webm|m4v)(\?|$)/i.test(u)
+                ? '<video class="sp-thumb" src="' + u + '#t=0.5" muted playsinline preload="metadata"></video>'
+                : '<img class="sp-thumb" src="' + u + '">')
+            + '<button type="button" class="sp-thumb-x" title="Remove this file" '
+            +   'onclick="ssRemoveSitePhoto(\'' + item.slug + '\',' + i + ')">&times;</button>'
+            + '</span>';
+        }).join('');
+        html += ''
+          + '<div class="sp-row" id="sp-row-' + item.slug + '">'
+          +   '<div class="sp-label">' + item.label + (item.multi ? ' <span class="sp-multi-tag">multiple</span>' : '') + '</div>'
+          +   '<div class="sp-thumbs" id="sp-thumbs-' + item.slug + '">' + (thumbs || '<span class="sp-empty">Nothing yet</span>') + '</div>'
+          +   '<div class="sp-body">'
+          +     '<input type="file" accept="image/*,video/*,.mp4,.mov,.m4v,.webm"' + (item.multi ? ' multiple' : '') + ' id="sp-file-' + item.slug + '" style="display:none" '
+          +       'onchange="ssUploadSitePhoto(\'' + item.slug + '\', this.files)">'
+          +     '<button type="button" class="btn btn-secondary" onclick="document.getElementById(\'sp-file-' + item.slug + '\').click()">'
+          +       (item.multi ? 'Add photos / videos' : (urls.length ? 'Replace photo' : 'Upload photo')) + '</button>'
+          +   '</div>'
+          +   '<div class="sp-status" id="sp-status-' + item.slug + '"></div>'
+          + '</div>';
       });
+      html += '</div>';
+    });
+    root.innerHTML = html;
+  }
+
+  async function ssInitSitePhotosTab() {
+    var root = document.getElementById('sp-container');
+    try {
+      await ssLoadSiteImages();
+      ssRenderSitePhotosTab();
+    } catch (e) {
+      if (e && e.authExpired) { handleAuthExpired(); return; }
+      if (root) root.innerHTML = '<div style="padding:40px;text-align:center;color:#e05a4d">Could not load site photos: ' + ssUploadErrorText(e) + '</div>';
+      console.error('site photos load failed:', e);
+    }
+  }
+
+  // ── ARCHIVE PHOTOS ──
+  // Same mechanics as Site Photos (resize in the browser, step-down to
+  // avoid banding, store in Supabase, PATCH the database) but targeting
+  // my_collection instead of site_images — one archive piece per row,
+  // identified by its id rather than a fixed slug.
+  var ssArchiveCache = [];
+
+  async function ssInitArchiveTab() {
+    var root = document.getElementById('arc-list');
+    document.getElementById('arc-editor').style.display = 'none';
+    try {
+      ssArchiveCache = await sbFetch('my_collection', '?select=id,title,club,season,images&order=club.asc,season.desc');
+      ssRenderArchiveList();
+    } catch (e) {
+      if (e && e.authExpired) { handleAuthExpired(); return; }
+      if (root) root.innerHTML = '<div style="padding:40px;text-align:center;color:#e05a4d">Could not load the archive: ' + ssUploadErrorText(e) + '</div>';
+      console.error('archive load failed:', e);
+    }
+  }
+
+  function ssRenderArchiveList() {
+    var root = document.getElementById('arc-list');
+    if (!root) return;
+    if (!ssArchiveCache.length) { root.innerHTML = '<div style="padding:30px;color:#888070">No archive pieces yet.</div>'; return; }
+    root.innerHTML = '<div class="sp-list">' + ssArchiveCache.map(function (it) {
+      var n = (it.images || []).length;
+      return '<div class="sp-row">'
+        + '<div class="sp-label">' + [it.title, it.club, it.season].filter(Boolean).join(' · ')
+        +   ' <span class="sp-multi-tag">' + n + (n === 1 ? ' photo' : ' photos') + '</span></div>'
+        + '<div class="sp-body"><button type="button" class="btn btn-secondary" onclick="ssOpenArchiveEditor(\'' + it.id + '\')">Manage photos</button></div>'
+        + '</div>';
+    }).join('') + '</div>';
+  }
+
+  function ssOpenArchiveEditor(id) {
+    var it = ssArchiveCache.filter(function (x) { return x.id === id; })[0];
+    if (!it) return;
+    var panel = document.getElementById('arc-editor');
+    var urls = it.images || [];
+    var thumbs = urls.map(function (u, i) {
+      return '<span class="sp-thumb-wrap"><img class="sp-thumb" src="' + u + '">'
+        + '<button type="button" class="sp-thumb-x" title="Remove this photo" onclick="ssRemoveArchivePhoto(\'' + id + '\',' + i + ')">&times;</button></span>';
+    }).join('');
+    panel.innerHTML = ''
+      + '<div class="sp-row">'
+      +   '<div class="sp-label">' + [it.title, it.club, it.season].filter(Boolean).join(' · ') + '</div>'
+      +   '<div class="sp-thumbs" id="arc-thumbs">' + (thumbs || '<span class="sp-empty">No photo yet</span>') + '</div>'
+      +   '<div class="sp-body">'
+      +     '<input type="file" accept="image/*" multiple id="arc-file" style="display:none" onchange="ssUploadArchivePhotos(\'' + id + '\', this.files)">'
+      +     '<button type="button" class="btn btn-secondary" onclick="document.getElementById(\'arc-file\').click()">Add photos</button>'
+      +     '<button type="button" class="btn btn-secondary" onclick="document.getElementById(\'arc-editor\').style.display=\'none\'">Close</button>'
+      +   '</div>'
+      +   '<div class="sp-status" id="arc-status"></div>'
+      + '</div>';
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  async function ssSaveArchiveImages(id, urls) {
+    var res = await fetch(SUPABASE.url + '/rest/v1/my_collection?id=eq.' + encodeURIComponent(id), {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE.key, 'Authorization': 'Bearer ' + authToken,
+        'Content-Type': 'application/json', 'Prefer': 'return=representation'
+      },
+      body: JSON.stringify({ images: urls })
+    });
+    if (!res.ok) { var body = await res.text(); throw new Error('Supabase ' + res.status + ': ' + body); }
+    var rows = await res.json();
+    if (!rows.length) throw new Error('No archive piece with that id.');
+    var it = ssArchiveCache.filter(function (x) { return x.id === id; })[0];
+    if (it) it.images = urls;
+  }
+
+  async function ssUploadArchivePhotos(id, fileList) {
+    var files = Array.prototype.slice.call(fileList || []);
+    if (!files.length) return;
+    var status = document.getElementById('arc-status');
+    status.className = 'sp-status';
+    status.textContent = 'Uploading ' + files.length + ' file' + (files.length === 1 ? '' : 's') + '...';
+
+    var uploaded = [], failed = 0, lastError = '';
+    for (var i = 0; i < files.length; i++) {
+      status.textContent = 'Uploading ' + (i + 1) + ' of ' + files.length + '...';
+      try {
+        var base = 'archive/' + id + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        var src = await ssDecodeImage(files[i]);
+        var blob = await ssToJpegBlob(src, 2400, 0.92);
+        if (src.close) src.close();
+        await ssStoragePut(base + '.jpg', blob);
+        uploaded.push(ssPublicUrl(base + '.jpg'));
+      } catch (e) {
+        failed++; lastError = ssUploadErrorText(e);
+        console.error('archive photo upload failed:', e);
+      }
+    }
+
+    if (uploaded.length) {
+      var it = ssArchiveCache.filter(function (x) { return x.id === id; })[0];
+      var newUrls = (it && it.images ? it.images : []).concat(uploaded);
+      try {
+        await ssSaveArchiveImages(id, newUrls);
+      } catch (e) {
+        status.className = 'sp-status err';
+        status.textContent = 'Uploaded, but could not save: ' + ssUploadErrorText(e);
+        return;
+      }
+    }
+
+    ssRenderArchiveList();
+    ssOpenArchiveEditor(id);
+    var status2 = document.getElementById('arc-status');
+    if (status2) {
+      status2.className = failed ? 'sp-status err' : 'sp-status ok';
+      status2.textContent = failed
+        ? (uploaded.length + ' saved, ' + failed + ' failed: ' + lastError)
+        : (uploaded.length + ' file' + (uploaded.length === 1 ? '' : 's') + ' live on the site now.');
+    }
+  }
+
+  async function ssRemoveArchivePhoto(id, index) {
+    if (!confirm('Remove this photo from the archive piece?')) return;
+    var it = ssArchiveCache.filter(function (x) { return x.id === id; })[0];
+    var urls = (it && it.images ? it.images : []).slice();
+    urls.splice(index, 1);
+    try {
+      await ssSaveArchiveImages(id, urls);
+      ssRenderArchiveList();
+      ssOpenArchiveEditor(id);
+    } catch (e) {
+      alert('Could not remove the photo: ' + ssUploadErrorText(e));
+    }
+  }
+
+  // Upsert instead of PATCH: a PATCH on a row that does not exist matches
+  // nothing and used to end in "No row for ...", which meant every new spot
+  // needed a line of SQL first. This creates the row if it is missing and
+  // updates it if it is there, so new spots just work.
+  async function ssSaveSiteImages(slug, urls) {
+    var res = await fetch(SUPABASE.url + '/rest/v1/site_images?on_conflict=slug', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE.key, 'Authorization': 'Bearer ' + authToken,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates,return=representation'
+      },
+      body: JSON.stringify({ slug: slug, urls: urls, updated_at: new Date().toISOString() })
+    });
+    if (!res.ok) {
+      var body = await res.text();
+      throw new Error('Supabase ' + res.status + ': ' + body);
+    }
+    var rows = await res.json();
+    if (!rows.length) throw new Error('The database did not confirm the save for "' + slug + '".');
+    ssSiteImagesCache[slug] = urls;
+  }
+
+  async function ssUploadSitePhoto(slug, fileList) {
+    var files = Array.prototype.slice.call(fileList || []);
+    if (!files.length) return;
+    var item = null;
+    SS_SITE_SLOTS.forEach(function (g) { g.items.forEach(function (it) { if (it.slug === slug) item = it; }); });
+    var status = document.getElementById('sp-status-' + slug);
+    if (!item.multi) files = files.slice(0, 1);
+
+    status.className = 'sp-status';
+    status.textContent = 'Uploading ' + files.length + ' photo' + (files.length === 1 ? '' : 's') + '...';
+
+    var uploaded = [];
+    var failed = 0, lastError = '';
+    for (var i = 0; i < files.length; i++) {
+      status.textContent = 'Uploading ' + (i + 1) + ' of ' + files.length + '...';
+      try {
+        var base = 'site/' + slug + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        var f = files[i];
+        var ext = ((f.name || '').split('.').pop() || '').toLowerCase();
+        var isVid = /^video\//.test(f.type) || /^(mp4|mov|m4v|webm)$/.test(ext);
+        if (isVid) {
+          // videos are stored as they are (no re-encoding in the browser)
+          if (f.size > 50 * 1024 * 1024) throw new Error('"' + f.name + '" is ' + Math.round(f.size / 1048576) + ' MB. The limit is 50 MB. Shorten or compress the video first.');
+          var vext = /^(mp4|mov|m4v|webm)$/.test(ext) ? ext : 'mp4';
+          var vtype = vext === 'webm' ? 'video/webm' : (vext === 'mov' ? 'video/quicktime' : 'video/mp4');
+          status.textContent = 'Uploading video ' + (i + 1) + ' of ' + files.length + ' (' + Math.round(f.size / 1048576) + ' MB)...';
+          await ssStoragePut(base + '.' + vext, f, vtype);
+          uploaded.push(ssPublicUrl(base + '.' + vext));
+        } else {
+          var src = await ssDecodeImage(f);
+          // full size 1920px (sharp, but far lighter than 2400) plus a small
+          // 640px copy for cards and covers, so pages open fast
+          var blob = await ssToJpegBlob(src, 1920, 0.86);
+          var blobT = await ssToJpegBlob(src, 640, 0.82);
+          if (src.close) src.close();
+          await ssStoragePut(base + '_t.jpg', blobT);
+          await ssStoragePut(base + '.jpg', blob);
+          uploaded.push(ssPublicUrl(base + '.jpg'));
+        }
+      } catch (e) {
+        failed++; lastError = ssUploadErrorText(e);
+        console.error('site photo upload failed:', e);
+      }
+    }
+
+    if (uploaded.length) {
+      var newUrls = item.multi ? (ssSiteImagesCache[slug] || []).concat(uploaded) : uploaded;
+      try {
+        await ssSaveSiteImages(slug, newUrls);
+      } catch (e) {
+        status.className = 'sp-status err';
+        status.textContent = 'Uploaded, but could not save: ' + ssUploadErrorText(e);
+        return;
+      }
+    }
+
+    ssRenderSitePhotosTab();
+    var status2 = document.getElementById('sp-status-' + slug);
+    if (status2) {
+      status2.className = failed ? 'sp-status err' : 'sp-status ok';
+      status2.textContent = failed
+        ? (uploaded.length + ' saved, ' + failed + ' failed: ' + lastError)
+        : (uploaded.length + ' photo' + (uploaded.length === 1 ? '' : 's') + ' live on the site now.');
+    }
+  }
+
+  async function ssRemoveSitePhoto(slug, index) {
+    if (!confirm('Remove this file from the site?')) return;
+    var urls = (ssSiteImagesCache[slug] || []).slice();
+    urls.splice(index, 1);
+    try {
+      await ssSaveSiteImages(slug, urls);
+      ssRenderSitePhotosTab();
+    } catch (e) {
+      alert('Could not remove the photo: ' + ssUploadErrorText(e));
+    }
   }
 
   function ssSuggestTitle() {
@@ -2927,6 +3656,26 @@
   }
 
   // shared chrome so every generated page looks like the rest of the site
+    // ── one top bar for every generated page: text logo (no image to break) and
+  // the same menu as the homepage bar
+  var SS_TOPBAR_CSS =
+      '.sst{position:sticky;top:0;z-index:50;background:var(--black,#0a0905);border-bottom:1px solid var(--line,#1e1c17);padding:14px 24px 6px;text-align:center}'
+    + '.sst-logo{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:900;font-size:30px;line-height:1;color:var(--gold,#c8a950);text-decoration:none;display:inline-block;white-space:nowrap}'
+    + '.sst-nav{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:0 4px;margin-top:6px}'
+    + '.sst-nav a{padding:8px 13px;font-size:13px;font-weight:500;color:var(--muted,#888070);text-decoration:none;white-space:nowrap;transition:color .2s}'
+    + '.sst-nav a:hover{color:var(--cream,#f5f0e8)}'
+    + '@media(max-width:700px){.sst{padding:12px 12px 4px}.sst-logo{font-size:25px}.sst-nav a{padding:7px 9px;font-size:12px}}';
+  function ssTopbarHtml(extra) {
+    return '<header class="sst">'
+      + '<a class="sst-logo" href="/">Shirt Soci&eacute;t&eacute;</a>'
+      + '<nav class="sst-nav">'
+      +   '<a href="/">Home</a><a href="/?p=shop">Shop</a><a href="/?p=shop&amp;sort=new">New Added</a>'
+      +   '<a href="/?p=archive">Shirt Soci&eacute;t&eacute; Archive</a><a href="/blog.html">Blog</a>'
+      +   '<a href="/sell-your-shirt.html">Sell Your Shirt</a><a href="/want-list.html">Want List</a><a href="/?p=about">Our Story</a>'
+      +   (extra || '')
+      + '</nav></header>\n';
+  }
+
   function ssPageShell(opts) {
     var base = 'https://shirtsociete.com';
     return '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
@@ -2961,6 +3710,7 @@
       +   '.topnav{display:flex;gap:22px;margin-left:auto;flex-wrap:wrap;align-items:center}'
       +   '.topnav a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}'
       +   '.topnav a:hover{color:var(--cream)}'
+      +   SS_TOPBAR_CSS
       +   '.wrap{max-width:1200px;margin:0 auto;padding:36px 32px 90px}'
       +   '.crumb{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:22px}'
       +   '.crumb a{color:var(--gold);text-decoration:none}'
@@ -2991,13 +3741,7 @@
       +   '.cta-alt:hover{border-color:var(--gold);color:var(--gold)}'
       +   (opts.extraCss || '')
       + '</style>\n</head>\n<body>\n'
-      + '<header class="topbar">'
-      +   '<a href="/"><img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png" alt="Shirt Société"></a>'
-      +   '<nav class="topnav">'
-      +     '<a href="/">Home</a><a href="/?p=shop">Shop</a><a href="/products/">All shirts</a>'
-      +     '<a href="/?p=archive">Archive</a><a href="/blog.html">Journal</a><a href="/?p=about">Our Story</a>'
-      +   '</nav>'
-      + '</header>\n'
+      + ssTopbarHtml()
       + '<div class="wrap">\n' + opts.body + '</div>\n'
       + '<footer>Shirt Société &middot; Harderwijk, Netherlands &middot; <a href="/?p=about">Our Story</a> &middot; <a href="/shipping.html">Shipping</a> &middot; <a href="/refund.html">Returns</a></footer>\n'
       + '</body>\n</html>';
@@ -3077,6 +3821,13 @@
       { slug: 'match-worn-football-shirts', name: 'Match Worn Football Shirts',
         h1: 'Match Worn &amp; Match Issued Football Shirts',
         intro: 'Shirts that were actually worn or issued to players, each one a single piece with its own documented history.',
+        extra: '<h2>Match worn or match issued?</h2>'
+          + '<p class="intro">A match worn shirt is documented as worn by a player in a specific match. A match issued shirt was prepared for a player or a squad for a match, but cannot be shown to have been worn on the pitch. When the evidence cannot separate the two, we list the shirt as Match Worn / Issued instead of choosing the more flattering label.</p>'
+          + '<h2>How we document our shirts</h2>'
+          + '<p class="intro">Every match worn or issued shirt comes with a Shirt Passport: the player, club, season, competition and fixture, the certificate of authenticity where one exists, and any photo match or NFC tag. What is not listed in the passport, we do not claim.</p>'
+          + '<h2>Not every fixture can be confirmed</h2>'
+          + '<p class="intro">Some shirts come with a player and a season but not an exact match. We show those as Not confirmed rather than guessing. A shirt with an honest gap is worth more to a collector than one with an invented story.</p>'
+          + '<div class="links"><a href="/journal/what-is-a-coa/">What is a certificate of authenticity?</a><a href="/journal/match-worn-guide/">Match worn guide</a><a href="/journal/bayern-match-worn-guide/">Bayern match worn guide</a><a href="/want-list.html">Want list</a><a href="/sell-your-shirt.html">Sell your shirt</a></div>',
         filter: function(s) { return s.category === 'match_worn'; } },
       { slug: 'vintage-club-shirts', name: 'Vintage Club Football Shirts',
         h1: 'Vintage Club Football Shirts',
@@ -3120,6 +3871,7 @@
         + '<div class="count">' + avail.length + ' available'
           + (items.length - avail.length ? ' &middot; ' + (items.length - avail.length) + ' sold' : '') + '</div>'
         + '<div class="grid">' + items.map(ssCard).join('') + '</div>'
+        + (c.extra || '')
         + '<h2>Browse further</h2><div class="links">'
         +   collections.filter(function(o) { return o.slug !== c.slug; })
               .map(function(o) { return '<a href="/collections/' + o.slug + '/">' + htmlEscape(o.name) + '</a>'; }).join('')
@@ -3172,6 +3924,16 @@
         var related = SS_JOURNAL_LINKS.filter(function(j) {
           return j.clubs.some(function(c) { return name.toLowerCase().indexOf(c) !== -1; });
         });
+        // guides that apply to every club or country
+        var guides = [
+          { slug: 'spot-a-fake', title: 'How to spot a fake football shirt' },
+          { slug: 'vintage-shirt-sizing', title: 'Vintage shirt sizing explained' }
+        ];
+        if (mw.length || related.some(function(j) { return j.slug === 'bayern-match-worn-guide'; })) {
+          guides.unshift({ slug: 'what-is-a-coa', title: 'What is a certificate of authenticity?' },
+                         { slug: 'match-worn-guide', title: 'What is a match worn football shirt?' });
+        }
+        related = related.concat(guides.filter(function(g) { return !related.some(function(j) { return j.slug === g.slug; }); }));
 
         var intro = 'Vintage and match worn ' + name + ' shirts, each one a single piece with its own '
           + 'documented history. Every shirt is checked on labels, stitching and badges before it is listed.';
@@ -3189,6 +3951,12 @@
               : '<h2>Nothing available right now</h2>'
                 + '<p class="intro">No ' + htmlEscape(name) + ' shirt is in stock at the moment. '
                 + 'Tell us what you are looking for and you will hear from us when one arrives.</p>')
+
+          + (mw.length
+              ? '<h2>Match worn &amp; match issued ' + htmlEscape(name) + '</h2>'
+                + '<p class="intro">' + mw.length + ' documented piece' + (mw.length > 1 ? 's' : '') + ', each with its own Shirt Passport. See the <a href="/collections/match-worn-football-shirts/">full match worn collection</a>.</p>'
+                + '<div class="links">' + mw.map(function(s) { return '<a href="/products/' + ssShirtSlug(s) + '.html">' + htmlEscape(s.title || '') + '</a>'; }).join('') + '</div>'
+              : '')
 
           + (sold.length
               ? '<h2>Previously sold</h2>'
@@ -3240,6 +4008,30 @@
     var clubNames = hubGroup(pub.filter(function(s) { return s.category !== 'national'; }), 'clubs', 'Club', 1);
     var natNames = hubGroup(pub.filter(function(s) { return s.category === 'national'; }), 'national-teams', 'National Team', 1);
 
+    // ── sold shirts: every sold piece stays as a record, one page that lists them ──
+    var soldItems = pub.filter(function(s) { return s.available === false; });
+    if (soldItems.length) {
+      var soldBody = '<div class="crumb"><a href="/">Home</a> / <a href="/collections/">Collections</a> / Sold shirts</div>'
+        + '<div class="eyebrow">Sold</div><h1>Sold Football Shirts</h1>'
+        + '<p class="intro">Shirts that have found an owner. Every one keeps its photos, its history and its Shirt Passport here as a record of what has passed through Shirt Soci&eacute;t&eacute;. Unique pieces are not restocked, but similar shirts do turn up.</p>'
+        + '<div class="count">' + soldItems.length + ' sold</div>'
+        + '<div class="grid">' + soldItems.map(ssCard).join('') + '</div>'
+        + '<h2>Find something similar</h2><div class="links">'
+        +   '<a href="/want-list.html">Add it to the want list</a>'
+        +   '<a href="/collections/vintage-football-shirts/">Shirts available now</a>'
+        +   '<a href="/collections/match-worn-football-shirts/">Match worn collection</a>'
+        +   '<a href="/sell-your-shirt.html">Sell us your shirt</a>'
+        + '</div>';
+      zip.folder('sold-football-shirts').file('index.html', ssPageShell({
+        title: 'Sold Football Shirts | Shirt Soci\u00e9t\u00e9',
+        url: base + '/sold-football-shirts/',
+        desc: 'Vintage and match worn football shirts that have been sold, kept as a record with photos, history and Shirt Passport.',
+        image: (soldItems[0] && soldItems[0].images && soldItems[0].images[0]) || '',
+        schema: ssListSchema('Sold football shirts', base + '/sold-football-shirts/', soldItems), body: soldBody
+      }));
+      made.push('/sold-football-shirts/');
+    }
+
     // ── collections index ──
     var idxBody = '<div class="crumb"><a href="/">Home</a> / Collections</div>'
       + '<div class="eyebrow">Browse</div><h1>Collections</h1>'
@@ -3253,7 +4045,7 @@
       + (natNames.length ? '<h2>By national team</h2><div class="links">'
           + natNames.map(function(n) { return '<a href="/national-teams/' + ssSlugify(n) + '/">' + htmlEscape(n) + '</a>'; }).join('')
           + '</div>' : '')
-      + '<h2>Also see</h2><div class="links"><a href="/products/">Full shirt index</a><a href="/?p=archive">Private archive</a></div>';
+      + '<h2>Also see</h2><div class="links"><a href="/products/">Full shirt index</a><a href="/?p=archive">Private archive</a>' + (soldItems.length ? '<a href="/sold-football-shirts/">Sold shirts</a>' : '') + '</div>';
     colDir.file('index.html', ssPageShell({
       title: 'Collections | Vintage & Match Worn Football Shirts | Shirt Société',
       url: base + '/collections/',
@@ -3328,6 +4120,16 @@
             body: bodyEl ? bodyEl.innerHTML : ''
           };
         }).filter(function(p) { return p.id && p.title; });
+
+        // Photos uploaded under Site Photos > Journal win over the one in journal-data.html
+        return fetch(SUPABASE.url + '/rest/v1/site_images?select=slug,urls&slug=like.journal-*', {
+          headers: { apikey: SUPABASE.key, Authorization: 'Bearer ' + SUPABASE.key }
+        }).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; })
+        .then(function (rows) {
+        rows.forEach(function (r) {
+          var id = String(r.slug).replace(/^journal-/, '');
+          posts.forEach(function (p) { if (p.id === id && r.urls && r.urls[0]) p.image = r.urls[0]; });
+        });
 
         posts.forEach(function(p, idx) {
           var url = base + '/journal/' + p.id + '/';
@@ -3443,6 +4245,7 @@
           document.getElementById('sitemap-output').value = made.join('\n');
           box.classList.add('open');
           showToast(made.length + ' journal pages generated', 'success');
+        });
         });
       })
       .catch(function(e) {
@@ -3793,16 +4596,16 @@
     }
     var schema = {
       "@context": "https://schema.org", "@type": "CollectionPage",
-      "name": "All shirts | Shirt Societe",
-      "description": "Every vintage and match worn football shirt at Shirt Societe.",
+      "name": "All shirts | Shirt Soci\u00e9t\u00e9",
+      "description": "Every vintage and match worn football shirt at Shirt Soci\u00e9t\u00e9.",
       "url": base + "/products/"
     };
     return '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
       + '<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
-      + '<title>All Shirts | Shirt Societe &mdash; Vintage &amp; Match Worn Football Shirts</title>\n'
-      + '<meta name="description" content="Browse every vintage and match worn football shirt at Shirt Societe. Original club, international and match worn shirts for collectors.">\n'
+      + '<title>All Shirts | Shirt Soci\u00e9t\u00e9 &mdash; Vintage &amp; Match Worn Football Shirts</title>\n'
+      + '<meta name="description" content="Browse every vintage and match worn football shirt at Shirt Soci\u00e9t\u00e9. Original club, international and match worn shirts for collectors.">\n'
       + '<link rel="canonical" href="' + base + '/products/">\n'
-      + '<meta property="og:title" content="All Shirts | Shirt Societe">\n'
+      + '<meta property="og:title" content="All Shirts | Shirt Soci\u00e9t\u00e9">\n'
       + '<meta property="og:description" content="Every vintage and match worn football shirt in the collection.">\n'
       + '<meta property="og:url" content="' + base + '/products/">\n'
       + '<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">\n'
@@ -3815,6 +4618,7 @@
       +   '.topbar img{height:38px}'
       +   '.topnav{display:flex;gap:20px;margin-left:auto;flex-wrap:wrap}'
       +   '.topnav a{font-size:13px;color:#b0a898;text-decoration:none}'
+      +   SS_TOPBAR_CSS
       +   '.wrap{max-width:1200px;margin:0 auto;padding:40px 28px 80px}'
       +   'h1{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:900;font-size:34px;margin-bottom:10px}'
       +   '.lead{color:#b0a898;font-size:15px;margin-bottom:34px;max-width:640px}'
@@ -3828,17 +4632,14 @@
       +   '.c .p{font-size:14px;color:#c8a950;padding:6px 12px 12px;font-weight:600}'
       +   'footer{border-top:1px solid #1e1c17;padding:26px 32px;text-align:center;font-size:12px;color:#888070}'
       + '</style>\n</head>\n<body>\n'
-      + '<header class="topbar">'
-      +   '<a href="/"><img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png" alt="Shirt Societe"></a>'
-      +   '<nav class="topnav"><a href="/">Home</a><a href="/?p=shop">Shop</a><a href="/?p=archive">Archive</a><a href="/blog.html">Journal</a><a href="/?p=about">Our Story</a></nav>'
-      + '</header>\n'
+      + ssTopbarHtml()
       + '<div class="wrap">\n'
       + '<h1>All shirts</h1>\n'
-      + '<p class="lead">Every vintage and match worn football shirt in the Shirt Societe collection. Each shirt is a single, unique piece, photographed and checked in detail.</p>\n'
+      + '<p class="lead">Every vintage and match worn football shirt in the Shirt Soci\u00e9t\u00e9 collection. Each shirt is a single, unique piece, photographed and checked in detail.</p>\n'
       + (shirts.length ? '<h2>In the shop</h2><div class="grid">' + shirts.map(function(s){ return card(s, false); }).join('') + '</div>' : '')
       + (archive.length ? '<h2>From the archive &mdash; not for sale</h2><div class="grid">' + archive.map(function(s){ return card(s, true); }).join('') + '</div>' : '')
       + '</div>\n'
-      + '<footer>Shirt Societe &middot; Harderwijk, Netherlands &middot; <a href="/?p=about">Our Story</a> &middot; <a href="/shipping.html">Shipping</a></footer>\n'
+      + '<footer>Shirt Soci\u00e9t\u00e9 &middot; Harderwijk, Netherlands &middot; <a href="/?p=about">Our Story</a> &middot; <a href="/shipping.html">Shipping</a></footer>\n'
       + '</body>\n</html>';
   }
 
@@ -3949,10 +4750,16 @@
     var imgs = (s.images || []).filter(Boolean);
     // turn a Cloudinary URL into a resized variant; non-Cloudinary URLs pass through
     function ssCld(u, w) {
-      if (!u || u.indexOf('/upload/') === -1) return u;
+      if (!u) return u;
+      if (u.indexOf('/storage/v1/object/public/shirt-photos/') !== -1) {
+        // small twin for small sizes; the full 1600px file otherwise
+        return (w <= 700 && /\.jpg$/i.test(u) && !/_t\.jpg$/i.test(u)) ? u.replace(/\.jpg$/i, '_t.jpg') : u;
+      }
+      if (u.indexOf('/upload/') === -1) return u;
       return u.replace('/upload/', '/upload/f_auto,q_auto,w_' + w + '/');
     }
     function ssSrcset(u, widths) {
+      // Supabase photos come in two sizes, not a range, so no srcset for them
       if (!u || u.indexOf('/upload/') === -1) return '';
       return widths.map(function(w) { return ssCld(u, w) + ' ' + w + 'w'; }).join(', ');
     }
@@ -4072,20 +4879,29 @@
       });
       var sameClub = s.club ? pool.filter(function(o) { return o.club === s.club; }) : [];
       var sameCat = pool.filter(function(o) { return o.category === s.category && sameClub.indexOf(o) === -1; });
-      var related = sameClub.concat(sameCat).slice(0, 4);
-      if (related.length) {
-        relHtml = '<section class="related"><h2>You might also like</h2><div class="related-grid">'
-          + related.map(function(o) {
-              var oSlug = ssShirtSlug(o);
-              var oImg = (o.images && o.images[0]) ? o.images[0] : '';
-              var oPrice = (o.price != null) ? parseFloat(o.price).toFixed(2) : '';
-              return '<a class="related-card" href="/products/' + oSlug + '.html">'
-                + (oImg ? '<img src="' + htmlEscape(oImg) + '" alt="' + htmlEscape(o.title || '') + '" loading="lazy">' : '')
-                + '<div class="rc-title">' + htmlEscape(o.title || '') + '</div>'
-                + (oPrice ? '<div class="rc-price">&euro;' + oPrice + '</div>' : '')
-                + '</a>';
-            }).join('')
-          + '</div></section>';
+      var relCard = function(o) {
+        var oSlug = ssShirtSlug(o);
+        var oImg = (o.images && o.images[0]) ? o.images[0] : '';
+        var oPrice = (o.price != null) ? parseFloat(o.price).toFixed(2) : '';
+        return '<a class="related-card" href="/products/' + oSlug + '.html">'
+          + (oImg ? '<img src="' + htmlEscape(oImg) + '" alt="' + htmlEscape(o.title || '') + '" loading="lazy">' : '')
+          + '<div class="rc-title">' + htmlEscape(o.title || '') + '</div>'
+          + (oPrice ? '<div class="rc-price">&euro;' + oPrice + '</div>' : '')
+          + '</a>';
+      };
+      var relRow = function(title, list) {
+        return list.length ? '<section class="related"><h2>' + title + '</h2><div class="related-grid">' + list.map(relCard).join('') + '</div></section>' : '';
+      };
+      var rowClub = sameClub.slice(0, 4);
+      var rowMw = s.category === 'match_worn'
+        ? pool.filter(function(o) { return o.category === 'match_worn' && rowClub.indexOf(o) === -1; }).slice(0, 4)
+        : [];
+      if (rowClub.length) {
+        relHtml = relRow('More ' + htmlEscape(s.club), rowClub) + relRow('Other match worn pieces', rowMw);
+      } else if (rowMw.length) {
+        relHtml = relRow('Other match worn pieces', rowMw);
+      } else {
+        relHtml = relRow('You might also like', sameCat.slice(0, 4));
       }
     }
 
@@ -4185,7 +5001,7 @@
     var props = [];
     if (s.width_cm) props.push({ "@type": "PropertyValue", "name": "Width (pit to pit)", "value": String(s.width_cm) + " cm" });
     if (s.length_cm) props.push({ "@type": "PropertyValue", "name": "Length (shoulder to hem)", "value": String(s.length_cm) + " cm" });
-    if (s.season) props.push({ "@type": "PropertyValue", "name": "Season", "value": String(s.season) });
+    if (s.season) props.push({ "@type": "PropertyValue", "name": "Season", "value": ssSeason(s.season) });
     if (s.condition) props.push({ "@type": "PropertyValue", "name": "Condition", "value": String(s.condition) });
     if (props.length) schema.additionalProperty = props;
     // breadcrumb so Google can show Home › Shop › <shirt> in results
@@ -4235,6 +5051,7 @@
       +   '.topnav{display:flex;gap:22px;margin-left:auto;flex-wrap:wrap}'
       +   '.topnav a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}'
       +   '.topnav a:hover{color:var(--cream)}'
+      +   SS_TOPBAR_CSS
       +   '.wrap{max-width:1200px;margin:0 auto;padding:36px 32px 90px}'
       +   '.crumb{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:26px}'
       +   '.crumb a{color:var(--gold);text-decoration:none}'
@@ -4316,20 +5133,13 @@
       + '</style>\n'
       + '</head>\n<body>\n'
       /* header matching the site */
-      + '<header class="topbar">\n'
-      +   '<a href="/"><img src="https://res.cloudinary.com/dinpfdojh/image/upload/e_make_transparent:20,f_png/v1782388397/Kopie_van_Kopie_van_Shirt_Soci%C3%A9t%C3%A9_Facebook-bericht_2_wk9fmk.png" alt="Shirt Société"></a>\n'
-      +   '<nav class="topnav">'
-      +     '<a href="/">Home</a>'
-      +     '<a href="/?p=shop">Shop</a>'
-      +     '<a href="/?p=archive">Archive</a>'
-      +     '<a href="/blog.html">Journal</a>'
-      +     '<a href="/?p=about">Our Story</a>'
-      +     '<button type="button" onclick="ssToggleTheme()" title="Toggle light / dark mode" style="background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex;align-items:center">'
+      + ssTopbarHtml(
+      '<button type="button" onclick="ssToggleTheme()" title="Toggle light / dark mode" style="background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex;align-items:center">'
       +       '<svg id="ss-ic-dark" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>'
       +       '<svg id="ss-ic-light" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
       +     '</button>'
-      +   '</nav>\n'
-      + '</header>\n'
+      )
+
       + '<div class="wrap">\n'
       + '  <div class="crumb"><a href="/">Home</a> / <a href="/?p=shop">Shop</a> / ' + htmlEscape(s.title) + '</div>\n'
       + '  <div class="detail">\n'
