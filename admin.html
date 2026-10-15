@@ -1241,6 +1241,7 @@
     try {
       await Promise.all([loadShirts(), loadOrders(), loadCustomers()]);
       updateDashboard();
+      try { ksResumeFromCallback(); } catch (e2) { console.error(e2); }
     } catch (err) {
       if (err && err.authExpired) { handleAuthExpired(); return; }
       showToast('Could not load data — please try again', 'error');
@@ -2339,10 +2340,47 @@
     try { await ksCall({ action: 'terminate', reader_id: ksReaderId }); ksStatus('Payment cancelled on the Solo.', ''); }
     catch (e) { ksStatus('Could not cancel: ' + ksEsc(e.message) + '. Press the red button on the Solo.', 'err'); }
   }
-  function ksPayPhone() {
+  // Tap to Pay on this phone: opens the SumUp app with the amount filled in.
+  // The basket is kept on this phone, because the page reloads when SumUp returns.
+  async function ksPayPhone() {
     if (!ksNeedBasket()) return;
-    ksStatus('Open the <b>SumUp app</b> on your phone, choose Tap to Pay and enter <b style="font-size:20px">' + ksMoney(ksTotalNum()) + '</b>.<br>When the payment is successful:'
-      + '<br><button class="btn btn-primary" onclick="ksConfirm(\'phone\')">Paid: mark as sold</button>');
+    var cents = Math.round(ksTotalNum() * 100);
+    var ref = 'pos-' + Date.now();
+    var manual = function () {
+      ksStatus('Open the <b>SumUp app</b> on your phone, choose Tap to Pay and enter <b style="font-size:20px">' + ksMoney(ksTotalNum()) + '</b>.<br>When the payment is successful:'
+        + '<br><button class="btn btn-primary" onclick="ksConfirm(\'phone\')">Paid: mark as sold</button>');
+    };
+    ksStatus('Preparing the SumUp app...');
+    try {
+      var d = await ksCall({ action: 'phone_link', amount_cents: cents, ref: ref,
+        title: ksBasket.map(function (b) { return b.title; }).join(', '),
+        callback: 'https://shirtsociete.com/admin.html?ksphone=1' });
+      if (!d || !d.configured || !d.url) { manual(); return; }
+      try { localStorage.setItem('ss_pos_pending', JSON.stringify({ ref: ref, cents: cents, basket: ksBasket, t: Date.now() })); } catch (e) {}
+      ksStatus('Ready: <b>' + ksMoney(ksTotalNum()) + '</b><br><a class="btn btn-primary" style="display:inline-block;margin-top:8px;text-decoration:none" href="' + ksEsc(d.url) + '">Open SumUp and charge</a>'
+        + '<br><span style="font-size:12px;color:var(--text-muted)">Nothing happens if the SumUp app is not installed or not logged in. Then pay manually:</span>'
+        + '<br><button class="btn btn-secondary" style="margin-top:6px" onclick="ksConfirm(\'phone\')">Paid in the SumUp app: mark as sold</button>');
+    } catch (e) { manual(); }
+  }
+  // SumUp sends you back to the admin with the result in the address. We only
+  // show it; the shirt is marked as sold when you press the button yourself.
+  function ksResumeFromCallback() {
+    var q = new URLSearchParams(location.search);
+    if (!q.has('smp-status')) return;
+    var status = q.get('smp-status'), tx = q.get('smp-tx-code') || '', ref = q.get('foreign-tx-id') || '';
+    var pending = null;
+    try { pending = JSON.parse(localStorage.getItem('ss_pos_pending') || 'null'); } catch (e) {}
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+    switchTab('kassa');
+    if (pending && pending.basket && (!ref || pending.ref === ref)) { ksBasket = pending.basket; ksRenderBasket(); ksRenderGrid(); }
+    if (status === 'success' && ksBasket.length) {
+      ksStatus('SumUp says the payment <b>succeeded</b>' + (tx ? ' (code ' + ksEsc(tx) + ')' : '') + '. Total ' + ksMoney(ksTotalNum()) + '.'
+        + '<br><button class="btn btn-primary" onclick="ksConfirm(\'phone\')">Mark as sold</button>', 'ok');
+    } else if (status === 'success') {
+      ksStatus('SumUp says the payment succeeded, but the basket was empty. Add the shirt and press Mark as sold only if it was paid.', 'err');
+    } else {
+      ksStatus('The payment in SumUp did not go through (' + ksEsc(status) + '). The shirts are still available.', 'err');
+    }
   }
   async function ksConfirm(method) {
     if (!ksNeedBasket()) return;
@@ -2363,6 +2401,7 @@
       if (failed) { ksStatus('Could not mark as sold: ' + ksEsc(e.message) + '. Mark the shirt as sold in Shirts.', 'err'); return; }
     }
     ksBasket = [];
+    try { localStorage.removeItem('ss_pos_pending'); } catch (e) {}
     try { await loadShirts(); } catch (e) {}
     ksRenderBasket(); ksRenderGrid();
     ksStatus('Sold! The shirt is off the website.', 'ok');
