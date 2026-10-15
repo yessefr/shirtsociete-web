@@ -436,7 +436,17 @@
     .ks-status .btn { margin-top: 8px; }
     .ks-settings { margin-top: 14px; font-size: 13px; color: var(--text-muted); }
     .ks-set-body { padding-top: 10px; }
-    @media (max-width: 900px) { .ks-wrap { grid-template-columns: 1fr; } .ks-right { position: static; } .ks-grid { max-height: 48vh; } }
+    @media (max-width: 900px) {
+      .ks-wrap { grid-template-columns: 1fr; }
+      .ks-grid { max-height: none; overflow: visible; padding-bottom: 40px; }
+      /* On a phone the basket is a sheet pinned to the bottom, so right after you tap a shirt the
+         price and the pay buttons are in front of you, not somewhere below the list. */
+      .ks-right { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 400; max-height: 78vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+        border-radius: 14px 14px 0 0; border-bottom: none; box-shadow: 0 -10px 30px rgba(0,0,0,.45);
+        padding: 14px 16px calc(16px + env(safe-area-inset-bottom)); }
+      .ks-right.ks-has { display: block; }
+      .ks-wrap:has(.ks-has) .ks-grid { padding-bottom: 380px; }
+    }
 
     /* ── FORM ── */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -769,12 +779,12 @@
         <input type="text" class="form-input" id="ks-search" placeholder="Search club, player, season..." oninput="ksRenderGrid()">
         <div class="ks-grid" id="ks-grid"></div>
       </div>
-      <div class="ks-right">
+      <div class="ks-right" id="ks-right">
         <div class="ks-basket" id="ks-basket"></div>
         <div class="ks-total">Total <b id="ks-total">€0.00</b></div>
         <div class="ks-actions">
-          <button class="btn btn-primary" id="ks-pay-solo" onclick="ksPaySolo()">Pay on SumUp Solo</button>
-          <button class="btn btn-secondary" onclick="ksPayPhone()">Tap to Pay on my phone (SumUp app)</button>
+          <button class="btn btn-primary" id="ks-pay-phone" onclick="ksPayPhone()">Tap to Pay on my phone (SumUp app)</button>
+          <button class="btn btn-secondary" id="ks-pay-solo" onclick="ksPaySolo()">Pay on SumUp Solo</button>
           <button class="btn btn-secondary" onclick="ksConfirm('cash')">Cash / other: paid</button>
         </div>
         <div class="ks-status" id="ks-status"></div>
@@ -2294,6 +2304,8 @@
   }
   function ksInit() {
     ksRenderGrid(); ksRenderBasket();
+    var soloBtn = document.getElementById('ks-pay-solo');
+    if (soloBtn) soloBtn.style.display = ksReaderId ? '' : 'none';   // no Solo paired: the Solo button stays out of the way
     var info = document.getElementById('ks-reader-info');
     if (info) info.textContent = ksReaderId ? 'Paired Solo is saved on this device.' : 'No Solo paired on this device yet.';
   }
@@ -2338,6 +2350,8 @@
         + '<button type="button" onclick="ksRemove(\'' + b.id + '\')">&times;</button></div>';
     }).join('') : '<div style="color:var(--text-muted);font-size:13px">Tap a shirt to add it.</div>';
     ksTotal();
+    var kr = document.getElementById('ks-right');
+    if (kr) kr.classList.toggle('ks-has', ksBasket.length > 0);
   }
   // What SumUp shows on the payment and receipt: code, title and the start of the website description.
   function ksPayText() {
@@ -2394,8 +2408,9 @@
     if (!ksNeedBasket()) return;
     var cents = Math.round(ksTotalNum() * 100);
     var ref = 'pos-' + Date.now();
-    var manual = function () {
-      ksStatus('Open the <b>SumUp app</b> on your phone, choose Tap to Pay and enter <b style="font-size:20px">' + ksMoney(ksTotalNum()) + '</b>.<br>When the payment is successful:'
+    var manual = function (why) {
+      ksStatus((why ? '<span style="color:var(--red)">SumUp link not available: ' + ksEsc(why) + '</span><br>' : '')
+        + 'Open the <b>SumUp app</b> on your phone, choose Tap to Pay and enter <b style="font-size:20px">' + ksMoney(ksTotalNum()) + '</b>.<br>When the payment is successful:'
         + '<br><button class="btn btn-primary" onclick="ksConfirm(\'phone\')">Paid: mark as sold</button>');
     };
     ksStatus('Preparing the SumUp app...');
@@ -2403,14 +2418,14 @@
       var d = await ksCall({ action: 'phone_link', amount_cents: cents, ref: ref,
         title: ksPayText(),
         callback: 'https://shirtsociete.com/admin.html?ksphone=1' });
-      if (!d || !d.configured || !d.url) { manual(); return; }
+      if (!d || !d.configured || !d.url) { manual('not set up yet. SUMUP_AFFILIATE_KEY or SUMUP_APP_ID is missing in Netlify, or the site has not been redeployed since.'); return; }
       try { localStorage.setItem('ss_pos_pending', JSON.stringify({ ref: ref, cents: cents, basket: ksBasket, t: Date.now() })); } catch (e) {}
       ksStatus('Ready: <b>' + ksMoney(ksTotalNum()) + '</b><br><a class="btn btn-primary" style="display:inline-block;margin-top:8px;text-decoration:none" href="' + ksEsc(d.url) + '">Open SumUp and charge</a>'
         + '<br><span style="font-size:12px;color:var(--text-muted)">Nothing happens if the SumUp app is not installed or not logged in. Then pay manually:</span>'
         + '<br><button class="btn btn-secondary" style="margin-top:6px" onclick="ksConfirm(\'phone\')">Paid in the SumUp app: mark as sold</button>');
       // Open the SumUp app straight away. The button above stays as a fallback.
       try { window.location.href = d.url; } catch (e3) {}
-    } catch (e) { manual(); }
+    } catch (e) { manual((e && e.message) || 'no answer from the server'); }
   }
   // SumUp sends you back to the admin with the result in the address. We only
   // show it; the shirt is marked as sold when you press the button yourself.
