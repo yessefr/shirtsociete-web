@@ -289,6 +289,8 @@
       #shirts-table td.cell-title::before { display: none; }
       /* the photo sits in the padding gutter on the left */
       #shirts-table td.cell-thumb { position: absolute; left: 12px; top: 12px; padding: 0; }
+      #shirts-table td.cell-sel { position: absolute; right: 10px; top: 10px; padding: 0; z-index: 2; }
+      #shirts-table td.cell-sel .sel-box { width: 26px; height: 26px; }
       #shirts-table td.cell-thumb .shirt-thumb { width: 52px; height: 52px; object-fit: cover; border-radius: 4px; }
       #shirts-table td.cell-actions { padding-top: 10px; margin-top: 8px; border-top: 1px solid var(--grey-light); }
       #shirts-table .action-btns { display: flex; gap: 8px; width: 100%; flex-wrap: wrap; }
@@ -380,6 +382,13 @@
     td { padding: 12px 16px; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(255,255,255,0.02); }
+    .sel-box, #sel-all { width: 18px; height: 18px; accent-color: var(--gold); cursor: pointer; }
+    .bulk-bar { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 600; background: var(--grey); border-top: 1px solid var(--gold); box-shadow: 0 -8px 24px rgba(0,0,0,.45); padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); gap: 8px; align-items: center; flex-wrap: wrap; }
+    .bulk-bar.on { display: flex; }
+    .bulk-bar .bb-n { font-size: 13px; color: var(--white); margin-right: auto; }
+    .bulk-bar .btn { min-height: 40px; padding: 8px 12px; font-size: 12px; }
+    @media (max-width: 900px) { .bulk-bar { bottom: calc(58px + env(safe-area-inset-bottom)); padding-bottom: 10px; } }
+    .size-pill { display: inline-block; min-width: 26px; text-align: center; font-size: 11px; font-weight: 700; letter-spacing: .5px; color: #14120b; background: var(--gold); border-radius: 3px; padding: 1px 6px; margin-right: 6px; vertical-align: 1px; }
     .shirt-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 2px; background: var(--grey-mid); }
     .badge {
       display: inline-block; padding: 3px 8px; border-radius: 2px;
@@ -716,6 +725,10 @@
           <option value="national">National</option>
           <option value="match_worn">Match Worn/Issued</option>
         </select>
+        <select class="filter-select" onchange="filterShirtsTable()" id="shirt-filter-size">
+          <option value="">All sizes</option>
+          <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
+        </select>
         <select class="filter-select" onchange="filterShirtsTable()" id="shirt-filter-status">
           <option value="">All status</option>
           <option value="available">Available</option>
@@ -725,9 +738,9 @@
       <div class="table-wrap" id="shirts-table-wrap">
         <table id="shirts-table">
           <thead><tr>
-            <th>Photo</th><th>Title</th><th>Club</th><th>Category</th><th>Size</th><th>Price</th><th>Status</th><th>Actions</th>
+            <th style="width:34px"><input type="checkbox" id="sel-all" title="Select all shown" onchange="ssSelAll(this.checked)"></th><th>Photo</th><th>Title</th><th>Club</th><th>Category</th><th>Size</th><th>Price</th><th>Status</th><th>Actions</th>
           </tr></thead>
-          <tbody id="shirts-tbody"><tr class="loading-row"><td colspan="8">Loading shirts...</td></tr></tbody>
+          <tbody id="shirts-tbody"><tr class="loading-row"><td colspan="9">Loading shirts...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -1007,10 +1020,14 @@
         <!-- Visual photo order: drag the thumbnails to reorder -->
         <div class="form-group full">
           <label class="form-label" style="color:#c8a950;font-size:13px;letter-spacing:1px;text-transform:uppercase">Photo order
-            <span style="color:#888070;text-transform:none;letter-spacing:0;font-size:12px">— drag the photos to change the order. The first one is the main photo, the second shows on hover.</span>
+            <span style="color:#888070;text-transform:none;letter-spacing:0;font-size:12px">— drag the photos to change the order. The first is the front (main photo), the second is the back (shown on hover).</span>
           </label>
           <div id="m-photo-strip" style="display:flex;flex-wrap:wrap;gap:10px;padding:12px;background:#141210;border:1px solid #2a2820;border-radius:3px;min-height:60px"></div>
           <div style="display:flex;gap:10px;margin-top:8px">
+            <button type="button" class="btn btn-secondary" style="font-size:12px" onclick="document.getElementById('up-front').click()">Front photo</button>
+            <button type="button" class="btn btn-secondary" style="font-size:12px" onclick="document.getElementById('up-back').click()">Back photo</button>
+            <input type="file" id="up-front" accept="image/*" style="display:none" onchange="ssUploadSlot(0, this)">
+            <input type="file" id="up-back" accept="image/*" style="display:none" onchange="ssUploadSlot(1, this)">
             <button type="button" class="btn btn-secondary" style="font-size:12px" onclick="refreshPhotoStrip()">Refresh preview</button>
             <span id="m-photo-count" style="font-size:12px;color:#888070;align-self:center"></span>
           </div>
@@ -1380,6 +1397,49 @@
     return url.replace(/\/upload\/(?!.*\/upload\/)/, '/upload/w_96,h_96,c_fill,q_auto,f_auto/');
   }
 
+  // ── Select several shirts at once ──
+  var ssSelected = new Set();
+  function ssSelToggle(id, on) { if (on) ssSelected.add(id); else ssSelected.delete(id); ssBulkBar(); }
+  function ssSelAll(on) {
+    document.querySelectorAll('#shirts-tbody .sel-box').forEach(function (b) {
+      b.checked = on;
+      var m = (b.getAttribute('onchange') || '').match(/'([^']+)'/);
+      if (m) { if (on) ssSelected.add(m[1]); else ssSelected.delete(m[1]); }
+    });
+    ssBulkBar();
+  }
+  function ssBulkBar() {
+    var bar = document.getElementById('bulk-bar'); if (!bar) return;
+    var n = ssSelected.size;
+    bar.classList.toggle('on', n > 0);
+    var c = document.getElementById('bulk-count'); if (c) c.textContent = n + ' selected';
+  }
+  function ssBulkClear() { ssSelected.clear(); document.querySelectorAll('.sel-box, #sel-all').forEach(function (b) { b.checked = false; }); ssBulkBar(); }
+  async function ssBulk(action) {
+    var ids = Array.from(ssSelected); if (!ids.length) return;
+    var patch, msg;
+    if (action === 'publish') { patch = { is_draft: false, available: true, sold_at: null }; msg = 'Publish ' + ids.length + ' shirt(s)? They become visible to everyone.'; }
+    else if (action === 'draft') { patch = { is_draft: true }; msg = 'Move ' + ids.length + ' shirt(s) back to concept? They disappear from the shop.'; }
+    else if (action === 'sold') { patch = { available: false, sold_at: new Date().toISOString() }; msg = 'Mark ' + ids.length + ' shirt(s) as sold?'; }
+    else return;
+    if (!confirm(msg)) return;
+    var ok = 0, fail = 0;
+    for (var i = 0; i < ids.length; i++) {
+      try {
+        var r = await fetch(SUPABASE.url + '/rest/v1/shirts?id=eq.' + encodeURIComponent(ids[i]), {
+          method: 'PATCH',
+          headers: { apikey: SUPABASE.key, Authorization: 'Bearer ' + authToken, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+          body: JSON.stringify(patch)
+        });
+        if (r.ok) ok++; else fail++;
+      } catch (e) { fail++; }
+    }
+    showToast(ok + ' done' + (fail ? ', ' + fail + ' failed' : '') + (action === 'publish' ? ' — remember to regenerate the product pages' : ''), fail ? 'error' : 'success');
+    ssBulkClear();
+    await loadShirts();
+    updateDashboard();
+  }
+
   function ssEscCode(t) { return String(t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function renderShirts(filter = '') {
     const search = document.getElementById('shirt-search')?.value.toLowerCase() || '';
@@ -1387,17 +1447,20 @@
     const status = document.getElementById('shirt-filter-status')?.value || '';
     let shirts = allShirts;
     if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search) || (shirtCodes[s.id]||'').toLowerCase().includes(search));
+    const sizeF = document.getElementById('shirt-filter-size')?.value || '';
+    if (sizeF) shirts = shirts.filter(s => (s.size || '').toUpperCase() === sizeF);
     if (cat) shirts = shirts.filter(s => s.category === cat);
     if (status === 'available') shirts = shirts.filter(s => s.available);
     if (status === 'sold') shirts = shirts.filter(s => !s.available);
 
     document.getElementById('shirts-tbody').innerHTML = shirts.length ? shirts.map(s => `
       <tr>
+        <td data-label="" class="cell-sel"><input type="checkbox" class="sel-box" ${ssSelected.has(s.id) ? 'checked' : ''} onchange="ssSelToggle('${s.id}', this.checked)" aria-label="Select shirt"></td>
         <td data-label="" class="cell-thumb"><img src="${ssThumb(s.images?.[0])}" class="shirt-thumb" loading="lazy" decoding="async" onerror="this.style.background='var(--grey-mid)'"></td>
         <td data-label="Title" class="cell-title" style="font-weight:500;max-width:200px">${shirtCodes[s.id] ? '<div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--gold);margin-bottom:3px">' + ssEscCode(shirtCodes[s.id]) + '</div>' : ''}${s.title}${ssHasOldPhotos(s.images) ? '<div style="margin-top:4px;font-size:11px;font-weight:600;color:#e07a6a">Photos offline — re-upload</div>' : (!(s.images && s.images.length) ? '<div style="margin-top:4px;font-size:11px;font-weight:600;color:#b0a898">No photos yet</div>' : '')}</td>
         <td data-label="Club">${s.club || '—'}</td>
         <td data-label="Category"><span class="badge badge-${s.category}">${s.category?.replace('_',' ') || '—'}</span></td>
-        <td data-label="Size">${s.size || '—'}</td>
+        <td data-label="Size">${s.size ? '<span class="size-pill">' + ssEscCode(s.size) + '</span>' : '—'}</td>
         <td data-label="Price" style="color:var(--gold)">€${parseFloat(s.price).toFixed(2)}</td>
         <td data-label="Status"><span class="badge" style="${s.is_draft ? 'background:rgba(200,169,80,.14);color:#c8a950' : (s.available ? 'background:rgba(76,175,125,.15);color:#4caf7d' : 'background:rgba(224,90,77,.15);color:#e05a4d')}">${s.is_draft ? 'Concept' : (s.available ? 'Available' : 'Sold')}</span></td>
         <td data-label="" class="cell-actions">
@@ -1408,7 +1471,7 @@
           </div>
         </td>
       </tr>
-    `).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:40px">No shirts found</td></tr>';
+    `).join('') : '<tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:40px">No shirts found</td></tr>';
   }
 
   // Rebuilding sixty rows on every keystroke made typing in the search box
@@ -1469,7 +1532,7 @@
         + 'style="position:relative;width:90px;cursor:grab;border:1px solid ' + (i === 0 ? '#c8a950' : '#2a2820') + ';border-radius:3px;overflow:hidden;background:#0d0b08">'
         + '<img src="' + u + '" style="width:100%;height:110px;object-fit:contain;display:block;pointer-events:none" alt="">'
         + '<div style="position:absolute;top:3px;left:3px;background:rgba(10,9,5,.85);color:' + (i === 0 ? '#c8a950' : '#b0a898') + ';font-size:10px;padding:2px 6px;border-radius:2px">'
-        + (i === 0 ? 'MAIN' : (i === 1 ? 'HOVER' : (i + 1))) + '</div>'
+        + (i === 0 ? 'FRONT' : (i === 1 ? 'BACK' : (i + 1))) + '</div>'
         + '<div onclick="removePhotoAt(' + i + ')" title="Remove" style="position:absolute;top:3px;right:3px;background:rgba(10,9,5,.85);color:#e07a6a;font-size:12px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer">&times;</div>'
         + '</div>';
     }).join('');
@@ -2350,7 +2413,7 @@
   function ksRenderGrid() {
     var q = ((document.getElementById('ks-search') || {}).value || '').toLowerCase().trim();
     var list = ksShirts().filter(function (s) {
-      return !q || [s.title, s.club, s.season, s.mw_player, shirtCodes[s.id]].filter(Boolean).join(' ').toLowerCase().indexOf(q) !== -1;
+      return !q || [s.title, s.club, s.season, s.mw_player, shirtCodes[s.id], s.size ? 'size ' + s.size : ''].filter(Boolean).join(' ').toLowerCase().indexOf(q) !== -1;
     }).slice(0, 120);
     var grid = document.getElementById('ks-grid');
     if (!grid) return;
@@ -2359,13 +2422,13 @@
       var im = (s.images && s.images[0]) ? (s.images[0].replace(/\.jpg$/i, '_t.jpg')) : '';
       return '<button type="button" class="ks-card' + (inB ? ' in' : '') + '" onclick="ksAdd(\'' + s.id + '\')">'
         + (im ? '<img loading="lazy" src="' + ksEsc(im) + '" onerror="this.onerror=null;this.src=\'' + ksEsc(s.images[0]) + '\'">' : '<div style="height:110px"></div>')
-        + '<div class="kt">' + (shirtCodes[s.id] ? '<b style="color:var(--gold);letter-spacing:1px">' + ksEsc(shirtCodes[s.id]) + '</b> ' : '') + ksEsc(s.title) + '</div><div class="kp">' + ksMoney(s.price) + '</div></button>';
+        + '<div class="kt">' + (s.size ? '<span class="size-pill">' + ksEsc(s.size) + '</span>' : '') + (shirtCodes[s.id] ? '<b style="color:var(--gold);letter-spacing:1px">' + ksEsc(shirtCodes[s.id]) + '</b> ' : '') + ksEsc(s.title) + '</div><div class="kp">' + ksMoney(s.price) + '</div></button>';
     }).join('') || '<div style="color:var(--text-muted);font-size:13px;padding:14px">No shirts found.</div>';
   }
   function ksAdd(id) {
     var s = (allShirts || []).filter(function (x) { return x.id === id; })[0];
     if (!s || ksBasket.some(function (b) { return b.id === id; })) { ksRemove(id); return; }
-    ksBasket.push({ id: s.id, title: s.title, price: parseFloat(s.price) || 0, listPrice: parseFloat(s.price) || 0, code: shirtCodes[s.id] || '', description: s.description || '' });
+    ksBasket.push({ id: s.id, title: s.title, size: s.size || '', price: parseFloat(s.price) || 0, listPrice: parseFloat(s.price) || 0, code: shirtCodes[s.id] || '', description: s.description || '' });
     ksRenderBasket(); ksRenderGrid();
   }
   function ksRemove(id) { ksBasket = ksBasket.filter(function (b) { return b.id !== id; }); ksRenderBasket(); ksRenderGrid(); }
@@ -2377,7 +2440,7 @@
     if (!el) return;
     el.innerHTML = ksBasket.length ? ksBasket.map(function (b) {
       var changed = b.listPrice != null && Math.abs(b.price - b.listPrice) > 0.004;
-      return '<div class="ks-line"><div class="n">' + (b.code ? '<b style="color:var(--gold);letter-spacing:1px">' + ksEsc(b.code) + '</b> ' : '') + ksEsc(b.title)
+      return '<div class="ks-line"><div class="n">' + (b.size ? '<span class="size-pill">' + ksEsc(b.size) + '</span>' : '') + (b.code ? '<b style="color:var(--gold);letter-spacing:1px">' + ksEsc(b.code) + '</b> ' : '') + ksEsc(b.title)
         + (b.description ? '<details style="margin-top:4px"><summary style="font-size:11px;color:var(--text-muted);cursor:pointer">Description (as on the website)</summary><div style="font-size:12px;color:var(--text-muted);white-space:pre-line;margin-top:4px">' + ksEsc(b.description) + '</div></details>' : '')
         + (changed ? '<div style="font-size:11px;color:var(--text-muted);margin-top:3px">Website price ' + ksMoney(b.listPrice) + '</div>' : '')
         + '</div>'
@@ -2392,7 +2455,7 @@
   function ksPayText() {
     return ksBasket.map(function (b) {
       var d = String(b.description || '').split(/\n\s*\n/)[0].replace(/\s+/g, ' ').trim();
-      return (b.code ? b.code + ' ' : '') + b.title + (d ? '. ' + d : '');
+      return (b.code ? b.code + ' ' : '') + b.title + (b.size && b.title.indexOf('Size ' + b.size) === -1 ? ' (size ' + b.size + ')' : '') + (d ? '. ' + d : '');
     }).join(' | ');
   }
   function ksNeedBasket() {
@@ -2485,7 +2548,7 @@
   async function ksConfirm(method) {
     if (!ksNeedBasket()) return;
     var ids = ksBasket.map(function (b) { return b.id; });
-    var items = ksBasket.map(function (b) { return { id: b.id, code: b.code || null, title: b.title, price: b.price, list_price: b.listPrice, description: String(b.description || '').slice(0, 400) }; });
+    var items = ksBasket.map(function (b) { return { id: b.id, code: b.code || null, size: b.size || null, title: b.title, price: b.price, list_price: b.listPrice, description: String(b.description || '').slice(0, 400) }; });
     ksStatus('Saving the sale...');
     try {
       await ksCall({ action: 'sold', shirt_ids: ids, method: method, amount_cents: Math.round(ksTotalNum() * 100), items: items });
@@ -3180,6 +3243,38 @@
       if (failed) msg += ', ' + failed + ' failed: ' + lastError;
       if (skipped) msg += ' (' + skipped + ' skipped, only twelve slots)';
       status.textContent = msg;
+    });
+  }
+
+  // Front (slot 0) or back (slot 1) photo: replaces that position only.
+  function ssUploadSlot(idx, input) {
+    var file = input && input.files && input.files[0];
+    if (!file) return;
+    var gen = ssModalGen;
+    var status = document.getElementById('up-status');
+    if (status) { status.className = 'up-status'; status.textContent = 'Uploading ' + (idx === 0 ? 'front' : 'back') + ' photo...'; }
+    ssUploadsBusy++;
+    var base = ssNewPhotoPath();
+    ssDecodeImage(file).then(function (src) {
+      return Promise.all([ssToJpegBlob(src, SS_FULL_MAX, 0.88), ssToJpegBlob(src, SS_THUMB_MAX, 0.80)]).then(function (b) {
+        if (src.close) src.close();
+        return ssStoragePut(base + '_t.jpg', b[1]).then(function () { return ssStoragePut(base + '.jpg', b[0]); });
+      });
+    }).then(function () {
+      if (gen !== ssModalGen) return;
+      var urls = readPhotoUrls();
+      var url = ssPublicUrl(base + '.jpg');
+      if (idx < urls.length) urls[idx] = url; else urls.push(url);
+      ssPhotosDirty = true;
+      writePhotoUrls(urls);
+      refreshPhotoStrip();
+      if (status) { status.className = 'up-status ok'; status.textContent = (idx === 0 ? 'Front' : 'Back') + ' photo set. Now press Save Shirt.'; }
+    }).catch(function (e) {
+      if (gen !== ssModalGen) return;
+      if (status) { status.className = 'up-status err'; status.textContent = ssUploadErrorText(e); }
+    }).then(function () {
+      ssUploadsBusy = Math.max(0, ssUploadsBusy - 1);
+      input.value = '';
     });
   }
 
@@ -5615,5 +5710,12 @@
   const saved = localStorage.getItem('ss_admin_token');
   if (saved) { authToken = saved; showAdmin(); }
 </script>
+<div class="bulk-bar" id="bulk-bar">
+  <span class="bb-n" id="bulk-count">0 selected</span>
+  <button type="button" class="btn btn-primary" onclick="ssBulk('publish')">Publish</button>
+  <button type="button" class="btn btn-secondary" onclick="ssBulk('draft')">Make concept</button>
+  <button type="button" class="btn btn-secondary" onclick="ssBulk('sold')">Mark sold</button>
+  <button type="button" class="btn btn-secondary" onclick="ssBulkClear()">Clear</button>
+</div>
 </body>
 </html>
