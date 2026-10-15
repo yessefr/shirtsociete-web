@@ -9,7 +9,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="SS Admin">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="apple-touch-icon" sizes="180x180" href="/admin-icons/icon-180.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
@@ -48,8 +48,9 @@
     .login-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; display: block; }
     .login-input {
       width: 100%; background: var(--black); border: 1px solid var(--grey-light);
-      color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px;
+      color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 16px;
       padding: 12px; border-radius: 2px; outline: none; margin-bottom: 16px;
+      -webkit-user-select: text; user-select: text; -webkit-appearance: none;
       transition: border-color 0.2s;
     }
     .login-input:focus { border-color: var(--gold-dim); }
@@ -494,9 +495,9 @@
     <div class="login-sub">Admin Dashboard</div>
     <div id="login-expired-note" style="display:none;background:rgba(200,169,80,.12);border:1px solid var(--gold);color:var(--gold);font-size:13px;padding:10px 14px;border-radius:2px;margin-bottom:16px">Your session expired. Please sign in again.</div>
     <label class="login-label">Email</label>
-    <input type="email" class="login-input" id="login-email" placeholder="admin@shirtsociete.com">
+    <input type="email" class="login-input" id="login-email" autocomplete="username" autocapitalize="none" autocorrect="off" inputmode="email" placeholder="admin@shirtsociete.com">
     <label class="login-label">Password</label>
-    <input type="password" class="login-input" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
+    <input type="password" class="login-input" id="login-pass" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
     <button class="login-btn" onclick="doLogin()">Sign In</button>
     <div class="login-error" id="login-error">Invalid credentials. Try again.</div>
   </div>
