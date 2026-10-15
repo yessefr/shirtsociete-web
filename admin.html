@@ -2303,7 +2303,7 @@
   function ksRenderGrid() {
     var q = ((document.getElementById('ks-search') || {}).value || '').toLowerCase().trim();
     var list = ksShirts().filter(function (s) {
-      return !q || [s.title, s.club, s.season, s.mw_player].filter(Boolean).join(' ').toLowerCase().indexOf(q) !== -1;
+      return !q || [s.title, s.club, s.season, s.mw_player, shirtCodes[s.id]].filter(Boolean).join(' ').toLowerCase().indexOf(q) !== -1;
     }).slice(0, 120);
     var grid = document.getElementById('ks-grid');
     if (!grid) return;
@@ -2312,13 +2312,13 @@
       var im = (s.images && s.images[0]) ? (s.images[0].replace(/\.jpg$/i, '_t.jpg')) : '';
       return '<button type="button" class="ks-card' + (inB ? ' in' : '') + '" onclick="ksAdd(\'' + s.id + '\')">'
         + (im ? '<img loading="lazy" src="' + ksEsc(im) + '" onerror="this.onerror=null;this.src=\'' + ksEsc(s.images[0]) + '\'">' : '<div style="height:110px"></div>')
-        + '<div class="kt">' + ksEsc(s.title) + '</div><div class="kp">' + ksMoney(s.price) + '</div></button>';
+        + '<div class="kt">' + (shirtCodes[s.id] ? '<b style="color:var(--gold);letter-spacing:1px">' + ksEsc(shirtCodes[s.id]) + '</b> ' : '') + ksEsc(s.title) + '</div><div class="kp">' + ksMoney(s.price) + '</div></button>';
     }).join('') || '<div style="color:var(--text-muted);font-size:13px;padding:14px">No shirts found.</div>';
   }
   function ksAdd(id) {
     var s = (allShirts || []).filter(function (x) { return x.id === id; })[0];
     if (!s || ksBasket.some(function (b) { return b.id === id; })) { ksRemove(id); return; }
-    ksBasket.push({ id: s.id, title: s.title, price: parseFloat(s.price) || 0 });
+    ksBasket.push({ id: s.id, title: s.title, price: parseFloat(s.price) || 0, listPrice: parseFloat(s.price) || 0, code: shirtCodes[s.id] || '', description: s.description || '' });
     ksRenderBasket(); ksRenderGrid();
   }
   function ksRemove(id) { ksBasket = ksBasket.filter(function (b) { return b.id !== id; }); ksRenderBasket(); ksRenderGrid(); }
@@ -2329,11 +2329,22 @@
     var el = document.getElementById('ks-basket');
     if (!el) return;
     el.innerHTML = ksBasket.length ? ksBasket.map(function (b) {
-      return '<div class="ks-line"><div class="n">' + ksEsc(b.title) + '</div>'
-        + '<input type="text" inputmode="decimal" value="' + b.price.toFixed(2) + '" onchange="ksSetPrice(\'' + b.id + '\', this.value)" title="Change the price if you agree a deal">'
+      var changed = b.listPrice != null && Math.abs(b.price - b.listPrice) > 0.004;
+      return '<div class="ks-line"><div class="n">' + (b.code ? '<b style="color:var(--gold);letter-spacing:1px">' + ksEsc(b.code) + '</b> ' : '') + ksEsc(b.title)
+        + (b.description ? '<details style="margin-top:4px"><summary style="font-size:11px;color:var(--text-muted);cursor:pointer">Description (as on the website)</summary><div style="font-size:12px;color:var(--text-muted);white-space:pre-line;margin-top:4px">' + ksEsc(b.description) + '</div></details>' : '')
+        + (changed ? '<div style="font-size:11px;color:var(--text-muted);margin-top:3px">Website price ' + ksMoney(b.listPrice) + '</div>' : '')
+        + '</div>'
+        + '<input type="text" inputmode="decimal" value="' + b.price.toFixed(2) + '" onchange="ksSetPrice(\'' + b.id + '\', this.value); ksRenderBasket()" title="Change the price if you agree a deal">'
         + '<button type="button" onclick="ksRemove(\'' + b.id + '\')">&times;</button></div>';
     }).join('') : '<div style="color:var(--text-muted);font-size:13px">Tap a shirt to add it.</div>';
     ksTotal();
+  }
+  // What SumUp shows on the payment and receipt: code, title and the start of the website description.
+  function ksPayText() {
+    return ksBasket.map(function (b) {
+      var d = String(b.description || '').split(/\n\s*\n/)[0].replace(/\s+/g, ' ').trim();
+      return (b.code ? b.code + ' ' : '') + b.title + (d ? '. ' + d : '');
+    }).join(' | ');
   }
   function ksNeedBasket() {
     if (!ksBasket.length || ksTotalNum() <= 0) { ksStatus('Add at least one shirt first.', 'err'); return false; }
@@ -2367,7 +2378,7 @@
     var cents = Math.round(ksTotalNum() * 100);
     ksStatus('Sending ' + ksMoney(ksTotalNum()) + ' to the Solo...');
     try {
-      await ksCall({ action: 'checkout', reader_id: ksReaderId, amount_cents: cents, description: ksBasket.map(function (b) { return b.title; }).join(', '), ref: 'pos-' + Date.now() });
+      await ksCall({ action: 'checkout', reader_id: ksReaderId, amount_cents: cents, description: ksPayText(), ref: 'pos-' + Date.now() });
       ksStatus('Hand the Solo to the customer. They have 60 seconds to tap or insert a card.<br>When the Solo shows <b>approved</b>:'
         + '<br><button class="btn btn-primary" onclick="ksConfirm(\'solo\')">Approved: mark as sold</button> '
         + '<button class="btn btn-secondary" onclick="ksCancelSolo()">Cancel payment</button>');
@@ -2390,7 +2401,7 @@
     ksStatus('Preparing the SumUp app...');
     try {
       var d = await ksCall({ action: 'phone_link', amount_cents: cents, ref: ref,
-        title: ksBasket.map(function (b) { return b.title; }).join(', '),
+        title: ksPayText(),
         callback: 'https://shirtsociete.com/admin.html?ksphone=1' });
       if (!d || !d.configured || !d.url) { manual(); return; }
       try { localStorage.setItem('ss_pos_pending', JSON.stringify({ ref: ref, cents: cents, basket: ksBasket, t: Date.now() })); } catch (e) {}
@@ -2424,7 +2435,7 @@
   async function ksConfirm(method) {
     if (!ksNeedBasket()) return;
     var ids = ksBasket.map(function (b) { return b.id; });
-    var items = ksBasket.map(function (b) { return { id: b.id, title: b.title, price: b.price }; });
+    var items = ksBasket.map(function (b) { return { id: b.id, code: b.code || null, title: b.title, price: b.price, list_price: b.listPrice, description: String(b.description || '').slice(0, 400) }; });
     ksStatus('Saving the sale...');
     try {
       await ksCall({ action: 'sold', shirt_ids: ids, method: method, amount_cents: Math.round(ksTotalNum() * 100), items: items });
