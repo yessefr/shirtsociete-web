@@ -2360,6 +2360,8 @@
       ksStatus('Ready: <b>' + ksMoney(ksTotalNum()) + '</b><br><a class="btn btn-primary" style="display:inline-block;margin-top:8px;text-decoration:none" href="' + ksEsc(d.url) + '">Open SumUp and charge</a>'
         + '<br><span style="font-size:12px;color:var(--text-muted)">Nothing happens if the SumUp app is not installed or not logged in. Then pay manually:</span>'
         + '<br><button class="btn btn-secondary" style="margin-top:6px" onclick="ksConfirm(\'phone\')">Paid in the SumUp app: mark as sold</button>');
+      // Open the SumUp app straight away. The button above stays as a fallback.
+      try { window.location.href = d.url; } catch (e3) {}
     } catch (e) { manual(); }
   }
   // SumUp sends you back to the admin with the result in the address. We only
@@ -2522,7 +2524,7 @@
     count:   19,                                   // hoeveel shirts er live gaan
     vintage: 17,                                   // waarvan vintage
     worn:    2,                                    // waarvan match worn of issued
-    when:    'Friday 17 October at 19:00 CEST'     // wanneer ze online komen
+    when:    'Saturday 17 October at 19:00 Amsterdam time'     // wanneer ze online komen
   };
 
   // The explainer text next to the buttons used to be a separate hand-typed
