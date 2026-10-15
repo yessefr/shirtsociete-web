@@ -432,6 +432,10 @@
     .ks-line { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--grey-light); font-size: 13px; }
     .ks-line .n { flex: 1; min-width: 0; line-height: 1.3; }
     .ks-line input { width: 82px; background: var(--black); border: 1px solid var(--grey-light); color: var(--white); padding: 6px; border-radius: 3px; text-align: right; font-size: 13px; }
+    .ks-line { flex-wrap: wrap; }
+    .ks-line .n { flex: 1 1 100%; }
+    .ks-price { display: flex; align-items: center; gap: 8px; margin-left: auto; font-size: 12px; color: var(--text-muted); }
+    .ks-price input { width: 110px !important; font-size: 18px !important; font-weight: 600; color: var(--gold) !important; padding: 9px 10px !important; }
     .ks-line button { background: none; border: none; color: var(--red); font-size: 18px; cursor: pointer; }
     .ks-total { display: flex; justify-content: space-between; font-size: 16px; padding: 12px 0; }
     .ks-total b { color: var(--gold); font-size: 24px; }
@@ -515,7 +519,7 @@
     <div class="login-sub">Admin Dashboard</div>
     <div id="login-expired-note" style="display:none;background:rgba(200,169,80,.12);border:1px solid var(--gold);color:var(--gold);font-size:13px;padding:10px 14px;border-radius:2px;margin-bottom:16px">Your session expired. Please sign in again.</div>
     <label class="login-label">Email</label>
-    <input type="email" class="login-input" id="login-email" autocomplete="username" autocapitalize="none" autocorrect="off" inputmode="email" placeholder="admin@shirtsociete.com">
+    <input type="email" class="login-input" id="login-email" autocomplete="username" autocapitalize="none" autocorrect="off" inputmode="email">
     <label class="login-label">Password</label>
     <input type="password" class="login-input" id="login-pass" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
     <button class="login-btn" onclick="doLogin()">Sign In</button>
@@ -1250,7 +1254,7 @@
     if (ADMIN_EMAILS.indexOf(em) === -1) {
       doLogout();
       var errEl = document.getElementById('login-error');
-      if (errEl) { errEl.textContent = (em ? em + ' is not the admin account. ' : '') + 'Log in with ' + ADMIN_EMAILS[0] + '.'; errEl.style.display = 'block'; }
+      if (errEl) { errEl.textContent = 'This account does not have access to the admin.'; errEl.style.display = 'block'; }
       return;
     }
     ['acct-email', 'acct-email-bar'].forEach(function (id) { var el = document.getElementById(id); if (el) el.textContent = em; });
@@ -2377,7 +2381,7 @@
         + (b.description ? '<details style="margin-top:4px"><summary style="font-size:11px;color:var(--text-muted);cursor:pointer">Description (as on the website)</summary><div style="font-size:12px;color:var(--text-muted);white-space:pre-line;margin-top:4px">' + ksEsc(b.description) + '</div></details>' : '')
         + (changed ? '<div style="font-size:11px;color:var(--text-muted);margin-top:3px">Website price ' + ksMoney(b.listPrice) + '</div>' : '')
         + '</div>'
-        + '<input type="text" inputmode="decimal" value="' + b.price.toFixed(2) + '" onchange="ksSetPrice(\'' + b.id + '\', this.value); ksRenderBasket()" title="Change the price if you agree a deal">'
+        + '<label class="ks-price"><span>Sale price &euro;</span><input type="text" inputmode="decimal" value="' + b.price.toFixed(2) + '" onfocus="this.select()" oninput="ksSetPrice(\'' + b.id + '\', this.value)" onchange="ksRenderBasket()" title="Change the price if you agree a deal"></label>'
         + '<button type="button" onclick="ksRemove(\'' + b.id + '\')">&times;</button></div>';
     }).join('') : '<div style="color:var(--text-muted);font-size:13px">Tap a shirt to add it.</div>';
     ksTotal();
