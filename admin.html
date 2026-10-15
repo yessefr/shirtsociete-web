@@ -854,6 +854,10 @@
           </div>
         </div>
         <div class="form-group">
+          <label class="form-label">Internal code (only you see this)</label>
+          <input type="text" class="form-input" id="m-code" placeholder="SH243" autocapitalize="characters" autocomplete="off">
+        </div>
+        <div class="form-group">
           <label class="form-label">Club</label>
           <input type="text" class="form-input" id="m-club" placeholder="Bayern München">
         </div>
@@ -1167,6 +1171,8 @@
 
   // ── STATE ──
   let allShirts = [];
+  // Internal SH codes live in their own table (shirt_codes). Never part of the public shirts table.
+  let shirtCodes = {};
   let allOrders = [];
   let allCustomers = [];
   let editingShirtId = null;
@@ -1252,6 +1258,10 @@
   async function loadShirts() {
     // let AUTH_EXPIRED bubble up to loadAll; only swallow other errors
     allShirts = await sbFetch('shirts', '?select=*&order=created_at.desc');
+    try {
+      var cr = await sbFetch('shirt_codes', '?select=shirt_id,code');
+      shirtCodes = {}; cr.forEach(function (r) { shirtCodes[r.shirt_id] = r.code; });
+    } catch (err) { if (err && err.authExpired) throw err; shirtCodes = {}; }   // table not created yet: no codes, nothing breaks
     renderShirts();
     document.getElementById('shirts-count').textContent = allShirts.length;
     try {
@@ -1325,12 +1335,13 @@
     return url.replace(/\/upload\/(?!.*\/upload\/)/, '/upload/w_96,h_96,c_fill,q_auto,f_auto/');
   }
 
+  function ssEscCode(t) { return String(t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function renderShirts(filter = '') {
     const search = document.getElementById('shirt-search')?.value.toLowerCase() || '';
     const cat = document.getElementById('shirt-filter-cat')?.value || '';
     const status = document.getElementById('shirt-filter-status')?.value || '';
     let shirts = allShirts;
-    if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search));
+    if (search) shirts = shirts.filter(s => (s.title||'').toLowerCase().includes(search) || (s.club||'').toLowerCase().includes(search) || (shirtCodes[s.id]||'').toLowerCase().includes(search));
     if (cat) shirts = shirts.filter(s => s.category === cat);
     if (status === 'available') shirts = shirts.filter(s => s.available);
     if (status === 'sold') shirts = shirts.filter(s => !s.available);
@@ -1338,7 +1349,7 @@
     document.getElementById('shirts-tbody').innerHTML = shirts.length ? shirts.map(s => `
       <tr>
         <td data-label="" class="cell-thumb"><img src="${ssThumb(s.images?.[0])}" class="shirt-thumb" loading="lazy" decoding="async" onerror="this.style.background='var(--grey-mid)'"></td>
-        <td data-label="Title" class="cell-title" style="font-weight:500;max-width:200px">${s.title}${ssHasOldPhotos(s.images) ? '<div style="margin-top:4px;font-size:11px;font-weight:600;color:#e07a6a">Photos offline — re-upload</div>' : (!(s.images && s.images.length) ? '<div style="margin-top:4px;font-size:11px;font-weight:600;color:#b0a898">No photos yet</div>' : '')}</td>
+        <td data-label="Title" class="cell-title" style="font-weight:500;max-width:200px">${shirtCodes[s.id] ? '<div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--gold);margin-bottom:3px">' + ssEscCode(shirtCodes[s.id]) + '</div>' : ''}${s.title}${ssHasOldPhotos(s.images) ? '<div style="margin-top:4px;font-size:11px;font-weight:600;color:#e07a6a">Photos offline — re-upload</div>' : (!(s.images && s.images.length) ? '<div style="margin-top:4px;font-size:11px;font-weight:600;color:#b0a898">No photos yet</div>' : '')}</td>
         <td data-label="Club">${s.club || '—'}</td>
         <td data-label="Category"><span class="badge badge-${s.category}">${s.category?.replace('_',' ') || '—'}</span></td>
         <td data-label="Size">${s.size || '—'}</td>
@@ -1540,6 +1551,7 @@
     editingShirtId = shirt ? shirt.id : null;
     document.getElementById('shirt-modal-title').textContent = shirt ? 'Edit Shirt' : 'Add Shirt';
     document.getElementById('m-title').value = shirt?.title || '';
+    document.getElementById('m-code').value = (shirt && shirtCodes[shirt.id]) || '';
     document.getElementById('m-club').value = shirt?.club || '';
     document.getElementById('m-category').value = shirt?.category || '';
     document.getElementById('m-price').value = shirt?.price || '';
@@ -1983,14 +1995,39 @@
           throw new Error(`Save failed: ${err2}`);
         }
       }
+      var codeVal = (document.getElementById('m-code').value || '').trim().toUpperCase();
+      var wasEditing = editingShirtId, savedId = editingShirtId;
       showToast(editingShirtId ? 'Shirt updated!' : 'Shirt added!', 'success');
       closeShirtModal(true);
       await loadShirts();
+      if (!savedId && codeVal) {   // new shirt: find it by title (newest first)
+        var fresh = allShirts.find(function (x) { return x.title === title; });
+        if (fresh) savedId = fresh.id;
+      }
+      if (savedId && (codeVal || shirtCodes[savedId])) { await ssSaveShirtCode(savedId, codeVal); renderShirts(); }
       updateDashboard();
     } catch (err) {
       showToast('Error: ' + err.message, 'error');
     } finally {
       btn.disabled = false; btn.textContent = 'Save Shirt';
+    }
+  }
+
+  // Saves or clears the internal code of one shirt. A failure never blocks saving the shirt itself.
+  async function ssSaveShirtCode(shirtId, code) {
+    try {
+      var h = { apikey: SUPABASE.key, Authorization: 'Bearer ' + authToken, 'Content-Type': 'application/json' };
+      var r;
+      if (code) {
+        r = await fetch(SUPABASE.url + '/rest/v1/shirt_codes?on_conflict=shirt_id', { method: 'POST', headers: Object.assign({ Prefer: 'resolution=merge-duplicates,return=minimal' }, h), body: JSON.stringify({ shirt_id: String(shirtId), code: code }) });
+      } else {
+        r = await fetch(SUPABASE.url + '/rest/v1/shirt_codes?shirt_id=eq.' + encodeURIComponent(shirtId), { method: 'DELETE', headers: h });
+      }
+      if (!r.ok) throw new Error(await r.text());
+      if (code) shirtCodes[shirtId] = code; else delete shirtCodes[shirtId];
+    } catch (e) {
+      console.error('code not saved', e);
+      showToast('Shirt saved, but the code was not. Run supabase-shirt-codes.sql once in Supabase.', 'error');
     }
   }
 
