@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Admin — Shirt Société</title>
   <link rel="manifest" href="/admin.webmanifest">
   <meta name="theme-color" content="#0a0905">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="SS Admin">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="apple-touch-icon" sizes="180x180" href="/admin-icons/icon-180.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
@@ -31,6 +31,10 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+    /* App feel on a phone: no pull-to-refresh in the middle of an upload, no double-tap zoom, no grey tap flash */
+    html, body { overscroll-behavior-y: contain; -webkit-tap-highlight-color: transparent; }
+    button, .btn, a, select, label { touch-action: manipulation; }
+    body { padding-bottom: env(safe-area-inset-bottom); }
 
     /* ── LOGIN ── */
     #login-screen {
@@ -48,8 +52,9 @@
     .login-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; display: block; }
     .login-input {
       width: 100%; background: var(--black); border: 1px solid var(--grey-light);
-      color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px;
+      color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 16px;
       padding: 12px; border-radius: 2px; outline: none; margin-bottom: 16px;
+      -webkit-user-select: text; user-select: text; -webkit-appearance: none;
       transition: border-color 0.2s;
     }
     .login-input:focus { border-color: var(--gold-dim); }
@@ -494,9 +499,9 @@
     <div class="login-sub">Admin Dashboard</div>
     <div id="login-expired-note" style="display:none;background:rgba(200,169,80,.12);border:1px solid var(--gold);color:var(--gold);font-size:13px;padding:10px 14px;border-radius:2px;margin-bottom:16px">Your session expired. Please sign in again.</div>
     <label class="login-label">Email</label>
-    <input type="email" class="login-input" id="login-email" placeholder="admin@shirtsociete.com">
+    <input type="email" class="login-input" id="login-email" autocomplete="username" autocapitalize="none" autocorrect="off" inputmode="email" placeholder="admin@shirtsociete.com">
     <label class="login-label">Password</label>
-    <input type="password" class="login-input" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
+    <input type="password" class="login-input" id="login-pass" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
     <button class="login-btn" onclick="doLogin()">Sign In</button>
     <div class="login-error" id="login-error">Invalid credentials. Try again.</div>
   </div>
@@ -994,6 +999,8 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               Upload photos from this device
             </button>
+            <input type="file" id="up-camera" accept="image/*" capture="environment" style="display:none" onchange="ssUploadPhotos(this.files)">
+            <button type="button" class="btn btn-secondary" style="width:100%;margin-top:10px" onclick="document.getElementById('up-camera').click()">Take a photo with the camera</button>
             <div class="up-hint">Pick several at once. They fill the first empty slots below, in the order you choose them. Photos are shrunk on your phone first, so this is quick even on weak wifi.</div>
             <div id="up-notice" style="display:none;margin-top:10px;padding:10px 12px;border:1px solid rgba(224,122,109,.5);border-radius:4px;color:#e07a6a;font-size:12.5px;line-height:1.6">
               This shirt still has old photos that are offline. Tap <b>Remove all photos</b>, then upload them again from your gallery.
@@ -1370,6 +1377,15 @@
     }).filter(function(v) { return /^https?:\/\//i.test(v); });   // never the temporary "uploading..." text
   }
   var ssUploadsBusy = 0, ssPhotosDirty = false;
+  // Counts how many times the shirt form was opened or closed. An upload that
+  // started for an earlier shirt checks this and drops its result, so a slow
+  // photo can never end up on the next shirt.
+  var ssModalGen = 0;
+  function ssResetUploadUi() {
+    var t = document.getElementById('up-thumbs'); if (t) t.innerHTML = '';
+    var st = document.getElementById('up-status'); if (st) { st.className = 'up-status'; st.textContent = ''; }
+    ['up-input', 'up-camera'].forEach(function (id) { var i = document.getElementById(id); if (i) i.value = ''; });
+  }
   function writePhotoUrls(urls) {
     var ids = getPhotoFieldIds();
     ids.forEach(function(id, i) {
@@ -1517,6 +1533,9 @@
     } catch (e) {}
     setTimeout(ssQuickMode, 0);
     ssPhotosDirty = false;
+    ssModalGen++;
+    ssUploadsBusy = 0;
+    ssResetUploadUi();
     editingShirtId = shirt ? shirt.id : null;
     document.getElementById('shirt-modal-title').textContent = shirt ? 'Edit Shirt' : 'Add Shirt';
     document.getElementById('m-title').value = shirt?.title || '';
@@ -1552,6 +1571,9 @@
     if (!force && ssUploadsBusy > 0) { if (!confirm('Photos are still uploading. Close anyway? Unfinished photos are lost.')) return; }
     else if (!force && ssPhotosDirty) { if (!confirm('You uploaded or changed photos but did not press Save Shirt. Close anyway? The photos will not be added to the shirt.')) return; }
     ssPhotosDirty = false;
+    ssModalGen++;
+    ssUploadsBusy = 0;
+    ssResetUploadUi();
     document.getElementById('shirt-modal').classList.remove('open');
     for (var gi = 1; gi <= 12; gi++) {
       var el = document.getElementById(gi === 1 ? 'm-image' : 'm-image' + gi);
@@ -2458,10 +2480,10 @@
 
       EDIT THESE FOUR LINES and both mails follow:                       */
   var SS_DROP = {
-    count:   16,                                   // hoeveel shirts er live gaan
-    vintage: 9,                                    // waarvan vintage
-    worn:    7,                                    // waarvan match worn of issued
-    when:    'Friday 4 September at 19:00 CET'      // wanneer ze online komen
+    count:   19,                                   // hoeveel shirts er live gaan
+    vintage: 17,                                   // waarvan vintage
+    worn:    2,                                    // waarvan match worn of issued
+    when:    'Friday 17 October at 19:00 CEST'     // wanneer ze online komen
   };
 
   // The explainer text next to the buttons used to be a separate hand-typed
@@ -2485,9 +2507,9 @@
         'The next collection goes online on ' + SS_DROP.when + '. '
           + SS_DROP.count + ' shirts, each one a single piece in a single size.',
         SS_DROP.vintage + ' vintage originals and ' + SS_DROP.worn
-          + ' match worn or issued pieces, from the 1980s through to last season.',
-        'Leading the collection: a signed Bastian Schweinsteiger shirt from 2011/12, '
-          + 'the season that ended with the Champions League final at Bayern\u2019s own ground.',
+          + ' match worn or issued pieces, from 1988 to 2016.',
+        'Leading the collection: a Bayern M\u00fcnchen match worn shirt attributed to J\u00e9r\u00f4me Boateng, '
+          + 'next to a Germany match issued shirt from 2016. Alongside them AC Milan, Celtic, Brazil and the Netherlands.',
         'The rest stays quiet until it is online.'
       ],
       highlight: 'This time is only on the Collector List. Instagram finds out when the shirts are already online, so you have the first look at all of them.',
@@ -2497,7 +2519,7 @@
   }
 
   // The live mail. Sendable as it stands — nothing below needs filling in.
-  // The Schweinsteiger leads this drop, so it is named in both mails. Take
+  // The Boateng and Germany shirts lead this drop, so they are named in both mails. Take
   // the line out if you would rather keep it quiet.
   function liveDropPayload() {
     return {
@@ -2509,7 +2531,7 @@
         'The new collection is live in the shop. You knew the time; Instagram is finding out now.',
         SS_DROP.vintage + ' vintage originals and ' + SS_DROP.worn
           + ' match worn or issued pieces. Every one is a single shirt in a single size.',
-        'Leading the collection: a signed Bastian Schweinsteiger shirt from 2011/12.'
+        'Leading the collection: a Bayern M\u00fcnchen match worn shirt attributed to J\u00e9r\u00f4me Boateng and a Germany match issued shirt from 2016.'
       ],
       highlight: '',
       ctaText: 'See the new shirts',
@@ -2943,6 +2965,7 @@
     var thumbs = document.getElementById('up-thumbs');
     var list = Array.prototype.slice.call(files);
     var done = 0, failed = 0, lastError = '';
+    var gen = ssModalGen;   // the shirt this upload belongs to
 
     function slots() {
       var free = [];
@@ -2981,6 +3004,7 @@
           });
         });
       }).then(function () {
+        if (gen !== ssModalGen) return;   // another shirt is open now: drop this photo
         var url = ssPublicUrl(base + '.jpg');
         if (target) target.value = url;
         var img = document.createElement('img');
@@ -2988,28 +3012,30 @@
         thumbs.appendChild(img);
         done++;
       }).catch(function (e) {
+        if (gen !== ssModalGen) return;
         failed++;
         lastError = ssUploadErrorText(e);
         if (target) target.value = '';
         console.error('upload failed:', e);
       }).then(function () {
+        if (gen !== ssModalGen) return;
         status.textContent = 'Uploading ' + (done + failed) + ' of ' + list.length + '...';
       });
     }
 
     var cursor = 0;
     function pump() {
-      if (cursor >= list.length) return Promise.resolve();
+      if (cursor >= list.length || gen !== ssModalGen) return Promise.resolve();
       var mine = cursor++;
       return one(mine).then(pump);
     }
     Promise.all(new Array(Math.min(CONCURRENT, list.length)).fill(0).map(pump)).then(function () {
+      if (gen !== ssModalGen) return;   // form was closed or switched meanwhile
       ssUploadsBusy = Math.max(0, ssUploadsBusy - 1);
       if (done) ssPhotosDirty = true;
       writePhotoUrls(readPhotoUrls());
       refreshPhotoStrip();
-      var input = document.getElementById('up-input');
-      if (input) input.value = '';
+      ['up-input', 'up-camera'].forEach(function (id) { var i = document.getElementById(id); if (i) i.value = ''; });
       status.className = failed ? 'up-status err' : 'up-status ok';
       var msg = done + ' photo' + (done === 1 ? '' : 's') + ' uploaded' + (done ? '. Now press Save Shirt.' : '');
       if (failed) msg += ', ' + failed + ' failed: ' + lastError;
