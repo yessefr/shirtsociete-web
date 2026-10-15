@@ -7,10 +7,8 @@
     (function() {
       try {
         var saved = localStorage.getItem('ss-theme');
-        // Phones default to the beige (light) theme like the app; a visitor
-        // who picks dark keeps it. Desktop stays dark by default.
-        var isPhone = window.matchMedia('(max-width: 767px)').matches;
-        var theme = saved || (isPhone ? 'light' : 'dark');
+        // Light is the default on every device; a visitor who picks dark keeps it.
+        var theme = saved || 'light';
         if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
       } catch (e) {}
     })();
@@ -2110,6 +2108,16 @@
     .m-burger span { display: block; height: 1.5px; width: 30px; background: #f5f0e8; }
     .m-bag { justify-self: end; background: none; border: none; cursor: pointer; color: #f5f0e8; font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 12px; letter-spacing: 1.6px; text-transform: uppercase; padding: 12px 0 12px 8px; }
     .m-bag span { color: var(--gold); }
+    /* room for the light/dark button: the logo sits between the menu button and the right-hand group instead of in an equal-thirds grid */
+    .mobile-header { grid-template-columns: auto minmax(0, 1fr) auto; }
+    .mobile-header .mobile-logo { justify-self: center; text-align: center; }
+    .m-theme-btn { width: 38px; }
+    .m-head-right { justify-self: end; display: flex; align-items: center; gap: 2px; }
+    .m-theme-btn { background: none; border: none; cursor: pointer; color: #f5f0e8; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+    .m-theme-btn:active { color: var(--gold); }
+    /* Smoother scrolling and filtering on a phone: cards far off screen are not laid out or painted until they come near */
+    .m-shirt-card { content-visibility: auto; contain-intrinsic-size: auto 330px; }
+    .m-filter-btn, .m-filter-open, .m-chip, .m-add-btn { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
     .drop-alert-fab { bottom: calc(18px + env(safe-area-inset-bottom)); }
     .screen { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
     .m-foot { padding-bottom: 40px; }
@@ -2816,7 +2824,13 @@
   <div class="mobile-logo" onclick="mGoTo('home')">
     <span class="ss-wordmark">Shirt Soci&eacute;t&eacute;</span>
   </div>
-  <button type="button" class="m-bag" onclick="mGoTo('cart')" aria-label="Bag">Bag: <span id="m-head-cart">0</span></button>
+  <div class="m-head-right">
+    <button type="button" class="m-theme-btn" onclick="toggleSiteTheme()" aria-label="Switch between light and dark">
+      <svg id="m-theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <svg id="m-theme-icon-light" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <button type="button" class="m-bag" onclick="mGoTo('cart')" aria-label="Bag">Bag: <span id="m-head-cart">0</span></button>
+  </div>
 </header>
 
 <!-- SIDE MENU (slides in from the left) -->
@@ -5023,11 +5037,19 @@ as a personal collection quickly grew into something bigger: a curated platform 
   function mSetFilter(filter, btn) {
     mCurrentFilter = filter;
     document.querySelectorAll('.m-filter-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
+    if (btn) {
+      btn.classList.add('active');
+      try { btn.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); } catch (e) {}
+    }
     renderMobileGrid();
   }
 
-  function mFilterShirts() { renderMobileGrid(); }
+  // Typing in the search box used to rebuild the whole grid on every letter. Wait until you pause.
+  var _mFilterTimer = null;
+  function mFilterShirts() {
+    clearTimeout(_mFilterTimer);
+    _mFilterTimer = setTimeout(renderMobileGrid, 180);
+  }
 
   // Up to five photos per card as a snap strip. One photo falls back to a
   // plain image, so a shirt with a single shot behaves exactly as before.
@@ -5138,6 +5160,8 @@ as a personal collection quickly grew into something bigger: a curated platform 
     mUpdateFilterCount();
     mCloseSheet();
     renderMobileGrid();
+    var g = document.getElementById('m-shirt-grid');
+    if (g) { try { window.scrollTo({ top: Math.max(0, g.getBoundingClientRect().top + window.pageYOffset - 150), behavior: 'smooth' }); } catch (e) {} }
   }
 
   function mSheetClear() {
@@ -5196,6 +5220,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     }
   }
 
+  var mGridToken = 0;
   function renderMobileGrid() {
     const search = document.getElementById('m-search-input')?.value.toLowerCase() || '';
     const sizeFilter = document.getElementById('m-filter-size')?.value || '';
@@ -5220,8 +5245,8 @@ as a personal collection quickly grew into something bigger: a curated platform 
     else if (sort === 'year-desc') shirts.sort((a,b) => parseInt(b.season||0) - parseInt(a.season||0));
     else if (sort === 'oldest') shirts.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
     const grid = document.getElementById('m-shirt-grid');
-    if (!shirts.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No shirts found</div>'; return; }
-    grid.innerHTML = shirts.map(s => {
+    if (!shirts.length) { mGridToken++; grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No shirts found</div>'; return; }
+    var cardsHtml = shirts.map(s => {
       const inCart = cart.some(c => c.id === s.id);
       const isLiked = wishlist.includes(s.id);
       return `
@@ -5244,7 +5269,17 @@ as a personal collection quickly grew into something bigger: a curated platform 
             </div>
           </div>
         </div>`;
-    }).join('');
+    });
+    // First screenful at once, the rest in small batches, so the list appears
+    // immediately and scrolling never waits on one big rebuild.
+    var token = ++mGridToken, BATCH = 20, next = BATCH;
+    grid.innerHTML = cardsHtml.slice(0, BATCH).join('');
+    (function more() {
+      if (token !== mGridToken || next >= cardsHtml.length) return;
+      grid.insertAdjacentHTML('beforeend', cardsHtml.slice(next, next + BATCH).join(''));
+      next += BATCH;
+      (window.requestIdleCallback || function (f) { return setTimeout(f, 40); })(more);
+    })();
   }
 
   // ── DESKTOP HOME ──
