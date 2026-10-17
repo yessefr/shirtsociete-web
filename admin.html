@@ -3197,6 +3197,74 @@
     }
   }
 
+  // Shrinks a phone video before it goes up: re-records it at 720p, ~2.5 Mbit/s,
+  // in the browser. A 20 second clip from an iPhone is often 60-200 MB (4K or
+  // 1080p60); after this it is roughly 6 MB, which starts at once on a phone
+  // and fits under every storage limit. Real time: 20 s of video takes ~20 s.
+  // Resolves to a Blob, or null when this browser cannot do it (the original
+  // is then uploaded as it is).
+  function ssCompressVideo(file, onProgress) {
+    return new Promise(function (resolve) {
+      try {
+        if (!window.MediaRecorder || !HTMLCanvasElement.prototype.captureStream) return resolve(null);
+        var mimes = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+        var mime = ''; for (var k = 0; k < mimes.length; k++) { if (MediaRecorder.isTypeSupported(mimes[k])) { mime = mimes[k]; break; } }
+        if (!mime) return resolve(null);
+        var url = URL.createObjectURL(file);
+        var v = document.createElement('video');
+        v.src = url; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'auto'; v.crossOrigin = 'anonymous';
+        v.style.cssText = 'position:fixed;left:-9999px;top:0;width:2px;height:2px;opacity:0';
+        document.body.appendChild(v);
+        var done = false, rec = null, ac = null, chunks = [], lastTick = Date.now(), watchdog = null;
+        function finish(blob) {
+          if (done) return; done = true;
+          clearInterval(watchdog);
+          try { v.pause(); } catch (e) {}
+          try { if (ac) ac.close(); } catch (e) {}
+          URL.revokeObjectURL(url);
+          if (v.parentNode) v.parentNode.removeChild(v);
+          resolve(blob || null);
+        }
+        v.onerror = function () { finish(null); };
+        v.onloadedmetadata = function () {
+          var w = v.videoWidth, h = v.videoHeight, dur = v.duration;
+          if (!w || !h || !isFinite(dur) || dur <= 0) return finish(null);
+          var sc = Math.min(1, 1280 / Math.max(w, h));
+          var cw = Math.max(2, Math.round(w * sc / 2) * 2), ch = Math.max(2, Math.round(h * sc / 2) * 2);
+          var cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+          var cx = cv.getContext('2d');
+          var stream = cv.captureStream(30);
+          try {
+            var AC = window.AudioContext || window.webkitAudioContext;
+            ac = new AC();
+            var srcNode = ac.createMediaElementSource(v);
+            var dest = ac.createMediaStreamDestination();
+            srcNode.connect(dest);
+            dest.stream.getAudioTracks().forEach(function (t) { stream.addTrack(t); });
+            if (ac.state === 'suspended') ac.resume();
+          } catch (e) { /* no audio path in this browser: the clip is then silent */ }
+          try {
+            rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 2500000, audioBitsPerSecond: 96000 });
+          } catch (e) { return finish(null); }
+          rec.ondataavailable = function (ev) { if (ev.data && ev.data.size) chunks.push(ev.data); };
+          rec.onstop = function () { finish(chunks.length ? new Blob(chunks, { type: mime.split(';')[0] }) : null); };
+          rec.onerror = function () { finish(null); };
+          function draw() {
+            if (done) return;
+            cx.drawImage(v, 0, 0, cw, ch);
+            lastTick = Date.now();
+            if (onProgress) onProgress(Math.min(1, v.currentTime / dur));
+            if (!v.ended) (window.requestAnimationFrame || setTimeout)(draw, 33);
+          }
+          v.onended = function () { setTimeout(function () { try { rec.stop(); } catch (e) { finish(null); } }, 200); };
+          watchdog = setInterval(function () { if (Date.now() - lastTick > 20000) { try { rec.stop(); } catch (e) {} finish(null); } }, 4000);
+          rec.start(1000);
+          v.play().then(draw).catch(function () { finish(null); });
+        };
+      } catch (e) { resolve(null); }
+    });
+  }
+
   function ssUploadErrorText(e) {
     var m = String((e && e.message) || e);
     if (/Bucket not found|404/i.test(m)) return 'The photo bucket does not exist yet. Run supabase-foto-opslag.sql once in Supabase.';
@@ -3623,7 +3691,17 @@
         var ext = ((f.name || '').split('.').pop() || '').toLowerCase();
         var isVid = /^video\//.test(f.type) || /^(mp4|mov|m4v|webm)$/.test(ext);
         if (isVid) {
-          // videos are stored as they are (no re-encoding in the browser)
+          var origMB = Math.round(f.size / 1048576);
+          // big clips are shrunk first (720p), small ones go up as they are
+          if (f.size > 15 * 1024 * 1024) {
+            status.textContent = 'Shrinking video ' + (i + 1) + ' of ' + files.length + ' (' + origMB + ' MB). Keep this screen open...';
+            var small = await ssCompressVideo(f, function (fr) { status.textContent = 'Shrinking video ' + (i + 1) + ' of ' + files.length + ' (' + origMB + ' MB): ' + Math.round(fr * 100) + '%. Keep this screen open.'; });
+            if (small && small.size > 0 && small.size < f.size) {
+              var sm = /webm/.test(small.type) ? 'webm' : 'mp4';
+              f = new File([small], 'clip.' + sm, { type: small.type || (sm === 'webm' ? 'video/webm' : 'video/mp4') });
+              ext = sm;
+            }
+          }
           var vext = /^(mp4|mov|m4v|webm)$/.test(ext) ? ext : 'mp4';
           var vtype = vext === 'webm' ? 'video/webm' : (vext === 'mov' ? 'video/quicktime' : 'video/mp4');
           var vlabel = 'Uploading video ' + (i + 1) + ' of ' + files.length + ' (' + Math.round(f.size / 1048576) + ' MB)';
