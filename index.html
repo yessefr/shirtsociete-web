@@ -212,6 +212,14 @@
     html[data-theme="light"] .ss-signup p { color: #4f4531 !important; }
     html[data-theme="light"] .ss-signup input { background: #fbf6ea !important; color: #241d12 !important; border-color: #b8a06a !important; }
     html[data-theme="light"] .ss-signup input::placeholder { color: #8a7a58; }
+    /* phone homepage: the early-access block is fully black in both themes */
+    @media (max-width: 767px) {
+      #screen-home .ss-signup, html[data-theme="light"] #screen-home .ss-signup { background: #000 !important; }
+      html[data-theme="light"] #screen-home .ss-signup h2 { color: #f5efe0 !important; }
+      html[data-theme="light"] #screen-home .ss-signup p { color: rgba(245,239,224,.72) !important; }
+      html[data-theme="light"] #screen-home .ss-signup input { background: rgba(10,9,5,.7) !important; color: #f5efe0 !important; border-color: rgba(245,239,224,.3) !important; }
+      html[data-theme="light"] #screen-home .ss-signup input::placeholder { color: rgba(245,239,224,.5); }
+    }
     html[data-theme="light"] .ss-signup button { background: #a1791f !important; color: #fff8e6 !important; }
     html[data-theme="light"] .desktop-footer,
     html[data-theme="light"] #site-footer,
@@ -1974,6 +1982,21 @@
     .m-newin-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px;
     }
+    /* swipe sideways: every page holds six shirts (2 x 3) */
+    .m-newin-grid.is-pager {
+      display: flex; grid-template-columns: none; gap: 0; padding: 0;
+      overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; overscroll-behavior-x: contain;
+    }
+    .m-newin-grid.is-pager::-webkit-scrollbar { display: none; }
+    .m-newin-page {
+      flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px; box-sizing: border-box;
+      align-content: start;
+    }
+    .m-newin-dots { display: flex; justify-content: center; gap: 6px; margin: 12px 0 0; }
+    .m-newin-dots i { width: 6px; height: 6px; border-radius: 3px; background: var(--line-soft); transition: width .2s, background .2s; }
+    .m-newin-dots i.on { width: 18px; background: var(--gold); }
     .m-newin-card { position: relative; cursor: pointer; }
     .m-newin-img {
       position: relative; aspect-ratio: 3/4; overflow: hidden;
@@ -2025,6 +2048,10 @@
     .m-fair-name   { color: rgba(245,240,232,.68); }
     .m-fair-go     { color: #c8a950; }
     .m-fairs-grid:has(.m-fair:only-child) { grid-template-columns: 1fr; }
+    /* one fair only: a slim horizontal card instead of a full-screen photo */
+    .m-fairs-grid:has(.m-fair:only-child) .m-fair { display: grid; grid-template-columns: 38% 1fr; align-items: stretch; }
+    .m-fairs-grid:has(.m-fair:only-child) .m-fair-photo { aspect-ratio: auto; height: 100%; min-height: 120px; max-height: 150px; }
+    .m-fairs-grid:has(.m-fair:only-child) .m-fair-info { display: flex; flex-direction: column; justify-content: center; }
     .m-fairs-head { padding: 0 16px 16px; }
     .m-fairs-flag {
       display: inline-block;
@@ -2032,7 +2059,7 @@
       padding: 5px 10px; border-radius: 2px; margin-bottom: 12px;
     }
     .m-fairs-title {
-      font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 23px;
+      font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 20px;
       line-height: 1.1; letter-spacing: -.3px;
       text-transform: uppercase; margin: 0 0 8px;
     }
@@ -2142,11 +2169,11 @@
     /* Mobile homepage in white (the dark blocks - hero, fairs, bands - keep their own colours) */
     @media (max-width: 767px) {
       #screen-home {
-        --black: #ffffff; --white: #14120b; --white-rgb: 20,18,11; --cream: #14120b;
-        --grey: #f3f1ec; --grey-mid: #d9d3c4; --surf-1: #f6f4ef; --surf-2: #e8e4da;
-        --line: #d9d3c4; --line-soft: #cfc7b3; --text-muted: #6f6858; --text-muted-2: #4a4538;
+        --black: #f5eedc; --white: #14120b; --white-rgb: 20,18,11; --cream: #14120b;
+        --grey: #efe6d0; --grey-mid: #d8cbab; --surf-1: #f0e8d4; --surf-2: #e9dfc5;
+        --line: #d8cbab; --line-soft: #cbbd99; --text-muted: #6a604a; --text-muted-2: #463e2d;
         --gold: #8f6f1a;
-        background: #ffffff; color: #14120b;
+        background: #f5eedc; color: #14120b;
       }
       #screen-home .m-fairs, #screen-home .m-band-story { --gold: #c8a950; }
     }
@@ -2191,6 +2218,11 @@
       #m-detail-thumbs { flex-wrap: nowrap !important; overflow-x: auto; padding: 0 16px; scrollbar-width: none; }
       #m-detail-thumbs::-webkit-scrollbar { display: none; }
       #m-detail-thumbs img { flex-shrink: 0; }
+      /* club, season, size ... use the full width of the screen */
+      #m-detail-specs .spec-table { margin-top: 4px; }
+      #m-detail-specs .spec-row { grid-template-columns: 112px 1fr; gap: 16px; }
+      #m-detail-specs .spec-val { font-size: 15px; font-weight: 500; }
+      #m-detail-gallery > div:first-child { touch-action: pan-y; }
     }
 
     /* ─── PINNED BUY BAR (mobile product) ─── */
@@ -2994,9 +3026,7 @@
 
 
   <!-- Early access signup (mobile) -->
-  <section class="ss-signup" style="position:relative;margin-top:32px;padding:44px 20px;border-top:1px solid var(--surf-2);overflow:hidden;text-align:center">
-    <div class="ss-signup-ph" style="position:absolute;inset:0;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center 40%/cover;filter:brightness(var(--photo-dim)) saturate(.5)"></div>
-    <div class="ss-signup-ov" style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,7,5,.55),rgba(8,7,5,.94))"></div>
+  <section class="ss-signup" style="position:relative;margin-top:32px;padding:44px 20px;border-top:1px solid #1e1c17;overflow:hidden;text-align:center;background:#000;--on-photo:#f5efe0;--on-photo-rgb:245,239,224">
     <div style="position:relative;z-index:2">
       <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600">Early Access</div>
       <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;line-height:1.1;margin-bottom:12px;color:var(--on-photo)">Early access to every new shirt</h2>
@@ -3067,7 +3097,7 @@
     <h2 id="m-detail-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:24px;line-height:1.2;margin-bottom:4px"></h2>
     <div id="m-detail-club" style="font-size:13px;color:var(--text-muted);margin-bottom:16px"></div>
     <div id="m-detail-price" style="font-size:28px;color:var(--gold);font-weight:500;margin-bottom:20px"></div>
-    <div id="m-detail-specs" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px"></div>
+    <div id="m-detail-specs" style="display:block;margin-bottom:20px"></div>
     <p id="m-detail-desc" style="font-size:14px;line-height:1.7;color:var(--text-muted-2);margin-bottom:24px"></p>
     <div id="m-detail-measurements" style="margin-bottom:24px"></div>
     <!-- the in-page button stays for the flow of the page, but the real one
@@ -4972,7 +5002,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     if (!el || !allShirts) return;
     var list = allShirts.slice().sort(function (a, b) {
       return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-    }).slice(0, 6);
+    }).slice(0, 24);
 
     if (!list.length) {
       el.innerHTML = '<div style="grid-column:1/-1;padding:20px;color:var(--text-muted);font-size:13px">Nothing here yet.</div>';
@@ -4980,7 +5010,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     }
 
     var cut = Date.now() - 21 * 24 * 60 * 60 * 1000;
-    el.innerHTML = list.map(function (s) {
+    var cardsHtml = list.map(function (s) {
       var sold = s.available === false;
       var isNew = s.created_at && new Date(s.created_at).getTime() >= cut;
       var isLiked = wishlist.indexOf(s.id) !== -1;
@@ -5004,7 +5034,27 @@ as a personal collection quickly grew into something bigger: a curated platform 
         + (bits.length ? '<div class="m-newin-meta">' + bits.join(' \u00B7 ') + '</div>' : '')
         + '<div class="m-newin-price">\u20AC' + parseFloat(s.price).toFixed(2) + '</div>'
         + '</div>';
-    }).join('');
+    });
+    // six shirts per page; swipe sideways for the next six
+    var pages = [];
+    for (var i = 0; i < cardsHtml.length; i += 6) pages.push(cardsHtml.slice(i, i + 6).join(''));
+    el.classList.add('is-pager');
+    el.innerHTML = pages.map(function (h) { return '<div class="m-newin-page">' + h + '</div>'; }).join('');
+    var dots = document.getElementById('m-newin-dots');
+    if (!dots) {
+      dots = document.createElement('div'); dots.id = 'm-newin-dots'; dots.className = 'm-newin-dots';
+      el.parentNode.insertBefore(dots, el.nextSibling);
+    }
+    dots.style.display = pages.length > 1 ? '' : 'none';
+    dots.innerHTML = pages.map(function (_, k) { return '<i' + (k === 0 ? ' class="on"' : '') + '></i>'; }).join('');
+    if (!el.getAttribute('data-pager')) {
+      el.setAttribute('data-pager', '1');
+      el.addEventListener('scroll', function () {
+        var k = Math.round(el.scrollLeft / Math.max(1, el.clientWidth));
+        var d = document.querySelectorAll('#m-newin-dots i');
+        for (var j = 0; j < d.length; j++) d[j].classList.toggle('on', j === k);
+      }, { passive: true });
+    }
   }
 
   function renderMobileRow(id, shirts) {
@@ -6481,9 +6531,9 @@ as a personal collection quickly grew into something bigger: a curated platform 
         if (Math.abs(dx) > 10 || Math.abs(dy) > 10) tMoved = true;
         // only treat as a gallery swipe when it's clearly horizontal,
         // so vertical page scrolling keeps working
-        if (Math.abs(dx) > Math.abs(dy) * 1.4 && Math.abs(dx) > 12) {
+        if (Math.abs(dx) > Math.abs(dy) * 1.05 && Math.abs(dx) > 8) {
           horizontal = true;
-          main.style.transform = 'translateX(' + (dx * 0.25) + 'px)';
+          main.style.transform = 'translateX(' + (dx * 0.6) + 'px)';
           if (e.cancelable) e.preventDefault();
         }
       }, { passive: false });
@@ -6495,8 +6545,8 @@ as a personal collection quickly grew into something bigger: a curated platform 
         var endX = (e.changedTouches && e.changedTouches.length) ? e.changedTouches[0].clientX : tStartX;
         var dx = endX - tStartX;
         var ctx = mainId === 'm-detail-main-img' ? 'm' : 'd';
-        if (dx < -45) galleryNav(ctx, 1);
-        else if (dx > 45) galleryNav(ctx, -1);
+        if (dx < -28) galleryNav(ctx, 1);        // finger to the left: next photo
+        else if (dx > 28) galleryNav(ctx, -1);   // finger to the right: previous photo
       }, { passive: true });
     }
     attachTouch('m-detail-main-img');
