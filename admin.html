@@ -3153,13 +3153,57 @@
     });
   }
 
+  // Big files (videos): resumable upload in 6 MB pieces (TUS), the way Supabase
+  // wants large files. A single request stalls or fails on a phone connection
+  // above a few MB; this one also survives a short drop in signal per piece.
+  async function ssStoragePutBig(path, file, contentType, onProgress) {
+    var CHUNK = 6 * 1024 * 1024;
+    var b64 = function (t) { return btoa(unescape(encodeURIComponent(t))); };
+    var base = SUPABASE.url + '/storage/v1/upload/resumable';
+    var common = { 'apikey': SUPABASE.key, 'Authorization': 'Bearer ' + authToken, 'Tus-Resumable': '1.0.0' };
+    var create = await fetch(base, {
+      method: 'POST',
+      headers: Object.assign({}, common, {
+        'Upload-Length': String(file.size),
+        'Content-Type': 'application/offset+octet-stream',
+        'x-upsert': 'false',
+        'Upload-Metadata': 'bucketName ' + b64(SS_BUCKET) + ',objectName ' + b64(path) + ',contentType ' + b64(contentType) + ',cacheControl ' + b64('31536000')
+      })
+    });
+    if (!create.ok) { var ct = await create.text(); throw new Error('Storage ' + create.status + ': ' + ct); }
+    var loc = create.headers.get('Location');
+    if (!loc) throw new Error('Storage: no upload location returned');
+    var url = new URL(loc, base).toString();
+    var offset = 0;
+    while (offset < file.size) {
+      var end = Math.min(offset + CHUNK, file.size);
+      var tries = 0, ok = false, lastErr = '';
+      while (!ok && tries < 4) {
+        tries++;
+        try {
+          var r = await fetch(url, {
+            method: 'PATCH',
+            headers: Object.assign({}, common, { 'Content-Type': 'application/offset+octet-stream', 'Upload-Offset': String(offset) }),
+            body: file.slice(offset, end)
+          });
+          if (r.ok) { ok = true; }
+          else { lastErr = 'Storage ' + r.status + ': ' + (await r.text()); if (r.status >= 400 && r.status < 500 && r.status !== 409) break; }
+        } catch (e) { lastErr = String((e && e.message) || e); }
+        if (!ok) await new Promise(function (res) { setTimeout(res, 800 * tries); });
+      }
+      if (!ok) throw new Error(lastErr || 'Upload interrupted');
+      offset = end;
+      if (onProgress) onProgress(offset / file.size);
+    }
+  }
+
   function ssUploadErrorText(e) {
     var m = String((e && e.message) || e);
     if (/Bucket not found|404/i.test(m)) return 'The photo bucket does not exist yet. Run supabase-foto-opslag.sql once in Supabase.';
     if (/row-level security|403|Unauthorized|401|exp|JWT/i.test(m)) return 'Not allowed to upload. Sign out of the admin and back in, then try again.';
-    if (/mime|not supported|415/i.test(m)) return 'This file type is not allowed yet. Run supabase-video-opslag.sql once in Supabase.';
-    if (/413|too large|exceeded/i.test(m)) return 'A file was too large (limit 50 MB per video, 5 MB per photo).';
-    return m;
+    if (/mime|not supported|415/i.test(m)) return 'This file type is not allowed yet. Run supabase-video-limiet.sql once in Supabase. (' + m.slice(0, 140) + ')';
+    if (/413|too large|exceeded|maximum allowed/i.test(m)) return 'The file is over the storage limit. Run supabase-video-limiet.sql, and check Supabase > Storage > Settings for the global file size limit. (' + m.slice(0, 140) + ')';
+    return m.slice(0, 300);
   }
 
   function ssUploadPhotos(files) {
@@ -3307,7 +3351,7 @@
     ]},
     { section: 'Homepage — hero on a phone', items: [
       { slug: 'mobile-hero', label: 'Phone hero photos (behind the video; they alternate, one per visit)', multi: true },
-      { slug: 'hero-video-mobile', label: 'Phone hero videos (vertical, max 50 MB; best under 8 MB / 720p so it starts at once. They alternate, one per visit)', multi: true }
+      { slug: 'hero-video-mobile', label: 'Phone hero videos (vertical, no size limit in the admin; best under 8 MB / 720p so it starts at once. They alternate, one per visit)', multi: true }
     ]},
     { section: 'Homepage — hero (computer only, not shown on a phone)', items: [
       { slug: 'hero-video-desktop', label: 'Laptop hero videos (horizontal, with sound, max 50 MB each; they join the slides)', multi: true },
@@ -3580,11 +3624,15 @@
         var isVid = /^video\//.test(f.type) || /^(mp4|mov|m4v|webm)$/.test(ext);
         if (isVid) {
           // videos are stored as they are (no re-encoding in the browser)
-          if (f.size > 50 * 1024 * 1024) throw new Error('"' + f.name + '" is ' + Math.round(f.size / 1048576) + ' MB. The limit is 50 MB. Shorten or compress the video first.');
           var vext = /^(mp4|mov|m4v|webm)$/.test(ext) ? ext : 'mp4';
           var vtype = vext === 'webm' ? 'video/webm' : (vext === 'mov' ? 'video/quicktime' : 'video/mp4');
-          status.textContent = 'Uploading video ' + (i + 1) + ' of ' + files.length + ' (' + Math.round(f.size / 1048576) + ' MB)...';
-          await ssStoragePut(base + '.' + vext, f, vtype);
+          var vlabel = 'Uploading video ' + (i + 1) + ' of ' + files.length + ' (' + Math.round(f.size / 1048576) + ' MB)';
+          status.textContent = vlabel + '...';
+          if (f.size > 5 * 1024 * 1024) {
+            await ssStoragePutBig(base + '.' + vext, f, vtype, function (frac) { status.textContent = vlabel + ': ' + Math.round(frac * 100) + '%'; });
+          } else {
+            await ssStoragePut(base + '.' + vext, f, vtype);
+          }
           uploaded.push(ssPublicUrl(base + '.' + vext));
           if (f.size > 12 * 1048576) heavyNote = ' Note: a clip of ' + Math.round(f.size / 1048576) + ' MB is slow on a phone. Compress it to under 8 MB (720p) for an instant start.';
         } else {
