@@ -3361,6 +3361,7 @@
       html += '<div class="sp-section-title">' + group.section + '</div><div class="sp-list">';
       group.items.forEach(function (item) {
         var urls = ssSiteImagesCache[item.slug] || [];
+        var isVidSlot = /^hero-video/.test(item.slug);   // video-only picker: on a phone it opens the video library
         var thumbs = urls.map(function (u, i) {
           return '<span class="sp-thumb-wrap">'
             + (/\.(mp4|mov|webm|m4v)(\?|$)/i.test(u)
@@ -3375,10 +3376,10 @@
           +   '<div class="sp-label">' + item.label + (item.multi ? ' <span class="sp-multi-tag">multiple</span>' : '') + '</div>'
           +   '<div class="sp-thumbs" id="sp-thumbs-' + item.slug + '">' + (thumbs || '<span class="sp-empty">Nothing yet</span>') + '</div>'
           +   '<div class="sp-body">'
-          +     '<input type="file" accept="image/*,video/*,.mp4,.mov,.m4v,.webm"' + (item.multi ? ' multiple' : '') + ' id="sp-file-' + item.slug + '" style="display:none" '
+          +     '<input type="file" accept="' + (isVidSlot ? 'video/*' : 'image/*,video/*') + '"' + (item.multi ? ' multiple' : '') + ' id="sp-file-' + item.slug + '" style="display:none" '
           +       'onchange="ssUploadSitePhoto(\'' + item.slug + '\', this.files)">'
           +     '<button type="button" class="btn btn-secondary" onclick="document.getElementById(\'sp-file-' + item.slug + '\').click()">'
-          +       (item.multi ? 'Add photos / videos' : (urls.length ? 'Replace photo' : 'Upload photo')) + '</button>'
+          +       (isVidSlot ? 'Choose video' : (item.multi ? 'Add photos / videos' : (urls.length ? 'Replace photo' : 'Upload photo'))) + '</button>'
           +   '</div>'
           +   '<div class="sp-status" id="sp-status-' + item.slug + '"></div>'
           + '</div>';
