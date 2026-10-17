@@ -90,7 +90,8 @@
       "addressCountry": "NL"
     },
     "sameAs": [
-      "https://www.instagram.com/shirtsociete/"
+      "https://www.instagram.com/shirtsociete/",
+      "https://www.tiktok.com/@shirtsociete"
     ],
     "priceRange": "€€€",
     "currenciesAccepted": "EUR",
@@ -1519,9 +1520,10 @@
     .m-hero.has-video .m-hero-label { display: block; }
     .m-hero-label {
       display: none;
-      font-size: 9px; letter-spacing: 3.4px; text-transform: uppercase;
-      font-weight: 700; color: var(--gold); margin-bottom: 12px;
-      text-shadow: 0 1px 12px rgba(0,0,0,.8);
+      font-size: 10px; letter-spacing: 3.4px; text-transform: uppercase;
+      font-weight: 700; color: #f1dc9a; margin: 0 auto 14px;
+      width: fit-content; max-width: 100%;
+      background: rgba(0,0,0,.72); padding: 7px 12px; border-radius: 2px;
     }
     .m-hero.has-video .m-hero-btns { margin-top: 20px; }
     .m-hero.has-video .m-hero-btns .btn-primary {
@@ -2632,9 +2634,16 @@
     }
   
     /* sound buttons on the hero videos (phone + laptop) */
-    .m-hero-sound { position: absolute; right: 14px; bottom: 14px; z-index: 5; display: flex; align-items: center; gap: 7px;
-      background: rgba(10,9,5,.55); color: #f5f0e8; border: 1px solid rgba(245,240,232,.4); border-radius: 999px; padding: 8px 13px;
+    .m-hero-sound { position: absolute; right: 12px; bottom: 12px; z-index: 5; display: flex; align-items: center; justify-content: center; gap: 0;
+      width: 30px; height: 30px; padding: 0; opacity: .75;
+      background: rgba(10,9,5,.5); color: #f5f0e8; border: 1px solid rgba(245,240,232,.35); border-radius: 50%;
       font: 700 11px/1 'DM Sans', sans-serif; letter-spacing: 1.5px; text-transform: uppercase; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); cursor: pointer; }
+    .m-hero-sound span { display: none; }
+    /* link to the TikTok account where the clips live */
+    .m-hero-tt { position: absolute !important; left: 12px; bottom: 12px; z-index: 5; display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(10,9,5,.55); color: #f5f0e8; text-decoration: none; border: 1px solid rgba(245,240,232,.35); border-radius: 999px; padding: 7px 11px;
+      font: 700 10.5px/1 'DM Sans', sans-serif; letter-spacing: 1.2px; text-transform: uppercase; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+    @media (min-width: 768px) { .m-hero-tt { display: none; } }
     .m-hero-sound .w-on { display: none; }
     .m-hero-sound.on { background: #c8a950; color: #14120b; border-color: #c8a950; }
     .m-hero-sound.on .w-on { display: inline; }
@@ -2943,6 +2952,10 @@
     
     <div class="m-hero-eyebrow"><i></i>Est. 2025 &middot; Harderwijk, NL<i></i></div>
     <div class="m-hero-label">Timeless &middot; Original &middot; Rare</div>
+    <a class="m-hero-tt" href="https://www.tiktok.com/@shirtsociete" target="_blank" rel="noopener" aria-label="Shirt Société on TikTok">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3v10.5a4.5 4.5 0 1 1-4.5-4.5"/><path d="M16 3c.4 2.6 2 4.3 5 4.6"/></svg>
+      <span>TikTok</span>
+    </a>
     <h1 class="m-hero-title">
       <span class="cin-line"><span>Vintage</span></span>
       <span class="cin-line"><span>football</span></span>
@@ -4673,6 +4686,21 @@ as a personal collection quickly grew into something bigger: a curated platform 
   // `window.X`. (SS_FAIRS is a `var`, but is treated the same way.)
   var ssSiteImagesReady = false;
 
+  // Which visit is this? Used to alternate the hero photo and clip: every page
+  // load moves one step on, so the second refresh shows the next one.
+  window.ssVisit = (function () {
+    try {
+      var n = (parseInt(localStorage.getItem('ss-hero-n'), 10) || 0) + 1;
+      localStorage.setItem('ss-hero-n', String(n));
+      return n;
+    } catch (e) { return Math.floor(Math.random() * 1000) + 1; }
+  })();
+  // Last known hero list, so the clip can start at once instead of waiting
+  // for the database round trip.
+  window.ssHeroCache = (function () {
+    try { return JSON.parse(localStorage.getItem('ss-hero-cache') || 'null') || {}; } catch (e) { return {}; }
+  })();
+
   function ssSetBg(el, url) {
     if (!el || !url) return;
     var current = el.style.backgroundImage || '';
@@ -4691,6 +4719,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
       rows.forEach(function (r) { if (r.urls && r.urls.length) bySlug[r.slug] = r.urls; });
       // hero videos uploaded in the admin (Site Photos); read by the two hero scripts
       window.ssHeroVideoMobile  = bySlug['hero-video-mobile']  || [];
+      try { localStorage.setItem('ss-hero-cache', JSON.stringify({ v: bySlug['hero-video-mobile'] || [], img: bySlug['mobile-hero'] || [] })); } catch (e) {}
       window.ssHeroVideoDesktop = bySlug['hero-video-desktop'] || [];
 
       // logo: every <img data-ss-logo>. If the old image already failed and the
@@ -4714,7 +4743,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
       // phone hero: the photo behind the video (.m-hero-bg). Its URL sits in the
       // stylesheet as a shorthand with position and size, so only the image
       // is replaced inline and the rest of the shorthand keeps applying.
-      if (bySlug['mobile-hero']) ssSetBg(document.querySelector('.m-hero-bg'), bySlug['mobile-hero'][0]);
+      if (bySlug['mobile-hero']) ssSetBg(document.querySelector('.m-hero-bg'), bySlug['mobile-hero'][(window.ssVisit - 1) % bySlug['mobile-hero'].length]);
       // hero slides: the carousel reads these data-* attributes when it starts
       var slides = document.querySelectorAll('.cin-slide');
       [1, 2, 3].forEach(function (n) {
@@ -9647,12 +9676,18 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
 (function () {
   // The clips now come from the admin (Site Photos → "Phone hero videos").
   // Wait for that list (max 4 s); the list above is only a fallback.
-  var ready = (typeof ssSiteImagesPromise !== 'undefined')
-    ? Promise.race([ssSiteImagesPromise, new Promise(function (r) { setTimeout(r, 4000); })])
-    : Promise.resolve();
+  // A cached list from the last visit starts the clip straight away; only the
+  // very first visit has to wait for the database.
+  var cached = (window.ssHeroCache && window.ssHeroCache.v) || [];
+  var ready = cached.length
+    ? Promise.resolve()
+    : ((typeof ssSiteImagesPromise !== 'undefined')
+        ? Promise.race([ssSiteImagesPromise, new Promise(function (r) { setTimeout(r, 4000); })])
+        : Promise.resolve());
   ready.then(initMobileHero);
   function initMobileHero() {
   if (window.ssHeroVideoMobile && window.ssHeroVideoMobile.length) SS_MOBILE_HERO_VIDEOS = window.ssHeroVideoMobile.slice();
+  else if (cached.length) SS_MOBILE_HERO_VIDEOS = cached.slice();
   if (!SS_MOBILE_HERO_VIDEOS.length) return;
   var v = document.getElementById('m-hero-video');
   var scrim = document.getElementById('m-hero-scrim');
@@ -9679,9 +9714,8 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   v.loop = single;
   if (single) v.setAttribute('loop', ''); else v.removeAttribute('loop');
 
-  // Start on a random one, so a returning visitor does not always see the
-  // same clip first.
-  var i = Math.floor(Math.random() * SS_MOBILE_HERO_VIDEOS.length);
+  // Alternate: the first visit shows clip 1, the next refresh clip 2, and so on.
+  var i = ((window.ssVisit || 1) - 1) % SS_MOBILE_HERO_VIDEOS.length;
   var shown = false;
 
   function reveal() {
@@ -9716,7 +9750,7 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   // its first request, which can take a few seconds that one time.
   v.addEventListener('loadeddata', reveal, { once: true });
   v.addEventListener('canplay', reveal, { once: true });
-  setTimeout(function () { if (v.readyState >= 2) reveal(); }, 2500);
+  setTimeout(function () { if (v.readyState >= 2) reveal(); }, 900);
 
   // when one finishes, the next begins — that is the whole alternation
   v.addEventListener('ended', function () {
@@ -9739,7 +9773,7 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   snd.type = 'button';
   snd.className = 'm-hero-sound';
   snd.setAttribute('aria-label', 'Turn sound on');
-  snd.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path class="w-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="w-off" d="M16 9l6 6M22 9l-6 6"/></svg><span>Sound</span>';
+  snd.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path class="w-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="w-off" d="M16 9l6 6M22 9l-6 6"/></svg>';
   snd.style.display = 'none';
   hero.appendChild(snd);
   function paintSound() {

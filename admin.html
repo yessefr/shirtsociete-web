@@ -3306,8 +3306,8 @@
       { slug: 'favicon', label: 'Favicon (browser tab icon)' }
     ]},
     { section: 'Homepage — hero on a phone', items: [
-      { slug: 'mobile-hero', label: 'Phone hero — photo behind the video' },
-      { slug: 'hero-video-mobile', label: 'Phone hero videos (vertical, with sound, max 50 MB each; several play in turn)', multi: true }
+      { slug: 'mobile-hero', label: 'Phone hero photos (behind the video; they alternate, one per visit)', multi: true },
+      { slug: 'hero-video-mobile', label: 'Phone hero videos (vertical, max 50 MB; best under 8 MB / 720p so it starts at once. They alternate, one per visit)', multi: true }
     ]},
     { section: 'Homepage — hero (computer only, not shown on a phone)', items: [
       { slug: 'hero-video-desktop', label: 'Laptop hero videos (horizontal, with sound, max 50 MB each; they join the slides)', multi: true },
@@ -3570,7 +3570,7 @@
     status.textContent = 'Uploading ' + files.length + ' photo' + (files.length === 1 ? '' : 's') + '...';
 
     var uploaded = [];
-    var failed = 0, lastError = '';
+    var failed = 0, lastError = '', heavyNote = '';
     for (var i = 0; i < files.length; i++) {
       status.textContent = 'Uploading ' + (i + 1) + ' of ' + files.length + '...';
       try {
@@ -3586,6 +3586,7 @@
           status.textContent = 'Uploading video ' + (i + 1) + ' of ' + files.length + ' (' + Math.round(f.size / 1048576) + ' MB)...';
           await ssStoragePut(base + '.' + vext, f, vtype);
           uploaded.push(ssPublicUrl(base + '.' + vext));
+          if (f.size > 12 * 1048576) heavyNote = ' Note: a clip of ' + Math.round(f.size / 1048576) + ' MB is slow on a phone. Compress it to under 8 MB (720p) for an instant start.';
         } else {
           var src = await ssDecodeImage(f);
           // full size 1920px (sharp, but far lighter than 2400) plus a small
@@ -3620,7 +3621,7 @@
       status2.className = failed ? 'sp-status err' : 'sp-status ok';
       status2.textContent = failed
         ? (uploaded.length + ' saved, ' + failed + ' failed: ' + lastError)
-        : (uploaded.length + ' photo' + (uploaded.length === 1 ? '' : 's') + ' live on the site now.');
+        : (uploaded.length + ' file' + (uploaded.length === 1 ? '' : 's') + ' live on the site now.' + heavyNote);
     }
   }
 
