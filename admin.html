@@ -3215,7 +3215,7 @@
         v.src = url; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'auto'; v.crossOrigin = 'anonymous';
         v.style.cssText = 'position:fixed;left:-9999px;top:0;width:2px;height:2px;opacity:0';
         document.body.appendChild(v);
-        var done = false, rec = null, ac = null, chunks = [], lastTick = Date.now(), watchdog = null;
+        var done = false, rec = null, ac = null, chunks = [], lastTick = Date.now(), watchdog = null, resultSilent = false;
         function finish(blob) {
           if (done) return; done = true;
           clearInterval(watchdog);
@@ -3223,6 +3223,7 @@
           try { if (ac) ac.close(); } catch (e) {}
           URL.revokeObjectURL(url);
           if (v.parentNode) v.parentNode.removeChild(v);
+          if (blob && resultSilent) blob.ssSilent = true;
           resolve(blob || null);
         }
         v.onerror = function () { finish(null); };
@@ -3259,7 +3260,12 @@
           v.onended = function () { setTimeout(function () { try { rec.stop(); } catch (e) { finish(null); } }, 200); };
           watchdog = setInterval(function () { if (Date.now() - lastTick > 20000) { try { rec.stop(); } catch (e) {} finish(null); } }, 4000);
           rec.start(1000);
-          v.play().then(draw).catch(function () { finish(null); });
+          v.play().then(draw).catch(function () {
+            // a phone may refuse to start a clip with sound by itself: draw it
+            // muted instead, which gives a silent clip but still a small file
+            v.muted = true; resultSilent = true;
+            v.play().then(draw).catch(function () { finish(null); });
+          });
         };
       } catch (e) { resolve(null); }
     });
@@ -3696,6 +3702,10 @@
           if (f.size > 15 * 1024 * 1024) {
             status.textContent = 'Shrinking video ' + (i + 1) + ' of ' + files.length + ' (' + origMB + ' MB). Keep this screen open...';
             var small = await ssCompressVideo(f, function (fr) { status.textContent = 'Shrinking video ' + (i + 1) + ' of ' + files.length + ' (' + origMB + ' MB): ' + Math.round(fr * 100) + '%. Keep this screen open.'; });
+            if (small && small.ssSilent) heavyNote += ' The shrunk clip has no sound (the phone blocked it). Tip: send the video to yourself in WhatsApp and pick that copy, it keeps the sound.';
+            if (!small && f.size > 45 * 1024 * 1024) {
+              throw new Error('This phone could not shrink the ' + origMB + ' MB video, and it is too big to upload. Tip: send it to yourself in WhatsApp (it comes back as a small 720p copy) and pick that copy from Photos or Files instead.');
+            }
             if (small && small.size > 0 && small.size < f.size) {
               var sm = /webm/.test(small.type) ? 'webm' : 'mp4';
               f = new File([small], 'clip.' + sm, { type: small.type || (sm === 'webm' ? 'video/webm' : 'video/mp4') });
