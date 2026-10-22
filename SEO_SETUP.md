@@ -7,6 +7,24 @@ Keep this file in the repository root so it stays with the project.
 
 ---
 
+## 0. Automatisch (sinds oktober 2026)
+
+De GitHub Action **Ververs site-bestanden** (`.github/workflows/site-bestanden.yml`) draait elke
+nacht en na elke wijziging aan `admin.html`. Ze gebruikt de echte generators uit `admin.html`
+(via `scripts/site-generate.js`) en ververst: `products/`, `collections/`, `clubs/`,
+`national-teams/`, `sold-football-shirts/`, `sitemap.xml` en `products.xml`.
+
+- Er komt één pull request op de branch `auto/site-bestanden`. Mergen = live.
+- Geen wijzigingen? Dan komt er geen pull request.
+- Direct starten: GitHub > Actions > "Ververs site-bestanden" > Run workflow.
+- Zonder pull request werken (volledig automatisch): zet de repository-variabele `AUTO_MERGE` op `true`.
+- Journal (`journal/`) blijft handmatig, want die verandert zelden.
+- Lokaal testen: `node scripts/site-generate.js --dry` (schrijft niets).
+
+De handmatige volgorde hieronder blijft werken als je iets direct nodig hebt.
+
+---
+
 ## 1. Order of operations after any product change
 
 The site, the Merchant feed and the structured data all read from the same

@@ -1,0 +1,87 @@
+# Ververst elke nacht de gegenereerde pagina's (productpagina's, collecties, sitemap, Merchant-feed)
+# met de echte generators uit admin.html. Zie scripts/site-generate.js.
+#
+# Werkt volgens de spelregels: er wordt NIET naar main geschreven. De Action zet de wijzigingen
+# op de branch auto/site-bestanden en houdt daar één pull request voor open. Jij keurt goed.
+# Wil je dat het volledig vanzelf gaat? Zet dan in GitHub (Settings > Secrets and variables >
+# Actions > Variables) de variabele AUTO_MERGE op true. Dat is jouw keuze, niet de standaard.
+name: Ververs site-bestanden
+
+on:
+  schedule:
+    - cron: '17 3 * * *'        # elke nacht, ongeveer 05:17 Nederlandse tijd
+  workflow_dispatch: {}          # handmatig starten via het tabblad Actions
+  push:
+    branches: [main]
+    paths: ['admin.html', 'scripts/site-generate.js']
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: site-bestanden
+  cancel-in-progress: false
+
+jobs:
+  genereer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Browser installeren
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.0
+          npx playwright install --with-deps chromium
+
+      - name: Bestanden genereren
+        run: node scripts/site-generate.js
+
+      - name: Controle op wijzigingen
+        id: diff
+        run: |
+          git add -A sitemap.xml products.xml products collections clubs national-teams sold-football-shirts 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Geen wijzigingen."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff --cached --stat | tail -5
+          fi
+
+      - name: Branch en pull request bijwerken
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTO_MERGE: ${{ vars.AUTO_MERGE }}
+        run: |
+          BRANCH=auto/site-bestanden
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git commit -m "Ververs site-bestanden ($(date -u +%F))" -m "Automatisch gegenereerd met scripts/site-generate.js uit de generators in admin.html."
+          git push --force origin "$BRANCH"
+
+          BODY="Automatisch ververste site-bestanden: productpagina's, collecties, sitemap.xml en products.xml (Merchant-feed).
+
+          Gemaakt met scripts/site-generate.js. Dat draait de echte generators uit admin.html op de actuele shirts uit Supabase.
+          Er worden nooit bestanden verwijderd. Controle: de Action schrijft niets bij een fout of verdacht klein resultaat.
+
+          Na het mergen werkt GitHub Pages de site binnen enkele minuten bij."
+
+          if gh pr view "$BRANCH" --json state --jq '.state' 2>/dev/null | grep -q OPEN; then
+            gh pr edit "$BRANCH" --body "$BODY"
+          else
+            gh pr create --base main --head "$BRANCH" --title "Ververs site-bestanden" --body "$BODY"
+          fi
+
+          if [ "$AUTO_MERGE" = "true" ]; then
+            gh pr merge "$BRANCH" --squash --delete-branch || echo "Automatisch mergen is niet gelukt, de PR blijft open."
+          fi
