@@ -2158,7 +2158,7 @@
     .m-menu-top .ss-wordmark { font-size: 24px; color: #c8a950; }
     .m-menu-close { background: none; border: none; color: #f5f0e8; font-size: 34px; line-height: 1; cursor: pointer; padding: 0 4px; }
     .m-menu-main { display: flex; flex-direction: column; padding: 18px 0 8px; }
-    .m-menu-main a { font-family: 'Playfair Display', serif; font-size: 27px; color: #f5f0e8; text-decoration: none; padding: 11px 0; border-bottom: 1px solid rgba(245,240,232,.08); }
+    .m-menu-main a { font-family: 'Playfair Display', serif; font-size: 24px; color: #f5f0e8; text-decoration: none; padding: 9px 0; border-bottom: 1px solid rgba(245,240,232,.08); }
     .m-menu-main a:active { color: #c8a950; }
     .m-menu-sub { display: flex; flex-direction: column; padding: 14px 0; }
     .m-menu-sub a, .m-menu-sub button, .m-menu-foot a, .m-menu-foot button { background: none; border: none; text-align: left; font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(245,240,232,.72); text-decoration: none; padding: 9px 0; cursor: pointer; }
@@ -2643,7 +2643,9 @@
     .m-hero-tt { position: absolute !important; left: 12px; bottom: 12px; z-index: 5; display: inline-flex; align-items: center; gap: 6px;
       background: rgba(10,9,5,.55); color: #f5f0e8; text-decoration: none; border: 1px solid rgba(245,240,232,.35); border-radius: 999px; padding: 7px 11px;
       font: 700 10.5px/1 'DM Sans', sans-serif; letter-spacing: 1.2px; text-transform: uppercase; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-    @media (min-width: 768px) { .m-hero-tt { display: none; } }
+    .m-hero-social { position: absolute !important; left: 12px; bottom: 12px; z-index: 5; display: flex; gap: 8px; }
+    .m-hero-social .m-hero-tt { position: static !important; }
+    @media (min-width: 768px) { .m-hero-social { display: none; } }
     .m-hero-sound .w-on { display: none; }
     .m-hero-sound.on { background: #c8a950; color: #14120b; border-color: #c8a950; }
     .m-hero-sound.on .w-on { display: inline; }
@@ -2883,14 +2885,15 @@
   </div>
   <nav class="m-menu-main">
     <a href="/?p=shop" onclick="mMenuGo(function(){mGoTo('shop')});return false;">Shop</a>
+    <a href="/?p=shop&sort=new" onclick="mMenuGo(mShopNewest);return false;">New arrivals</a>
     <a href="/?p=shop&cat=match_worn" onclick="mMenuGo(function(){mShopCategory('match_worn')});return false;">Match Worn / Issued</a>
+    <a href="/?p=shop&cat=national" onclick="mMenuGo(function(){mShopCategory('national')});return false;">National teams</a>
     <a href="/?p=archive" onclick="mMenuGo(function(){mGoTo('archive')});return false;">Archive</a>
     <a href="/?p=about" onclick="mMenuGo(function(){mGoTo('about')});return false;">Our Story</a>
     <a href="/blog.html">Journal</a>
   </nav>
   <nav class="m-menu-sub">
     <a href="/?p=shop&cat=clubs" onclick="mMenuGo(function(){mShopCategory('clubs')});return false;">Clubs</a>
-    <a href="/?p=shop&cat=national" onclick="mMenuGo(function(){mShopCategory('national')});return false;">International shirts</a>
     <a href="/collections/">Collections</a>
     <a href="/sell-your-shirt.html">Sell your shirt</a>
     <a href="/want-list.html">Want list</a>
@@ -2952,10 +2955,16 @@
     
     <div class="m-hero-eyebrow"><i></i>Est. 2025 &middot; Harderwijk, NL<i></i></div>
     <div class="m-hero-label">Timeless &middot; Original &middot; Rare</div>
-    <a class="m-hero-tt" href="https://www.tiktok.com/@shirtsociete" target="_blank" rel="noopener" aria-label="Shirt Société on TikTok">
-      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3v10.5a4.5 4.5 0 1 1-4.5-4.5"/><path d="M16 3c.4 2.6 2 4.3 5 4.6"/></svg>
-      <span>TikTok</span>
-    </a>
+    <div class="m-hero-social">
+      <a class="m-hero-tt" href="https://www.tiktok.com/@shirtsociete" target="_blank" rel="noopener" aria-label="Shirt Société on TikTok">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3v10.5a4.5 4.5 0 1 1-4.5-4.5"/><path d="M16 3c.4 2.6 2 4.3 5 4.6"/></svg>
+        <span>TikTok</span>
+      </a>
+      <a class="m-hero-tt" id="m-hero-ig" href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" aria-label="Shirt Société on Instagram">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg>
+        <span>Instagram</span>
+      </a>
+    </div>
     <h1 class="m-hero-title">
       <span class="cin-line"><span>Vintage</span></span>
       <span class="cin-line"><span>football</span></span>
@@ -3324,7 +3333,7 @@
           <a class="nav-item" href="/?p=shop" onclick="dGoTo('shop');dSetFilter('all');return false;">All Shirts</a>
           <a class="nav-item" href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" id="d-nav-mw">Match Worn / Issued</a>
           <a class="nav-item" href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;" id="d-nav-clubs">Clubs</a>
-          <a class="nav-item" href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;" id="d-nav-national">International Shirts</a>
+          <a class="nav-item" href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;" id="d-nav-national">National Teams</a>
         </div>
       </div>
 
@@ -9679,15 +9688,60 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   // A cached list from the last visit starts the clip straight away; only the
   // very first visit has to wait for the database.
   var cached = (window.ssHeroCache && window.ssHeroCache.v) || [];
-  var ready = cached.length
+
+  // ── Instagram as the source ──
+  // The hero plays the newest reels from @shirtsociete, so there is nothing to
+  // upload. Same endpoint as the "on film" row. The last answer is kept on the
+  // phone, so a returning visitor starts at once; Instagram's file links last
+  // about two days, which is why the copy is only trusted for 18 hours.
+  // If Instagram has nothing, the clips uploaded in the admin play instead.
+  var IG_HERO_URL = 'https://shirtsociete.netlify.app/.netlify/functions/instagram';
+  var IG_HERO_KEY = 'ss-ig-hero';
+  var igItems = [];
+  var usingIg = false;
+  function igFromCache() {
+    try {
+      var c = JSON.parse(localStorage.getItem(IG_HERO_KEY) || 'null');
+      if (c && c.items && c.items.length && Date.now() - c.t < 18 * 3600 * 1000) return c.items;
+    } catch (e) {}
+    return [];
+  }
+  function igFetch() {
+    return fetch(IG_HERO_URL).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      var items = ((d && d.reels) || []).filter(function (r) { return r && r.mediaUrl; }).slice(0, 4)
+        .map(function (r) { return { src: r.mediaUrl, link: r.permalink || '' }; });
+      if (items.length) { try { localStorage.setItem(IG_HERO_KEY, JSON.stringify({ t: Date.now(), items: items })); } catch (e) {} }
+      return items;
+    }).catch(function () { return []; });
+  }
+  var igCached = igFromCache();
+  if (igCached.length) igFetch();   // quietly refresh for the next visit
+  var igWait = igCached.length ? Promise.resolve(igCached)
+    : Promise.race([igFetch(), new Promise(function (r) { setTimeout(function () { r([]); }, 2500); })]);
+
+  var ready0 = cached.length
     ? Promise.resolve()
     : ((typeof ssSiteImagesPromise !== 'undefined')
         ? Promise.race([ssSiteImagesPromise, new Promise(function (r) { setTimeout(r, 4000); })])
         : Promise.resolve());
-  ready.then(initMobileHero);
+  igWait.then(function (items) {
+    igItems = items || [];
+    return igItems.length ? null : ready0;   // no need to wait for the database when Instagram answered
+  }).then(initMobileHero);
+  function adminClips() {
+    if (window.ssHeroVideoMobile && window.ssHeroVideoMobile.length) return window.ssHeroVideoMobile.slice();
+    return cached.length ? cached.slice() : [];
+  }
   function initMobileHero() {
-  if (window.ssHeroVideoMobile && window.ssHeroVideoMobile.length) SS_MOBILE_HERO_VIDEOS = window.ssHeroVideoMobile.slice();
-  else if (cached.length) SS_MOBILE_HERO_VIDEOS = cached.slice();
+  var igLinkEl = document.getElementById('m-hero-ig');
+  var igLinks = [];
+  if (igItems.length) {
+    SS_MOBILE_HERO_VIDEOS = igItems.map(function (x) { return x.src; });
+    igLinks = igItems.map(function (x) { return x.link; });
+    usingIg = true;
+  } else {
+    SS_MOBILE_HERO_VIDEOS = adminClips();
+  }
   if (!SS_MOBILE_HERO_VIDEOS.length) return;
   var v = document.getElementById('m-hero-video');
   var scrim = document.getElementById('m-hero-scrim');
@@ -9736,6 +9790,8 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   }
 
   function load(index, autoplay) {
+    // the Instagram pill points at the reel that is playing
+    if (igLinkEl) igLinkEl.href = (usingIg && igLinks[index % igLinks.length]) || 'https://www.instagram.com/shirtsociete/';
     v.src = SS_MOBILE_HERO_VIDEOS[index % SS_MOBILE_HERO_VIDEOS.length];
     v.preload = 'auto';
     v.load();
@@ -9758,7 +9814,22 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
     load(i, true);
   });
 
-  v.addEventListener('error', fallback);
+  // If an Instagram file link has gone stale, forget the saved copy and use the
+  // clips from the admin instead (if there are any); otherwise show the photo.
+  v.addEventListener('error', function () {
+    if (usingIg) {
+      usingIg = false;
+      try { localStorage.removeItem(IG_HERO_KEY); } catch (e) {}
+      var own = adminClips();
+      if (own.length) {
+        SS_MOBILE_HERO_VIDEOS = own; i = 0; single = own.length === 1; v.loop = single;
+        if (igLinkEl) igLinkEl.href = 'https://www.instagram.com/shirtsociete/';
+        load(0, true);
+        return;
+      }
+    }
+    fallback();
+  });
 
   document.addEventListener('visibilitychange', function () {
     if (!shown) return;
@@ -9903,15 +9974,24 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
       a.target = '_blank';
       a.rel = 'noopener';
 
-      var v = document.createElement('video');
-      v.src = post.mediaUrl;
-      if (post.poster) v.poster = post.poster;
-      v.muted = true; v.loop = true; v.playsInline = true;
-      v.setAttribute('muted', '');
-      v.setAttribute('playsinline', '');
-      v.setAttribute('webkit-playsinline', '');
-      v.preload = 'none';
-      a.appendChild(v);
+      var v = null;
+      if (post.mediaUrl) {
+        v = document.createElement('video');
+        v.src = post.mediaUrl;
+        if (post.poster) v.poster = post.poster;
+        v.muted = true; v.loop = true; v.playsInline = true;
+        v.setAttribute('muted', '');
+        v.setAttribute('playsinline', '');
+        v.setAttribute('webkit-playsinline', '');
+        v.preload = 'none';
+        a.appendChild(v);
+      } else if (post.poster) {
+        // Instagram does not hand out the video file of reels that use licensed
+        // music. The picture still links to the real reel, so the row stays in sync.
+        var im = document.createElement('img');
+        im.src = post.poster; im.alt = post.caption || 'Reel on Instagram'; im.loading = 'lazy';
+        a.appendChild(im);
+      } else { return; }
 
       var shade = document.createElement('div');
       shade.className = 'ss-reel-shade';
@@ -9931,7 +10011,7 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
       }
 
       row.appendChild(a);
-      if (io) io.observe(v);
+      if (io && v) io.observe(v);
     });
     var sec = row.closest('.ss-reels-sec');
     if (sec) sec.style.display = posts.length ? '' : 'none';
