@@ -66,6 +66,19 @@ async function main() {
     try { archive = await sb('my_collection', '?select=*&order=created_at.desc&limit=2000'); }
     catch (e) { archive = []; console.warn('Archief niet geladen:', e.message); }
   }
+  // Sommige shirts hebben in de database nog de tijdelijke tekst "uploading..." in hun fotolijst
+  // (een upload die nooit is afgerond). Dat is geen geldige URL: Google keurt dan de hele sitemap
+  // af ("Ongeldige URL") en de productpagina krijgt een kapotte afbeelding. Alleen echte
+  // http(s)-adressen gaan door naar de generators.
+  let droppedImages = 0;
+  const cleanImages = list => (list || []).forEach(s => {
+    if (!s || !Array.isArray(s.images)) return;
+    const ok = s.images.filter(u => typeof u === 'string' && /^https?:\/\//i.test(u.trim()));
+    droppedImages += s.images.length - ok.length;
+    s.images = ok;
+  });
+  cleanImages(shirts); cleanImages(archive);
+  if (droppedImages) console.log('Let op: ' + droppedImages + ' ongeldige foto-verwijzing(en) overgeslagen (bijv. "uploading..."). Sla die shirts opnieuw op in de admin.');
   const live = shirts.filter(s => s && s.id && !s.is_draft);
   if (live.length < 5) throw new Error('Slechts ' + live.length + ' shirts ontvangen. Dat lijkt fout. Niets geschreven.');
   console.log('Shirts: ' + shirts.length + ' (' + live.length + ' gepubliceerd), archief: ' + archive.length);
