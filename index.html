@@ -1532,7 +1532,8 @@
       padding: 13px 26px;
     }
     /* everything sits low, so the clip has the whole upper two thirds */
-    .m-hero.has-video { justify-content: flex-end; padding-bottom: 72px; }
+    .m-hero.has-video { justify-content: flex-end; padding-bottom: 72px; min-height: 100vh; }
+    @supports (min-height: 100svh) { .m-hero.has-video { min-height: 100svh; } }
 
       .m-hero-eyebrow {
         font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
@@ -2634,8 +2635,8 @@
     }
   
     /* sound buttons on the hero videos (phone + laptop) */
-    .m-hero-sound { position: absolute; right: 12px; bottom: 12px; z-index: 5; display: flex; align-items: center; justify-content: center; gap: 0;
-      width: 30px; height: 30px; padding: 0; opacity: .75;
+    .m-hero-sound { position: absolute; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom)); z-index: 5; display: flex; align-items: center; justify-content: center; gap: 0;
+      width: 36px; height: 36px; padding: 0; opacity: .9;
       background: rgba(10,9,5,.5); color: #f5f0e8; border: 1px solid rgba(245,240,232,.35); border-radius: 50%;
       font: 700 11px/1 'DM Sans', sans-serif; letter-spacing: 1.5px; text-transform: uppercase; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); cursor: pointer; }
     .m-hero-sound span { display: none; }
@@ -9708,7 +9709,9 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   }
   function igFetch() {
     return fetch(IG_HERO_URL).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
-      var items = ((d && d.reels) || []).filter(function (r) { return r && r.mediaUrl; }).slice(0, 4)
+      // newest reel first, the same order as the Instagram profile
+      var items = ((d && d.reels) || []).filter(function (r) { return r && r.mediaUrl; })
+        .sort(function (a, b) { return (Date.parse(b.timestamp || '') || 0) - (Date.parse(a.timestamp || '') || 0); }).slice(0, 4)
         .map(function (r) { return { src: r.mediaUrl, link: r.permalink || '' }; });
       if (items.length) { try { localStorage.setItem(IG_HERO_KEY, JSON.stringify({ t: Date.now(), items: items })); } catch (e) {} }
       return items;
@@ -9769,7 +9772,8 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   if (single) v.setAttribute('loop', ''); else v.removeAttribute('loop');
 
   // Alternate: the first visit shows clip 1, the next refresh clip 2, and so on.
-  var i = ((window.ssVisit || 1) - 1) % SS_MOBILE_HERO_VIDEOS.length;
+  // Instagram clips always start with the newest reel; the admin clips alternate.
+  var i = usingIg ? 0 : ((window.ssVisit || 1) - 1) % SS_MOBILE_HERO_VIDEOS.length;
   var shown = false;
 
   function reveal() {
@@ -10032,9 +10036,10 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
           mediaUrl: r.mediaUrl,
           permalink: r.permalink,
           caption: r.caption,
-          poster: r.thumbnailUrl
+          poster: r.thumbnailUrl,
+          ts: Date.parse(r.timestamp || '') || 0
         };
-      })
+      }).sort(function (a, b) { return b.ts - a.ts; })   // newest first, like Instagram
     };
   }
 
