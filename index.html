@@ -2203,6 +2203,7 @@
       -webkit-overflow-scrolling: touch; scrollbar-width: none;
     }
     .m-band-row::-webkit-scrollbar { display: none; }
+    .m-band-row { padding-right: 16px; overscroll-behavior-x: contain; touch-action: pan-x pan-y; }
     .m-band-card { flex: 0 0 40%; scroll-snap-align: start; cursor: pointer; }
     .m-band-card-img { aspect-ratio: 3/4; background: #14110b; border: 1px solid rgba(200,169,80,.3); border-radius: 3px; overflow: hidden; }
     .m-band-card-img img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -4897,15 +4898,14 @@ as a personal collection quickly grew into something bigger: a curated platform 
     if (!row || typeof fetchArchive !== 'function') return;
     function esc(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
     fetchArchive(function (items) {
-      var list = (items || []).filter(function (it) {
-        var u = it.images && it.images[0];
-        return u && !/res\.cloudinary\.com/.test(u);
-      }).slice(0, 8);
+      // Every archive piece is in the row, so it scrolls sideways through the whole
+      // archive. A photo that fails to load simply leaves the dark tile behind.
+      var list = (items || []).filter(function (it) { return it && it.images && it.images[0]; });
       if (!list.length) { row.style.display = 'none'; row.innerHTML = ''; return; }
       row.style.display = '';
       row.innerHTML = list.map(function (it) {
         return '<div class="m-band-card" onclick="openArchiveItem(\'' + esc(it.id) + '\')">'
-          + '<div class="m-band-card-img"><img src="' + esc(cldSize(it.images[0], 500)) + '" alt="' + esc(it.title) + '" loading="lazy"></div>'
+          + '<div class="m-band-card-img"><img src="' + esc(cldSize(it.images[0], 500)) + '" alt="' + esc(it.title) + '" loading="lazy" onerror="this.style.visibility=\'hidden\'"></div>'
           + '<div class="m-band-card-title">' + esc(it.title) + '</div>'
           + '<div class="m-band-card-meta">' + esc([it.club, it.season].filter(Boolean).join(' \u00b7 ')) + '</div>'
           + '</div>';
