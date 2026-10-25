@@ -46,8 +46,8 @@
   <script>
     // Pinterest tag: only loads after the visitor accepted marketing cookies.
     // Fill in the Tag ID from Pinterest (Business > Conversions > Pinterest tag).
-    // Left empty, nothing loads and nothing is sent.
-    var SS_PINTEREST_TAG_ID = '';
+    // (A Tag ID is public, not a secret.) Left empty, nothing loads and nothing is sent.
+    var SS_PINTEREST_TAG_ID = '2614090747269';
     function ssPin(event, data) {
       try { if (window.pintrk && SS_PINTEREST_TAG_ID) window.pintrk('track', event, data || {}); } catch (e) {}
     }
