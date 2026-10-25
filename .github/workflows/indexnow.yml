@@ -1,0 +1,46 @@
+name: IndexNow (Bing en andere zoekmachines)
+
+# Na elke wijziging op main: meld nieuwe of gewijzigde pagina's uit sitemap.xml
+# bij IndexNow, zodat Bing, Yandex e.a. ze direct oppikken. De sleutel is
+# publiek bedoeld (het bestand ddd3a47fe3239ec135434393f073b3ac.txt moet op de site staan), dus geen geheim.
+
+on:
+  push:
+    branches: [main]
+    paths: ['sitemap.xml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: URL's melden
+        env:
+          KEY: ddd3a47fe3239ec135434393f073b3ac
+        run: |
+          set -e
+          grep -o '<loc>[^<]*</loc>' sitemap.xml | sed 's/<[^>]*>//g' | sort -u > nieuw.txt
+          if git show HEAD~1:sitemap.xml > oud.xml 2>/dev/null; then
+            grep -o '<loc>[^<]*</loc>' oud.xml | sed 's/<[^>]*>//g' | sort -u > oud.txt
+          else
+            : > oud.txt
+          fi
+          comm -13 oud.txt nieuw.txt > melden.txt
+          # bij handmatig starten: alles melden
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then cp nieuw.txt melden.txt; fi
+          N=$(wc -l < melden.txt)
+          echo "Te melden: $N"
+          [ "$N" -gt 0 ] || exit 0
+          head -n 9000 melden.txt | python3 -c "
+          import json,sys,os
+          urls=[l.strip() for l in sys.stdin if l.strip()]
+          print(json.dumps({'host':'shirtsociete.com','key':os.environ['KEY'],'keyLocation':'https://shirtsociete.com/'+os.environ['KEY']+'.txt','urlList':urls}))
+          " > body.json
+          curl -sS -o antwoord.txt -w "HTTP %{http_code}\n" -X POST "https://api.indexnow.org/indexnow" -H "Content-Type: application/json; charset=utf-8" --data @body.json || true
+          cat antwoord.txt || true
