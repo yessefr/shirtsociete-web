@@ -43,6 +43,26 @@
       }
     } catch (e) {}
   </script>
+  <script>
+    // Pinterest tag: only loads after the visitor accepted marketing cookies.
+    // Fill in the Tag ID from Pinterest (Business > Conversions > Pinterest tag).
+    // (A Tag ID is public, not a secret.) Left empty, nothing loads and nothing is sent.
+    var SS_PINTEREST_TAG_ID = '2614090747269';
+    function ssPin(event, data) {
+      try { if (window.pintrk && SS_PINTEREST_TAG_ID) window.pintrk('track', event, data || {}); } catch (e) {}
+    }
+    function ssLoadPinterest() {
+      if (window.__ssPin || !SS_PINTEREST_TAG_ID) return;
+      window.__ssPin = true;
+      !function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var n=window.pintrk;n.queue=[],n.version="3.0";var t=document.createElement("script");t.async=!0,t.src=e;var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+      window.pintrk('load', SS_PINTEREST_TAG_ID);
+      window.pintrk('page');
+    }
+    try {
+      var _pc = JSON.parse(localStorage.getItem('ss_cookie_consent') || 'null');
+      if (_pc && _pc.marketing) ssLoadPinterest();
+    } catch (e) {}
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Verify which version your browser has: view source and look for this line. -->
 <meta name="ss-build" content="2026-08-29-video-swipe-sheet">
@@ -1532,7 +1552,7 @@
       padding: 13px 26px;
     }
     /* everything sits low, so the clip has the whole upper two thirds */
-    .m-hero.has-video { justify-content: flex-end; padding-bottom: 72px; min-height: 100vh; }
+    .m-hero.has-video { justify-content: center; padding-bottom: 66px; min-height: 100vh; }
     @supports (min-height: 100svh) { .m-hero.has-video { min-height: 100svh; } }
 
       .m-hero-eyebrow {
@@ -2636,7 +2656,7 @@
     }
   
     /* sound buttons on the hero videos (phone + laptop) */
-    .m-hero-sound { position: absolute; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom)); z-index: 5; display: flex; align-items: center; justify-content: center; gap: 0;
+    .m-hero-sound { position: absolute !important; left: auto !important; top: auto !important; right: 14px !important; bottom: calc(14px + env(safe-area-inset-bottom)) !important; z-index: 5; display: flex; align-items: center; justify-content: center; gap: 0;
       width: 36px; height: 36px; padding: 0; opacity: .9;
       background: rgba(10,9,5,.5); color: #f5f0e8; border: 1px solid rgba(245,240,232,.35); border-radius: 50%;
       font: 700 11px/1 'DM Sans', sans-serif; letter-spacing: 1.5px; text-transform: uppercase; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); cursor: pointer; }
@@ -4905,7 +4925,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
       row.style.display = '';
       row.innerHTML = list.map(function (it) {
         return '<div class="m-band-card" onclick="openArchiveItem(\'' + esc(it.id) + '\')">'
-          + '<div class="m-band-card-img"><img src="' + esc(cldSize(it.images[0], 500)) + '" alt="' + esc(it.title) + '" loading="lazy" onerror="this.style.visibility=\'hidden\'"></div>'
+          + '<div class="m-band-card-img"><img src="' + esc(cldSize(it.images[0], 500)) + '" alt="' + esc(it.title) + '" loading="lazy"></div>'
           + '<div class="m-band-card-title">' + esc(it.title) + '</div>'
           + '<div class="m-band-card-meta">' + esc([it.club, it.season].filter(Boolean).join(' \u00b7 ')) + '</div>'
           + '</div>';
@@ -6117,6 +6137,14 @@ as a personal collection quickly grew into something bigger: a curated platform 
     try {
       if (typeof gtag !== 'function') return;
       gtag('event', name, params || {});
+    } catch (e) {}
+    // the same moments go to Pinterest (only if the tag is switched on and allowed)
+    try {
+      var p = params || {};
+      var ids = (p.items || []).map(function (i) { return i.item_id; });
+      var lines = (p.items || []).map(function (i) { return { product_id: i.item_id, product_name: i.item_name, product_price: i.price, product_quantity: 1 }; });
+      if (name === 'add_to_cart') ssPin('addtocart', { value: p.value, currency: 'EUR', line_items: lines });
+      else if (name === 'purchase') ssPin('checkout', { value: p.value, currency: 'EUR', order_id: p.transaction_id, order_quantity: ids.length, line_items: lines });
     } catch (e) {}
   }
   // shape a shirt the way GA4 expects an item
@@ -9138,6 +9166,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
       if (typeof gtag === 'function') gtag('consent', 'update', { analytics_storage: 'granted' });
       if (typeof ssLoadAnalytics === 'function') ssLoadAnalytics();
     }
+    if (ssConsent.marketing && typeof ssLoadPinterest === 'function') ssLoadPinterest();
   }
   function ssCookieDismiss() {
     // closing without choosing = only required cookies (nothing extra loads)
