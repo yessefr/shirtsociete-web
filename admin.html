@@ -4097,6 +4097,7 @@
       + '<meta property="og:url" content="' + opts.url + '">\n'
       + (opts.image ? '<meta property="og:image" content="' + htmlEscape(opts.image) + '">\n' : '')
       + '<meta name="twitter:card" content="summary_large_image">\n'
+      + (opts.image ? '<meta name="twitter:image" content="' + htmlEscape(opts.image) + '">\n' : '')
       + (opts.schema ? '<script type="application/ld+json">' + JSON.stringify(opts.schema) + '<\/script>\n' : '')
       + '<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 64 64\'%3E%3Crect width=\'64\' height=\'64\' rx=\'10\' fill=\'%230a0905\'/%3E%3Ctext x=\'32\' y=\'45\' font-family=\'Georgia,serif\' font-style=\'italic\' font-weight=\'700\' font-size=\'38\' fill=\'%23c8a950\' text-anchor=\'middle\'%3ES%3C/text%3E%3C/svg%3E">\n'
       + '<link rel="apple-touch-icon" sizes="180x180" href="/admin-icons/icon-180.png">\n'
@@ -5272,7 +5273,7 @@
       +   'and we will get in touch when a match comes in, usually before it goes online.</p>'
       + '<div class="notify-links">'
       +   '<a class="cta-alt" href="/want-list.html">Add to my want list</a>'
-      +   (s.club ? '<a class="cta-alt" href="/clubs/' + ssSlugify(s.club) + '/">More ' + htmlEscape(s.club) + ' shirts</a>' : '')
+      +   (s.club ? '<a class="cta-alt" href="/' + (s.category === 'national' ? 'national-teams' : 'clubs') + '/' + ssSlugify(s.club) + '/">More ' + htmlEscape(s.club) + ' shirts</a>' : '')
       +   '<a class="cta-alt" href="/collections/vintage-football-shirts/">Browse the collection</a>'
       + '</div>'
       + '</section>';
@@ -5432,6 +5433,7 @@
       + '<meta property="og:description" content="' + htmlEscape(metaDesc) + '">\n'
       + '<meta property="og:url" content="' + url + '">\n'
       + (img ? '<meta property="og:image" content="' + htmlEscape(img) + '">\n' : '')
+      + (img ? '<meta name="twitter:image" content="' + htmlEscape(img) + '">\n' : '')
       + '<meta property="product:price:amount" content="' + price + '">\n'
       + '<meta property="product:price:currency" content="EUR">\n'
       + '<meta name="twitter:card" content="summary_large_image">\n'
@@ -5665,6 +5667,7 @@
       + '<meta property="og:url" content="' + url + '">\n'
       + (img ? '<meta property="og:image" content="' + htmlEscape(img) + '">\n' : '')
       + '<meta name="twitter:card" content="summary_large_image">\n'
+      + (img ? '<meta name="twitter:image" content="' + htmlEscape(img) + '">\n' : '')
       + '<script type="application/ld+json">' + JSON.stringify(schema) + '<\/script>\n'
       + '<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0905;color:#f5f0e8;font-family:system-ui,-apple-system,"DM Sans",sans-serif;line-height:1.7}a{color:#c8a950}.wrap{max-width:1000px;margin:0 auto;padding:32px 24px 80px}.back{font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:#c8a950;display:inline-block;margin-bottom:32px}.cat{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c8a950;margin-bottom:8px}h1{font-size:32px;font-weight:700;line-height:1.15;margin-bottom:8px}.club{color:#888070;margin-bottom:20px}.specs{list-style:none;margin:0 0 24px}.specs li{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid #1e1c17}.specs b{min-width:120px;color:#888070;font-weight:400;text-transform:uppercase;font-size:12px;letter-spacing:1px}.desc{margin:24px 0;white-space:pre-line}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:32px}.gallery img{width:100%;border-radius:3px;background:#15130f}.note{font-size:12px;color:#888070;margin-top:32px}.tag{display:inline-block;background:rgba(200,169,80,.1);color:#c8a950;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:2px;margin-bottom:20px}</style>\n'
       + '</head>\n<body>\n<div class="wrap">\n'
