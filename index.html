@@ -1509,7 +1509,7 @@
       background: radial-gradient(ellipse 78% 58% at 50% 46%, rgba(10,9,5,.72) 0%, rgba(10,9,5,.5) 45%, rgba(10,9,5,.2) 78%, rgba(10,9,5,0) 100%),
                   linear-gradient(180deg, rgba(10,9,5,.45) 0%, rgba(10,9,5,.15) 30%, rgba(10,9,5,.96) 100%);
     }
-    .m-hero > *:not(.m-hero-bg):not(.m-hero-video):not(.m-hero-scrim):not(.m-hero-still) { position: relative; z-index: 2; }
+    .m-hero > *:not(.m-hero-bg):not(.m-hero-video):not(.m-hero-scrim):not(.m-hero-still):not(.m-hero-tk) { position: relative; z-index: 2; }
     /* The photo carries its own gradient on ::after, but that sits UNDER the
        video. So the video gets a matching scrim of its own, shown only when
        a video is actually playing. */
@@ -1828,6 +1828,7 @@
       object-fit: cover; z-index: 0; pointer-events: none;
     }
     .m-hero-video + .m-hero-eyebrow { position: relative; }
+    .m-hero-tk { position: absolute !important; border: 0; z-index: 0; pointer-events: none; background: #000; max-width: none; }
     .m-hero-still { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: #0a0905 center / cover no-repeat; }
 
     /* ── shirt cards on beige: a clean white panel like the app ── */
@@ -9732,6 +9733,12 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   // If Instagram has nothing, the clips uploaded in the admin play instead.
   var IG_HERO_URL = 'https://shirtsociete.netlify.app/.netlify/functions/instagram';
   var IG_HERO_KEY = 'ss-ig-hero';
+  // The clip that opens the hero. It plays through TikTok's own embedded player
+  // (official, licensed music included), because Instagram does not hand out the
+  // video file of reels with licensed music. Change the number to change the clip:
+  // it is the long number at the end of the TikTok video link. Empty = off.
+  var SS_HERO_TIKTOK_ID = '7698805735475465504';
+  var SS_HERO_TIKTOK_URL = 'https://www.tiktok.com/@shirtsociete/video/' + SS_HERO_TIKTOK_ID;
   var igItems = [];
   var usingIg = false;
   function igFromCache() {
@@ -9783,6 +9790,11 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   } else {
     SS_MOBILE_HERO_VIDEOS = adminClips();
   }
+  if (SS_HERO_TIKTOK_ID) {
+    SS_MOBILE_HERO_VIDEOS.unshift('tiktok:' + SS_HERO_TIKTOK_ID);
+    igLinks.unshift('https://www.instagram.com/shirtsociete/');
+    heroPosters.unshift('');
+  }
   if (!SS_MOBILE_HERO_VIDEOS.length) return;
   var v = document.getElementById('m-hero-video');
   var scrim = document.getElementById('m-hero-scrim');
@@ -9811,7 +9823,7 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
 
   // Alternate: the first visit shows clip 1, the next refresh clip 2, and so on.
   // Instagram clips always start with the newest reel; the admin clips alternate.
-  var i = usingIg ? 0 : ((window.ssVisit || 1) - 1) % SS_MOBILE_HERO_VIDEOS.length;
+  var i = (usingIg || SS_HERO_TIKTOK_ID) ? 0 : ((window.ssVisit || 1) - 1) % SS_MOBILE_HERO_VIDEOS.length;
   var shown = false;
 
   function reveal() {
@@ -9838,6 +9850,72 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   v.parentNode.insertBefore(stillEl, v.nextSibling);
   var stillOn = false, stillTimer = null;
 
+  // ── TikTok slide: TikTok's official embedded player, full screen, no controls ──
+  var tkEl = null, tkOn = false, tkMuted = true, tkReady = false, tkTimer = null, tkGuard = null;
+  var ttLink = hero.querySelector('.m-hero-social .m-hero-tt');
+  function tkUrl(id, muted) {
+    return 'https://www.tiktok.com/player/v1/' + id + '?autoplay=1&muted=' + (muted ? 1 : 0)
+      + '&loop=' + (SS_MOBILE_HERO_VIDEOS.length === 1 ? 1 : 0)
+      + '&controls=0&progress_bar=0&play_button=0&volume_control=0&fullscreen_button=0'
+      + '&timestamp=0&native_context_menu=0&closed_caption=0&music_info=0&description=0&rel=0';
+  }
+  function fitTk() {
+    if (!tkEl) return;
+    var w = hero.clientWidth, h = hero.clientHeight;
+    var ih = Math.max(h, Math.ceil(w * 16 / 9)), iw = Math.ceil(ih * 9 / 16);
+    tkEl.style.width = iw + 'px'; tkEl.style.height = ih + 'px';
+    tkEl.style.left = Math.round((w - iw) / 2) + 'px'; tkEl.style.top = Math.round((h - ih) / 2) + 'px';
+  }
+  function tkSend(type) {
+    try { tkEl.contentWindow.postMessage({ 'x-tiktok-player': true, type: type }, 'https://www.tiktok.com'); } catch (e) {}
+  }
+  function leaveTk() {
+    clearTimeout(tkTimer); clearTimeout(tkGuard);
+    if (tkOn && tkEl) { tkEl.style.display = 'none'; tkEl.src = 'about:blank'; }
+    tkOn = false;
+    if (ttLink) ttLink.href = 'https://www.tiktok.com/@shirtsociete';
+  }
+  function advance() { i = (i + 1) % SS_MOBILE_HERO_VIDEOS.length; load(i, true); }
+  function showTikTok(id) {
+    try { v.pause(); } catch (e) {}
+    if (stillOn) { stillEl.style.display = 'none'; stillOn = false; }
+    if (!tkEl) {
+      tkEl = document.createElement('iframe');
+      tkEl.className = 'm-hero-tk';
+      tkEl.setAttribute('allow', 'autoplay; encrypted-media');
+      tkEl.setAttribute('tabindex', '-1');
+      tkEl.setAttribute('aria-hidden', 'true');
+      tkEl.setAttribute('title', 'Shirt Soci\u00e9t\u00e9 on TikTok');
+      stillEl.parentNode.insertBefore(tkEl, stillEl.nextSibling);
+    }
+    tkMuted = true; tkReady = false; tkOn = true; shown = true;
+    tkEl.style.display = 'block';
+    tkEl.src = tkUrl(id, true);
+    if (scrim) scrim.style.display = 'block';
+    hero.classList.add('has-video');
+    fitHero(); fitTk();
+    if (ttLink) ttLink.href = SS_HERO_TIKTOK_URL;
+    paintSound();
+    if (SS_MOBILE_HERO_VIDEOS.length > 1) {
+      // if TikTok does not answer, move on; and never stay longer than a minute
+      tkGuard = setTimeout(function () { if (!tkReady && tkOn) advance(); }, 8000);
+      tkTimer = setTimeout(function () { if (tkOn) advance(); }, 60000);
+    }
+  }
+  window.addEventListener('message', function (e) {
+    if (e.origin !== 'https://www.tiktok.com' || !tkOn) return;
+    var d = e.data; if (typeof d === 'string') { try { d = JSON.parse(d); } catch (x) { return; } }
+    if (!d || !d['x-tiktok-player']) return;
+    if (d.type === 'onPlayerReady') { tkReady = true; }
+    else if (d.type === 'onStateChange') {
+      if (d.value === 1) tkReady = true;
+      if (d.value === 0 && SS_MOBILE_HERO_VIDEOS.length > 1) advance();
+    }
+    else if (d.type === 'onMute') { tkMuted = !!d.value; paintSound(); }
+    else if (d.type === 'onPlayerError' && SS_MOBILE_HERO_VIDEOS.length > 1) advance();
+  });
+  window.addEventListener('resize', fitTk);
+
   // Make the hero end exactly at the bottom of the screen: whatever sits above
   // it (the bar under the header) is measured and subtracted.
   function fitHero() {
@@ -9853,6 +9931,8 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
     if (igLinkEl) igLinkEl.href = (usingIg && igLinks[index % igLinks.length]) || 'https://www.instagram.com/shirtsociete/';
     var k = index % SS_MOBILE_HERO_VIDEOS.length;
     clearTimeout(stillTimer);
+    leaveTk();
+    if (String(SS_MOBILE_HERO_VIDEOS[k]).indexOf('tiktok:') === 0) { showTikTok(SS_MOBILE_HERO_VIDEOS[k].slice(7)); return; }
     if (usingIg && !SS_MOBILE_HERO_VIDEOS[k]) {
       // a reel without a video file: its cover, full screen, for 4 seconds
       try { v.pause(); } catch (e) {}
@@ -9909,7 +9989,7 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   });
 
   document.addEventListener('visibilitychange', function () {
-    if (!shown || stillOn) return;
+    if (!shown || stillOn || tkOn) return;
     if (document.hidden) v.pause();
     else v.play().catch(function () {});
   });
@@ -9924,21 +10004,35 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   snd.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path class="w-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="w-off" d="M16 9l6 6M22 9l-6 6"/></svg>';
   snd.style.display = 'none';
   hero.appendChild(snd);
+  function isMuted() { return tkOn ? tkMuted : v.muted; }
   function paintSound() {
-    snd.classList.toggle('on', !v.muted);
-    snd.setAttribute('aria-label', v.muted ? 'Turn sound on' : 'Turn sound off');
+    snd.classList.toggle('on', !isMuted());
+    snd.setAttribute('aria-label', isMuted() ? 'Turn sound on' : 'Turn sound off');
   }
   snd.addEventListener('click', function (e) {
     e.stopPropagation();
+    if (tkOn) {
+      // ask the TikTok player first; if it stays silent, reload it with sound
+      // (this tap is the permission the browser needs)
+      if (tkMuted) {
+        tkSend('unMute');
+        var before = tkEl.src;
+        setTimeout(function () {
+          if (tkOn && tkMuted && tkEl.src === before) { tkEl.src = tkUrl(SS_HERO_TIKTOK_ID, false); tkMuted = false; paintSound(); }
+        }, 700);
+      } else { tkSend('mute'); tkMuted = true; paintSound(); }
+      return;
+    }
     v.muted = !v.muted;
     if (!v.muted) { v.volume = 0.8; v.play().catch(function () { v.muted = true; paintSound(); }); }
     paintSound();
   });
   // show the button only while the clip is actually on screen
-  setInterval(function () { snd.style.display = (shown && !stillOn && hero.classList.contains('has-video')) ? 'flex' : 'none'; }, 600);
+  setInterval(function () { snd.style.display = (shown && !stillOn && hero.classList.contains('has-video')) ? 'flex' : 'none';
+    if (tkOn && tkEl && tkEl.contentWindow) { /* keep the button state in step */ paintSound(); } }, 600);
   // no sound when the visitor is on another page of the site
   var heroObs = ('IntersectionObserver' in window) ? new IntersectionObserver(function (en) {
-    if (!en[0].isIntersecting && !v.muted) { v.muted = true; paintSound(); }
+    if (!en[0].isIntersecting && !isMuted()) { if (tkOn) { tkSend('mute'); tkMuted = true; } else v.muted = true; paintSound(); }
   }, { threshold: 0.2 }) : null;
   if (heroObs) heroObs.observe(hero);
   paintSound();
