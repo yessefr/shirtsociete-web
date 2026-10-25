@@ -1958,6 +1958,40 @@
       letter-spacing: .2px; text-transform: uppercase; line-height: 1.2;
     }
     .m-newin-eyebrow { display: none; }
+    /* ── homepage blocks: the page reads as separate sections, each with its own
+       background, instead of one long dark scroll. Colours follow the theme. ── */
+    :root { --block-alt: var(--surf-2); }
+    @supports (background: color-mix(in srgb, red 5%, blue)) {
+      :root { --block-alt: color-mix(in srgb, var(--white) 6%, var(--black)); }
+    }
+    .m-block { padding: 6px 0 26px; }
+    .m-block-alt { background: var(--block-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .m-block-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 24px 16px 14px; }
+    .m-block-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 6px; }
+    .m-block-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 24px; line-height: 1.1; margin: 0; color: var(--white); }
+    .m-block-alt .m-newin-all { white-space: nowrap; padding-bottom: 3px; }
+
+    /* Match Worn / Issued: one big shirt per swipe */
+    .m-mw-row {
+      display: flex; gap: 12px; overflow-x: auto; padding: 0 16px 6px;
+      scroll-snap-type: x mandatory; scroll-padding: 0 16px;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain;
+    }
+    .m-mw-row::-webkit-scrollbar { display: none; }
+    .m-mw-card { flex: 0 0 86%; scroll-snap-align: center; cursor: pointer; position: relative; background: var(--grey); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+    .m-mw-img { position: relative; aspect-ratio: 3 / 4; background: var(--surf-1); }
+    .m-mw-img img { width: 100%; height: 100%; object-fit: contain; display: block; padding: 10px; box-sizing: border-box; }
+    .m-mw-card.is-sold .m-mw-img img { filter: grayscale(.55) brightness(.5); }
+    .m-mw-cap { padding: 14px 16px 16px; }
+    .m-mw-title { font-size: 16px; font-weight: 600; line-height: 1.3; margin: 2px 0 6px; color: var(--white); }
+    .m-mw-meta { font-size: 12px; color: var(--text-muted-2); margin-bottom: 12px; }
+    .m-mw-foot { display: flex; align-items: center; justify-content: space-between; }
+    .m-mw-foot .m-shirt-card-price { font-size: 18px; }
+    .m-mw-end { flex: 0 0 40%; scroll-snap-align: center; display: flex; align-items: center; justify-content: center; text-align: center;
+      border: 1px dashed var(--line-soft); border-radius: 4px; color: var(--gold); text-decoration: none;
+      font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; line-height: 1.7; }
+    .m-mw-count { text-align: center; font-size: 11px; letter-spacing: 2px; color: var(--text-muted); padding: 8px 0 4px; font-variant-numeric: tabular-nums; }
+
     .m-newin-head { align-items: baseline; padding-top: 26px; padding-bottom: 12px; }
     .m-newin-all { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); }
     .m-newin-grid { gap: 10px; }
@@ -3011,6 +3045,7 @@
 
   <!-- ═══ NEW IN — the first thing after the video, because browsing and
      buying is what a visitor is here for ═══ -->
+  <section class="m-block" id="m-newin-block">
   <div class="m-newin-head">
     <div>
       <div class="m-newin-eyebrow">New in</div>
@@ -3021,6 +3056,7 @@
   <div class="m-newin-grid" id="m-newin-grid">
     <div class="loading" style="grid-column:1/-1;padding:24px">Loading...</div>
   </div>
+  </section>
 
   <!-- ═══ UPCOMING FAIRS — a block that steps out of the page, the way the
        Legend Collection band does in the MatchWornShirt app ═══ -->
@@ -3034,8 +3070,18 @@
     <div class="m-fairs-grid" id="m-fairs-grid"></div>
   </section>
 
-  <div class="m-section-label">Match Worn / Issued</div>
-  <div id="m-matchworn-row" class="m-shirt-row"><div class="loading">Loading...</div></div>
+  <!-- ═══ MATCH WORN / ISSUED — one big shirt at a time, swipe sideways ═══ -->
+  <section class="m-block m-block-alt" id="m-mw-block">
+    <div class="m-block-head">
+      <div>
+        <div class="m-block-eyebrow">Match Worn / Issued</div>
+        <h2 class="m-block-title">Worn on the pitch</h2>
+      </div>
+      <button type="button" class="m-newin-all" onclick="mShopCategory('match_worn')">See all &rarr;</button>
+    </div>
+    <div id="m-matchworn-row" class="m-mw-row"><div class="loading" style="padding:24px 16px">Loading...</div></div>
+    <div class="m-mw-count" id="m-mw-count" aria-hidden="true"></div>
+  </section>
 
   <!-- ═══ ARCHIVE + OUR STORY (mobile home) ═══
        Two dark bands in the same shape as the fairs block above them: a flag,
@@ -3060,7 +3106,7 @@
     </div>
   </section>
 
-  <section class="ss-reels-sec" id="m-reels-sec" style="display:none">
+  <section class="ss-reels-sec m-block-alt" id="m-reels-sec" style="display:none">
     <div class="ss-reels-head">
       <div>
         <div class="ss-reels-eyebrow">@shirtsociete</div>
@@ -4960,7 +5006,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     renderFairs();
     // Only the match worn row is left on the mobile home; the rest was
     // replaced by the New in grid.
-    renderMobileRow('m-matchworn-row', matchWorn);
+    renderMatchWornSwipe(matchWorn);
   }
 
   // Newest first, sold shirts included so the grid is never thin — a sold
@@ -5120,6 +5166,55 @@ as a personal collection quickly grew into something bigger: a curated platform 
         for (var j = 0; j < d.length; j++) d[j].classList.toggle('on', j === k);
       }, { passive: true });
     }
+  }
+
+  // Match Worn / Issued on the home screen: one large shirt per swipe, with the
+  // caption underneath the way it looks on the shop page.
+  function renderMatchWornSwipe(shirts) {
+    var el = document.getElementById('m-matchworn-row');
+    if (!el) return;
+    var list = (shirts || []).filter(function (s) { return s; });
+    var blk = document.getElementById('m-mw-block');
+    if (!list.length) { if (blk) blk.style.display = 'none'; return; }
+    if (blk) blk.style.display = '';
+    // shirts that are still for sale first, newest first; sold ones after
+    list.sort(function (a, b) {
+      var sa = a.available === false ? 1 : 0, sb = b.available === false ? 1 : 0;
+      if (sa !== sb) return sa - sb;
+      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+    });
+    list = list.slice(0, 12);
+    el.innerHTML = list.map(function (s) {
+      var isLiked = wishlist.includes(s.id);
+      var inCart = cart.some(function (c) { return c.id === s.id; });
+      var sold = s.available === false;
+      var meta = [s.season ? String(s.season) : '', s.size ? 'Size ' + s.size : ''].filter(Boolean).join(' \u00b7 ');
+      return '<div class="m-mw-card' + (sold ? ' is-sold' : '') + '" onclick="openDetail(\'' + s.id + '\',\'m\')">'
+        + '<div class="m-mw-img">'
+        +   (sold ? '<div class="sold-overlay">Sold</div>' : '')
+        +   '<img src="' + getThumb(s, 900) + '" alt="' + String(s.title || '').replace(/"/g, '&quot;') + '" loading="lazy" decoding="async">'
+        +   (catLabel(s) ? '<div class="shirt-cat-badge">' + catLabel(s) + '</div>' : '')
+        +   '<button class="like-btn ' + (isLiked ? 'liked' : '') + '" onclick="event.stopPropagation();toggleLike(\'' + s.id + '\')" style="top:10px;right:10px;width:32px;height:32px;z-index:3">'
+        +     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="' + (isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)') + '" stroke="' + (isLiked ? 'var(--gold)' : 'var(--on-photo)') + '" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>'
+        +   '</button>'
+        + '</div>'
+        + '<div class="m-mw-cap">'
+        +   (s.club ? '<div class="m-shirt-card-club">' + s.club + '</div>' : '')
+        +   '<div class="m-mw-title">' + s.title + '</div>'
+        +   (meta ? '<div class="m-mw-meta">' + meta + '</div>' : '')
+        +   '<div class="m-mw-foot"><div class="m-shirt-card-price">\u20ac' + parseFloat(s.price).toFixed(2) + '</div>'
+        +   (sold ? '' : (inCart ? '<span style="font-size:11px;color:var(--text-muted)">In cart \u2713</span>' : '<button class="m-add-btn" onclick="event.stopPropagation();quickAdd(\'' + s.id + '\', event)">+</button>'))
+        +   '</div>'
+        + '</div></div>';
+    }).join('') + '<a class="m-mw-end" href="/?p=shop&cat=match_worn" onclick="event.preventDefault();mShopCategory(\'match_worn\')">See all<br>match worn<br>&amp; issued &rarr;</a>';
+    var cnt = document.getElementById('m-mw-count');
+    function paint() {
+      if (!cnt) return;
+      var w = el.firstElementChild ? el.firstElementChild.offsetWidth + 12 : 1;
+      var n = Math.min(list.length, Math.round(el.scrollLeft / w) + 1);
+      cnt.textContent = n + ' / ' + list.length;
+    }
+    el.onscroll = paint; paint();
   }
 
   function renderMobileRow(id, shirts) {
@@ -9737,7 +9832,7 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   // (official, licensed music included), because Instagram does not hand out the
   // video file of reels with licensed music. Change the number to change the clip:
   // it is the long number at the end of the TikTok video link. Empty = off.
-  var SS_HERO_TIKTOK_ID = '7698805735475465504';
+  var SS_HERO_TIKTOK_ID = '';   // off: the hero plays the newest Instagram reels that have a video file
   var SS_HERO_TIKTOK_URL = 'https://www.tiktok.com/@shirtsociete/video/' + SS_HERO_TIKTOK_ID;
   var igItems = [];
   var usingIg = false;
@@ -9751,9 +9846,9 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   function igFetch() {
     return fetch(IG_HERO_URL).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
       // newest reel first, the same order as the Instagram profile
-      // Reels with licensed music come without a video file; they still show as
-      // a full-screen still (the real cover) for a few seconds, in their place.
-      var items = ((d && d.reels) || []).filter(function (r) { return r && (r.mediaUrl || r.thumbnailUrl); })
+      // Reels with licensed music come without a video file from Instagram;
+      // those are skipped, so the hero starts at the newest reel that can play.
+      var items = ((d && d.reels) || []).filter(function (r) { return r && r.mediaUrl; })
         .sort(function (a, b) { return (Date.parse(b.timestamp || '') || 0) - (Date.parse(a.timestamp || '') || 0); }).slice(0, 4)
         .map(function (r) { return { src: r.mediaUrl || '', poster: r.thumbnailUrl || '', link: r.permalink || '' }; });
       if (items.length) { try { localStorage.setItem(IG_HERO_KEY, JSON.stringify({ t: Date.now(), items: items })); } catch (e) {} }
