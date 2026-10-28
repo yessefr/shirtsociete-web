@@ -2710,6 +2710,77 @@
     .m-hero-social { position: absolute !important; left: 12px; bottom: 12px; z-index: 5; display: flex; gap: 8px; }
     .m-hero-social .m-hero-tt { position: static !important; }
     @media (min-width: 768px) { .m-hero-social { display: none; } }
+
+    /* ═══ SHOP PAGE (phone): tabs, banner, title with count, era chips, big cards ═══ */
+    #screen-shop .m-filters {
+      position: sticky; top: calc(66px + env(safe-area-inset-top)); z-index: 30;
+      background: var(--black); gap: 0; padding: 0 8px; border-bottom: 1px solid var(--line);
+    }
+    #screen-shop .m-filter-btn {
+      background: none; border: none; border-radius: 0; border-bottom: 2px solid transparent;
+      padding: 15px 12px 13px; font-size: 11.5px; letter-spacing: 1.4px; text-transform: uppercase;
+      font-weight: 600; color: var(--text-muted-2); white-space: nowrap;
+    }
+    #screen-shop .m-filter-btn.active { background: none; color: var(--white); border-bottom-color: var(--gold); }
+
+    .m-shop-hero { position: relative; min-height: 44vh; display: flex; align-items: flex-end; overflow: hidden; background: #0a0905; }
+    .m-shop-hero-bg { position: absolute; inset: 0; background: #14110c center 30% / cover no-repeat; }
+    .m-shop-hero::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(10,9,5,.35) 0%, rgba(10,9,5,.1) 35%, rgba(10,9,5,.9) 100%); }
+    .m-shop-hero-in { position: relative; z-index: 2; padding: 0 20px 24px; color: #f5f0e8; max-width: 440px; }
+    .m-shop-hero-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #c8a950; font-weight: 600; margin-bottom: 8px; }
+    .m-shop-hero-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 36px; line-height: 1.05; margin: 0 0 8px; }
+    .m-shop-hero-sub { font-size: 14px; line-height: 1.5; margin: 0; color: rgba(245,240,232,.88); }
+
+    .m-shop-titlerow { display: flex; align-items: baseline; gap: 8px; padding: 28px 16px 12px; }
+    .m-shop-titlerow h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: .3px; text-transform: uppercase; line-height: 1; margin: 0; color: var(--white); }
+    .m-shop-titlerow span { font-size: 13px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+    .m-shop-tools { display: flex; align-items: center; gap: 10px; padding: 0 16px 12px; overflow-x: auto; scrollbar-width: none; }
+    .m-shop-tools::-webkit-scrollbar { display: none; }
+    #screen-shop .m-shop-tools .m-filter-open { flex: 0 0 auto; margin: 0; }
+    .m-shop-sep { flex: 0 0 1px; align-self: stretch; background: var(--line); }
+    .m-shop-chips { display: flex; gap: 8px; }
+    .m-chip2 { flex: 0 0 auto; background: none; border: 1px solid var(--line); color: var(--text-muted-2); padding: 10px 14px;
+      font: 600 12px/1 'DM Sans', sans-serif; letter-spacing: .6px; text-transform: uppercase; white-space: nowrap; cursor: pointer; touch-action: manipulation; }
+    .m-chip2 b { font-weight: 500; opacity: .7; margin-left: 3px; }
+    .m-chip2.on { color: var(--white); border-color: var(--white); }
+    #screen-shop .m-shop-search { padding: 0 16px 14px; }
+    #screen-shop .m-shop-search svg { left: 28px; top: calc(50% - 7px); }
+
+    .m-shop-usp { overflow: hidden; white-space: nowrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+    .m-shop-usp-track { display: inline-flex; align-items: center; gap: 16px; padding: 10px 0; animation: ssMarqueeScroll 30s linear infinite; will-change: transform; }
+    .m-shop-usp-track span { font-size: 12px; color: var(--text-muted-2); letter-spacing: .3px; }
+    .m-shop-usp-track i { width: 4px; height: 4px; border-radius: 50%; background: var(--text-muted); flex: 0 0 auto; }
+    @media (prefers-reduced-motion: reduce) { .m-shop-usp-track { animation: none; } }
+
+    #screen-shop .m-shirt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 12px; padding: 0 16px 32px; }
+    #screen-shop .m-shirt-card, .m-card-name > div { min-width: 0; }
+    /* 'hidden' on html and body turns body into a scroll box and stops position:sticky
+       (the shop tabs) from working; 'clip' stops sideways scrolling without that */
+    @supports (overflow: clip) { html, body { overflow-x: clip !important; } }
+    #screen-shop .m-shirt-card { background: none; border: none; border-radius: 0; overflow: visible; }
+    #screen-shop .m-shirt-card .shirt-card-img { background: var(--surf-2); border-radius: 0; }
+    .m-tag { position: absolute; top: 10px; left: 10px; z-index: 3; background: var(--black); color: var(--white);
+      font: 700 10px/1 'DM Sans', sans-serif; letter-spacing: 1.2px; text-transform: uppercase; padding: 6px 8px; }
+    .m-card-add { position: absolute; right: 8px; bottom: 12px; z-index: 4; width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; touch-action: manipulation;
+      background: rgba(10,9,5,.6); color: #f5f0e8; font: 300 26px/1 'DM Sans', sans-serif;
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+    .m-card-add.in { font-size: 15px; background: var(--gold); color: #14120b; }
+    /* the photo dots become a thin progress bar along the bottom of the picture */
+    #screen-shop .m-swipe-dots { bottom: 0; left: 0; right: 0; gap: 0; }
+    #screen-shop .m-swipe-dots i { flex: 1; width: auto; height: 3px; border-radius: 0; background: rgba(var(--white-rgb), .18); }
+    #screen-shop .m-swipe-dots i.on { width: auto; border-radius: 0; background: var(--white); }
+    #screen-shop .m-shirt-card-body { padding: 12px 0 0; }
+    .m-card-name { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    #screen-shop .m-shirt-card-title { font-size: 13px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; line-height: 1.25; margin: 0;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .m-bm { flex: 0 0 auto; background: none; border: none; padding: 2px; margin: -2px -4px 0 0; color: var(--white); cursor: pointer; touch-action: manipulation; }
+    .m-bm.on { color: var(--gold); }
+    #screen-shop .m-shirt-card-price { font-size: 15px; font-weight: 500; color: var(--white); margin-top: 6px; }
+    .m-card-sold { color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; font-size: 12px; }
+    #screen-shop .shirt-card-size { margin-top: 4px; font-size: 11px; }
     .m-hero-sound .w-on { display: none; }
     .m-hero-sound.on { background: #c8a950; color: #14120b; border-color: #c8a950; }
     .m-hero-sound.on .w-on { display: inline; }
@@ -3141,24 +3212,48 @@
 
 <!-- MOBILE SHOP -->
 <div id="screen-shop" class="screen">
-  <div class="m-shop-search">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="m-search-input" placeholder="Search club, player, season..." oninput="mFilterShirts()">
-  </div>
-  <div class="m-filters">
+  <!-- category tabs: stay under the header while you scroll -->
+  <div class="m-filters" id="m-shop-tabs">
     <button class="m-filter-btn active" onclick="mSetFilter('all',this)" id="m-filter-all">All</button>
-    <button class="m-filter-btn" onclick="mSetFilter('new',this)" id="m-filter-new" style="border-color:rgba(76,175,125,.45)">New</button>
+    <button class="m-filter-btn" onclick="mSetFilter('new',this)" id="m-filter-new">New in</button>
     <button class="m-filter-btn" onclick="mSetFilter('match_worn',this)" id="m-filter-mw">Match Worn / Issued</button>
     <button class="m-filter-btn" onclick="mSetFilter('clubs',this)" id="m-filter-clubs">Clubs</button>
-    <button class="m-filter-btn" onclick="mSetFilter('national',this)" id="m-filter-national">National</button>
+    <button class="m-filter-btn" onclick="mSetFilter('national',this)" id="m-filter-national">National Teams</button>
   </div>
-  <div class="m-filter-bar">
+
+  <!-- banner: the newest shirt of the chosen category as the picture -->
+  <section class="m-shop-hero" id="m-shop-hero">
+    <div class="m-shop-hero-bg" id="m-shop-hero-bg"></div>
+    <div class="m-shop-hero-in">
+      <div class="m-shop-hero-eyebrow" id="m-shop-hero-eyebrow">The shop</div>
+      <h1 class="m-shop-hero-title" id="m-shop-hero-title">All shirts</h1>
+      <p class="m-shop-hero-sub" id="m-shop-hero-sub">Vintage and match worn football shirts. Every shirt is a single piece.</p>
+    </div>
+  </section>
+
+  <div class="m-shop-titlerow">
+    <h2 id="m-shop-h">All shirts</h2><span id="m-shop-n"></span>
+  </div>
+
+  <div class="m-shop-tools">
     <button type="button" class="m-filter-open" onclick="mOpenSheet()">
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
       Filter &amp; sort
       <span class="count" id="m-filter-count"></span>
     </button>
+    <span class="m-shop-sep"></span>
+    <div class="m-shop-chips" id="m-shop-chips"></div>
   </div>
+
+  <div class="m-shop-search">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="m-search-input" placeholder="Search club, player, season..." oninput="mFilterShirts()">
+  </div>
+
+  <div class="m-shop-usp" aria-hidden="true"><div class="m-shop-usp-track">
+    <span>One of one pieces</span><i></i><span>Checked by hand</span><i></i><span>Shipped from Harderwijk, NL</span><i></i>
+    <span>One of one pieces</span><i></i><span>Checked by hand</span><i></i><span>Shipped from Harderwijk, NL</span><i></i>
+  </div></div>
 
   <!-- the three controls stay in the DOM: renderMobileGrid still reads them,
        so nothing else had to change -->
@@ -5433,6 +5528,48 @@ as a personal collection quickly grew into something bigger: a curated platform 
   }
 
   var mGridToken = 0;
+  // era chips + the banner and heading of the shop page
+  var mDecade = 'all';
+  function mSetDecade(d) { mDecade = d; renderMobileGrid(); }
+  function mShirtYear(s) { var y = parseInt(String(s.season || '').slice(0, 4), 10); return isFinite(y) ? y : 0; }
+  function mDecadeOf(s) {
+    var y = mShirtYear(s);
+    if (!y) return '';
+    return y < 1990 ? '80s' : y < 2000 ? '90s' : y < 2010 ? '00s' : '10s';
+  }
+  var M_DECADES = [['80s', '1980s & older'], ['90s', '1990s'], ['00s', '2000s'], ['10s', '2010s +']];
+  var M_SHOP_TEXT = {
+    all:        ['The shop', 'All shirts', 'Vintage and match worn football shirts. Every shirt is a single piece.'],
+    'new':      ['New in', 'Just added', 'The newest pieces to arrive, online the moment they are ready.'],
+    match_worn: ['Match worn / issued', 'Worn on the pitch', 'Shirts that were worn or prepared for real matches.'],
+    clubs:      ['Clubs', 'Club shirts', 'Original vintage shirts from clubs across Europe.'],
+    national:   ['National teams', 'National team shirts', 'Original shirts from national teams of the golden era.']
+  };
+  function mPaintShopHead(list) {
+    var t = M_SHOP_TEXT[mCurrentFilter] || M_SHOP_TEXT.all;
+    var set = function (id, v) { var e = document.getElementById(id); if (e) e.textContent = v; };
+    set('m-shop-hero-eyebrow', t[0]); set('m-shop-hero-title', t[1]); set('m-shop-hero-sub', t[2]);
+    set('m-shop-h', t[1]); set('m-shop-n', '(' + list.length + ')');
+    var bg = document.getElementById('m-shop-hero-bg');
+    if (bg) {
+      var pick = list.filter(function (x) { return x.available !== false && x.images && x.images[0]; })[0]
+              || list.filter(function (x) { return x.images && x.images[0]; })[0];
+      var url = pick ? cldSize(pick.images[0], 1000) : '';
+      if (bg.dataset.src !== url) { bg.dataset.src = url; bg.style.backgroundImage = url ? 'url("' + String(url).replace(/"/g, '%22') + '")' : ''; }
+    }
+  }
+  function mPaintDecadeChips(all) {
+    var box = document.getElementById('m-shop-chips');
+    if (!box) return;
+    var counts = {};
+    all.forEach(function (x) { var d = mDecadeOf(x); if (d) counts[d] = (counts[d] || 0) + 1; });
+    if (mDecade !== 'all' && !counts[mDecade]) mDecade = 'all';
+    box.innerHTML = '<button type="button" class="m-chip2' + (mDecade === 'all' ? ' on' : '') + '" onclick="mSetDecade(\'all\')">All eras <b>' + all.length + '</b></button>'
+      + M_DECADES.filter(function (d) { return counts[d[0]]; }).map(function (d) {
+        return '<button type="button" class="m-chip2' + (mDecade === d[0] ? ' on' : '') + '" onclick="mSetDecade(\'' + d[0] + '\')">' + d[1] + ' <b>' + counts[d[0]] + '</b></button>';
+      }).join('');
+  }
+
   function renderMobileGrid() {
     const search = document.getElementById('m-search-input')?.value.toLowerCase() || '';
     const sizeFilter = document.getElementById('m-filter-size')?.value || '';
@@ -5451,34 +5588,40 @@ as a personal collection quickly grew into something bigger: a curated platform 
       const [min, max] = priceFilter.split('-').map(Number);
       shirts = shirts.filter(s => parseFloat(s.price) >= min && parseFloat(s.price) <= max);
     }
+    mPaintDecadeChips(shirts);
+    if (mDecade !== 'all') shirts = shirts.filter(s => mDecadeOf(s) === mDecade);
     if (sort === 'price-asc') shirts.sort((a,b) => parseFloat(a.price) - parseFloat(b.price));
     else if (sort === 'price-desc') shirts.sort((a,b) => parseFloat(b.price) - parseFloat(a.price));
     else if (sort === 'year-asc') shirts.sort((a,b) => parseInt(a.season||0) - parseInt(b.season||0));
     else if (sort === 'year-desc') shirts.sort((a,b) => parseInt(b.season||0) - parseInt(a.season||0));
     else if (sort === 'oldest') shirts.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+    mPaintShopHead(shirts);
     const grid = document.getElementById('m-shirt-grid');
     if (!shirts.length) { mGridToken++; grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No shirts found</div>'; return; }
+    var mNewCut = Date.now() - 21 * 24 * 60 * 60 * 1000;
     var cardsHtml = shirts.map(s => {
       const inCart = cart.some(c => c.id === s.id);
       const isLiked = wishlist.includes(s.id);
+      const sold = s.available === false;
+      const isNew = !sold && s.created_at && new Date(s.created_at).getTime() >= mNewCut;
+      const tag = isNew ? 'New' : (s.category === 'match_worn' ? 'Match worn' : '');
       return `
-        <div class="m-shirt-card${s.available === false ? ' is-sold' : ''}" onclick="openDetail('${s.id}','m')" style="position:relative">
+        <div class="m-shirt-card${sold ? ' is-sold' : ''}" onclick="openDetail('${s.id}','m')">
           <div class="shirt-card-img">
-            ${s.available === false ? '<div class="sold-overlay">Sold</div>' : ''}
+            ${sold ? '<div class="sold-overlay">Sold</div>' : ''}
             ${mSwipeStrip(s)}
-            ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
-            <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:6px;right:6px;width:28px;height:28px;z-index:3">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--on-photo)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-            </button>
+            ${tag ? `<div class="m-tag">${tag}</div>` : ''}
+            ${sold ? '' : (inCart ? '<span class="m-card-add in">\u2713</span>' : `<button type="button" class="m-card-add" aria-label="Add to bag" onclick="event.stopPropagation();quickAdd('${s.id}', event)">+</button>`)}
           </div>
           <div class="m-shirt-card-body">
-            <div class="m-shirt-card-club">${s.club||''}</div>
-            <div class="m-shirt-card-title">${s.title}</div>
-            ${s.size ? `<div class="shirt-card-size">Size ${s.size}</div>` : ''}
-            <div class="m-shirt-card-footer">
-              <div class="m-shirt-card-price">€${parseFloat(s.price).toFixed(2)}</div>
-              ${inCart ? '<span style="font-size:10px;color:var(--text-muted)">In cart ✓</span>' : `<button class="m-add-btn" onclick="event.stopPropagation();quickAdd('${s.id}', event)">+</button>`}
+            <div class="m-card-name">
+              <div class="m-shirt-card-title">${s.title}</div>
+              <button type="button" class="m-bm${isLiked ? ' on' : ''}" aria-label="Save" onclick="event.stopPropagation();toggleLike('${s.id}')">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>
+              </button>
             </div>
+            <div class="m-shirt-card-price">${sold ? '<span class="m-card-sold">Sold</span>' : '\u20ac' + parseFloat(s.price).toFixed(2)}</div>
+            ${s.size ? `<div class="shirt-card-size">Size ${s.size}</div>` : ''}
           </div>
         </div>`;
     });
