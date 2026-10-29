@@ -704,6 +704,10 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             Check data
           </button>
+          <button class="btn btn-secondary" onclick="makeFastPhotos()" id="fast-btn" title="Makes a lighter 1100px copy of every shirt and archive photo, so the photo gallery on the site opens fast. Safe to run again: it skips photos that already have one.">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Fast photos
+          </button>
           <button class="btn btn-secondary" onclick="generateMerchantFeed()" id="merchant-btn" title="Builds a Google Shopping product feed of every shirt that is live for sale">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
             Generate Merchant feed
@@ -3061,7 +3065,7 @@
           name_t.jpg   small version, 640px, for the cards in the shop
       The bucket and its rules are created once by supabase-foto-opslag.sql. */
   var SS_BUCKET = 'shirt-photos';
-  var SS_FULL_MAX = 2000, SS_THUMB_MAX = 640;
+  var SS_FULL_MAX = 2000, SS_THUMB_MAX = 640, SS_MID_MAX = 1100;
 
   function ssPublicUrl(path) {
     return SUPABASE.url + '/storage/v1/object/public/' + SS_BUCKET + '/' + path;
@@ -3317,10 +3321,13 @@
       return ssDecodeImage(list[i]).then(function (src) {
         return Promise.all([
           ssToJpegBlob(src, SS_FULL_MAX, 0.88),
-          ssToJpegBlob(src, SS_THUMB_MAX, 0.80)
+          ssToJpegBlob(src, SS_THUMB_MAX, 0.80),
+          ssToJpegBlob(src, SS_MID_MAX, 0.80)
         ]).then(function (blobs) {
           if (src.close) src.close();
           return ssStoragePut(base + '_t.jpg', blobs[1]).then(function () {
+            return ssStoragePut(base + '_m.jpg', blobs[2]);
+          }).then(function () {
             return ssStoragePut(base + '.jpg', blobs[0]);
           });
         });
@@ -3375,9 +3382,9 @@
     ssUploadsBusy++;
     var base = ssNewPhotoPath();
     ssDecodeImage(file).then(function (src) {
-      return Promise.all([ssToJpegBlob(src, SS_FULL_MAX, 0.88), ssToJpegBlob(src, SS_THUMB_MAX, 0.80)]).then(function (b) {
+      return Promise.all([ssToJpegBlob(src, SS_FULL_MAX, 0.88), ssToJpegBlob(src, SS_THUMB_MAX, 0.80), ssToJpegBlob(src, SS_MID_MAX, 0.80)]).then(function (b) {
         if (src.close) src.close();
-        return ssStoragePut(base + '_t.jpg', b[1]).then(function () { return ssStoragePut(base + '.jpg', b[0]); });
+        return ssStoragePut(base + '_t.jpg', b[1]).then(function () { return ssStoragePut(base + '_m.jpg', b[2]); }).then(function () { return ssStoragePut(base + '.jpg', b[0]); });
       });
     }).then(function () {
       if (gen !== ssModalGen) return;
@@ -4822,6 +4829,61 @@
     }).catch(function(e) {
       showToast('Could not load shirts: ' + (e && e.message ? e.message : e), 'error');
     });
+  }
+
+  // Fast photos: makes name_m.jpg (1100px) for every photo that does not have one yet,
+  // so the site's gallery loads a light copy instead of the 2000px original.
+  var ssFastBusy = false;
+  function makeFastPhotos() {
+    if (ssFastBusy) return;
+    ssWithShirts('Fast photos', function () { ssFastRun(); });
+  }
+  async function ssFastRun() {
+    var btn = document.getElementById('fast-btn');
+    var label = btn ? btn.lastChild : null;
+    var prefix = SUPABASE.url + '/storage/v1/object/public/' + SS_BUCKET + '/';
+    var urls = [];
+    (allShirts || []).forEach(function (s) { (s.images || []).forEach(function (u) { urls.push(u); }); });
+    try {
+      var r = await fetch(SUPABASE.url + '/rest/v1/my_collection?select=images', { headers: { apikey: SUPABASE.key, Authorization: 'Bearer ' + (authToken || SUPABASE.key) } });
+      if (r.ok) (await r.json()).forEach(function (row) { (row.images || []).forEach(function (u) { urls.push(u); }); });
+    } catch (e) { console.error('archive photos not read:', e); }
+    var seen = {};
+    urls = urls.filter(function (u) {
+      if (typeof u !== 'string' || u.indexOf(prefix) !== 0 || !/\.jpg$/i.test(u) || /_[tm]\.jpg$/i.test(u) || seen[u]) return false;
+      seen[u] = 1; return true;
+    });
+    if (!urls.length) { showToast('No photos found to make fast copies of', 'error'); return; }
+    ssFastBusy = true;
+    if (btn) btn.disabled = true;
+    var idx = 0, done = 0, made = 0, had = 0, failed = 0, lastErr = '';
+    function paint() { if (label) label.textContent = ' Fast photos ' + done + '/' + urls.length; }
+    paint();
+    async function worker() {
+      while (idx < urls.length) {
+        var u = urls[idx++];
+        var mid = u.replace(/\.jpg$/i, '_m.jpg');
+        try {
+          var head = await fetch(mid, { method: 'HEAD' });
+          if (head.ok) { had++; }
+          else {
+            var resp = await fetch(u);
+            if (!resp.ok) throw new Error('photo ' + resp.status);
+            var src = await ssDecodeImage(await resp.blob());
+            var blob = await ssToJpegBlob(src, SS_MID_MAX, 0.80);
+            if (src.close) src.close();
+            try { await ssStoragePut(mid.slice(prefix.length), blob); made++; }
+            catch (e) { if (/409|Duplicate|already exists/i.test(String(e && e.message))) had++; else throw e; }
+          }
+        } catch (e) { failed++; lastErr = (e && e.message) ? e.message : String(e); console.error('fast photo failed:', u, e); }
+        done++; paint();
+      }
+    }
+    await Promise.all([worker(), worker(), worker()]);
+    ssFastBusy = false;
+    if (btn) btn.disabled = false;
+    if (label) label.textContent = ' Fast photos';
+    showToast('Fast photos: ' + made + ' made, ' + had + ' already there' + (failed ? ', ' + failed + ' failed (' + lastErr.slice(0, 80) + ')' : ''), failed ? 'error' : 'success');
   }
 
   function generateMerchantFeed() {

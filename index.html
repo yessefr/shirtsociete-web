@@ -561,6 +561,33 @@
     }
     .nav-dropdown-menu .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--on-photo); }
 
+
+    /* ─── Clubs / National menus (hover): leagues and countries ─── */
+    .nav-dropdown-menu .nav-sub { position: relative; }
+    .nav-dropdown-menu .nav-sub > .nav-item { display: flex; align-items: center; justify-content: space-between; }
+    .nav-dropdown-menu .nav-sub > .nav-item.has-sub::after {
+      content: ""; width: 6px; height: 6px; margin-left: 12px; opacity: .6;
+      border-right: 1.5px solid currentColor; border-top: 1.5px solid currentColor; transform: rotate(45deg);
+    }
+    .mega {
+      position: absolute; left: 100%; top: -9px; min-width: 240px; padding: 8px;
+      background: rgba(10,9,5,.98); border: 1px solid var(--surf-2); border-radius: 10px;
+      box-shadow: 0 14px 38px rgba(0,0,0,.55);
+      opacity: 0; visibility: hidden; transform: translateX(-6px);
+      transition: opacity .16s ease, transform .16s ease, visibility .16s; z-index: 130;
+    }
+    .nav-sub:hover > .mega, .nav-sub:focus-within > .mega,
+    .tb-mega:hover > .mega, .tb-mega:focus-within > .mega { opacity: 1; visibility: visible; transform: none; }
+    .tb-mega { position: relative; display: inline-flex; }
+    .tb-mega > .mega { left: auto; right: 0; top: calc(100% + 6px); }
+    .tb-mega::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 8px; }
+    .mega-head { padding: 8px 12px 6px; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #c8a950; font-weight: 600; }
+    .mega a { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 9px 12px; border-radius: 6px;
+      font-size: 13px; color: #f5f0e8; text-decoration: none; cursor: pointer; white-space: nowrap; }
+    .mega a:hover { background: rgba(255,255,255,.07); }
+    .mega a small { font-size: 11px; opacity: .55; font-variant-numeric: tabular-nums; }
+    .mega a.mega-dim { opacity: .38; pointer-events: none; }
+    .mega a.mega-sep { margin-top: 4px; border-top: 1px solid rgba(255,255,255,.1); border-radius: 0 0 6px 6px; padding-top: 11px; }
     /* Main content area — full width; hero pages start at the very top under the fixed bar */
     .desktop-main {
       flex: 1; min-height: 100vh;
@@ -3866,35 +3893,6 @@
   </div>
 </div>
 
-<!-- SCENE 4: SHIRT SWEEP -->
-<div id="cin-sweep-pin" style="position:relative;height:600vh">
-  <section id="cin-s-sweep" style="position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--black)">
-
-    <div id="swbg0" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg') center/cover;opacity:0;filter:brightness(var(--photo-dim)) saturate(.5);transition:opacity 1.2s"></div>
-    <div id="swbg1" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg') center/cover;opacity:0;filter:brightness(var(--photo-dim)) saturate(.5);transition:opacity 1.2s"></div>
-    <div id="swbg2" style="position:absolute;inset:-8%;background:url('https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg') center/cover;opacity:0;filter:brightness(var(--photo-dim)) saturate(.5);transition:opacity 1.2s"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,transparent 0%,transparent 28%,rgba(10,9,5,.8) 100%),linear-gradient(180deg,rgba(10,9,5,.8) 0%,transparent 18%,transparent 78%,rgba(10,9,5,.95) 100%);pointer-events:none;z-index:6"></div>
-
-    <!-- 4 shirts stacked, GSAP moves each one -->
-    <div id="sw0" class="sw-shirt" onclick="dShopCategory('clubs')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782671925/WhatsApp_Image_2026-06-28_at_20.36.59_j4ezzn.jpg" alt="Shirt Société at a vintage football fair" loading="lazy">
-      <div class="sw-info"><div class="sw-name">Club Classics</div></div>
-    </div>
-    <div id="sw1" class="sw-shirt" onclick="dShopCategory('national')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1782464483/WhatsApp_Image_2026-06-26_at_11.00.05_ifprot.jpg" alt="Shirt Société at a vintage football fair" loading="lazy">
-      <div class="sw-info"><div class="sw-name">International Shirts</div></div>
-    </div>
-    <div id="sw2" class="sw-shirt" onclick="dGoTo('about')">
-      <img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1783254946/WhatsApp_Image_2026-07-05_at_14.23.31_sep2b6.jpg" alt="Shirt Société at a vintage football fair" loading="lazy">
-      <div class="sw-info"><div class="sw-cat-lg">Our Story</div><div class="sw-name">Who We Are</div></div>
-    </div>
-    <div id="sw-prog" style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,169,80,.06);z-index:8">
-      <div id="sw-fill" style="height:100%;background:var(--gold);width:0"></div>
-    </div>
-  </section>
-</div>
-
-
 <!-- ═══ INSTAGRAM REELS (live from Behold) ═══ -->
 <section class="ss-reels-sec" id="d-reels-sec" style="display:none">
   <div class="ss-reels-head">
@@ -5165,6 +5163,49 @@ as a personal collection quickly grew into something bigger: a curated platform 
   }
   function getThumb(shirt, w) { return cldSize(getImg(shirt), w || 400); }
 
+  // ── Product photos: fast gallery ──
+  // Each photo is stored in up to three sizes: name_t.jpg (640px, cards), name_m.jpg
+  // (1100px, the gallery) and name.jpg (about 2000px, only for zooming). The gallery
+  // shows the small one at once, swaps in the medium one when it has arrived, and
+  // falls back to the full one for older photos that have no medium copy yet
+  // (Admin > Fast photos makes those). The neighbours are fetched ahead of time.
+  var ssMidMissing = {};
+  function ssMidUrl(url) {
+    if (!url || url.indexOf('/storage/v1/object/public/shirt-photos/') === -1) return '';
+    if (!/\.jpg$/i.test(url) || /_[tm]\.jpg$/i.test(url)) return '';
+    return url.replace(/\.jpg$/i, '_m.jpg');
+  }
+  function ssLoadGalleryUrl(src, onUrl) {
+    var full = cldSize(src, 1400), mid = ssMidUrl(src);
+    var tryFull = function () { var im = new Image(); im.onload = function () { onUrl(full); }; im.src = full; };
+    if (mid && !ssMidMissing[mid]) {
+      var m = new Image();
+      m.onload = function () { onUrl(mid); };
+      m.onerror = function () { ssMidMissing[mid] = 1; tryFull(); };
+      m.src = mid;
+    } else tryFull();
+  }
+  function ssSetGalleryImg(el, src) {
+    if (!el || !src) return;
+    var thumb = cldSize(src, 400), full = cldSize(src, 1400);
+    var tk = el._ssTk = (el._ssTk || 0) + 1;
+    // something to look at straight away: the small copy (usually already loaded for the shop cards)
+    if (thumb && thumb !== full) el.src = thumb;
+    ssLoadGalleryUrl(src, function (u) { if (el._ssTk === tk && el.getAttribute('src') !== u) el.src = u; });
+  }
+  var ssWarmQueue = [];
+  function ssWarmGallery(list, skipIndex) {
+    ssWarmQueue = [];
+    (list || []).forEach(function (u, i) { if (i !== skipIndex) ssWarmQueue.push(u); });
+    var next = function () {
+      var u = ssWarmQueue.shift();
+      if (!u) return;
+      ssLoadGalleryUrl(u, function () { setTimeout(next, 120); });
+    };
+    (window.requestIdleCallback || function (f) { return setTimeout(f, 300); })(function () { next(); });
+  }
+
+
 
   // Archive teaser on the mobile home: up to eight pieces from the archive,
   // reusing fetchArchive() so it costs nothing extra once the Archive page has
@@ -5663,12 +5704,40 @@ as a personal collection quickly grew into something bigger: a curated platform 
       ssBannerSet(el, url);
     });
   }
+  // The shop banner shows a different shirt every time you come back to the page
+  // (and when you switch category), but stays put while you filter or search.
+  window.ssShopFresh = true;
+  function ssShopBannerShirt(list, key) {
+    var arr = (list || []).filter(function (x) { return x && x.images && x.images[0]; });
+    var avail = arr.filter(function (x) { return x.available !== false; });
+    if (avail.length) arr = avail;
+    if (!arr.length) return null;
+    var st = window.ssBannerState = window.ssBannerState || {};
+    if (st.key === key && !window.ssShopFresh && st.pick && arr.some(function (x) { return x.id === st.pick.id; })) return st.pick;
+    var choices = arr.filter(function (x) { return !st.pick || x.id !== st.pick.id; });
+    if (!choices.length) choices = arr;
+    st.pick = choices[Math.floor(Math.random() * choices.length)];
+    st.key = key;
+    window.ssShopFresh = false;
+    return st.pick;
+  }
+  function ssShopBannerRefresh() {
+    window.ssShopFresh = true;
+    try {
+      if (window.innerWidth >= 768) { if (window.ssLastDList) ssPaintShopBanner(window.ssLastDList); }
+      else if (window.ssLastMList && typeof mPaintShopHead === 'function') mPaintShopHead(window.ssLastMList);
+    } catch (e) {}
+  }
   function ssPaintShopBanner(list) {
+    window.ssLastDList = list;
     var t = (typeof M_SHOP_TEXT !== 'undefined' && M_SHOP_TEXT[dCurrentFilter]) || (typeof M_SHOP_TEXT !== 'undefined' ? M_SHOP_TEXT.all : ['The shop', 'All shirts', '']);
     var set = function (id, v) { var e = document.getElementById(id); if (e) e.textContent = v; };
     set('d-shop-hero-eyebrow', t[0]); set('d-shop-hero-title', t[1]); set('d-shop-hero-sub', t[2]);
-    set('d-shop-h', t[1]); set('d-shop-n', '(' + (list ? list.length : 0) + ')');
-    var pick = ssBannerPick(list || []);
+    var ml = (typeof ssMegaLabel === 'function') ? ssMegaLabel() : '';
+    if (ml) { set('d-shop-hero-eyebrow', t[0]); set('d-shop-hero-title', ml); set('d-shop-h', ml); }
+    else set('d-shop-h', t[1]);
+    set('d-shop-n', '(' + (list ? list.length : 0) + ')');
+    var pick = ssShopBannerShirt(list, 'd:' + dCurrentFilter + ':' + dCountry);
     if (pick) ssBannerSet(document.getElementById('d-shop-hero-bg'), cldSize(pick.images[0], 1400));
   }
   [1200, 3500, 7000].forEach(function (ms) { setTimeout(ssPaintBanners, ms); });
@@ -5689,14 +5758,14 @@ as a personal collection quickly grew into something bigger: a curated platform 
     national:   ['National teams', 'National team shirts', 'Original shirts from national teams of the golden era.']
   };
   function mPaintShopHead(list) {
+    window.ssLastMList = list;
     var t = M_SHOP_TEXT[mCurrentFilter] || M_SHOP_TEXT.all;
     var set = function (id, v) { var e = document.getElementById(id); if (e) e.textContent = v; };
     set('m-shop-hero-eyebrow', t[0]); set('m-shop-hero-title', t[1]); set('m-shop-hero-sub', t[2]);
     set('m-shop-h', t[1]); set('m-shop-n', '(' + list.length + ')');
     var bg = document.getElementById('m-shop-hero-bg');
     if (bg) {
-      var pick = list.filter(function (x) { return x.available !== false && x.images && x.images[0]; })[0]
-              || list.filter(function (x) { return x.images && x.images[0]; })[0];
+      var pick = ssShopBannerShirt(list, 'm:' + mCurrentFilter);
       var url = pick ? cldSize(pick.images[0], 1000) : '';
       if (bg.dataset.src !== url) { bg.dataset.src = url; bg.style.backgroundImage = url ? 'url("' + String(url).replace(/"/g, '%22') + '")' : ''; }
     }
@@ -5963,6 +6032,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
   // ── DESKTOP SHOP ──
   function dSetFilter(filter, btn) {
     shopPage = 1;
+    dCountry = '';
     dCurrentFilter = filter;
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     if (btn) { btn.classList.add('active'); }
@@ -5972,6 +6042,90 @@ as a personal collection quickly grew into something bigger: a curated platform 
     }
     renderDesktopGrid();
   }
+
+  // ── Clubs / National: hover menus with leagues and countries ──
+  var dCountry = '';   // '' = all, a country name, or '__other'
+  var SS_MEGA = {
+    clubs: { title: 'Clubs by league', all: 'All club shirts',
+      items: [['England','Premier League'],['Spain','La Liga'],['Italy','Serie A'],['Germany','Bundesliga'],['France','Ligue 1'],['Netherlands','Eredivisie'],['Portugal','Primeira Liga']] },
+    national: { title: 'National teams by country', all: 'All national teams',
+      items: [['Netherlands','Netherlands'],['Germany','Germany'],['Italy','Italy'],['Spain','Spain'],['England','England'],['France','France'],['Brazil','Brazil'],['Argentina','Argentina'],['Portugal','Portugal']] }
+  };
+  function ssMegaInCat(s, cat) {
+    return cat === 'clubs' ? (s.category === 'clubs') : (s.category === 'national');
+  }
+  function ssMegaCountryMatch(s, cat, key) {
+    var c = archiveCountry(s);
+    if (key === '__other') return !SS_MEGA[cat].items.some(function (x) { return x[0] === c; });
+    return c === key;
+  }
+  function ssMegaHtml(cat) {
+    var m = SS_MEGA[cat];
+    return '<div class="mega" data-mega="' + cat + '"><div class="mega-head">' + m.title + '</div>'
+      + '<a href="/?p=shop&cat=' + cat + '" data-key="" onclick="return ssMegaGo(\'' + cat + '\',\'\',event)">' + m.all + ' <small data-n></small></a>'
+      + m.items.map(function (x) {
+          return '<a href="/?p=shop&cat=' + cat + '" data-key="' + x[0] + '" onclick="return ssMegaGo(\'' + cat + '\',\'' + x[0] + '\',event)">' + x[1] + ' <small data-n></small></a>';
+        }).join('')
+      + '<a class="mega-sep" href="/?p=shop&cat=' + cat + '" data-key="__other" onclick="return ssMegaGo(\'' + cat + '\',\'__other\',event)">Other <small data-n></small></a></div>';
+  }
+  function ssMegaGo(cat, key, ev) {
+    if (ev && ev.preventDefault) ev.preventDefault();
+    dGoTo('shop');
+    setTimeout(function () {
+      dSetFilter(cat, null);
+      dCountry = key || '';
+      shopPage = 1;
+      renderDesktopGrid();
+      try { if (document.activeElement) document.activeElement.blur(); } catch (e) {}
+    }, 30);
+    return false;
+  }
+  function ssMegaLabel() {
+    if (!dCountry || (dCurrentFilter !== 'clubs' && dCurrentFilter !== 'national')) return '';
+    if (dCountry === '__other') return dCurrentFilter === 'clubs' ? 'Other leagues' : 'Other countries';
+    var it = SS_MEGA[dCurrentFilter].items.filter(function (x) { return x[0] === dCountry; })[0];
+    return it ? it[1] : dCountry;
+  }
+  function ssMegaFill() {
+    if (typeof allShirts === 'undefined' || !allShirts.length) return;
+    document.querySelectorAll('.mega').forEach(function (m) {
+      var cat = m.getAttribute('data-mega');
+      var pool = allShirts.filter(function (s) { return ssMegaInCat(s, cat); });
+      m.querySelectorAll('a').forEach(function (a) {
+        var key = a.getAttribute('data-key');
+        var n = key === '' ? pool.length : pool.filter(function (s) { return ssMegaCountryMatch(s, cat, key); }).length;
+        var sm = a.querySelector('[data-n]'); if (sm) sm.textContent = n;
+        a.classList.toggle('mega-dim', n === 0);
+      });
+    });
+  }
+  function ssMegaInit() {
+    if (document.querySelector('.mega')) return;
+    // 1) in the Shop dropdown of the top bar: Clubs and National Teams open a side menu
+    [['d-nav-clubs', 'clubs'], ['d-nav-national', 'national']].forEach(function (x) {
+      var a = document.getElementById(x[0]);
+      if (!a || !a.parentNode) return;
+      var wrap = document.createElement('div');
+      wrap.className = 'nav-sub';
+      a.parentNode.insertBefore(wrap, a);
+      wrap.appendChild(a);
+      a.classList.add('has-sub');
+      wrap.insertAdjacentHTML('beforeend', ssMegaHtml(x[1]));
+    });
+    // 2) on the shop page: hovering the Clubs / National buttons opens the same menu below them
+    [['d-filter-clubs', 'clubs'], ['d-filter-national', 'national']].forEach(function (x) {
+      var b = document.getElementById(x[0]);
+      if (!b || !b.parentNode) return;
+      var wrap = document.createElement('div');
+      wrap.className = 'tb-mega';
+      b.parentNode.insertBefore(wrap, b);
+      wrap.appendChild(b);
+      wrap.insertAdjacentHTML('beforeend', ssMegaHtml(x[1]));
+    });
+    ssMegaFill();
+    [1500, 4000, 9000].forEach(function (ms) { setTimeout(ssMegaFill, ms); });
+  }
+  setTimeout(ssMegaInit, 0);
 
   function dFilterShirts() { shopPage = 1; renderDesktopGrid(); }
   function resetFilters() {
@@ -5984,6 +6138,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     document.getElementById('d-sort').value = 'newest';
     document.getElementById('d-search-input').value = '';
     dCurrentFilter = 'all';
+    dCountry = '';
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('d-filter-all').classList.add('active');
     renderDesktopGrid();
@@ -6185,6 +6340,9 @@ as a personal collection quickly grew into something bigger: a curated platform 
       shirts = shirts.filter(s => s.created_at && new Date(s.created_at).getTime() >= cutoff);
     } else if (dCurrentFilter !== 'all') {
       shirts = shirts.filter(s => s.category === dCurrentFilter);
+    }
+    if (dCountry && (dCurrentFilter === 'clubs' || dCurrentFilter === 'national')) {
+      shirts = shirts.filter(function (s) { return ssMegaCountryMatch(s, dCurrentFilter, dCountry); });
     }
     if (search) { var terms = expandSearchTerms(search); shirts = shirts.filter(s => shirtMatchesSearch(s, terms)); }
     if (sizeFilter) shirts = shirts.filter(s => s.size === sizeFilter);
@@ -6591,7 +6749,8 @@ as a personal collection quickly grew into something bigger: a curated platform 
       currentImages = images;
       currentImgIndex = 0;
       mPrevScreen = document.querySelector('.screen.active')?.id?.replace('screen-','') || 'shop';
-      document.getElementById('m-detail-main-img').src = cldSize(images[0], 1400);
+      ssSetGalleryImg(document.getElementById('m-detail-main-img'), images[0]);
+      ssWarmGallery(images, 0);
       document.getElementById('m-detail-category').textContent = (shirt.category||'').replace('_',' ').toUpperCase();
       document.getElementById('m-detail-title').textContent = shirt.title;
       document.getElementById('m-detail-club').textContent = shirt.club||'';
@@ -6613,7 +6772,8 @@ as a personal collection quickly grew into something bigger: a curated platform 
       currentImages = images;
       currentImgIndex = 0;
       dPrevScreen = document.querySelector('.dscreen.active')?.id?.replace('d-screen-','') || 'shop';
-      document.getElementById('d-detail-main-img').src = cldSize(images[0], 1400);
+      ssSetGalleryImg(document.getElementById('d-detail-main-img'), images[0]);
+      ssWarmGallery(images, 0);
       document.getElementById('d-detail-category').textContent = (shirt.category||'').replace('_',' ').toUpperCase();
       document.getElementById('d-detail-title').textContent = shirt.title;
       document.getElementById('d-detail-club').textContent = shirt.club||'';
@@ -6784,7 +6944,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     currentImgIndex = (currentImgIndex + dir + currentImages.length) % currentImages.length;
     const src = currentImages[currentImgIndex];
     const mainId = ctx === 'm' ? 'm-detail-main-img' : 'd-detail-main-img';
-    document.getElementById(mainId).src = cldSize(src, 1400);
+    ssSetGalleryImg(document.getElementById(mainId), src);
     // Update active thumb
     const thumbsId = ctx === 'm' ? 'm-detail-thumbs' : 'd-detail-thumbs';
     document.getElementById(thumbsId).querySelectorAll('.gallery-thumb').forEach((t,i) => {
@@ -6801,7 +6961,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     if (currentImages.length < 2) { wrap.innerHTML = ''; wrap.style.display = 'none'; return; }
     wrap.style.display = 'flex';
     wrap.innerHTML = currentImages.map(function(src, i) {
-      return '<div class="zoom-thumb' + (i === currentImgIndex ? ' active' : '') + '" data-zi="' + i + '" onclick="zoomJumpTo(' + i + ')"><img src="' + src + '" alt="" loading="lazy"></div>';
+      return '<div class="zoom-thumb' + (i === currentImgIndex ? ' active' : '') + '" data-zi="' + i + '" onclick="zoomJumpTo(' + i + ')"><img src="' + cldSize(src, 200) + '" alt="" loading="lazy"></div>';
     }).join('');
     var activeThumb = wrap.querySelector('.zoom-thumb.active');
     if (activeThumb) activeThumb.scrollIntoView({ inline: 'center', block: 'nearest' });
@@ -6827,9 +6987,9 @@ as a personal collection quickly grew into something bigger: a curated platform 
     // sync main detail image too
     var mainId = document.getElementById('d-detail-main-img') ? 'd-detail-main-img' : 'm-detail-main-img';
     var mainEl = document.getElementById(mainId);
-    if (mainEl) mainEl.src = cldSize(currentImages[currentImgIndex], 1400);
+    if (mainEl) ssSetGalleryImg(mainEl, currentImages[currentImgIndex]);
     var adMain = document.getElementById('ad-main-img');
-    if (adMain) adMain.src = cldSize(currentImages[currentImgIndex], 1400);
+    if (adMain) ssSetGalleryImg(adMain, currentImages[currentImgIndex]);
   }
   function zoomJumpTo(i) { zoomShowImage(i); }
   function openZoom() {
@@ -6985,7 +7145,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
         try {
           var n = currentImages ? currentImages.length : 0;
           if (n > 1) [1, -1].forEach(function (d) {
-            var im = new Image(); im.src = cldSize(currentImages[(currentImgIndex + d + n) % n], 1400);
+            ssLoadGalleryUrl(currentImages[(currentImgIndex + d + n) % n], function () {});
           });
         } catch (x) {}
       }, { passive: true });
@@ -7039,7 +7199,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
   })();
 
   function switchImg(el, src, mainId) {
-    document.getElementById(mainId).src = cldSize(src, 1400);
+    ssSetGalleryImg(document.getElementById(mainId), src);
     currentImgIndex = currentImages.indexOf(src);
     el.closest('.gallery-thumbs, #m-detail-thumbs, #d-detail-thumbs').querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
@@ -7402,6 +7562,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     if (screen === 'profile') initProfile();
     if (screen === 'shop' && typeof ssMaybeShowCookies === 'function') ssMaybeShowCookies();
     if (screen === 'shop' && typeof setShopMeta === 'function') setShopMeta();
+    if (screen === 'shop' && typeof ssShopBannerRefresh === 'function') ssShopBannerRefresh();
     if (screen === 'home' && typeof restoreDefaultMeta === 'function') restoreDefaultMeta();
     if (screen === 'cart') renderMobileCart();
     if (screen === 'checkout') buildCheckoutForms();
@@ -7523,7 +7684,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     if (screen === 'profile') initProfile();
     if (screen === 'archive') renderArchive();
     else if (screen === 'home') { if (typeof restoreDefaultMeta === 'function') restoreDefaultMeta(); }
-    else if (screen === 'shop') { if (typeof setShopMeta === 'function') setShopMeta(); }
+    else if (screen === 'shop') { if (typeof setShopMeta === 'function') setShopMeta(); if (typeof ssShopBannerRefresh === 'function') ssShopBannerRefresh(); }
     if (screen === 'shop' && typeof ssMaybeShowCookies === 'function') ssMaybeShowCookies();
     // screens are hidden at boot, so ScrollTrigger must re-measure once one becomes visible
     if (typeof ScrollTrigger !== 'undefined') {
@@ -7882,7 +8043,8 @@ as a personal collection quickly grew into something bigger: a curated platform 
               + '</div>';
           }).join('');
     })();
-    document.getElementById('ad-main-img').src = cldSize(imgs[0] || '', 1400);
+    ssSetGalleryImg(document.getElementById('ad-main-img'), imgs[0] || '');
+    ssWarmGallery(imgs, 0);
     document.getElementById('ad-thumbs').innerHTML = imgs.map(function(img, i){
       return '<img src="' + img + '" onclick="archiveSwitchImg(' + i + ')" style="width:56px;height:56px;object-fit:cover;border-radius:2px;cursor:pointer;border:1px solid ' + (i===0?'var(--gold)':'var(--line)') + '" data-ai="' + i + '">';
     }).join('');
@@ -7905,7 +8067,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
   function archiveSwitchImg(i) {
     if (!currentImages[i]) return;
     currentImgIndex = i;
-    document.getElementById('ad-main-img').src = cldSize(currentImages[i], 1400);
+    ssSetGalleryImg(document.getElementById('ad-main-img'), currentImages[i]);
     document.querySelectorAll('#ad-thumbs img').forEach(function(t){
       t.style.borderColor = (parseInt(t.getAttribute('data-ai')) === i) ? 'var(--gold)' : 'var(--line)';
     });
@@ -9013,40 +9175,6 @@ as a personal collection quickly grew into something bigger: a curated platform 
         }
       }
 
-
-      // ── SHIRT SWEEP ──
-      gsap.set('#sw0', { xPercent: -140, rotation: -10, opacity: 0, scale: 0.85 });
-      gsap.set('#sw1', { xPercent:  140, rotation:  10, opacity: 0, scale: 0.85 });
-      gsap.set('#sw2', { xPercent: -140, rotation:  -8, opacity: 0, scale: 0.85 });
-
-      var swBgs = ['#swbg0','#swbg1','#swbg2'];
-
-      var swTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '#cin-sweep-pin', pin: '#cin-s-sweep', anticipatePin: 1,
-          start: 'top top', end: 'bottom bottom', scrub: 1.6,
-          onUpdate: function(self) {
-            var p = self.progress;
-            document.getElementById('sw-fill').style.width = (p * 100) + '%';
-            var bi = Math.min(Math.floor(p * 3.2), 2);
-            swBgs.forEach(function(id, i) {
-              var el = document.querySelector(id);
-              if (el) el.style.opacity = i === bi ? '1' : '0';
-            });
-          }
-        }
-      });
-
-      swTl
-        // shirt0 — Club Classic — sweeps in, holds, exits right
-        .to('#sw0', { xPercent: 0, rotation: 0, opacity: 1, scale: 1, duration: 0.18, ease: 'power2.out' }, 0.02)
-        .to('#sw0', { xPercent: 140, rotation: 12, opacity: 0, duration: 0.16, ease: 'power2.in' }, 0.30)
-        // shirt1 — National Teams — in from left, holds, exits left
-        .to('#sw1', { xPercent: 0, rotation: 0, opacity: 1, scale: 1, duration: 0.18, ease: 'power2.out' }, 0.36)
-        .to('#sw1', { xPercent: -140, rotation: -12, opacity: 0, duration: 0.16, ease: 'power2.in' }, 0.64)
-        // shirt2 — Our Story — in from right, holds, scale-fade out
-        .to('#sw2', { xPercent: 0, rotation: 0, opacity: 1, scale: 1, duration: 0.18, ease: 'power2.out' }, 0.70)
-        .to('#sw2', { scale: 1.06, opacity: 0, duration: 0.12, ease: 'power2.in' }, 0.96);
 
       // ── SECTION HEADERS REVEAL ──
       ['#feat-header','#mw-header','#nat-header','#cl-header'].forEach(function(id) {
