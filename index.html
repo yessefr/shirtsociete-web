@@ -1847,7 +1847,6 @@
        The app keeps its accent blocks (Legend Collection) black on a white
        page. These do the same: they are fixed colours, not theme colours, so
        they read the same in either mode. ── */
-    html[data-theme="light"] .m-fairs { background: linear-gradient(165deg, var(--gold) 0%, #b08d3e 100%); }
     html[data-theme="light"] .m-hero { background: #0a0905; }
     html[data-theme="light"] .m-hero-title { color: #f5f0e8; }
     html[data-theme="light"] .m-hero-sub { color: rgba(245,240,232,.62); }
@@ -2099,7 +2098,11 @@
        what it is, then two cards side by side. Same idea as the app's Legend
        Collection band, in gold and near-black instead of yellow. */
     .m-fairs {
-      background: #0a0905;
+      /* the same deep espresso band in light and dark, with a quiet gold glow and fine gold edges */
+      background:
+        radial-gradient(120% 80% at 85% 0%, rgba(200,169,80,.16) 0%, rgba(200,169,80,0) 60%),
+        linear-gradient(170deg, #1b150a 0%, #0f0c06 100%);
+      border-top: 1px solid rgba(200,169,80,.4); border-bottom: 1px solid rgba(200,169,80,.4);
       padding: 28px 0 26px; margin: 30px 0;
     }
     .m-fairs-flag  { background: #c8a950; color: #14120b; }
@@ -2231,14 +2234,21 @@
 
     /* Mobile homepage in white (the dark blocks - hero, fairs, bands - keep their own colours) */
     @media (max-width: 767px) {
-      #screen-home {
+      html[data-theme="light"] #screen-home {
         --black: #f5eedc; --white: #14120b; --white-rgb: 20,18,11; --cream: #14120b;
         --grey: #efe6d0; --grey-mid: #d8cbab; --surf-1: #f0e8d4; --surf-2: #e9dfc5;
         --line: #d8cbab; --line-soft: #cbbd99; --text-muted: #6a604a; --text-muted-2: #463e2d;
-        --gold: #8f6f1a;
+        --gold: #76590f; --text-muted: #5a5038;
         background: #f5eedc; color: #14120b;
       }
-      #screen-home .m-fairs, #screen-home .m-band-story { --gold: #c8a950; }
+      html[data-theme="light"] #screen-home .m-fairs, html[data-theme="light"] #screen-home .m-band-story { --gold: #c8a950; }
+      /* solid gold fills in the beige theme: cream text instead of black so it stays readable */
+      html[data-theme="light"] #screen-home .m-newin-tag,
+      html[data-theme="light"] #screen-home .btn-primary,
+      html[data-theme="light"] #screen-home button[style*="background:var(--gold)"] { color: #fff8e6 !important; }
+      /* the black signup band and the dark SOLD stamp keep the bright gold */
+      html[data-theme="light"] #screen-home .ss-signup, html[data-theme="light"] #screen-home .m-newin-sold { --gold: #c8a950; }
+      html[data-theme="light"] #screen-home .ss-signup button { color: #14120b !important; }
     }
 
     /* ─── ARCHIVE + OUR STORY bands (mobile home) ─── */
@@ -3284,7 +3294,7 @@
         <button onclick="submitDropEmailMobile()" style="width:100%;background:var(--gold);color:var(--ink);border:none;padding:13px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Join the list</button>
       </div>
       <div id="m-drop-email-confirm" style="display:none;font-size:13px;color:var(--gold);padding:10px 0">You're on the list. You'll see the next collection first.</div>
-      <p style="font-size:10.5px;color:rgba(var(--on-photo-rgb),.35);margin-top:14px">Only when a new collection goes live. No discounts.</p>
+      <p style="font-size:10.5px;color:rgba(var(--on-photo-rgb),.65);margin-top:14px">Only when a new collection goes live. No discounts.</p>
     </div>
   </section>
 </div>
@@ -3921,7 +3931,7 @@
       <button id="drop-email-btn" onclick="submitDropEmail()" style="background:var(--gold);color:var(--ink);border:none;padding:13px 28px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Join the list</button>
     </div>
     <div id="drop-email-confirm" style="display:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gold);padding:12px 0">You're on the list. You'll see the next collection first.</div>
-    <p style="font-size:11px;color:rgba(var(--on-photo-rgb),.35);margin-top:16px;line-height:1.6">Only when a new collection goes live. No discounts.</p>
+    <p style="font-size:11px;color:rgba(var(--on-photo-rgb),.65);margin-top:16px;line-height:1.6">Only when a new collection goes live. No discounts.</p>
   </div>
 </section>
 
