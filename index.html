@@ -10204,9 +10204,22 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   var hero = document.querySelector('.m-hero');
   if (!v || !hero) return;
 
-  // Never on a desktop, and never when the visitor asked for less motion.
+  // Never on a desktop, and never a moving picture when the visitor asked for less motion.
   if (window.innerWidth >= 768) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // no moving picture, but still the cover of the newest reel instead of the plain photo
+    if (heroPosters[0]) {
+      var rs = document.createElement('div');
+      rs.className = 'm-hero-still';
+      rs.style.display = 'block';
+      rs.style.backgroundImage = 'url("' + String(heroPosters[0]).replace(/"/g, '%22') + '")';
+      v.parentNode.insertBefore(rs, v.nextSibling);
+      if (scrim) scrim.style.display = 'block';
+      hero.classList.add('has-video');
+      fitHero();
+    }
+    return;
+  }
 
   // Save-Data means a metered or slow connection. Two hero clips are exactly
   // the thing to skip there.
@@ -10219,6 +10232,8 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   v.defaultMuted = true;
   v.playsInline = true;
   v.setAttribute('muted', '');
+  v.setAttribute('playsinline', '');
+  v.setAttribute('webkit-playsinline', '');
   // One clip loops; two or more play in turn.
   var single = SS_MOBILE_HERO_VIDEOS.length === 1;
   v.loop = single;
@@ -10237,7 +10252,7 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
     hero.classList.add('has-video');
     fitHero();
     var p = v.play();
-    if (p && p.catch) p.catch(fallback);
+    if (p && p.catch) p.catch(function () { armGesture(i % SS_MOBILE_HERO_VIDEOS.length); });
   }
 
   function fallback() {
@@ -10252,6 +10267,32 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   stillEl.style.display = 'none';
   v.parentNode.insertBefore(stillEl, v.nextSibling);
   var stillOn = false, stillTimer = null;
+  var blockedStill = false, gestureArmed = false, failCount = 0;
+
+  // Safari (and iPhones in Low Power Mode) can refuse to start a video by itself.
+  // Then the cover of the reel is shown, and the very first tap or swipe starts it.
+  function armGesture(k) {
+    var poster = heroPosters[k] || '';
+    if (poster && !stillOn) {
+      stillEl.style.backgroundImage = 'url("' + String(poster).replace(/"/g, '%22') + '")';
+      stillEl.style.display = 'block';
+      blockedStill = true;
+      shown = false;
+      if (scrim) scrim.style.display = 'block';
+      hero.classList.add('has-video');
+      fitHero();
+    }
+    if (gestureArmed) return;
+    gestureArmed = true;
+    var evs = ['touchend', 'pointerup', 'click', 'keydown'];
+    var go = function () {
+      evs.forEach(function (ev) { document.removeEventListener(ev, go, true); });
+      gestureArmed = false;
+      var pr = v.play();
+      if (pr && pr.catch) pr.catch(function () { /* still blocked: the cover stays */ });
+    };
+    evs.forEach(function (ev) { document.addEventListener(ev, go, true); });
+  }
 
   // ── TikTok slide: TikTok's official embedded player, full screen, no controls ──
   var tkEl = null, tkOn = false, tkMuted = true, tkReady = false, tkTimer = null, tkGuard = null;
@@ -10352,18 +10393,25 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
       return;
     }
     if (stillOn) { stillEl.style.display = 'none'; stillOn = false; v.style.display = 'block'; }
+    if (blockedStill) { stillEl.style.display = 'none'; blockedStill = false; }
     v.src = SS_MOBILE_HERO_VIDEOS[k];
+    try { v.poster = heroPosters[k] || ''; } catch (e) {}
     v.preload = 'auto';
     v.load();
-    if (autoplay) {
-      var p = v.play();
-      if (p && p.catch) p.catch(function () { /* keep showing the last frame */ });
-    }
+    // iOS does not read ahead, so loadeddata can stay silent until play() is called.
+    // Muted + playsinline is allowed to start by itself, so start it right away.
+    var p = v.play();
+    if (p && p.catch) p.catch(function () { armGesture(k); });
   }
 
   // canplay does not always fire on iOS; loadeddata does, and the timer
   // catches the rest. Cloudinary also transcodes a freshly uploaded clip on
   // its first request, which can take a few seconds that one time.
+  v.addEventListener('playing', function () {
+    if (blockedStill) { stillEl.style.display = 'none'; blockedStill = false; }
+    if (!stillOn) v.style.display = 'block';
+    reveal();
+  });
   v.addEventListener('loadeddata', reveal, { once: true });
   v.addEventListener('canplay', reveal, { once: true });
   setTimeout(function () { if (v.readyState >= 2) reveal(); }, 900);
@@ -10378,13 +10426,28 @@ var SS_MOBILE_HERO_VIDEOS = [];   // fallback only; upload clips in the admin in
   // clips from the admin instead (if there are any); otherwise show the photo.
   v.addEventListener('error', function () {
     if (usingIg) {
-      usingIg = false;
       try { localStorage.removeItem(IG_HERO_KEY); } catch (e) {}
+      failCount++;
+      // one reel that will not play: try the next one before giving up
+      if (SS_MOBILE_HERO_VIDEOS.length > 1 && failCount < SS_MOBILE_HERO_VIDEOS.length) { advance(); return; }
+      usingIg = false;
       var own = adminClips();
       if (own.length) {
         SS_MOBILE_HERO_VIDEOS = own; i = 0; single = own.length === 1; v.loop = single;
         if (igLinkEl) igLinkEl.href = 'https://www.instagram.com/shirtsociete/';
         load(0, true);
+        return;
+      }
+      // nothing plays: the cover of the newest reel instead of the plain photo
+      var cover = heroPosters[0] || heroPosters[i % heroPosters.length] || '';
+      if (cover) {
+        stillEl.style.backgroundImage = 'url("' + String(cover).replace(/"/g, '%22') + '")';
+        stillEl.style.display = 'block';
+        stillOn = true; shown = true;
+        if (igLinkEl && igLinks[0]) igLinkEl.href = igLinks[0];
+        if (scrim) scrim.style.display = 'block';
+        hero.classList.add('has-video');
+        fitHero();
         return;
       }
     }
