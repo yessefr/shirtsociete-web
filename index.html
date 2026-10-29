@@ -517,13 +517,20 @@
 
     /* subtle archive filter pills */
     .arch-filter {
-      background: transparent; border: 1px solid var(--line);
-      color: var(--text-muted); padding: 7px 16px; border-radius: 100px;
-      font-size: 12px; font-weight: 500; cursor: pointer;
+      background: var(--surf-1); border: 1px solid var(--line-soft);
+      color: var(--cream); padding: 8px 17px; border-radius: 100px;
+      font-size: 12px; font-weight: 600; cursor: pointer;
       transition: all .2s; letter-spacing: .3px;
     }
-    .arch-filter:hover { color: var(--cream); border-color: var(--line-soft); }
-    .arch-filter.active { color: var(--gold); border-color: rgba(200,169,80,.5); background: rgba(200,169,80,.06); }
+    .arch-filter:hover { color: var(--gold); border-color: var(--gold); }
+    .arch-filter.active { color: var(--gold); border-color: rgba(200,169,80,.7); background: rgba(200,169,80,.1); }
+    .arch-filter.has-menu::after {
+      content: ""; display: inline-block; width: 5px; height: 5px; margin-left: 8px; opacity: .8;
+      border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: rotate(45deg) translateY(-2px);
+      transition: transform .2s ease;
+    }
+    .arch-filter.has-menu.active::after { transform: rotate(225deg) translateY(-1px); }
+    .arch-sub-panel { width: 100%; margin-top: 12px; padding: 14px 16px 16px; background: var(--surf-1); border: 1px solid var(--line); border-radius: 8px; }
 
     /* ─── Shop dropdown ─── */
     .nav-dropdown {
@@ -579,7 +586,48 @@
     .nav-sub:hover > .mega, .nav-sub:focus-within > .mega,
     .tb-mega:hover > .mega, .tb-mega:focus-within > .mega { opacity: 1; visibility: visible; transform: none; }
     .tb-mega { position: relative; display: inline-flex; }
-    .tb-mega > .mega { left: auto; right: 0; top: calc(100% + 6px); }
+    .tb-mega > .mega { left: auto; right: 0; top: calc(100% + 6px); min-width: 250px; }
+    /* the toolbar sits at the right edge, so the club list opens towards the left */
+    .tb-mega .mega-clubs { left: auto; right: calc(100% + 2px); transform: translateX(6px); }
+    .tb-mega .mega-row::after { left: auto; right: 100%; }
+    .tb-mega > button::after, .tb-mega > .filter-btn::after {
+      content: ""; display: inline-block; width: 5px; height: 5px; margin-left: 9px; opacity: .75;
+      border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: rotate(45deg) translateY(-2px);
+      transition: transform .18s ease;
+    }
+    .tb-mega:hover > button::after, .tb-mega:focus-within > button::after { transform: rotate(225deg) translateY(-1px); }
+    .mega-row { position: relative; }
+    .mega a.mega-has::after {
+      content: ""; width: 6px; height: 6px; margin-left: 10px; opacity: .6; flex: 0 0 auto;
+      border-right: 1.5px solid currentColor; border-top: 1.5px solid currentColor; transform: rotate(45deg);
+    }
+    .mega a.mega-has { justify-content: flex-start; }
+    .mega a.mega-has small { margin-left: auto; }
+    .mega-clubs {
+      position: absolute; left: calc(100% + 2px); top: -9px; min-width: 240px; max-height: 70vh; overflow-y: auto; padding: 8px;
+      background: rgba(10,9,5,.98); border: 1px solid var(--surf-2); border-radius: 10px; box-shadow: 0 14px 38px rgba(0,0,0,.55);
+      opacity: 0; visibility: hidden; transform: translateX(-6px); transition: opacity .16s ease, transform .16s ease, visibility .16s; z-index: 131;
+    }
+    .mega-row:hover > .mega-clubs, .mega-row:focus-within > .mega-clubs { opacity: 1; visibility: visible; transform: none; }
+    .mega-row:hover > a.mega-has { background: rgba(255,255,255,.07); }
+    .mega-row::after { content: ""; position: absolute; top: 0; bottom: 0; left: 100%; width: 6px; }
+
+    /* chips: used for leagues / clubs on the phone shop and the archive */
+    .ss-sub-lab { font-size: 10px; letter-spacing: 2.4px; text-transform: uppercase; font-weight: 700; color: var(--text-muted-2); margin: 12px 0 8px; }
+    .ss-sub-lab:first-child { margin-top: 0; }
+    .ss-sub-row { display: flex; flex-wrap: wrap; gap: 7px; }
+    .ss-chip {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 100px; cursor: pointer;
+      border: 1px solid var(--line-soft); background: var(--surf-1); color: var(--white);
+      font: 600 12.5px 'DM Sans', sans-serif; letter-spacing: .2px; transition: background .15s, border-color .15s, color .15s;
+      -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    }
+    .ss-chip b { font-weight: 600; font-size: 11px; opacity: .6; font-variant-numeric: tabular-nums; }
+    .ss-chip:hover { border-color: var(--gold); }
+    .ss-chip.on { background: var(--gold); border-color: var(--gold); color: #14120b; }
+    .ss-chip.on b { opacity: .75; }
+    .ss-chip.dim { opacity: .5; }
+    html[data-theme="light"] .ss-chip.on { color: #fff8e6; }
     .tb-mega::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 8px; }
     .mega-head { padding: 8px 12px 6px; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #c8a950; font-weight: 600; }
     .mega a { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 9px 12px; border-radius: 6px;
@@ -1716,6 +1764,28 @@
       width: 100%; height: 100%; object-fit: cover; display: block;
       pointer-events: none;
     }
+    /* the still sits under the video; the video fades in only once it really shows a picture,
+       so a slow or failed clip never leaves a black tile */
+    .ss-reel .ss-reel-still { position: absolute; inset: 0; }
+    .ss-reel video { position: absolute; inset: 0; opacity: 0; transition: opacity .35s ease; background: transparent; }
+    .ss-reel video.on { opacity: 1; }
+    /* big player */
+    .ss-reel-lb { position: fixed; inset: 0; z-index: 9800; display: none; align-items: center; justify-content: center; flex-direction: column;
+      background: rgba(6,5,4,.94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); padding: 14px; }
+    .ss-reel-lb.open { display: flex; }
+    .ss-reel-lb-card { position: relative; height: min(76vh, 150vw); aspect-ratio: 9 / 16; max-width: 100%; border-radius: 6px; overflow: hidden; background: #111; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+    .ss-reel-lb-card video, .ss-reel-lb-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .ss-reel-lb-card video { opacity: 0; transition: opacity .3s ease; }
+    .ss-reel-lb-card video.on { opacity: 1; }
+    .ss-reel-lb-sound { position: absolute; right: 10px; bottom: 10px; z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 0; cursor: pointer;
+      background: rgba(10,9,5,.6); color: #f5f0e8; display: flex; align-items: center; justify-content: center; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+    .ss-reel-lb-sound svg { width: 20px; height: 20px; }
+    .ss-reel-lb-actions { display: flex; gap: 10px; margin-top: 14px; width: min(100%, calc(min(76vh, 150vw) * 9 / 16 + 120px)); justify-content: center; flex-wrap: wrap; }
+    .ss-reel-lb-btn { flex: 1 1 140px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 10px; border-radius: 3px; cursor: pointer;
+      font: 700 11.5px 'DM Sans', sans-serif; letter-spacing: 1px; white-space: nowrap; text-transform: uppercase; text-decoration: none; border: 1px solid rgba(245,240,232,.35); background: transparent; color: #f5f0e8; }
+    .ss-reel-lb-btn.gold { background: #c8a950; border-color: #c8a950; color: #14120b; }
+    .ss-reel-lb-x { position: absolute; top: calc(10px + env(safe-area-inset-top)); right: 12px; width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(245,240,232,.3);
+      background: rgba(10,9,5,.6); color: #f5f0e8; font-size: 22px; line-height: 1; cursor: pointer; z-index: 4; }
     .ss-reel-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,5,.35) 0%, transparent 30%, transparent 55%, rgba(10,9,5,.9) 100%); pointer-events: none; }
     .ss-reel-cap {
       position: absolute; left: 12px; right: 12px; bottom: 12px;
@@ -2759,6 +2829,16 @@
       font-weight: 600; color: var(--text-muted-2); white-space: nowrap;
     }
     #screen-shop .m-filter-btn.active { background: none; color: var(--white); border-bottom-color: var(--gold); }
+    .m-filter-btn.has-menu::after {
+      content: ""; display: inline-block; width: 5px; height: 5px; margin-left: 7px; opacity: .8;
+      border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: rotate(45deg) translateY(-2px);
+      transition: transform .2s ease;
+    }
+    .m-filter-btn.has-menu.open::after { transform: rotate(225deg) translateY(-1px); }
+    .m-subnav { max-height: 0; overflow: hidden; transition: max-height .3s ease; background: var(--pg-alt, var(--surf-2)); border-bottom: 0 solid var(--line); }
+    .m-subnav.open { max-height: 56vh; overflow-y: auto; border-bottom-width: 1px; -webkit-overflow-scrolling: touch; }
+    .m-subnav-in { padding: 14px 16px 16px; }
+    @media (min-width: 768px) { .m-subnav { display: none; } }
 
 
     /* ═══ PAGE BANNER + BLOCKS: shared by Our Story, Archive and the shop on a laptop ═══ */
@@ -2810,6 +2890,7 @@
       #m-archive-filters .arch-filter { background: none !important; border: none !important; border-bottom: 2px solid transparent !important; border-radius: 0 !important;
         padding: 15px 12px 13px; font-size: 11.5px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; white-space: nowrap; color: var(--text-muted-2); }
       #m-archive-filters .arch-filter.active { color: var(--white); border-bottom-color: var(--gold) !important; }
+      #screen-archive > #m-archive-sub { order: 1; }
       #screen-archive > #m-archive-titlerow { order: 2; }
       #screen-archive > #m-archive-grid { order: 3; gap: 26px 12px !important; padding: 4px 16px 32px !important; }
       #screen-archive > #m-archive-about { order: 4; }
@@ -3333,9 +3414,11 @@
     <button class="m-filter-btn active" onclick="mSetFilter('all',this)" id="m-filter-all">All</button>
     <button class="m-filter-btn" onclick="mSetFilter('new',this)" id="m-filter-new">New in</button>
     <button class="m-filter-btn" onclick="mSetFilter('match_worn',this)" id="m-filter-mw">Match Worn / Issued</button>
-    <button class="m-filter-btn" onclick="mSetFilter('clubs',this)" id="m-filter-clubs">Clubs</button>
-    <button class="m-filter-btn" onclick="mSetFilter('national',this)" id="m-filter-national">National Teams</button>
+    <button class="m-filter-btn has-menu" onclick="mSetFilter('clubs',this)" id="m-filter-clubs">Clubs</button>
+    <button class="m-filter-btn has-menu" onclick="mSetFilter('national',this)" id="m-filter-national">National Teams</button>
   </div>
+  <!-- opens right under the tabs: leagues (or countries) and, for clubs, the clubs of the chosen league -->
+  <div class="m-subnav" id="m-subnav"><div class="m-subnav-in" id="m-subnav-in"></div></div>
 
   <!-- banner: the newest shirt of the chosen category as the picture -->
   <section class="m-shop-hero" id="m-shop-hero">
@@ -3522,6 +3605,7 @@
     </div>
   </div>
   <div id="m-archive-filters" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:16px 20px 0"></div>
+  <div class="m-subnav" id="m-archive-sub"><div class="m-subnav-in" id="m-archive-sub-in"></div></div>
   <div id="m-archive-titlerow" class="pg-titlerow"><h2>The Archive</h2><span id="m-archive-n"></span></div>
   <div id="m-archive-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 20px 24px">
     <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Loading archive...</div>
@@ -5502,14 +5586,47 @@ as a personal collection quickly grew into something bigger: a curated platform 
   }
 
   // ── MOBILE SHOP ──
+  var mCountry = '', mClub = '', mSubOpen = false;
   function mSetFilter(filter, btn) {
+    var again = (filter === mCurrentFilter) && btn && (filter === 'clubs' || filter === 'national');
     mCurrentFilter = filter;
+    mCountry = ''; mClub = '';
+    // tapping Clubs / National again folds the menu away, tapping it once more opens it
+    mSubOpen = (filter === 'clubs' || filter === 'national') ? (again ? !mSubOpen : true) : false;
     document.querySelectorAll('.m-filter-btn').forEach(b => b.classList.remove('active'));
     if (btn) {
       btn.classList.add('active');
       try { btn.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); } catch (e) {}
     }
     renderMobileGrid();
+  }
+  function mSubPick(country, club) {
+    mCountry = country || ''; mClub = club || '';
+    renderMobileGrid();
+    try { var h = document.getElementById('m-shop-hero'); if (h && window.scrollY > h.offsetTop) h.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+  }
+  function mPaintSubnav() {
+    var box = document.getElementById('m-subnav'), inn = document.getElementById('m-subnav-in');
+    document.querySelectorAll('.m-filter-btn.has-menu').forEach(function (b) {
+      b.classList.toggle('open', mSubOpen && b.classList.contains('active'));
+    });
+    if (!box || !inn) return;
+    var cat = mCurrentFilter;
+    if ((cat !== 'clubs' && cat !== 'national') || typeof allShirts === 'undefined' || !allShirts.length) { box.classList.remove('open'); return; }
+    var pool = allShirts.filter(function (s) { return s.category === cat; });
+    var lg = ssLeagueStats(pool, cat);
+    var rows = [{ label: cat === 'clubs' ? 'League' : 'Country', chips: [{ t: cat === 'clubs' ? 'All clubs' : 'All teams', n: pool.length, on: !mCountry, js: "mSubPick('','')" }].concat(lg.map(function (x) {
+      return { t: x.label, n: x.n, on: mCountry === x.key, js: "mSubPick('" + x.key + "','')" };
+    })) }];
+    if (cat === 'clubs' && mCountry && mCountry !== '__other') {
+      var cl = ssClubList(pool, mCountry), lab = ssSubLabel('clubs', mCountry, '');
+      var tot = pool.filter(function (s) { return ssMegaCountryMatch(s, 'clubs', mCountry); }).length;
+      rows.push({ label: lab + ' clubs', chips: [{ t: 'All ' + lab, n: tot, on: !mClub, js: "mSubPick('" + mCountry + "','')" }].concat(cl.map(function (x) {
+        return { t: x.name, n: x.n, on: mClub === x.key, js: "mSubPick('" + mCountry + "','" + x.key.replace(/'/g, '') + "')" };
+      })) });
+    }
+    inn.innerHTML = ssChipRows(rows);
+    box.classList.toggle('open', mSubOpen);
   }
 
   // Typing in the search box used to rebuild the whole grid on every letter. Wait until you pause.
@@ -5603,6 +5720,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     } else if (mCurrentFilter !== 'all') {
       list = list.filter(function (s) { return s.category === mCurrentFilter; });
     }
+    list = ssSubFilter(list, mCurrentFilter, mCountry, mClub);
     var q = (document.getElementById('m-search-input') || {}).value || '';
     if (q) { var terms = expandSearchTerms(q.toLowerCase()); list = list.filter(function (s) { return shirtMatchesSearch(s, terms); }); }
     if (size) list = list.filter(function (s) { return s.size === size; });
@@ -5697,10 +5815,15 @@ as a personal collection quickly grew into something bigger: a curated platform 
     var arr = (list || []).filter(function (x) { return x && x.images && x.images[0]; });
     return arr.filter(function (x) { return x.available !== false; })[0] || arr[0] || null;
   }
-  function ssBannerSet(el, url) {
-    if (!el || !url || el.dataset.src === url) return;
-    el.dataset.src = url;
-    el.style.backgroundImage = 'url("' + String(url).replace(/"/g, '%22') + '")';
+  // Shows the small copy at once, then swaps in the medium copy (1100px) when it has arrived.
+  // The old banner stays until the new one is ready, so there is never an empty frame.
+  function ssBannerSet(el, raw) {
+    if (!el || !raw || el.dataset.src === raw) return;
+    el.dataset.src = raw;
+    var paint = function (u) { if (el.dataset.src === raw && u) el.style.backgroundImage = 'url("' + String(u).replace(/"/g, '%22') + '")'; };
+    var thumb = cldSize(raw, 400);
+    if (thumb && !el.style.backgroundImage) paint(thumb);
+    ssLoadGalleryUrl(raw, paint);
   }
   function ssPaintBanners() {
     var story = window.ssBannerPhotos.story || '';
@@ -5708,27 +5831,44 @@ as a personal collection quickly grew into something bigger: a curated platform 
     var arch = (typeof archiveItems !== 'undefined' && archiveItems) ? ssBannerPick(archiveItems) : null;
     document.querySelectorAll('.pg-hero-bg[data-banner]').forEach(function (el) {
       var k = el.getAttribute('data-banner'), url = '';
-      if (k === 'story') url = story || (shirt ? cldSize(shirt.images[0], 1400) : '');
-      else if (k === 'archive') url = arch ? cldSize(arch.images[0], 1400) : (story || '');
-      else if (k === 'shop' && !el.dataset.src) url = shirt ? cldSize(shirt.images[0], 1400) : '';
+      if (k === 'story') url = story || (shirt ? shirt.images[0] : '');
+      else if (k === 'archive') { var ap = ssArchiveBannerShirt(); url = ap ? ap.images[0] : (arch ? arch.images[0] : (story || '')); }
+      else if (k === 'shop' && !el.dataset.src) url = shirt ? shirt.images[0] : '';
       ssBannerSet(el, url);
     });
   }
   // The shop banner shows a different shirt every time you come back to the page
   // (and when you switch category), but stays put while you filter or search.
   window.ssShopFresh = true;
+  // One photo per category per visit: switching back and forth between categories
+  // reuses the photo that is already loaded instead of fetching a new one each time.
   function ssShopBannerShirt(list, key) {
     var arr = (list || []).filter(function (x) { return x && x.images && x.images[0]; });
     var avail = arr.filter(function (x) { return x.available !== false; });
     if (avail.length) arr = avail;
     if (!arr.length) return null;
     var st = window.ssBannerState = window.ssBannerState || {};
-    if (st.key === key && !window.ssShopFresh && st.pick && arr.some(function (x) { return x.id === st.pick.id; })) return st.pick;
+    if (window.ssShopFresh || !st.by) { st.by = {}; window.ssShopFresh = false; }
+    var cur = st.by[key];
+    if (cur) return cur;
+    var used = Object.keys(st.by).map(function (k) { return st.by[k].id; });
+    var choices = arr.filter(function (x) { return used.indexOf(x.id) === -1; });
+    if (!choices.length) choices = arr;
+    st.by[key] = choices[Math.floor(Math.random() * choices.length)];
+    return st.by[key];
+  }
+  // The Archive banner shows another archive shirt each time you open the page.
+  window.ssArchiveFresh = true;
+  function ssArchiveBannerShirt() {
+    if (typeof archiveItems === 'undefined' || !archiveItems) return null;
+    var arr = archiveItems.filter(function (x) { return x && x.images && x.images[0]; });
+    if (!arr.length) return null;
+    var st = window.ssArchiveBanner = window.ssArchiveBanner || {};
+    if (st.pick && !window.ssArchiveFresh && arr.some(function (x) { return x.id === st.pick.id; })) return st.pick;
     var choices = arr.filter(function (x) { return !st.pick || x.id !== st.pick.id; });
     if (!choices.length) choices = arr;
     st.pick = choices[Math.floor(Math.random() * choices.length)];
-    st.key = key;
-    window.ssShopFresh = false;
+    window.ssArchiveFresh = false;
     return st.pick;
   }
   function ssShopBannerRefresh() {
@@ -5747,8 +5887,8 @@ as a personal collection quickly grew into something bigger: a curated platform 
     if (ml) { set('d-shop-hero-eyebrow', t[0]); set('d-shop-hero-title', ml); set('d-shop-h', ml); }
     else set('d-shop-h', t[1]);
     set('d-shop-n', '(' + (list ? list.length : 0) + ')');
-    var pick = ssShopBannerShirt(list, 'd:' + dCurrentFilter + ':' + dCountry);
-    if (pick) ssBannerSet(document.getElementById('d-shop-hero-bg'), cldSize(pick.images[0], 1400));
+    var pick = ssShopBannerShirt(list, 'd:' + dCurrentFilter);
+    if (pick) ssBannerSet(document.getElementById('d-shop-hero-bg'), pick.images[0]);
   }
   [1200, 3500, 7000].forEach(function (ms) { setTimeout(ssPaintBanners, ms); });
   var mDecade = 'all';
@@ -5772,12 +5912,13 @@ as a personal collection quickly grew into something bigger: a curated platform 
     var t = M_SHOP_TEXT[mCurrentFilter] || M_SHOP_TEXT.all;
     var set = function (id, v) { var e = document.getElementById(id); if (e) e.textContent = v; };
     set('m-shop-hero-eyebrow', t[0]); set('m-shop-hero-title', t[1]); set('m-shop-hero-sub', t[2]);
+    var subl = ssSubLabel(mCurrentFilter, mCountry, mClub);
+    if (subl) { set('m-shop-hero-title', subl); t = [t[0], subl, t[2]]; }
     set('m-shop-h', t[1]); set('m-shop-n', '(' + list.length + ')');
     var bg = document.getElementById('m-shop-hero-bg');
     if (bg) {
       var pick = ssShopBannerShirt(list, 'm:' + mCurrentFilter);
-      var url = pick ? cldSize(pick.images[0], 1000) : '';
-      if (bg.dataset.src !== url) { bg.dataset.src = url; bg.style.backgroundImage = url ? 'url("' + String(url).replace(/"/g, '%22') + '")' : ''; }
+      if (pick) ssBannerSet(bg, pick.images[0]);
     }
   }
   function mPaintDecadeChips(all) {
@@ -5804,6 +5945,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     } else if (mCurrentFilter !== 'all') {
       shirts = shirts.filter(s => s.category === mCurrentFilter);
     }
+    shirts = ssSubFilter(shirts, mCurrentFilter, mCountry, mClub);
     if (search) { var terms = expandSearchTerms(search); shirts = shirts.filter(s => shirtMatchesSearch(s, terms)); }
     if (sizeFilter) shirts = shirts.filter(s => s.size === sizeFilter);
     if (priceFilter) {
@@ -5818,6 +5960,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     else if (sort === 'year-desc') shirts.sort((a,b) => parseInt(b.season||0) - parseInt(a.season||0));
     else if (sort === 'oldest') shirts.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
     mPaintShopHead(shirts);
+    mPaintSubnav();
     const grid = document.getElementById('m-shirt-grid');
     if (!shirts.length) { mGridToken++; grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No shirts found</div>'; return; }
     var mNewCut = Date.now() - 21 * 24 * 60 * 60 * 1000;
@@ -6042,7 +6185,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
   // ── DESKTOP SHOP ──
   function dSetFilter(filter, btn) {
     shopPage = 1;
-    dCountry = '';
+    dCountry = ''; dClub = '';
     dCurrentFilter = filter;
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     if (btn) { btn.classList.add('active'); }
@@ -6055,12 +6198,71 @@ as a personal collection quickly grew into something bigger: a curated platform 
 
   // ── Clubs / National: hover menus with leagues and countries ──
   var dCountry = '';   // '' = all, a country name, or '__other'
+  var dClub = '';      // '' = every club of that league, or a club key
   var SS_MEGA = {
     clubs: { title: 'Clubs by league', all: 'All club shirts',
       items: [['England','Premier League'],['Spain','La Liga'],['Italy','Serie A'],['Germany','Bundesliga'],['France','Ligue 1'],['Netherlands','Eredivisie'],['Portugal','Primeira Liga']] },
     national: { title: 'National teams by country', all: 'All national teams',
       items: [['Netherlands','Netherlands'],['Germany','Germany'],['Italy','Italy'],['Spain','Spain'],['England','England'],['France','France'],['Brazil','Brazil'],['Argentina','Argentina'],['Portugal','Portugal']] }
   };
+  // ── clubs per league, most shirts first ──
+  // St. Pauli (Bundesliga) and Real Betis (La Liga) are always listed, even before the first shirt is in.
+  var SS_CLUB_SEEDS = { 'Germany': [['pauli', 'FC St. Pauli']], 'Spain': [['betis', 'Real Betis']] };
+  function ssClubKey(s) {
+    var raw = String(s.club || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    if (!raw) return '';
+    var seeds = SS_CLUB_SEEDS[archiveCountry(s)] || [];
+    for (var i = 0; i < seeds.length; i++) if (raw.indexOf(seeds[i][0]) !== -1) return seeds[i][0];
+    return raw;
+  }
+  function ssClubList(pool, country) {
+    var m = {};
+    (pool || []).forEach(function (s) {
+      if (archiveCountry(s) !== country) return;
+      var k = ssClubKey(s); if (!k) return;
+      var e = m[k] || (m[k] = { n: 0, names: {} });
+      e.n++; var nm = String(s.club).trim(); e.names[nm] = (e.names[nm] || 0) + 1;
+    });
+    (SS_CLUB_SEEDS[country] || []).forEach(function (sd) { if (!m[sd[0]]) m[sd[0]] = { n: 0, names: {} }; m[sd[0]].seed = sd[1]; });
+    return Object.keys(m).map(function (k) {
+      var e = m[k];
+      var best = Object.keys(e.names).sort(function (a, b) { return e.names[b] - e.names[a]; })[0] || k;
+      return { key: k, n: e.n, name: e.seed || best };
+    }).sort(function (a, b) { return b.n - a.n || a.name.localeCompare(b.name); });
+  }
+  function ssClubName(pool, country, key) {
+    var l = ssClubList(pool, country).filter(function (x) { return x.key === key; })[0];
+    return l ? l.name : key;
+  }
+  function ssSubFilter(list, cat, country, club) {
+    if (country && (cat === 'clubs' || cat === 'national')) list = list.filter(function (s) { return ssMegaCountryMatch(s, cat, country); });
+    if (club && cat === 'clubs') list = list.filter(function (s) { return ssClubKey(s) === club; });
+    return list;
+  }
+  function ssSubLabel(cat, country, club) {
+    if (!country || (cat !== 'clubs' && cat !== 'national')) return '';
+    if (club && cat === 'clubs') return ssClubName((typeof allShirts !== 'undefined' ? allShirts : []).filter(function (s) { return s.category === 'clubs'; }), country, club);
+    if (country === '__other') return cat === 'clubs' ? 'Other leagues' : 'Other countries';
+    var it = SS_MEGA[cat].items.filter(function (x) { return x[0] === country; })[0];
+    return it ? it[1] : country;
+  }
+  // leagues (or countries) with shirts, most shirts first, "Other" last
+  function ssLeagueStats(pool, cat) {
+    var out = SS_MEGA[cat].items.map(function (x) {
+      return { key: x[0], label: x[1], n: pool.filter(function (s) { return ssMegaCountryMatch(s, cat, x[0]); }).length };
+    }).filter(function (x) { return x.n > 0; }).sort(function (a, b) { return b.n - a.n; });
+    var other = pool.filter(function (s) { return ssMegaCountryMatch(s, cat, '__other'); }).length;
+    if (other) out.push({ key: '__other', label: cat === 'clubs' ? 'Other leagues' : 'Other countries', n: other });
+    return out;
+  }
+  function ssChipRows(rows) {
+    return rows.map(function (r) {
+      return '<div class="ss-sub-lab">' + r.label + '</div><div class="ss-sub-row">'
+        + r.chips.map(function (c) {
+            return '<button type="button" class="ss-chip' + (c.on ? ' on' : '') + (c.n === 0 ? ' dim' : '') + '" onclick="' + c.js + '">' + c.t + (c.n != null ? ' <b>' + c.n + '</b>' : '') + '</button>';
+          }).join('') + '</div>';
+    }).join('');
+  }
   function ssMegaInCat(s, cat) {
     return cat === 'clubs' ? (s.category === 'clubs') : (s.category === 'national');
   }
@@ -6074,34 +6276,43 @@ as a personal collection quickly grew into something bigger: a curated platform 
     return '<div class="mega" data-mega="' + cat + '"><div class="mega-head">' + m.title + '</div>'
       + '<a href="/?p=shop&cat=' + cat + '" data-key="" onclick="return ssMegaGo(\'' + cat + '\',\'\',event)">' + m.all + ' <small data-n></small></a>'
       + m.items.map(function (x) {
-          return '<a href="/?p=shop&cat=' + cat + '" data-key="' + x[0] + '" onclick="return ssMegaGo(\'' + cat + '\',\'' + x[0] + '\',event)">' + x[1] + ' <small data-n></small></a>';
+          var link = '<a href="/?p=shop&cat=' + cat + '" data-key="' + x[0] + '"' + (cat === 'clubs' ? ' class="mega-has"' : '') + ' onclick="return ssMegaGo(\'' + cat + '\',\'' + x[0] + '\',event)">' + x[1] + ' <small data-n></small></a>';
+          return cat === 'clubs' ? '<div class="mega-row" data-row="' + x[0] + '">' + link + '<div class="mega-clubs"></div></div>' : link;
         }).join('')
       + '<a class="mega-sep" href="/?p=shop&cat=' + cat + '" data-key="__other" onclick="return ssMegaGo(\'' + cat + '\',\'__other\',event)">Other <small data-n></small></a></div>';
   }
-  function ssMegaGo(cat, key, ev) {
+  function ssMegaGo(cat, key, ev, club) {
     if (ev && ev.preventDefault) ev.preventDefault();
     dGoTo('shop');
     setTimeout(function () {
       dSetFilter(cat, null);
       dCountry = key || '';
+      dClub = club || '';
       shopPage = 1;
       renderDesktopGrid();
       try { if (document.activeElement) document.activeElement.blur(); } catch (e) {}
     }, 30);
     return false;
   }
-  function ssMegaLabel() {
-    if (!dCountry || (dCurrentFilter !== 'clubs' && dCurrentFilter !== 'national')) return '';
-    if (dCountry === '__other') return dCurrentFilter === 'clubs' ? 'Other leagues' : 'Other countries';
-    var it = SS_MEGA[dCurrentFilter].items.filter(function (x) { return x[0] === dCountry; })[0];
-    return it ? it[1] : dCountry;
-  }
+  function ssMegaLabel() { return ssSubLabel(dCurrentFilter, dCountry, dClub); }
   function ssMegaFill() {
     if (typeof allShirts === 'undefined' || !allShirts.length) return;
     document.querySelectorAll('.mega').forEach(function (m) {
       var cat = m.getAttribute('data-mega');
       var pool = allShirts.filter(function (s) { return ssMegaInCat(s, cat); });
-      m.querySelectorAll('a').forEach(function (a) {
+      if (cat === 'clubs') {
+        m.querySelectorAll('.mega-row').forEach(function (row) {
+          var c = row.getAttribute('data-row'), box = row.querySelector('.mega-clubs');
+          var lg = SS_MEGA.clubs.items.filter(function (x) { return x[0] === c; })[0];
+          var list = ssClubList(pool, c);
+          box.innerHTML = '<div class="mega-head">' + (lg ? lg[1] : c) + '</div>'
+            + '<a href="/?p=shop&cat=clubs" data-key="' + c + '" onclick="return ssMegaGo(\'clubs\',\'' + c + '\',event)">All ' + (lg ? lg[1] : c) + ' <small>' + pool.filter(function (s) { return ssMegaCountryMatch(s, 'clubs', c); }).length + '</small></a>'
+            + list.map(function (x) {
+                return '<a href="/?p=shop&cat=clubs" class="' + (x.n === 0 ? 'mega-dim' : '') + '" onclick="return ssMegaGo(\'clubs\',\'' + c + '\',event,\'' + x.key.replace(/'/g, '') + '\')">' + x.name + ' <small>' + x.n + '</small></a>';
+              }).join('');
+        });
+      }
+      m.querySelectorAll(':scope > a, :scope > .mega-row > a').forEach(function (a) {
         var key = a.getAttribute('data-key');
         var n = key === '' ? pool.length : pool.filter(function (s) { return ssMegaCountryMatch(s, cat, key); }).length;
         var sm = a.querySelector('[data-n]'); if (sm) sm.textContent = n;
@@ -6148,7 +6359,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     document.getElementById('d-sort').value = 'newest';
     document.getElementById('d-search-input').value = '';
     dCurrentFilter = 'all';
-    dCountry = '';
+    dCountry = ''; dClub = '';
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('d-filter-all').classList.add('active');
     renderDesktopGrid();
@@ -6351,9 +6562,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     } else if (dCurrentFilter !== 'all') {
       shirts = shirts.filter(s => s.category === dCurrentFilter);
     }
-    if (dCountry && (dCurrentFilter === 'clubs' || dCurrentFilter === 'national')) {
-      shirts = shirts.filter(function (s) { return ssMegaCountryMatch(s, dCurrentFilter, dCountry); });
-    }
+    shirts = ssSubFilter(shirts, dCurrentFilter, dCountry, dClub);
     if (search) { var terms = expandSearchTerms(search); shirts = shirts.filter(s => shirtMatchesSearch(s, terms)); }
     if (sizeFilter) shirts = shirts.filter(s => s.size === sizeFilter);
     if (decadeFilter) shirts = shirts.filter(s => shirtDecade(s) === decadeFilter);
@@ -7102,6 +7311,28 @@ as a personal collection quickly grew into something bigger: a curated platform 
     else if (e.key === 'ArrowRight') zoomNav(null, 1);
   });
 
+  // Left / right arrow keys flip through the photos of the shirt you are looking at,
+  // without clicking the photo first (laptop shirt page and the archive pop-up).
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    var t = e.target;
+    if (t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable)) return;
+    var lb = document.getElementById('zoom-lightbox');
+    if (lb && lb.classList.contains('open')) return;
+    var dir = e.key === 'ArrowRight' ? 1 : -1;
+    var n = (currentImages || []).length;
+    if (n < 2) return;
+    var am = document.getElementById('archive-detail-modal');
+    if (am && am.style.display && am.style.display !== 'none') {
+      e.preventDefault(); archiveSwitchImg(((currentImgIndex || 0) + dir + n) % n); return;
+    }
+    var d = document.getElementById('d-screen-detail');
+    if (d && d.classList.contains('active') && window.innerWidth >= 768) {
+      e.preventDefault(); galleryNav('d', dir);
+    }
+  });
+
   // ── DRAG-TO-SWIPE on desktop gallery ──
   (function initGalleryDrag() {
     function attach(mainId) {
@@ -7558,6 +7789,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
 
   // ── MOBILE NAV ──
   function mGoTo(screen) {
+    if (screen === 'archive') { window.ssArchiveFresh = true; setTimeout(function () { try { ssPaintBanners(); } catch (e) {} }, 60); }
     mCloseMenu();
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -7670,6 +7902,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
   function dGoTo(screen) {
     var target = document.getElementById('d-screen-'+screen);
     if (!target) return;
+    if (screen === 'archive') { window.ssArchiveFresh = true; setTimeout(function () { try { ssPaintBanners(); } catch (e) {} }, 60); }
     document.querySelectorAll('.dscreen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     target.classList.add('active');
@@ -7770,7 +8003,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
       });
   }
   // ── Archive filtering (subtle: All / Clubs / National / by period) ──
-  var archiveFilter = { group: 'all', value: null };
+  var archiveFilter = { group: 'all', value: null, club: null };
   // known national sides so we can split club vs national from the club field
   var NATIONAL_TEAMS = ['netherlands','holland','germany','west germany','brazil','argentina','france','italy','england','spain','portugal','belgium','croatia','uruguay','japan','usa','mexico','nigeria','cameroon','denmark','sweden','ireland'];
   function archiveIsNational(s) {
@@ -7790,7 +8023,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     'ajax': 'Netherlands', 'psv': 'Netherlands', 'feyenoord': 'Netherlands', 'az': 'Netherlands',
     'utrecht': 'Netherlands', 'twente': 'Netherlands', 'vitesse': 'Netherlands',
     'bayern': 'Germany', 'dortmund': 'Germany', 'borussia': 'Germany', 'schalke': 'Germany',
-    'hamburg': 'Germany', 'köln': 'Germany', 'koln': 'Germany', 'cologne': 'Germany',
+    'pauli': 'Germany', 'betis': 'Spain', 'hamburg': 'Germany', 'köln': 'Germany', 'koln': 'Germany', 'cologne': 'Germany',
     '1860': 'Germany', 'stuttgart': 'Germany', 'leverkusen': 'Germany', 'frankfurt': 'Germany',
     'milan': 'Italy', 'inter': 'Italy', 'juventus': 'Italy', 'roma': 'Italy', 'lazio': 'Italy',
     'napoli': 'Italy', 'fiorentina': 'Italy', 'parma': 'Italy', 'sampdoria': 'Italy', 'monza': 'Italy',
@@ -7842,7 +8075,29 @@ as a personal collection quickly grew into something bigger: a curated platform 
     if (f.group === 'national' && !archiveIsNational(s)) return false;
     if (f.group === 'decade' && f.value && archiveDecade(s) !== f.value) return false;
     if ((f.group === 'clubs' || f.group === 'national') && f.value && archiveCountry(s) !== f.value) return false;
+    if (f.group === 'clubs' && f.club && ssClubKey(s) !== f.club) return false;
     return true;
+  }
+  // leagues (or countries) and, for clubs, the clubs of the chosen league: most shirts first
+  function ssArchiveRows(items, f) {
+    if (f.group !== 'clubs' && f.group !== 'national') return [];
+    var isClubs = f.group === 'clubs';
+    var pool = items.filter(function (s) { return isClubs ? !archiveIsNational(s) : archiveIsNational(s); });
+    var counts = {};
+    pool.forEach(function (s) { var c = archiveCountry(s); if (c) counts[c] = (counts[c] || 0) + 1; });
+    var list = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); });
+    if (!list.length) return [];
+    var q = function (v) { return String(v).replace(/'/g, ''); };
+    var rows = [{ label: isClubs ? 'League' : 'Country', chips: [{ t: isClubs ? 'All leagues' : 'All countries', n: pool.length, on: !f.value, js: "setArchiveFilter('" + f.group + "',null)" }]
+      .concat(list.map(function (c) {
+        return { t: (isClubs && COUNTRY_LEAGUE[c]) ? COUNTRY_LEAGUE[c] : c, n: counts[c], on: f.value === c, js: "setArchiveFilter('" + f.group + "','" + q(c) + "')" };
+      })) }];
+    if (isClubs && f.value) {
+      var cl = ssClubList(pool, f.value), lab = COUNTRY_LEAGUE[f.value] || f.value;
+      if (cl.length) rows.push({ label: lab + ' clubs', chips: [{ t: 'All ' + lab, n: counts[f.value] || 0, on: !f.club, js: "setArchiveFilter('clubs','" + q(f.value) + "')" }]
+        .concat(cl.map(function (x) { return { t: x.name, n: x.n, on: f.club === x.key, js: "setArchiveFilter('clubs','" + q(f.value) + "',null,'" + q(x.key) + "')" }; })) });
+    }
+    return rows;
   }
   function buildArchiveFilters(items) {
     var wrap = document.getElementById('d-archive-filters');
@@ -7854,30 +8109,16 @@ as a personal collection quickly grew into something bigger: a curated platform 
     // ── row 1: the main choice ──
     var main = [];
     main.push(mkArchFilter('All Shirts', 'all', null, f.group === 'all'));
-    if (hasClub) main.push(mkArchFilter('Clubs', 'clubs', null, f.group === 'clubs'));
-    if (hasNat)  main.push(mkArchFilter('National', 'national', null, f.group === 'national'));
+    if (hasClub) main.push(mkArchFilter('Clubs', 'clubs', null, f.group === 'clubs', true));
+    if (hasNat)  main.push(mkArchFilter('National', 'national', null, f.group === 'national', true));
     main.push(mkArchFilter('By decade', 'decade', null, f.group === 'decade'));
 
     // ── row 2: sub-filters that belong to the chosen group ──
     var sub = [];
-    if (f.group === 'clubs' || f.group === 'national') {
-      var pool = items.filter(function(s){
-        return f.group === 'clubs' ? !archiveIsNational(s) : archiveIsNational(s);
-      });
-      var countries = {};
-      pool.forEach(function(s){ var c = archiveCountry(s); if (c) countries[c] = (countries[c] || 0) + 1; });
-      var list = Object.keys(countries).sort(function(a, b){
-        return countries[b] - countries[a] || a.localeCompare(b);
-      });
-      if (list.length > 1) {
-        var isClubs = f.group === 'clubs';
-        sub.push(mkArchFilter(isClubs ? 'All leagues' : 'All countries', f.group, null, !f.value));
-        list.forEach(function(c){
-          var label = (isClubs && COUNTRY_LEAGUE[c]) ? COUNTRY_LEAGUE[c] : c;
-          sub.push(mkArchFilter(label + ' (' + countries[c] + ')', f.group, c, f.value === c));
-        });
-      }
-    } else if (f.group === 'decade') {
+    var chipRows = ssArchiveRows(items, f);
+    if (chipRows.length) {
+      // handled below as a panel with chips
+        } else if (f.group === 'decade') {
       var decades = {};
       items.forEach(function(s){ var d = archiveDecade(s); if (d) decades[d] = (decades[d] || 0) + 1; });
       var dl = Object.keys(decades).sort();
@@ -7889,6 +8130,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
 
     wrap.innerHTML =
       '<div style="display:flex;gap:8px;flex-wrap:wrap;width:100%">' + main.join('') + '</div>'
+      + (chipRows.length ? '<div class="arch-sub-panel">' + ssChipRows(chipRows) + '</div>' : '')
       + (sub.length
           ? '<div style="display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:10px;padding-top:10px;border-top:1px solid var(--surf-2)">'
             + '<span style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--line-soft);align-self:center;margin-right:4px">'
@@ -7896,12 +8138,12 @@ as a personal collection quickly grew into something bigger: a curated platform 
             + sub.join('') + '</div>'
           : '');
   }
-  function mkArchFilter(label, group, value, active) {
+  function mkArchFilter(label, group, value, active, menu) {
     var onclick = "setArchiveFilter('" + group + "'," + (value ? "'" + String(value).replace(/'/g, "\\'") + "'" : 'null') + ")";
-    return '<button class="arch-filter' + (active ? ' active' : '') + '" onclick="' + onclick + '">' + label + '</button>';
+    return '<button class="arch-filter' + (active ? ' active' : '') + (menu ? ' has-menu' : '') + '" onclick="' + onclick + '">' + label + '</button>';
   }
-  function setArchiveFilter(group, value) {
-    archiveFilter = { group: group, value: value };
+  function setArchiveFilter(group, value, _x, club) {
+    archiveFilter = { group: group, value: value, club: club || null };
     if (archiveItems) {
       buildArchiveFilters(archiveItems);
       paintArchive(archiveItems);
@@ -7938,11 +8180,18 @@ as a personal collection quickly grew into something bigger: a curated platform 
         var hasClub = allItems.some(function(s){ return !archiveIsNational(s); });
         var hasNat = allItems.some(function(s){ return archiveIsNational(s); });
         var decades = {}; allItems.forEach(function(s){ var d = archiveDecade(s); if (d) decades[d] = true; });
-        var btns = [mkArchFilter('All', 'all', null)];
-        if (hasClub) btns.push(mkArchFilter('Clubs', 'clubs', null));
-        if (hasNat) btns.push(mkArchFilter('National', 'national', null));
-        Object.keys(decades).sort().forEach(function(d){ btns.push(mkArchFilter(d, 'decade', d)); });
+        var af = archiveFilter;
+        var btns = [mkArchFilter('All', 'all', null, af.group === 'all')];
+        if (hasClub) btns.push(mkArchFilter('Clubs', 'clubs', null, af.group === 'clubs', true));
+        if (hasNat) btns.push(mkArchFilter('National', 'national', null, af.group === 'national', true));
+        Object.keys(decades).sort().forEach(function(d){ btns.push(mkArchFilter(d, 'decade', d, af.group === 'decade' && af.value === d)); });
         mwrap.innerHTML = btns.join('');
+        var msub = document.getElementById('m-archive-sub'), minn = document.getElementById('m-archive-sub-in');
+        if (msub && minn) {
+          var mrows = ssArchiveRows(allItems, af);
+          minn.innerHTML = ssChipRows(mrows);
+          msub.classList.toggle('open', mrows.length > 0);
+        }
       }
       var items = allItems.filter(archiveMatchesFilter);
       if (!items.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No shirts in this category.</div>'; return; }
@@ -10724,18 +10973,92 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
   }
 
   // ── reels ──
+  // Two observers: one loads a clip shortly before it scrolls into view (so it is ready when it arrives),
+  // the other plays the clips you can actually see and pauses the rest.
+  var lbOpen = false;
+  function ssReelPlay(v) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+  function ssReelLoad(v) {
+    if (v.dataset.ld) return;
+    v.dataset.ld = '1'; v.preload = 'auto';
+    try { v.load(); } catch (e) {}
+  }
+  var ioLoad = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) ssReelLoad(e.target); });
+  }, { rootMargin: '0px 360px 0px 360px', threshold: 0 }) : null;
   var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       var v = e.target;
-      if (e.isIntersecting) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+      if (e.isIntersecting && !lbOpen) { ssReelLoad(v); ssReelPlay(v); }
       else { v.pause(); }
     });
-  }, { threshold: 0.4 }) : null;
+  }, { threshold: 0.5 }) : null;
 
   function thumbOf(post) {
     if (post.sizes && post.sizes.medium && post.sizes.medium.mediaUrl) return post.sizes.medium.mediaUrl;
     if (post.sizes && post.sizes.small && post.sizes.small.mediaUrl) return post.sizes.small.mediaUrl;
     return post.thumbnailUrl || '';
+  }
+
+  // ── the big player: opens when you tap a reel, starts at once, with a way to Instagram and a way back ──
+  var lbEl = null, lbVideo = null, lbSound = null, lbLink = null, lbStill = null, lbLast = null;
+  var SND_OFF = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12A4.5 4.5 0 0 0 14 8v2.2l2.5 2.5V12zM19 12a6.9 6.9 0 0 1-.6 2.8l1.5 1.5A8.9 8.9 0 0 0 21 12a9 9 0 0 0-6-8.5v2.1A7 7 0 0 1 19 12zM4.3 3 3 4.3 7.7 9H3v6h4l5 5v-6.7l4.2 4.2c-.7.5-1.4.9-2.2 1.1v2.1a9 9 0 0 0 3.6-1.8l2.1 2.1 1.3-1.3L4.3 3zM12 4 9.9 6.1 12 8.2V4z"/></svg>';
+  var SND_ON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+  function buildLb() {
+    if (lbEl) return;
+    lbEl = document.createElement('div');
+    lbEl.className = 'ss-reel-lb'; lbEl.setAttribute('role', 'dialog'); lbEl.setAttribute('aria-modal', 'true'); lbEl.setAttribute('aria-label', 'Reel');
+    lbEl.innerHTML = '<button type="button" class="ss-reel-lb-x" aria-label="Close">&times;</button>'
+      + '<div class="ss-reel-lb-card"><img class="ss-reel-lb-still" alt="" style="display:none"><video playsinline muted loop></video>'
+      + '<button type="button" class="ss-reel-lb-sound" aria-label="Sound on or off"></button></div>'
+      + '<div class="ss-reel-lb-actions"><a class="ss-reel-lb-btn gold" target="_blank" rel="noopener">View on Instagram &#8599;</a>'
+      + '<button type="button" class="ss-reel-lb-btn ss-reel-lb-back">&larr; Back to the site</button></div>';
+    document.body.appendChild(lbEl);
+    lbVideo = lbEl.querySelector('video'); lbSound = lbEl.querySelector('.ss-reel-lb-sound');
+    lbLink = lbEl.querySelector('a.ss-reel-lb-btn'); lbStill = lbEl.querySelector('.ss-reel-lb-still');
+    lbVideo.muted = true; lbVideo.setAttribute('muted', ''); lbVideo.playsInline = true; lbVideo.setAttribute('playsinline', ''); lbVideo.setAttribute('webkit-playsinline', '');
+    lbVideo.addEventListener('playing', function () { lbVideo.classList.add('on'); });
+    lbVideo.addEventListener('loadeddata', function () { lbVideo.classList.add('on'); });
+    lbVideo.addEventListener('error', function () { lbVideo.classList.remove('on'); });
+    lbSound.innerHTML = SND_OFF;
+    lbSound.addEventListener('click', function () {
+      lbVideo.muted = !lbVideo.muted;
+      if (lbVideo.muted) lbVideo.setAttribute('muted', ''); else lbVideo.removeAttribute('muted');
+      lbSound.innerHTML = lbVideo.muted ? SND_OFF : SND_ON;
+      ssReelPlay(lbVideo);
+    });
+    lbEl.querySelector('.ss-reel-lb-x').addEventListener('click', closeReel);
+    lbEl.querySelector('.ss-reel-lb-back').addEventListener('click', closeReel);
+    lbEl.addEventListener('click', function (e) { if (e.target === lbEl) closeReel(); });
+    document.addEventListener('keydown', function (e) { if (lbOpen && e.key === 'Escape') closeReel(); });
+  }
+  function openReel(post) {
+    buildLb();
+    lbLast = document.activeElement;
+    lbLink.href = post.permalink || 'https://www.instagram.com/shirtsociete/';
+    if (post.poster) { lbStill.src = post.poster; lbStill.style.display = ''; } else { lbStill.style.display = 'none'; }
+    lbVideo.classList.remove('on');
+    lbVideo.muted = true; lbVideo.setAttribute('muted', ''); lbSound.innerHTML = SND_OFF;
+    lbSound.style.display = post.mediaUrl ? '' : 'none';
+    lbVideo.style.display = post.mediaUrl ? '' : 'none';
+    lbEl.classList.add('open'); lbOpen = true;
+    document.body.style.overflow = 'hidden';
+    document.querySelectorAll('.ss-reel video').forEach(function (v) { v.pause(); });
+    if (post.mediaUrl) {
+      lbVideo.src = post.mediaUrl;
+      lbVideo.load();
+      ssReelPlay(lbVideo);
+    }
+    try { lbEl.querySelector('.ss-reel-lb-back').focus({ preventScroll: true }); } catch (e) {}
+  }
+  function closeReel() {
+    if (!lbEl) return;
+    lbOpen = false;
+    lbEl.classList.remove('open');
+    try { lbVideo.pause(); lbVideo.removeAttribute('src'); lbVideo.load(); } catch (e) {}
+    document.body.style.overflow = '';
+    try { if (lbLast && lbLast.focus) lbLast.focus({ preventScroll: true }); } catch (e) {}
+    // let the row start playing the clips that are in view again
+    document.querySelectorAll('.ss-reel video').forEach(function (v) { var r = v.getBoundingClientRect(); if (r.right > 0 && r.left < window.innerWidth && r.top < window.innerHeight && r.bottom > 0) ssReelPlay(v); });
   }
 
   function renderReels(rowId, posts) {
@@ -10752,13 +11075,24 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
       var v = null;
       if (post.mediaUrl) {
         v = document.createElement('video');
-        v.src = post.mediaUrl;
-        if (post.poster) v.poster = post.poster;
+        v.src = post.mediaUrl + (post.mediaUrl.indexOf('#') === -1 ? '#t=0.05' : '');
         v.muted = true; v.loop = true; v.playsInline = true;
+        v.addEventListener('playing', function () { v.classList.add('on'); });
+        v.addEventListener('loadeddata', function () { v.classList.add('on'); });
+        v.addEventListener('error', function () {
+          v.classList.remove('on');
+          if (!v.dataset.retry) { v.dataset.retry = '1'; setTimeout(function () { try { v.load(); if (!lbOpen) ssReelPlay(v); } catch (e) {} }, 1500); }
+        });
+        v.addEventListener('stalled', function () { if (!v.dataset.stall) { v.dataset.stall = '1'; setTimeout(function () { v.dataset.stall = ''; if (v.readyState < 3 && !v.paused) { try { v.load(); ssReelPlay(v); } catch (e) {} } }, 3000); } });
         v.setAttribute('muted', '');
         v.setAttribute('playsinline', '');
         v.setAttribute('webkit-playsinline', '');
         v.preload = 'none';
+        if (post.poster) {
+          var st = document.createElement('img');
+          st.className = 'ss-reel-still'; st.src = post.poster; st.alt = ''; st.loading = 'lazy';
+          a.appendChild(st);
+        }
         a.appendChild(v);
       } else if (post.poster) {
         // Instagram does not hand out the video file of reels that use licensed
@@ -10785,8 +11119,10 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
         a.appendChild(cap);
       }
 
+      // a tap opens the big player instead of leaving the site
+      a.addEventListener('click', function (ev) { ev.preventDefault(); openReel(post); });
       row.appendChild(a);
-      if (io && v) io.observe(v);
+      if (v) { if (ioLoad) ioLoad.observe(v); if (io) io.observe(v); }
     });
     var sec = row.closest('.ss-reels-sec');
     if (sec) sec.style.display = posts.length ? '' : 'none';
