@@ -2723,6 +2723,85 @@
     }
     #screen-shop .m-filter-btn.active { background: none; color: var(--white); border-bottom-color: var(--gold); }
 
+
+    /* ═══ PAGE BANNER + BLOCKS: shared by Our Story, Archive and the shop on a laptop ═══ */
+    :root { --pg-alt: var(--surf-2); }
+    @supports (background: color-mix(in srgb, red 5%, blue)) {
+      :root { --pg-alt: color-mix(in srgb, var(--white) 6%, var(--black)); }
+    }
+    .pg-hero { position: relative; min-height: 44vh; display: flex; align-items: flex-end; overflow: hidden; background: #0a0905; color: #f5f0e8; }
+    .pg-hero-bg { position: absolute; inset: 0; background: #14110c center 30% / cover no-repeat; }
+    .pg-hero::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(10,9,5,.35) 0%, rgba(10,9,5,.1) 35%, rgba(10,9,5,.9) 100%); }
+    .pg-hero-in { position: relative; z-index: 2; padding: 0 20px 24px; max-width: 460px; }
+    .pg-hero-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #c8a950; font-weight: 600; margin-bottom: 8px; }
+    .pg-hero-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 36px; line-height: 1.05; margin: 0 0 8px; color: #f5f0e8; }
+    .pg-hero-sub { font-size: 14px; line-height: 1.5; margin: 0; color: rgba(245,240,232,.88); }
+    .pg-titlerow { display: flex; align-items: baseline; gap: 8px; padding: 28px 16px 12px; }
+    .pg-titlerow h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: .3px; text-transform: uppercase; line-height: 1; margin: 0; color: var(--white); }
+    .pg-titlerow span { font-size: 13px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+    .pg-alt { background: var(--pg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    @media (min-width: 768px) {
+      .pg-hero { min-height: 440px; }
+      .pg-hero-bg { background-position: center 28%; }
+      .pg-hero-in { padding: 0 52px 48px; max-width: 760px; }
+      .pg-hero-eyebrow { font-size: 11px; letter-spacing: 4px; margin-bottom: 12px; }
+      .pg-hero-title { font-size: clamp(44px, 5vw, 72px); line-height: 1; margin-bottom: 12px; }
+      .pg-hero-sub { font-size: 16px; max-width: 560px; }
+      .pg-titlerow { padding: 40px 52px 8px; }
+      .pg-titlerow h2 { font-size: 34px; }
+    }
+
+    /* Our Story on a phone: the existing flex order stays; banner first, blocks get their own background */
+    @media (max-width: 767px) {
+      #screen-about > div { position: relative; padding-top: 0 !important; }
+      #screen-about > div > .pg-hero { order: -1; margin: 0 -20px; min-height: 52vh; }
+      #screen-about > div > .detail-back { position: absolute; top: 14px; left: 0; z-index: 5; padding: 0; color: #f5f0e8; }
+      #screen-about > div > .ss-next-fair { order: 0; margin-top: 22px; }
+      #screen-about > div > .story-purpose { order: 7; background: var(--pg-alt); margin: 0 -20px !important; padding: 28px 20px !important;
+        border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      #screen-about > div > div:last-child { background: var(--pg-alt); margin: 26px -20px 0 !important; padding: 28px 20px 8px !important;
+        border-top: 1px solid var(--line) !important; border-bottom: 1px solid var(--line); }
+      #screen-about > div > .story-label { margin-top: 30px; }
+
+      /* Archive on a phone: banner, tabs that stay under the header, title with count, big cards, story underneath */
+      #m-archive-intro { padding: 0 !important; border: 0 !important; text-align: left !important; }
+      #screen-archive > #m-archive-filters { order: 1; position: sticky; top: calc(66px + env(safe-area-inset-top)); z-index: 30;
+        background: var(--black); flex-wrap: nowrap !important; justify-content: flex-start !important; overflow-x: auto;
+        padding: 0 8px !important; border-bottom: 1px solid var(--line); scrollbar-width: none; }
+      #m-archive-filters::-webkit-scrollbar { display: none; }
+      #m-archive-filters .arch-filter { background: none !important; border: none !important; border-bottom: 2px solid transparent !important; border-radius: 0 !important;
+        padding: 15px 12px 13px; font-size: 11.5px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; white-space: nowrap; color: var(--text-muted-2); }
+      #m-archive-filters .arch-filter.active { color: var(--white); border-bottom-color: var(--gold) !important; }
+      #screen-archive > #m-archive-titlerow { order: 2; }
+      #screen-archive > #m-archive-grid { order: 3; gap: 26px 12px !important; padding: 4px 16px 32px !important; }
+      #screen-archive > #m-archive-about { order: 4; }
+      .m-arch-card .m-arch-img { position: relative; aspect-ratio: 4 / 5; background: var(--surf-2); overflow: hidden; }
+      .m-arch-card .m-arch-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .m-arch-card .m-arch-name { font-size: 13px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; line-height: 1.25; margin-top: 12px; color: var(--white);
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      .m-arch-card .m-arch-meta { font-size: 12px; color: var(--text-muted-2); margin-top: 5px; }
+      .m-arch-tag { position: absolute; top: 10px; left: 10px; background: var(--black); color: var(--white); font: 700 10px/1 'DM Sans', sans-serif;
+        letter-spacing: 1.2px; text-transform: uppercase; padding: 6px 8px; }
+    }
+    .m-archive-about-in { padding: 30px 20px 34px; text-align: center; }
+
+    /* Laptop: shop and archive cards follow the same look as on the phone */
+    @media (min-width: 768px) {
+      #d-screen-shop .shirt-card, #d-archive-grid .shirt-card { background: none; border-radius: 0; box-shadow: none; overflow: visible; }
+      #d-screen-shop .shirt-card-img, #d-archive-grid .shirt-card-img { aspect-ratio: 4 / 5; background: var(--surf-2); }
+      #d-screen-shop .shirt-card-img img, #d-archive-grid .shirt-card-img img { width: 100%; height: 100%; object-fit: cover; }
+      #d-screen-shop .shirt-card-body, #d-archive-grid .shirt-card-body { padding: 14px 0 0; }
+      #d-screen-shop .shirt-card-club, #d-archive-grid .shirt-card-club { display: none; }
+      #d-screen-shop .shirt-card-title, #d-archive-grid .shirt-card-title { font-size: 13px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; line-height: 1.3; margin-bottom: 6px; }
+      #d-screen-shop .shirt-card-price { color: var(--white); font-size: 15px; font-weight: 500; }
+      #d-screen-shop .shirt-card:hover { box-shadow: none; }
+      #d-screen-shop .shirt-card:hover .shirt-card-title { text-decoration: underline; text-underline-offset: 3px; }
+      .d-pg-section { padding: 56px 52px; }
+      .d-pg-alt { background: var(--pg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      #d-screen-archive .d-arch-text { padding: 48px 52px 44px; text-align: center; border-bottom: 0; }
+      #cin-featured > .d-home-block-alt { background: var(--pg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    }
     .m-shop-hero { position: relative; min-height: 44vh; display: flex; align-items: flex-end; overflow: hidden; background: #0a0905; }
     .m-shop-hero-bg { position: absolute; inset: 0; background: #14110c center 30% / cover no-repeat; }
     .m-shop-hero::after { content: ''; position: absolute; inset: 0; pointer-events: none;
@@ -3395,9 +3474,23 @@
 
 <!-- MOBILE ARCHIVE -->
 <div id="screen-archive" class="screen" style="padding-bottom:90px">
-  <div id="m-archive-intro" style="padding:28px 20px 20px;text-align:center;border-bottom:1px solid var(--surf-2)">
-    <div style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:500">Private Collection</div>
-    <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:32px;line-height:1.05;margin-bottom:14px">The Shirt Société Archive</h1>
+  <div id="m-archive-intro">
+    <div class="pg-hero">
+      <div class="pg-hero-bg" data-banner="archive"></div>
+      <div class="pg-hero-in">
+        <div class="pg-hero-eyebrow">Private Collection</div>
+        <h1 class="pg-hero-title">The Shirt Soci&eacute;t&eacute; Archive</h1>
+        <p class="pg-hero-sub">Pieces we keep. A record of the shirts that stay with us.</p>
+      </div>
+    </div>
+  </div>
+  <div id="m-archive-filters" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:16px 20px 0"></div>
+  <div id="m-archive-titlerow" class="pg-titlerow"><h2>The Archive</h2><span id="m-archive-n"></span></div>
+  <div id="m-archive-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 20px 24px">
+    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Loading archive...</div>
+  </div>
+  <div id="m-archive-about" class="pg-alt">
+    <div class="m-archive-about-in">
     <p style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.75;color:var(--text-muted-2);margin-bottom:12px">What drives us are beautiful football shirts. Some shirts simply mean too much to let go: rare specs, match worn jerseys and personal grails that tell the story of the game we love.</p>
     <p style="font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.7;color:var(--text-muted-2);margin-bottom:18px">Want to see more photos, ask a question, or make an offer? Reach out any time via Instagram or email.</p>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
@@ -3410,10 +3503,7 @@
         Send a message
       </button>
     </div>
-  </div>
-  <div id="m-archive-filters" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:16px 20px 0"></div>
-  <div id="m-archive-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 20px 24px">
-    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Loading archive...</div>
+    </div>
   </div>
 </div>
 
@@ -3738,7 +3828,7 @@
 
   <div style="height:1px;background:rgba(255,255,255,.05);margin:0 52px"></div>
 
-  <div style="padding:48px 52px 36px">
+  <div class="d-home-block-alt" style="padding:48px 52px 36px">
     <div id="mw-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
       <div>
         <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Authentic &amp; Verified</div>
@@ -3764,7 +3854,7 @@
 
   <div style="height:1px;background:rgba(255,255,255,.05);margin:0 52px"></div>
 
-  <div style="padding:48px 52px 64px">
+  <div class="d-home-block-alt" style="padding:48px 52px 64px">
     <div id="cl-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
       <div>
         <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Club Heritage</div>
@@ -3841,10 +3931,15 @@
 
     <!-- SHOP -->
     <div class="dscreen" id="d-screen-shop">
-      <div class="shop-header">
-        <h2 style="font-size:28px;font-weight:500;margin-bottom:4px">The Collection</h2>
-        <p style="font-size:14px;color:var(--text-muted)">Timeless, Original, Rare</p>
-      </div>
+      <section class="pg-hero">
+        <div class="pg-hero-bg" id="d-shop-hero-bg" data-banner="shop"></div>
+        <div class="pg-hero-in">
+          <div class="pg-hero-eyebrow" id="d-shop-hero-eyebrow">The shop</div>
+          <h1 class="pg-hero-title" id="d-shop-hero-title">All shirts</h1>
+          <p class="pg-hero-sub" id="d-shop-hero-sub">Timeless, original, rare. Every shirt is a single piece.</p>
+        </div>
+      </section>
+      <div class="pg-titlerow"><h2 id="d-shop-h">All shirts</h2><span id="d-shop-n"></span></div>
       <div class="shop-toolbar">
         <div class="search-wrap">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -4085,23 +4180,12 @@
 
     <!-- SHIRT SOCIÉTÉ ARCHIVE (private collection, not for sale) -->
     <div class="dscreen" id="d-screen-archive">
-      <section style="padding:56px 52px 40px;border-bottom:1px solid var(--surf-2);text-align:center">
-        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:500">Private Collection</div>
-        <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(32px,4vw,52px);line-height:1.05;margin-bottom:22px">The Shirt Société Archive</h1>
-        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:var(--text-muted-2)">What drives us are beautiful football shirts. Some shirts simply mean too much to let go: rare specs, match worn jerseys and personal grails that tell the story of the game we love.</p>
-        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:var(--text-muted-2)">The Shirt Société Archive brings these pieces together in one place, the shirts we are most proud to have owned. This collection will keep growing as we do, and every so often one of these shirts may find a new home with the right collector. Looking for a shirt you can buy today? Browse <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.35)">the full collection</a> or our <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.35)">match worn shirts</a>.</p>
-        <p style="max-width:600px;margin:0 auto 30px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.75;color:var(--text-muted-2)">Want to see more photos, ask a question, or make an offer? Reach out any time via Instagram or email.</p>
-
-        <div style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:500">Contact</div>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-          <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:var(--gold);padding:11px 20px;border-radius:100px;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s" onmouseover="this.style.background='rgba(200,169,80,.18)'" onmouseout="this.style.background='rgba(200,169,80,.1)'">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-            @shirtsociete
-          </a>
-          <button onclick="openContactModal()" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--cream);padding:11px 20px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.5)'" onmouseout="this.style.borderColor='var(--line)'">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><polyline points="22,6 12,13 2,6"/></svg>
-            Send a message
-          </button>
+      <section class="pg-hero">
+        <div class="pg-hero-bg" data-banner="archive"></div>
+        <div class="pg-hero-in">
+          <div class="pg-hero-eyebrow">Private Collection</div>
+          <h1 class="pg-hero-title">The Shirt Soci&eacute;t&eacute; Archive</h1>
+          <p class="pg-hero-sub">Pieces we keep. A record of the shirts that stay with us.</p>
         </div>
       </section>
       <div style="padding:28px 52px 64px">
@@ -4120,14 +4204,34 @@
           <div class="loading" style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Loading archive...</div>
         </div>
       </div>
+      <section class="d-arch-text d-pg-alt">
+        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:var(--text-muted-2)">What drives us are beautiful football shirts. Some shirts simply mean too much to let go: rare specs, match worn jerseys and personal grails that tell the story of the game we love.</p>
+        <p style="max-width:600px;margin:0 auto 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.8;color:var(--text-muted-2)">The Shirt Société Archive brings these pieces together in one place, the shirts we are most proud to have owned. This collection will keep growing as we do, and every so often one of these shirts may find a new home with the right collector. Looking for a shirt you can buy today? Browse <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.35)">the full collection</a> or our <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.35)">match worn shirts</a>.</p>
+        <p style="max-width:600px;margin:0 auto 30px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.75;color:var(--text-muted-2)">Want to see more photos, ask a question, or make an offer? Reach out any time via Instagram or email.</p>
+
+        <div style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:500">Contact</div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:var(--gold);padding:11px 20px;border-radius:100px;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s" onmouseover="this.style.background='rgba(200,169,80,.18)'" onmouseout="this.style.background='rgba(200,169,80,.1)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @shirtsociete
+          </a>
+          <button onclick="openContactModal()" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--cream);padding:11px 20px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(200,169,80,.5)'" onmouseout="this.style.borderColor='var(--line)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Send a message
+          </button>
+        </div>
+      </section>
     </div>
 
     <!-- ABOUT -->
     <div class="dscreen" id="d-screen-about">
-      <section class="page-head">
-        <div class="ph-eyebrow">Est. 2025 &middot; Harderwijk</div>
-        <h1>Our Story</h1>
-        <p>Curated vintage &amp; match worn shirts, sourced across Europe by a true football collector.</p>
+      <section class="pg-hero">
+        <div class="pg-hero-bg" data-banner="story"></div>
+        <div class="pg-hero-in">
+          <div class="pg-hero-eyebrow">Est. 2025 &middot; Harderwijk</div>
+          <h1 class="pg-hero-title">Our Story</h1>
+          <p class="pg-hero-sub">Curated vintage &amp; match worn shirts, sourced across Europe by a true football collector.</p>
+        </div>
       </section>
 
       <div data-ev-show="next" style="padding:28px 64px 0;max-width:620px">
@@ -4344,7 +4448,7 @@
 
 
       <!-- Story section -->
-      <div class="anim-about slide-left story-band">
+      <div class="anim-about slide-left story-band d-pg-alt">
 
         <div class="story-intro">
           <div>
@@ -4551,9 +4655,13 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
       Back
     </div>
-    <div class="page-head" style="margin-bottom:24px;padding-left:0;padding-right:0">
-      <div class="ph-eyebrow">Est. 2025 &middot; Harderwijk</div>
-      <h1>Our Story</h1>
+    <div class="pg-hero">
+      <div class="pg-hero-bg" data-banner="story"></div>
+      <div class="pg-hero-in">
+        <div class="pg-hero-eyebrow">Est. 2025 &middot; Harderwijk</div>
+        <h1 class="pg-hero-title">Our Story</h1>
+        <p class="pg-hero-sub">Curated vintage &amp; match worn shirts, sourced across Europe by a true football collector.</p>
+      </div>
     </div>
     <section class="ss-next-fair" data-ev-show="next">
   <div class="nf-eyebrow"><i></i>Next fair</div>
@@ -4901,6 +5009,8 @@ as a personal collection quickly grew into something bigger: a curated platform 
       window.ssHeroVideoMobile  = bySlug['hero-video-mobile']  || [];
       try { localStorage.setItem('ss-hero-cache', JSON.stringify({ v: bySlug['hero-video-mobile'] || [], img: bySlug['mobile-hero'] || [] })); } catch (e) {}
       window.ssHeroVideoDesktop = bySlug['hero-video-desktop'] || [];
+      window.ssBannerPhotos.story = ((bySlug['fair-essen'] || bySlug['fair-leipzig'] || bySlug['fair-hamburg'] || [])[0]) || '';
+      if (typeof ssPaintBanners === 'function') ssPaintBanners();
 
       // logo: every <img data-ss-logo>. If the old image already failed and the
       // text fallback took its place, bring the image back and drop the text.
@@ -5529,6 +5639,39 @@ as a personal collection quickly grew into something bigger: a curated platform 
 
   var mGridToken = 0;
   // era chips + the banner and heading of the shop page
+
+  // ── Page banners: Our Story, Archive and the laptop shop show a photo, like the phone shop ──
+  window.ssBannerPhotos = window.ssBannerPhotos || {};
+  function ssBannerPick(list) {
+    var arr = (list || []).filter(function (x) { return x && x.images && x.images[0]; });
+    return arr.filter(function (x) { return x.available !== false; })[0] || arr[0] || null;
+  }
+  function ssBannerSet(el, url) {
+    if (!el || !url || el.dataset.src === url) return;
+    el.dataset.src = url;
+    el.style.backgroundImage = 'url("' + String(url).replace(/"/g, '%22') + '")';
+  }
+  function ssPaintBanners() {
+    var story = window.ssBannerPhotos.story || '';
+    var shirt = (typeof allShirts !== 'undefined') ? ssBannerPick(allShirts) : null;
+    var arch = (typeof archiveItems !== 'undefined' && archiveItems) ? ssBannerPick(archiveItems) : null;
+    document.querySelectorAll('.pg-hero-bg[data-banner]').forEach(function (el) {
+      var k = el.getAttribute('data-banner'), url = '';
+      if (k === 'story') url = story || (shirt ? cldSize(shirt.images[0], 1400) : '');
+      else if (k === 'archive') url = arch ? cldSize(arch.images[0], 1400) : (story || '');
+      else if (k === 'shop' && !el.dataset.src) url = shirt ? cldSize(shirt.images[0], 1400) : '';
+      ssBannerSet(el, url);
+    });
+  }
+  function ssPaintShopBanner(list) {
+    var t = (typeof M_SHOP_TEXT !== 'undefined' && M_SHOP_TEXT[dCurrentFilter]) || (typeof M_SHOP_TEXT !== 'undefined' ? M_SHOP_TEXT.all : ['The shop', 'All shirts', '']);
+    var set = function (id, v) { var e = document.getElementById(id); if (e) e.textContent = v; };
+    set('d-shop-hero-eyebrow', t[0]); set('d-shop-hero-title', t[1]); set('d-shop-hero-sub', t[2]);
+    set('d-shop-h', t[1]); set('d-shop-n', '(' + (list ? list.length : 0) + ')');
+    var pick = ssBannerPick(list || []);
+    if (pick) ssBannerSet(document.getElementById('d-shop-hero-bg'), cldSize(pick.images[0], 1400));
+  }
+  [1200, 3500, 7000].forEach(function (ms) { setTimeout(ssPaintBanners, ms); });
   var mDecade = 'all';
   function mSetDecade(d) { mDecade = d; renderMobileGrid(); }
   function mShirtYear(s) { var y = parseInt(String(s.season || '').slice(0, 4), 10); return isFinite(y) ? y : 0; }
@@ -6061,6 +6204,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     const grid = document.getElementById('d-shirt-grid');
     var countEl = document.getElementById('d-result-count');
     if (!shirts.length) {
+      ssPaintShopBanner(shirts);
       if (countEl) countEl.textContent = 'No shirts found';
       grid.className = 'shirt-grid';
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">No shirts found. Try clearing a filter.</div>';
@@ -6068,6 +6212,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
       return;
     }
     if (countEl) countEl.textContent = shirts.length + (shirts.length === 1 ? ' shirt found' : ' shirts found');
+    ssPaintShopBanner(shirts);
     // pagination
     const totalShirts = shirts.length;
     const totalPages = Math.max(1, Math.ceil(totalShirts / SHOP_PER_PAGE));
@@ -7605,6 +7750,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
       buildArchiveFilters(items);
       paintArchive(items);
       injectArchiveSchema(items);
+      ssPaintBanners();
     });
   }
   function renderMobileArchive() {
@@ -7629,21 +7775,22 @@ as a personal collection quickly grew into something bigger: a curated platform 
       }
       var items = allItems.filter(archiveMatchesFilter);
       if (!items.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No shirts in this category.</div>'; return; }
+      var nEl = document.getElementById('m-archive-n'); if (nEl) nEl.textContent = '(' + items.length + ')';
       grid.innerHTML = items.map(function(s){
         var imgs = (s.images && s.images.length) ? s.images : [];
         var main = imgs[0] || '';
+        var meta = [s.club || '', s.season || ''].filter(Boolean).join(' \u00b7 ');
         return ''
-          + '<div onclick="openArchiveItem(\'' + s.id + '\')" style="cursor:pointer">'
-          +   '<div style="position:relative;aspect-ratio:3/4;background:var(--surf-1);border-radius:3px;overflow:hidden">'
-          +     '<img src="' + cldSize(main, 500) + '" alt="' + (s.title||'') + '" loading="lazy" style="width:100%;height:100%;object-fit:cover">'
-          +     '<div style="position:absolute;top:8px;left:8px;background:rgba(10,9,5,.8);color:var(--gold);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px">Archive</div>'
+          + '<div class="m-arch-card" onclick="openArchiveItem(\'' + s.id + '\')" style="cursor:pointer;min-width:0">'
+          +   '<div class="m-arch-img">'
+          +     '<img src="' + cldSize(main, 700) + '" alt="' + String(s.title||'').replace(/"/g, '&quot;') + '" loading="lazy" decoding="async">'
+          +     '<div class="m-arch-tag">Archive</div>'
           +   '</div>'
-          +   '<div style="padding:8px 2px 4px">'
-          +     '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">' + (s.club||'') + '</div>'
-          +     '<div style="font-size:12px;font-weight:500;line-height:1.3">' + (s.title||'') + '</div>'
-          +   '</div>'
+          +   '<div class="m-arch-name">' + (s.title||'') + '</div>'
+          +   (meta ? '<div class="m-arch-meta">' + meta + '</div>' : '')
           + '</div>';
       }).join('');
+      if (typeof ssPaintBanners === 'function') ssPaintBanners();
     });
   }
   var archiveView = 'grid';
