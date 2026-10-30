@@ -3234,7 +3234,8 @@
   <nav class="m-menu-main">
     <a href="/?p=shop" onclick="mMenuGo(function(){mGoTo('shop')});return false;">Shop</a>
     <a href="/?p=shop&sort=new" onclick="mMenuGo(mShopNewest);return false;">New arrivals</a>
-    <a href="/?p=shop&cat=match_worn" onclick="mMenuGo(function(){mShopCategory('match_worn')});return false;">Match Worn / Issued</a>
+    <div class="m-menu-row"><a href="/?p=shop&cat=clubs" onclick="mMenuGo(function(){mShopCategory('clubs')});return false;">Clubs</a><button type="button" class="m-menu-tog" id="m-menu-tog-clubs" aria-label="Choose a league or club" onclick="mMenuToggle('clubs')"></button></div>
+    <div class="m-menu-list" id="m-menu-list-clubs"></div>
     <div class="m-menu-row"><a href="/?p=shop&cat=national" onclick="mMenuGo(function(){mShopCategory('national')});return false;">National teams</a><button type="button" class="m-menu-tog" id="m-menu-tog-national" aria-label="Choose a country" onclick="mMenuToggle('national')"></button></div>
     <div class="m-menu-list" id="m-menu-list-national"></div>
     <a href="/?p=archive" onclick="mMenuGo(function(){mGoTo('archive')});return false;">Archive</a>
@@ -3242,8 +3243,6 @@
     <a href="/blog.html">Journal</a>
   </nav>
   <nav class="m-menu-sub">
-    <div class="m-menu-row"><a href="/?p=shop&cat=clubs" onclick="mMenuGo(function(){mShopCategory('clubs')});return false;">Clubs</a><button type="button" class="m-menu-tog" id="m-menu-tog-clubs" aria-label="Choose a league or club" onclick="mMenuToggle('clubs')"></button></div>
-    <div class="m-menu-list" id="m-menu-list-clubs"></div>
     <a href="/collections/">Collections</a>
     <a href="/sell-your-shirt.html">Sell your shirt</a>
     <a href="/want-list.html">Want list</a>
@@ -8059,7 +8058,17 @@ as a personal collection quickly grew into something bigger: a curated platform 
     'ajax': 'Netherlands', 'psv': 'Netherlands', 'feyenoord': 'Netherlands', 'az': 'Netherlands',
     'utrecht': 'Netherlands', 'twente': 'Netherlands', 'vitesse': 'Netherlands',
     'bayern': 'Germany', 'dortmund': 'Germany', 'borussia': 'Germany', 'schalke': 'Germany',
-    'pauli': 'Germany', 'betis': 'Spain', 'hamburg': 'Germany', 'köln': 'Germany', 'koln': 'Germany', 'cologne': 'Germany',
+    'pauli': 'Germany', 'betis': 'Spain', 'hamburg': 'Germany',
+    'leipzig': 'Germany', 'xavi simons': 'Germany', 'gladbach': 'Germany', 'bremen': 'Germany', 'wolfsburg': 'Germany',
+    'hertha': 'Germany', 'hannover': 'Germany', 'mainz': 'Germany', 'freiburg': 'Germany', 'hoffenheim': 'Germany',
+    'augsburg': 'Germany', 'bochum': 'Germany', 'kaiserslautern': 'Germany', 'nürnberg': 'Germany', 'nurnberg': 'Germany',
+    'union berlin': 'Germany', 'heidenheim': 'Germany', 'darmstadt': 'Germany',
+    'athletic': 'Spain', 'real sociedad': 'Spain', 'villarreal': 'Spain', 'deportivo': 'Spain', 'celta': 'Spain', 'zaragoza': 'Spain',
+    'bologna': 'Italy', 'torino': 'Italy', 'atalanta': 'Italy', 'genoa': 'Italy', 'udinese': 'Italy', 'verona': 'Italy', 'cagliari': 'Italy',
+    'west ham': 'England', 'aston villa': 'England', 'leicester': 'England', 'southampton': 'England', 'nottingham': 'England',
+    'wolverhampton': 'England', 'sheffield': 'England', 'brighton': 'England', 'fulham': 'England', 'crystal palace': 'England',
+    'bordeaux': 'France', 'lille': 'France', 'nantes': 'France', 'rennes': 'France', 'toulouse': 'France',
+    'groningen': 'Netherlands', 'heerenveen': 'Netherlands', 'willem': 'Netherlands', 'go ahead': 'Netherlands', 'sparta': 'Netherlands', 'köln': 'Germany', 'koln': 'Germany', 'cologne': 'Germany',
     '1860': 'Germany', 'stuttgart': 'Germany', 'leverkusen': 'Germany', 'frankfurt': 'Germany',
     'milan': 'Italy', 'inter': 'Italy', 'juventus': 'Italy', 'roma': 'Italy', 'lazio': 'Italy',
     'napoli': 'Italy', 'fiorentina': 'Italy', 'parma': 'Italy', 'sampdoria': 'Italy', 'monza': 'Italy',
