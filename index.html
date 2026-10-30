@@ -597,6 +597,7 @@
     }
     .tb-mega:hover > button::after, .tb-mega:focus-within > button::after { transform: rotate(225deg) translateY(-1px); }
     .mega-row { position: relative; }
+    .mega[data-mega="national"] { max-height: 72vh; overflow-y: auto; }
     .mega a.mega-has::after {
       content: ""; width: 6px; height: 6px; margin-left: 10px; opacity: .6; flex: 0 0 auto;
       border-right: 1.5px solid currentColor; border-top: 1.5px solid currentColor; transform: rotate(45deg);
@@ -2321,6 +2322,21 @@
     .m-menu-main { display: flex; flex-direction: column; padding: 18px 0 8px; }
     .m-menu-main a { font-family: 'Playfair Display', serif; font-size: 24px; color: #f5f0e8; text-decoration: none; padding: 9px 0; border-bottom: 1px solid rgba(245,240,232,.08); }
     .m-menu-main a:active { color: #c8a950; }
+    .m-menu-row { display: flex; align-items: stretch; }
+    .m-menu-row > a { flex: 1; }
+    .m-menu-sub .m-menu-row > a { flex: 1; }
+    .m-menu-tog { flex: 0 0 52px; background: none; border: none; border-bottom: 1px solid rgba(245,240,232,.08); color: #c8a950; cursor: pointer; }
+    .m-menu-sub .m-menu-tog { border-bottom: 0; }
+    .m-menu-tog::after { content: ""; display: inline-block; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-3px); transition: transform .2s ease; }
+    .m-menu-tog.open::after { transform: rotate(225deg) translateY(-2px); }
+    .m-menu-list { display: none; flex-direction: column; padding: 4px 0 10px 12px; border-left: 2px solid rgba(200,169,80,.35); margin: 4px 0 8px; }
+    .m-menu-list.open { display: flex; }
+    .m-menu-main .m-menu-list a, .m-menu-sub .m-menu-list a { font-family: 'DM Sans', sans-serif; font-size: 15px; padding: 10px 0; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(245,240,232,.06); color: #f5f0e8; text-decoration: none; }
+    .m-menu-list a b { font-weight: 600; font-size: 12px; opacity: .55; margin-left: 10px; }
+    .m-menu-list a.m-menu-lg { color: #c8a950; font-weight: 700; }
+    .m-menu-clubs { display: flex; flex-direction: column; padding-left: 12px; }
+    .m-menu-clubs a { font-size: 14px !important; opacity: .85; }
+    .m-menu-empty { padding: 10px 0; color: rgba(245,240,232,.6); font-size: 14px; }
     .m-menu-sub { display: flex; flex-direction: column; padding: 14px 0; }
     .m-menu-sub a, .m-menu-sub button, .m-menu-foot a, .m-menu-foot button { background: none; border: none; text-align: left; font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(245,240,232,.72); text-decoration: none; padding: 9px 0; cursor: pointer; }
     .m-menu-sub a:active, .m-menu-sub button:active { color: #c8a950; }
@@ -3219,13 +3235,15 @@
     <a href="/?p=shop" onclick="mMenuGo(function(){mGoTo('shop')});return false;">Shop</a>
     <a href="/?p=shop&sort=new" onclick="mMenuGo(mShopNewest);return false;">New arrivals</a>
     <a href="/?p=shop&cat=match_worn" onclick="mMenuGo(function(){mShopCategory('match_worn')});return false;">Match Worn / Issued</a>
-    <a href="/?p=shop&cat=national" onclick="mMenuGo(function(){mShopCategory('national')});return false;">National teams</a>
+    <div class="m-menu-row"><a href="/?p=shop&cat=national" onclick="mMenuGo(function(){mShopCategory('national')});return false;">National teams</a><button type="button" class="m-menu-tog" id="m-menu-tog-national" aria-label="Choose a country" onclick="mMenuToggle('national')"></button></div>
+    <div class="m-menu-list" id="m-menu-list-national"></div>
     <a href="/?p=archive" onclick="mMenuGo(function(){mGoTo('archive')});return false;">Archive</a>
     <a href="/?p=about" onclick="mMenuGo(function(){mGoTo('about')});return false;">Our Story</a>
     <a href="/blog.html">Journal</a>
   </nav>
   <nav class="m-menu-sub">
-    <a href="/?p=shop&cat=clubs" onclick="mMenuGo(function(){mShopCategory('clubs')});return false;">Clubs</a>
+    <div class="m-menu-row"><a href="/?p=shop&cat=clubs" onclick="mMenuGo(function(){mShopCategory('clubs')});return false;">Clubs</a><button type="button" class="m-menu-tog" id="m-menu-tog-clubs" aria-label="Choose a league or club" onclick="mMenuToggle('clubs')"></button></div>
+    <div class="m-menu-list" id="m-menu-list-clubs"></div>
     <a href="/collections/">Collections</a>
     <a href="/sell-your-shirt.html">Sell your shirt</a>
     <a href="/want-list.html">Want list</a>
@@ -3440,8 +3458,6 @@
       Filter &amp; sort
       <span class="count" id="m-filter-count"></span>
     </button>
-    <span class="m-shop-sep"></span>
-    <div class="m-shop-chips" id="m-shop-chips"></div>
   </div>
 
   <div class="m-shop-search">
@@ -5591,14 +5607,18 @@ as a personal collection quickly grew into something bigger: a curated platform 
     var again = (filter === mCurrentFilter) && btn && (filter === 'clubs' || filter === 'national');
     mCurrentFilter = filter;
     mCountry = ''; mClub = '';
-    // tapping Clubs / National again folds the menu away, tapping it once more opens it
-    mSubOpen = (filter === 'clubs' || filter === 'national') ? (again ? !mSubOpen : true) : false;
+    // the league / country menu is always open under the Clubs and National tabs
+    mSubOpen = (filter === 'clubs' || filter === 'national');
     document.querySelectorAll('.m-filter-btn').forEach(b => b.classList.remove('active'));
     if (btn) {
       btn.classList.add('active');
       try { btn.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); } catch (e) {}
     }
     renderMobileGrid();
+  }
+  function mShopLeague(cat, country, club) {
+    mShopCategory(cat);
+    setTimeout(function () { mCountry = country || ''; mClub = club || ''; renderMobileGrid(); }, 90);
   }
   function mSubPick(country, club) {
     mCountry = country || ''; mClub = club || '';
@@ -5843,6 +5863,14 @@ as a personal collection quickly grew into something bigger: a curated platform 
   // One photo per category per visit: switching back and forth between categories
   // reuses the photo that is already loaded instead of fetching a new one each time.
   function ssShopBannerShirt(list, key) {
+    // Clubs and National: always the same photo (the newest shirt on sale), it does not change between visits
+    var fx = /:(clubs|national)$/.exec(key);
+    if (fx && typeof allShirts !== 'undefined') {
+      var fp = allShirts.filter(function (x) { return x.category === fx[1] && x.images && x.images[0]; });
+      var fa = fp.filter(function (x) { return x.available !== false; });
+      fp = (fa.length ? fa : fp).slice().sort(function (a, b) { return new Date(b.created_at || 0) - new Date(a.created_at || 0); });
+      if (fp.length) return fp[0];
+    }
     var arr = (list || []).filter(function (x) { return x && x.images && x.images[0]; });
     var avail = arr.filter(function (x) { return x.available !== false; });
     if (avail.length) arr = avail;
@@ -5857,19 +5885,9 @@ as a personal collection quickly grew into something bigger: a curated platform 
     st.by[key] = choices[Math.floor(Math.random() * choices.length)];
     return st.by[key];
   }
-  // The Archive banner shows another archive shirt each time you open the page.
-  window.ssArchiveFresh = true;
+  // The Archive banner always shows the same archive shirt.
   function ssArchiveBannerShirt() {
-    if (typeof archiveItems === 'undefined' || !archiveItems) return null;
-    var arr = archiveItems.filter(function (x) { return x && x.images && x.images[0]; });
-    if (!arr.length) return null;
-    var st = window.ssArchiveBanner = window.ssArchiveBanner || {};
-    if (st.pick && !window.ssArchiveFresh && arr.some(function (x) { return x.id === st.pick.id; })) return st.pick;
-    var choices = arr.filter(function (x) { return !st.pick || x.id !== st.pick.id; });
-    if (!choices.length) choices = arr;
-    st.pick = choices[Math.floor(Math.random() * choices.length)];
-    window.ssArchiveFresh = false;
-    return st.pick;
+    return (typeof archiveItems !== 'undefined' && archiveItems) ? ssBannerPick(archiveItems) : null;
   }
   function ssShopBannerRefresh() {
     window.ssShopFresh = true;
@@ -5952,8 +5970,6 @@ as a personal collection quickly grew into something bigger: a curated platform 
       const [min, max] = priceFilter.split('-').map(Number);
       shirts = shirts.filter(s => parseFloat(s.price) >= min && parseFloat(s.price) <= max);
     }
-    mPaintDecadeChips(shirts);
-    if (mDecade !== 'all') shirts = shirts.filter(s => mDecadeOf(s) === mDecade);
     if (sort === 'price-asc') shirts.sort((a,b) => parseFloat(a.price) - parseFloat(b.price));
     else if (sort === 'price-desc') shirts.sort((a,b) => parseFloat(b.price) - parseFloat(a.price));
     else if (sort === 'year-asc') shirts.sort((a,b) => parseInt(a.season||0) - parseInt(b.season||0));
@@ -6243,16 +6259,15 @@ as a personal collection quickly grew into something bigger: a curated platform 
     if (!country || (cat !== 'clubs' && cat !== 'national')) return '';
     if (club && cat === 'clubs') return ssClubName((typeof allShirts !== 'undefined' ? allShirts : []).filter(function (s) { return s.category === 'clubs'; }), country, club);
     if (country === '__other') return cat === 'clubs' ? 'Other leagues' : 'Other countries';
-    var it = SS_MEGA[cat].items.filter(function (x) { return x[0] === country; })[0];
-    return it ? it[1] : country;
+    return ssCountryLabel(cat, country);
   }
   // leagues (or countries) with shirts, most shirts first, "Other" last
   function ssLeagueStats(pool, cat) {
-    var out = SS_MEGA[cat].items.map(function (x) {
-      return { key: x[0], label: x[1], n: pool.filter(function (s) { return ssMegaCountryMatch(s, cat, x[0]); }).length };
-    }).filter(function (x) { return x.n > 0; }).sort(function (a, b) { return b.n - a.n; });
-    var other = pool.filter(function (s) { return ssMegaCountryMatch(s, cat, '__other'); }).length;
-    if (other) out.push({ key: '__other', label: cat === 'clubs' ? 'Other leagues' : 'Other countries', n: other });
+    var counts = {}, none = 0;
+    pool.forEach(function (s) { var c = ssCountryOf(s, cat); if (c) counts[c] = (counts[c] || 0) + 1; else none++; });
+    var out = Object.keys(counts).map(function (c) { return { key: c, label: ssCountryLabel(cat, c), n: counts[c] }; })
+      .sort(function (a, b) { return b.n - a.n || a.label.localeCompare(b.label); });
+    if (none) out.push({ key: '__other', label: cat === 'clubs' ? 'Other leagues' : 'Other countries', n: none });
     return out;
   }
   function ssChipRows(rows) {
@@ -6266,20 +6281,24 @@ as a personal collection quickly grew into something bigger: a curated platform 
   function ssMegaInCat(s, cat) {
     return cat === 'clubs' ? (s.category === 'clubs') : (s.category === 'national');
   }
-  function ssMegaCountryMatch(s, cat, key) {
+  // the country of a shirt: known clubs / teams first, for national teams otherwise simply the team name
+  function ssCountryOf(s, cat) {
     var c = archiveCountry(s);
-    if (key === '__other') return !SS_MEGA[cat].items.some(function (x) { return x[0] === c; });
+    if (c) return c;
+    if ((cat === 'national' || s.category === 'national') && s.club && String(s.club).trim()) return String(s.club).trim();
+    return null;
+  }
+  function ssMegaCountryMatch(s, cat, key) {
+    var c = ssCountryOf(s, cat);
+    if (key === '__other') return !c;
     return c === key;
   }
+  function ssCountryLabel(cat, c) { return (cat === 'clubs' && COUNTRY_LEAGUE[c]) ? COUNTRY_LEAGUE[c] : c; }
   function ssMegaHtml(cat) {
     var m = SS_MEGA[cat];
     return '<div class="mega" data-mega="' + cat + '"><div class="mega-head">' + m.title + '</div>'
-      + '<a href="/?p=shop&cat=' + cat + '" data-key="" onclick="return ssMegaGo(\'' + cat + '\',\'\',event)">' + m.all + ' <small data-n></small></a>'
-      + m.items.map(function (x) {
-          var link = '<a href="/?p=shop&cat=' + cat + '" data-key="' + x[0] + '"' + (cat === 'clubs' ? ' class="mega-has"' : '') + ' onclick="return ssMegaGo(\'' + cat + '\',\'' + x[0] + '\',event)">' + x[1] + ' <small data-n></small></a>';
-          return cat === 'clubs' ? '<div class="mega-row" data-row="' + x[0] + '">' + link + '<div class="mega-clubs"></div></div>' : link;
-        }).join('')
-      + '<a class="mega-sep" href="/?p=shop&cat=' + cat + '" data-key="__other" onclick="return ssMegaGo(\'' + cat + '\',\'__other\',event)">Other <small data-n></small></a></div>';
+      + '<a href="/?p=shop&cat=' + cat + '" data-key="" onclick="return ssMegaGo(\'' + cat + '\',\'\',event)">' + m.all + ' <small data-all></small></a>'
+      + '<div class="mega-list"></div></div>';
   }
   function ssMegaGo(cat, key, ev, club) {
     if (ev && ev.preventDefault) ev.preventDefault();
@@ -6297,27 +6316,25 @@ as a personal collection quickly grew into something bigger: a curated platform 
   function ssMegaLabel() { return ssSubLabel(dCurrentFilter, dCountry, dClub); }
   function ssMegaFill() {
     if (typeof allShirts === 'undefined' || !allShirts.length) return;
+    var sig = String(allShirts.length);
     document.querySelectorAll('.mega').forEach(function (m) {
+      if (m.dataset.sig === sig) return;
+      m.dataset.sig = sig;
       var cat = m.getAttribute('data-mega');
       var pool = allShirts.filter(function (s) { return ssMegaInCat(s, cat); });
-      if (cat === 'clubs') {
-        m.querySelectorAll('.mega-row').forEach(function (row) {
-          var c = row.getAttribute('data-row'), box = row.querySelector('.mega-clubs');
-          var lg = SS_MEGA.clubs.items.filter(function (x) { return x[0] === c; })[0];
-          var list = ssClubList(pool, c);
-          box.innerHTML = '<div class="mega-head">' + (lg ? lg[1] : c) + '</div>'
-            + '<a href="/?p=shop&cat=clubs" data-key="' + c + '" onclick="return ssMegaGo(\'clubs\',\'' + c + '\',event)">All ' + (lg ? lg[1] : c) + ' <small>' + pool.filter(function (s) { return ssMegaCountryMatch(s, 'clubs', c); }).length + '</small></a>'
-            + list.map(function (x) {
-                return '<a href="/?p=shop&cat=clubs" class="' + (x.n === 0 ? 'mega-dim' : '') + '" onclick="return ssMegaGo(\'clubs\',\'' + c + '\',event,\'' + x.key.replace(/'/g, '') + '\')">' + x.name + ' <small>' + x.n + '</small></a>';
-              }).join('');
-        });
-      }
-      m.querySelectorAll(':scope > a, :scope > .mega-row > a').forEach(function (a) {
-        var key = a.getAttribute('data-key');
-        var n = key === '' ? pool.length : pool.filter(function (s) { return ssMegaCountryMatch(s, cat, key); }).length;
-        var sm = a.querySelector('[data-n]'); if (sm) sm.textContent = n;
-        a.classList.toggle('mega-dim', n === 0);
-      });
+      var al = m.querySelector('[data-all]'); if (al) al.textContent = pool.length;
+      var q = function (v) { return String(v).replace(/'/g, ''); };
+      var html = ssLeagueStats(pool, cat).map(function (x) {
+        var link = '<a href="/?p=shop&cat=' + cat + '"' + (cat === 'clubs' && x.key !== '__other' ? ' class="mega-has"' : (x.key === '__other' ? ' class="mega-sep"' : '')) + ' onclick="return ssMegaGo(\'' + cat + '\',\'' + q(x.key) + '\',event)">' + x.label + ' <small>' + x.n + '</small></a>';
+        if (cat !== 'clubs' || x.key === '__other') return link;
+        var clubs = ssClubList(pool, x.key);
+        return '<div class="mega-row">' + link + '<div class="mega-clubs"><div class="mega-head">' + x.label + '</div>'
+          + '<a href="/?p=shop&cat=clubs" onclick="return ssMegaGo(\'clubs\',\'' + q(x.key) + '\',event)">All ' + x.label + ' <small>' + x.n + '</small></a>'
+          + clubs.map(function (c) {
+              return '<a href="/?p=shop&cat=clubs" class="' + (c.n === 0 ? 'mega-dim' : '') + '" onclick="return ssMegaGo(\'clubs\',\'' + q(x.key) + '\',event,\'' + q(c.key) + '\')">' + c.name + ' <small>' + c.n + '</small></a>';
+            }).join('') + '</div></div>';
+      }).join('');
+      m.querySelector('.mega-list').innerHTML = html;
     });
   }
   function ssMegaInit() {
@@ -6548,6 +6565,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
   }
 
   function renderDesktopGrid() {
+    try { ssMegaFill(); } catch (e) {}
     const search = document.getElementById('d-search-input')?.value.toLowerCase() || '';
     const sizeFilter = document.getElementById('d-filter-size')?.value || '';
     const priceFilter = document.getElementById('d-filter-price')?.value || '';
@@ -7782,6 +7800,26 @@ as a personal collection quickly grew into something bigger: a curated platform 
   }
 
   // ── MOBILE SIDE MENU ──
+  // the menu lists: leagues (with their clubs) or countries, most shirts first
+  function mMenuToggle(cat) {
+    var box = document.getElementById('m-menu-list-' + cat), tog = document.getElementById('m-menu-tog-' + cat);
+    if (!box) return;
+    var open = !box.classList.contains('open');
+    box.classList.toggle('open', open); if (tog) tog.classList.toggle('open', open);
+    if (!open) return;
+    var pool = (typeof allShirts !== 'undefined' ? allShirts : []).filter(function (s) { return s.category === cat; });
+    if (!pool.length) { box.innerHTML = '<div class="m-menu-empty">Loading&hellip;</div>'; return; }
+    var q = function (v) { return String(v).replace(/'/g, ''); };
+    var go = function (c, k, cl) { return "mMenuGo(function(){mShopLeague('" + cat + "','" + q(c) + "','" + q(cl || '') + "')});return false;"; };
+    box.innerHTML = '<a href="#" onclick="' + go('', '') + '">All ' + (cat === 'clubs' ? 'clubs' : 'teams') + ' <b>' + pool.length + '</b></a>'
+      + ssLeagueStats(pool, cat).map(function (x) {
+          var head = '<a href="#" class="m-menu-lg" onclick="' + go(x.key, '') + '">' + x.label + ' <b>' + x.n + '</b></a>';
+          if (cat !== 'clubs' || x.key === '__other') return head;
+          return head + '<div class="m-menu-clubs">' + ssClubList(pool, x.key).map(function (c) {
+            return '<a href="#" onclick="' + go(x.key, '', c.key) + '">' + c.name + ' <b>' + c.n + '</b></a>';
+          }).join('') + '</div>';
+        }).join('');
+  }
   function mOpenMenu() { document.body.classList.add('m-menu-open'); document.body.style.overflow = 'hidden'; var m = document.getElementById('m-menu'); if (m) m.setAttribute('aria-hidden', 'false'); }
   function mCloseMenu() { document.body.classList.remove('m-menu-open'); document.body.style.overflow = ''; var m = document.getElementById('m-menu'); if (m) m.setAttribute('aria-hidden', 'true'); }
   function mMenuGo(fn) { mCloseMenu(); setTimeout(fn, 60); }
@@ -7789,7 +7827,6 @@ as a personal collection quickly grew into something bigger: a curated platform 
 
   // ── MOBILE NAV ──
   function mGoTo(screen) {
-    if (screen === 'archive') { window.ssArchiveFresh = true; setTimeout(function () { try { ssPaintBanners(); } catch (e) {} }, 60); }
     mCloseMenu();
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -7902,7 +7939,6 @@ as a personal collection quickly grew into something bigger: a curated platform 
   function dGoTo(screen) {
     var target = document.getElementById('d-screen-'+screen);
     if (!target) return;
-    if (screen === 'archive') { window.ssArchiveFresh = true; setTimeout(function () { try { ssPaintBanners(); } catch (e) {} }, 60); }
     document.querySelectorAll('.dscreen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     target.classList.add('active');
@@ -8074,7 +8110,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     if (f.group === 'clubs' && archiveIsNational(s)) return false;
     if (f.group === 'national' && !archiveIsNational(s)) return false;
     if (f.group === 'decade' && f.value && archiveDecade(s) !== f.value) return false;
-    if ((f.group === 'clubs' || f.group === 'national') && f.value && archiveCountry(s) !== f.value) return false;
+    if ((f.group === 'clubs' || f.group === 'national') && f.value && !ssMegaCountryMatch(s, f.group, f.value)) return false;
     if (f.group === 'clubs' && f.club && ssClubKey(s) !== f.club) return false;
     return true;
   }
@@ -8084,13 +8120,14 @@ as a personal collection quickly grew into something bigger: a curated platform 
     var isClubs = f.group === 'clubs';
     var pool = items.filter(function (s) { return isClubs ? !archiveIsNational(s) : archiveIsNational(s); });
     var counts = {};
-    pool.forEach(function (s) { var c = archiveCountry(s); if (c) counts[c] = (counts[c] || 0) + 1; });
-    var list = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); });
+    pool.forEach(function (s) { var c = ssCountryOf(s, f.group) || '__other'; counts[c] = (counts[c] || 0) + 1; });
+    var list = Object.keys(counts).filter(function (c) { return c !== '__other'; }).sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); });
+    if (counts.__other) list.push('__other');
     if (!list.length) return [];
     var q = function (v) { return String(v).replace(/'/g, ''); };
     var rows = [{ label: isClubs ? 'League' : 'Country', chips: [{ t: isClubs ? 'All leagues' : 'All countries', n: pool.length, on: !f.value, js: "setArchiveFilter('" + f.group + "',null)" }]
       .concat(list.map(function (c) {
-        return { t: (isClubs && COUNTRY_LEAGUE[c]) ? COUNTRY_LEAGUE[c] : c, n: counts[c], on: f.value === c, js: "setArchiveFilter('" + f.group + "','" + q(c) + "')" };
+        return { t: c === '__other' ? (isClubs ? 'Other leagues' : 'Other countries') : ((isClubs && COUNTRY_LEAGUE[c]) ? COUNTRY_LEAGUE[c] : c), n: counts[c], on: f.value === c, js: "setArchiveFilter('" + f.group + "','" + q(c) + "')" };
       })) }];
     if (isClubs && f.value) {
       var cl = ssClubList(pool, f.value), lab = COUNTRY_LEAGUE[f.value] || f.value;
