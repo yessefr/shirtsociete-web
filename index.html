@@ -2998,6 +2998,58 @@
     .m-hero-sound.on { background: #c8a950; color: #14120b; border-color: #c8a950; }
     .m-hero-sound.on .w-on { display: inline; }
     .m-hero-sound.on .w-off { display: none; }
+
+    /* ═══ ON THE RAIL: shirts hang from a rail, the one in the middle is the one you look at ═══ */
+    .rail-sec { padding: 64px 0 0; border-top: 1px solid var(--line); background: var(--black); overflow: hidden; }
+    .rail-head { padding: 0 52px; margin-bottom: 30px; max-width: 1200px; }
+    .rail-eyebrow { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-weight: 600; }
+    .rail-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: clamp(28px, 3.5vw, 44px); line-height: 1.1; margin: 0; color: var(--white); }
+    .rail-sub { font-size: 13px; line-height: 1.7; color: var(--text-muted-2); margin: 10px 0 0; max-width: 460px; }
+    .rail-stage { position: relative; padding-top: 34px; }
+    /* the rail itself: a thin metal bar across the whole width */
+    .rail-stage::before { content: ""; position: absolute; left: 0; right: 0; top: 30px; height: 4px; border-radius: 2px; z-index: 3; pointer-events: none;
+      background: linear-gradient(180deg, #d8cfb6 0%, #8c8266 55%, #5a5340 100%); box-shadow: 0 2px 4px rgba(0,0,0,.25); }
+    .rail-track { display: flex; gap: 44px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+      padding: 0 calc(50% - 150px) 30px; outline: none; overscroll-behavior-x: contain; }
+    .rail-track::-webkit-scrollbar { display: none; }
+    .rail-item { position: relative; flex: 0 0 300px; scroll-snap-align: center; cursor: pointer; perspective: 1000px; transform-origin: 50% 0; will-change: transform, opacity;
+      -webkit-tap-highlight-color: transparent; }
+    .rail-hook { display: block; width: 100%; height: 46px; margin-top: -8px; position: relative; z-index: 4; }
+    .rail-hook svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    .rail-hook::before { content: ""; position: absolute; left: 50%; top: 3px; width: 10px; height: 10px; margin-left: -5px; border: 2px solid #a89c78; border-radius: 50%; box-sizing: border-box; background: transparent; z-index: 2; }
+    .rail-card { position: relative; aspect-ratio: 4 / 5; transform-style: preserve-3d; transition: transform .8s cubic-bezier(.2,.7,.2,1); box-shadow: 0 18px 34px rgba(0,0,0,.22); border-radius: 2px; }
+    .rail-item.flipped .rail-card { transform: rotateY(180deg); }
+    .rail-face { position: absolute; inset: 0; background: #f2ece0; border-radius: 2px; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; align-items: center; justify-content: center; }
+    .rail-face img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .rail-face.front { transform: translateZ(1px); }
+    .rail-face.back { transform: rotateY(180deg) translateZ(1px); }
+    .rail-tag { position: absolute; left: 10px; bottom: 10px; font: 700 9px/1 'DM Sans', sans-serif; letter-spacing: 2px; text-transform: uppercase; color: #14120b; background: rgba(242,236,224,.92); padding: 6px 8px; border: 1px solid rgba(20,18,11,.2); }
+    .rail-info { max-width: 560px; margin: 0 auto; padding: 8px 20px 34px; text-align: center; }
+    .rail-name { font: 700 14px 'DM Sans', sans-serif; letter-spacing: 1.2px; text-transform: uppercase; color: var(--white); line-height: 1.4; }
+    .rail-meta { font-size: 12.5px; color: var(--text-muted-2); margin-top: 6px; }
+    .rail-actions { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+    .rail-seg { display: inline-flex; border: 1px solid var(--line-soft); border-radius: 100px; overflow: hidden; }
+    .rail-seg button { background: none; border: 0; padding: 9px 18px; font: 700 11px 'DM Sans', sans-serif; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted-2); cursor: pointer; }
+    .rail-seg button.on { background: var(--white); color: var(--black); }
+    .rail-go { background: none; border: 0; border-bottom: 1px solid var(--gold); padding: 6px 0; font: 700 11.5px 'DM Sans', sans-serif; letter-spacing: 1.6px; text-transform: uppercase; color: var(--white); cursor: pointer; }
+    .rail-go:hover { color: var(--gold); }
+    .rail-arrow { position: absolute; top: 46%; z-index: 6; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line-soft); background: var(--black); color: var(--white); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .rail-arrow:hover { border-color: var(--gold); color: var(--gold); }
+    .rail-arrow.prev { left: 28px; } .rail-arrow.next { right: 28px; }
+    .rail-arrow svg { width: 18px; height: 18px; }
+    .rail-ticker { background: #0a0905; overflow: hidden; white-space: nowrap; padding: 13px 0; border-top: 1px solid rgba(200,169,80,.3); }
+    .rail-ticker-in { display: inline-block; animation: railTick 38s linear infinite; font: 700 10.5px 'DM Sans', sans-serif; letter-spacing: 3px; text-transform: uppercase; color: #c8a950; }
+    .rail-ticker-in span { margin: 0 26px; }
+    .rail-ticker-in i { font-style: normal; opacity: .5; }
+    @keyframes railTick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .rail-ticker-in { animation: none; } .rail-card { transition: none; } }
+    @media (max-width: 767px) {
+      .rail-sec { padding: 44px 0 0; }
+      .rail-head { padding: 0 20px; margin-bottom: 22px; }
+      .rail-track { gap: 22px; padding: 0 calc(50% - 31vw) 26px; }
+      .rail-item { flex: 0 0 62vw; }
+      .rail-arrow { display: none; }
+    }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
@@ -3374,6 +3426,23 @@
        Two dark bands in the same shape as the fairs block above them: a flag,
        a short bold heading, two lines of text, one link. Fixed dark/gold
        colours, so they read the same in either theme. -->
+  <section class="rail-sec" id="m-rail" data-ctx="m" style="display:none">
+    <div class="rail-head">
+      <div class="rail-eyebrow">On the rail</div>
+      <h2 class="rail-title">Pick one off the rail</h2>
+      <p class="rail-sub">Slide along the rail. Tap the shirt in the middle to turn it around.</p>
+    </div>
+    <div class="rail-stage">
+      <button type="button" class="rail-arrow prev" aria-label="Previous shirt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <button type="button" class="rail-arrow next" aria-label="Next shirt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></button>
+      <div class="rail-track" tabindex="0" aria-label="Shirts on the rail"></div>
+    </div>
+    <div class="rail-info"><div class="rail-name"></div><div class="rail-meta"></div>
+      <div class="rail-actions"><div class="rail-seg"><button type="button" class="on" data-side="front">Front</button><button type="button" data-side="back">Back</button></div><button type="button" class="rail-go">See this shirt &rarr;</button></div>
+    </div>
+    <div class="rail-ticker" aria-hidden="true"><div class="rail-ticker-in"><span>Every shirt a single piece</span><i>/</i><span>Vintage &amp; match worn</span><i>/</i><span>Harderwijk, NL</span><i>/</i><span>Shirt Soci&eacute;t&eacute;</span><i>/</i><span>Every shirt a single piece</span><i>/</i><span>Vintage &amp; match worn</span><i>/</i><span>Harderwijk, NL</span><i>/</i><span>Shirt Soci&eacute;t&eacute;</span><i>/</i></div></div>
+  </section>
+  
   <section class="m-band" id="m-band-archive">
     <div class="m-band-head">
       <div class="m-band-eyebrow">The Archive</div>
@@ -4001,6 +4070,23 @@
     <div id="d-clubs-row" class="shirt-row"></div>
   </div>
 </div>
+
+<section class="rail-sec" id="d-rail" data-ctx="d" style="display:none">
+  <div class="rail-head">
+    <div class="rail-eyebrow">On the rail</div>
+    <h2 class="rail-title">Pick one off the rail</h2>
+    <p class="rail-sub">Slide along the rail. Tap the shirt in the middle to turn it around.</p>
+  </div>
+  <div class="rail-stage">
+    <button type="button" class="rail-arrow prev" aria-label="Previous shirt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button type="button" class="rail-arrow next" aria-label="Next shirt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></button>
+    <div class="rail-track" tabindex="0" aria-label="Shirts on the rail"></div>
+  </div>
+  <div class="rail-info"><div class="rail-name"></div><div class="rail-meta"></div>
+    <div class="rail-actions"><div class="rail-seg"><button type="button" class="on" data-side="front">Front</button><button type="button" data-side="back">Back</button></div><button type="button" class="rail-go">See this shirt &rarr;</button></div>
+  </div>
+  <div class="rail-ticker" aria-hidden="true"><div class="rail-ticker-in"><span>Every shirt a single piece</span><i>/</i><span>Vintage &amp; match worn</span><i>/</i><span>Harderwijk, NL</span><i>/</i><span>Shirt Soci&eacute;t&eacute;</span><i>/</i><span>Every shirt a single piece</span><i>/</i><span>Vintage &amp; match worn</span><i>/</i><span>Harderwijk, NL</span><i>/</i><span>Shirt Soci&eacute;t&eacute;</span><i>/</i></div></div>
+</section>
 
 <!-- ═══ INSTAGRAM REELS (live from Behold) ═══ -->
 <section class="ss-reels-sec" id="d-reels-sec" style="display:none">
@@ -5342,7 +5428,101 @@ as a personal collection quickly grew into something bigger: a curated platform 
     });
   }
 
+
+  // ── ON THE RAIL ──
+  // The newest shirts hang from a rail. The one in the middle is large and gets its name, a front / back
+  // toggle (a real turn of the card) and a link to its page. Needs two photos per shirt for the back.
+  var ssRailSig = '';
+  function ssRailPick() {
+    var av = (allShirts || []).filter(function (x) { return x.available !== false && x.images && x.images[0]; });
+    var two = av.filter(function (x) { return x.images.length > 1; }), one = av.filter(function (x) { return x.images.length < 2; });
+    return two.concat(one).slice(0, 10);
+  }
+  var SS_RAIL_HOOK = '<svg viewBox="0 0 100 46" preserveAspectRatio="none" aria-hidden="true"><path d="M50 13 L8 46 M50 13 L92 46" stroke="#a89c78" stroke-width="1.4" fill="none" vector-effect="non-scaling-stroke"/></svg>';
+  function ssRailRender() {
+    var picks = ssRailPick();
+    var sig = picks.map(function (x) { return x.id; }).join(',');
+    if (!picks.length) return;
+    ['m-rail', 'd-rail'].forEach(function (id) {
+      var root = document.getElementById(id); if (!root) return;
+      if (root.dataset.sig === sig) return;
+      root.dataset.sig = sig;
+      var track = root.querySelector('.rail-track');
+      track.innerHTML = picks.map(function (x, i) {
+        var back = x.images[1];
+        return '<div class="rail-item" data-i="' + i + '">' + '<span class="rail-hook">' + SS_RAIL_HOOK + '</span>'
+          + '<div class="rail-card"><div class="rail-face front"><img src="' + cldSize(x.images[0], 400) + '" alt="' + String(x.title || '').replace(/"/g, '&quot;') + '" loading="lazy" decoding="async" draggable="false"></div>'
+          + (back ? '<div class="rail-face back"><img src="' + cldSize(back, 400) + '" alt="" loading="lazy" decoding="async" draggable="false"></div>' : '') + '</div></div>';
+      }).join('');
+      root.style.display = '';
+      ssRailWire(root, picks);
+    });
+  }
+  function ssRailWire(root, picks) {
+    var track = root.querySelector('.rail-track'), items = [].slice.call(track.querySelectorAll('.rail-item'));
+    var nameEl = root.querySelector('.rail-name'), metaEl = root.querySelector('.rail-meta'), seg = root.querySelector('.rail-seg'), go = root.querySelector('.rail-go');
+    var ctx = root.getAttribute('data-ctx'), active = -1, raf = 0;
+    var upgraded = {};
+    function setActive(i) {
+      if (i === active) return;
+      if (active > -1 && items[active]) items[active].classList.remove('flipped');
+      active = i;
+      var x = picks[i];
+      nameEl.textContent = x.title || '';
+      metaEl.textContent = [x.club, x.season, x.size ? 'Size ' + x.size : '', '€' + parseFloat(x.price).toFixed(0)].filter(Boolean).join('  ·  ');
+      seg.style.display = x.images[1] ? '' : 'none';
+      seg.querySelectorAll('button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-side') === 'front'); });
+      go.onclick = function () { openDetail(x.id, ctx); };
+      // a sharper copy of the photos for the one in the middle
+      if (!upgraded[i]) {
+        upgraded[i] = 1;
+        items[i].querySelectorAll('img').forEach(function (im, k) {
+          var raw = x.images[k]; if (!raw) return;
+          ssLoadGalleryUrl(raw, function (u) { if (im.getAttribute('src') !== u) im.src = u; });
+        });
+      }
+    }
+    function update() {
+      raf = 0;
+      var cx = track.scrollLeft + track.clientWidth / 2, best = 0, bd = 1e9;
+      items.forEach(function (it, i) {
+        var mid = it.offsetLeft + it.offsetWidth / 2, d = (mid - cx) / (it.offsetWidth + 40), ad = Math.min(Math.abs(d), 2);
+        it.style.transform = 'rotate(' + (d * 1.8).toFixed(2) + 'deg) scale(' + (1 - ad * 0.14).toFixed(3) + ')';
+        it.style.opacity = (1 - ad * 0.3).toFixed(2);
+        it.style.zIndex = String(10 - Math.round(ad * 3));
+        if (Math.abs(d) < bd) { bd = Math.abs(d); best = i; }
+      });
+      setActive(best);
+    }
+    function onScroll() { if (!raf) raf = requestAnimationFrame(update); }
+    function goTo(i) {
+      i = Math.max(0, Math.min(items.length - 1, i)); var it = items[i];
+      track.scrollTo({ left: it.offsetLeft + it.offsetWidth / 2 - track.clientWidth / 2, behavior: 'smooth' });
+    }
+    function flip(side) {
+      var it = items[active]; if (!it || !picks[active].images[1]) return;
+      var on = side ? side === 'back' : !it.classList.contains('flipped');
+      it.classList.toggle('flipped', on);
+      seg.querySelectorAll('button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-side') === (on ? 'back' : 'front')); });
+    }
+    track.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    items.forEach(function (it, i) { it.addEventListener('click', function () { if (i === active) flip(); else goTo(i); }); });
+    seg.querySelectorAll('button').forEach(function (b) { b.onclick = function () { flip(b.getAttribute('data-side')); }; });
+    var pv = root.querySelector('.rail-arrow.prev'), nx = root.querySelector('.rail-arrow.next');
+    if (pv) pv.onclick = function () { goTo(active - 1); };
+    if (nx) nx.onclick = function () { goTo(active + 1); };
+    track.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); goTo(active + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(active - 1); }
+    });
+    // start with the second shirt in the middle so both neighbours show
+    track.scrollLeft = 0; update();
+    setTimeout(function () { if (items.length > 2) { track.scrollLeft = items[1].offsetLeft + items[1].offsetWidth / 2 - track.clientWidth / 2; update(); } }, 60);
+  }
+
   function renderAll() {
+    try { ssRailRender(); } catch (e) { console.error(e); }
     renderMobileHome();
     renderMobileGrid();
     renderHomeTeasers();
