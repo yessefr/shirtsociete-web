@@ -2998,6 +2998,61 @@
     .m-hero-sound.on { background: #c8a950; color: #14120b; border-color: #c8a950; }
     .m-hero-sound.on .w-on { display: inline; }
     .m-hero-sound.on .w-off { display: none; }
+
+    /* ═══ HOME SECTIONS: one clear pattern (heading, arrows, row) and a different background per block ═══ */
+    .sx { padding: 72px 52px; background: var(--black); border-top: 1px solid var(--line); }
+    .sx-alt { background: var(--pg-alt); border-bottom: 1px solid var(--line); }
+    .sx-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 30px; }
+    .sx-eyebrow { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-weight: 700; }
+    .sx-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: clamp(28px, 3.5vw, 44px); line-height: 1.05; margin: 0; color: var(--white); }
+    .sx-link { display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--white); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 3px; }
+    .sx-link:hover { color: var(--gold); }
+    .sx-arrows { display: flex; gap: 10px; flex: 0 0 auto; }
+    .sx-arrow { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line-soft); background: transparent; color: var(--white); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color .2s, color .2s; }
+    .sx-arrow:hover { border-color: var(--gold); color: var(--gold); }
+    .sx-arrow svg { width: 18px; height: 18px; }
+    #cin-featured .row-edge-arrow { display: none !important; }
+    /* the dark block keeps its own colours in light and dark mode */
+    .sx-dark { background: #0a0905; border-top: 1px solid rgba(200,169,80,.3); border-bottom: 1px solid rgba(200,169,80,.3);
+      --white: #f5f0e8; --black: #0a0905; --gold: #c8a950; --text-muted: #8d8574; --text-muted-2: #b0a898; --grey: #14110b; --surf-1: #14110b; --surf-2: #1e1b14; --line: #2a2820; --line-soft: #3a372f; --on-photo: #f5f0e8; }
+    .sx-dark-grid { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 56px; align-items: center; }
+    .sx-dark-row { position: relative; min-width: 0; }
+    .sx-dark-row .sx-arrows { justify-content: flex-end; margin-bottom: 22px; }
+    .sx-dark-row .shirt-card-sm { border: 1px solid rgba(200,169,80,.55); }
+    .sx-rule { width: 56px; height: 2px; background: var(--gold); margin: 22px 0; }
+    .sx-p { font-size: 14.5px; line-height: 1.8; color: var(--text-muted-2); margin: 0 0 26px; }
+    .sx-btn { display: inline-block; background: var(--gold); color: #14120b; font: 700 12px 'DM Sans', sans-serif; letter-spacing: 1.6px; text-transform: uppercase; text-decoration: none; padding: 14px 26px; border-radius: 3px; }
+    .sx-btn:hover { filter: brightness(1.08); }
+    /* highlights: a reel next to its text */
+    .hl-grid { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 48px; align-items: center; }
+    .hl-media { position: relative; aspect-ratio: 9 / 16; max-height: 680px; width: 100%; background: #14110b; border-radius: 4px; overflow: hidden; cursor: pointer; border: 1px solid var(--line); }
+    .hl-media video, .hl-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hl-media video { opacity: 0; transition: opacity .35s ease; }
+    .hl-media video.on { opacity: 1; }
+    .hl-play { position: absolute; right: 14px; bottom: 14px; width: 48px; height: 48px; border-radius: 50%; background: rgba(10,9,5,.6); color: #f5f0e8; display: flex; align-items: center; justify-content: center; }
+    .hl-play svg { width: 20px; height: 20px; }
+    .hl-k { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
+    .hl-t { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: clamp(26px, 3vw, 40px); line-height: 1.1; margin: 0 0 16px; color: var(--white); }
+    .hl-p { font-size: 15px; line-height: 1.8; color: var(--text-muted-2); margin: 0 0 24px; max-width: 520px; }
+    .hl-q { font-size: 14px; line-height: 1.7; color: var(--white); border-left: 2px solid var(--gold); padding-left: 16px; margin: 0 0 26px; max-width: 520px; }
+    .hl-links { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; }
+    /* news */
+    .news-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+    .news-card { display: block; text-decoration: none; color: inherit; }
+    .news-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; border-radius: 3px; background: var(--surf-2); }
+    .news-tag { font-size: 10px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--gold); font-weight: 700; margin: 14px 0 6px; }
+    .news-t { font: 700 16px/1.35 'DM Sans', sans-serif; color: var(--white); }
+    .news-card:hover .news-t { color: var(--gold); }
+    @media (max-width: 767px) {
+      .hl-grid { grid-template-columns: 1fr; gap: 20px; padding: 0 16px; }
+      .hl-media { max-height: 70vh; width: min(100%, 360px); margin: 0 auto; }
+      .m-hl { padding-bottom: 34px; }
+      .news-grid { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 16px 8px; scrollbar-width: none; }
+      .news-grid::-webkit-scrollbar { display: none; }
+      .news-card { flex: 0 0 74%; scroll-snap-align: start; }
+      .news-t { font-size: 15px; }
+    }
+    @media (min-width: 768px) and (max-width: 1100px) { .sx-dark-grid { grid-template-columns: 1fr; gap: 28px; } .news-grid { grid-template-columns: repeat(2, 1fr); } .hl-grid { grid-template-columns: 300px 1fr; gap: 32px; } .sx { padding: 56px 32px; } }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
@@ -3374,6 +3429,11 @@
        Two dark bands in the same shape as the fairs block above them: a flag,
        a short bold heading, two lines of text, one link. Fixed dark/gold
        colours, so they read the same in either theme. -->
+  <section class="m-block m-hl" id="m-highlights" style="display:none">
+    <div class="m-block-head"><div><div class="m-block-eyebrow">Highlights</div><h2 class="m-block-title">This week</h2></div></div>
+    <div class="hl-grid"></div>
+  </section>
+
   <section class="m-band" id="m-band-archive">
     <div class="m-band-head">
       <div class="m-band-eyebrow">The Archive</div>
@@ -3391,6 +3451,11 @@
       <p class="m-band-text">We find, verify and document vintage and match worn shirts, and we sell them with the evidence attached.</p>
       <button type="button" class="m-band-link" onclick="mGoTo('about')">Read our story &rsaquo;</button>
     </div>
+  </section>
+
+  <section class="m-block m-block-alt" id="m-news" style="display:none">
+    <div class="m-block-head"><div><div class="m-block-eyebrow">The Journal</div><h2 class="m-block-title">Latest stories</h2></div><a class="m-newin-all" href="/blog.html">All &rarr;</a></div>
+    <div class="news-grid"></div>
   </section>
 
   <section class="ss-reels-sec m-block-alt" id="m-reels-sec" style="display:none">
@@ -3951,55 +4016,73 @@
 
 <!-- SCENE 7: FEATURED SHIRTS (from Supabase) -->
 <div id="cin-featured">
-  <div style="padding:52px 52px 36px">
-    <div id="feat-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
+  <section class="sx">
+    <div class="sx-head" id="feat-header" style="opacity:0;transform:translateY(20px)">
       <div>
-        <div id="feat-eyebrow" style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">The Collection</div>
-        <div id="feat-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Featured Pieces</div>
+        <div class="sx-eyebrow" id="feat-eyebrow">The Collection</div>
+        <h2 class="sx-title" id="feat-title">Featured Pieces</h2>
+        <a class="sx-link" href="/?p=shop" onclick="dGoTo('shop');return false;">View all shirts &rarr;</a>
       </div>
-      <a href="/?p=shop" onclick="dGoTo('shop');return false;" style="font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all shirts &rarr;</a>
+      <div class="sx-arrows"><button type="button" class="sx-arrow" aria-label="Previous" onclick="ssRowScroll('d-featured-row',-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button><button type="button" class="sx-arrow" aria-label="Next" onclick="ssRowScroll('d-featured-row',1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></button></div>
     </div>
     <div id="d-featured-row" class="shirt-row"></div>
-  </div>
+  </section>
 
-  <div style="height:1px;background:rgba(255,255,255,.05);margin:0 52px"></div>
-
-  <div class="d-home-block-alt" style="padding:48px 52px 36px">
-    <div id="mw-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
-      <div>
-        <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Authentic &amp; Verified</div>
-        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Match Worn / Issued</div>
+  <!-- dark feature block: text on the left, the shirts on the right -->
+  <section class="sx sx-dark">
+    <div class="sx-dark-grid">
+      <div class="sx-dark-text" id="mw-header" style="opacity:0;transform:translateY(20px)">
+        <div class="sx-eyebrow">Authentic &amp; Verified</div>
+        <h2 class="sx-title">Match Worn / Issued</h2>
+        <div class="sx-rule"></div>
+        <p class="sx-p">Shirts that were worn or prepared for real matches, each one with the evidence that comes with it. Where it cannot be established, we say so on the page.</p>
+        <a class="sx-btn" href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;">See all match worn</a>
       </div>
-      <a href="/?p=shop&cat=match_worn" onclick="dGoTo('shop');dSetFilter('match_worn');return false;" style="font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all match worn &rarr;</a>
+      <div class="sx-dark-row">
+        <div class="sx-arrows"><button type="button" class="sx-arrow" aria-label="Previous" onclick="ssRowScroll('d-matchworn-row',-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button><button type="button" class="sx-arrow" aria-label="Next" onclick="ssRowScroll('d-matchworn-row',1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></button></div>
+        <div id="d-matchworn-row" class="shirt-row"></div>
+      </div>
     </div>
-    <div id="d-matchworn-row" class="shirt-row"></div>
-  </div>
+  </section>
 
-  <div style="height:1px;background:rgba(255,255,255,.05);margin:0 52px"></div>
+  <!-- highlights: one reel (a different one on every visit) next to its story -->
+  <section class="sx" id="d-highlights" style="display:none">
+    <div class="sx-head"><div><div class="sx-eyebrow">Highlights</div><h2 class="sx-title">This week at Shirt Soci&eacute;t&eacute;</h2></div></div>
+    <div class="hl-grid"></div>
+  </section>
 
-  <div style="padding:48px 52px 36px">
-    <div id="nat-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
+  <section class="sx sx-alt">
+    <div class="sx-head" id="nat-header" style="opacity:0;transform:translateY(20px)">
       <div>
-        <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">International Shirts</div>
-        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">National Sides</div>
+        <div class="sx-eyebrow">International Shirts</div>
+        <h2 class="sx-title">National Sides</h2>
+        <a class="sx-link" href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;">View all national teams &rarr;</a>
       </div>
-      <a href="/?p=shop&cat=national" onclick="dGoTo('shop');dSetFilter('national');return false;" style="font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all national teams &rarr;</a>
+      <div class="sx-arrows"><button type="button" class="sx-arrow" aria-label="Previous" onclick="ssRowScroll('d-national-row',-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button><button type="button" class="sx-arrow" aria-label="Next" onclick="ssRowScroll('d-national-row',1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></button></div>
     </div>
     <div id="d-national-row" class="shirt-row"></div>
-  </div>
+  </section>
 
-  <div style="height:1px;background:rgba(255,255,255,.05);margin:0 52px"></div>
-
-  <div class="d-home-block-alt" style="padding:48px 52px 64px">
-    <div id="cl-header" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;opacity:0;transform:translateY(20px)">
+  <section class="sx">
+    <div class="sx-head" id="cl-header" style="opacity:0;transform:translateY(20px)">
       <div>
-        <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600">Club Heritage</div>
-        <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:.95">Club Shirts</div>
+        <div class="sx-eyebrow">Club Heritage</div>
+        <h2 class="sx-title">Club Classics</h2>
+        <a class="sx-link" href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;">View all club shirts &rarr;</a>
       </div>
-      <a href="/?p=shop&cat=clubs" onclick="dGoTo('shop');dSetFilter('clubs');return false;" style="font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:none" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">View all club shirts &rarr;</a>
+      <div class="sx-arrows"><button type="button" class="sx-arrow" aria-label="Previous" onclick="ssRowScroll('d-clubs-row',-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button><button type="button" class="sx-arrow" aria-label="Next" onclick="ssRowScroll('d-clubs-row',1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></button></div>
     </div>
     <div id="d-clubs-row" class="shirt-row"></div>
-  </div>
+  </section>
+
+  <!-- latest news: from the Journal -->
+  <section class="sx sx-alt" id="d-news" style="display:none">
+    <div class="sx-head">
+      <div><div class="sx-eyebrow">The Journal</div><h2 class="sx-title">Latest stories</h2>
+        <a class="sx-link" href="/blog.html">All stories &rarr;</a></div>
+    </div>
+    <div class="news-grid"></div>
+  </section>
 </div>
 
 <!-- ═══ INSTAGRAM REELS (live from Behold) ═══ -->
@@ -5353,6 +5436,71 @@ as a personal collection quickly grew into something bigger: a curated platform 
     var dsc = document.getElementById('d-shirt-count'); if (dsc) dsc.textContent = allShirts.length;
   }
 
+
+  // ── home sections: arrows, highlights (a reel plus its text) and the Journal ──
+  function ssRowScroll(id, dir) {
+    var row = document.getElementById(id); if (!row) return;
+    row.scrollBy({ left: dir * Math.max(260, row.clientWidth * 0.75), behavior: 'smooth' });
+  }
+  function ssHlRender() {
+    var reels = window.ssReelsData;
+    if (reels && reels.some(function (x) { return x.mediaUrl; })) reels = reels.filter(function (x) { return x.mediaUrl; });
+    if (!reels || !reels.length) return;
+    if (!window.ssHlPick || window.ssHlPick.n !== reels.length) window.ssHlPick = { n: reels.length, i: Math.floor(Math.random() * reels.length) };
+    var r = reels[window.ssHlPick.i];
+    ['d-highlights', 'm-highlights'].forEach(function (id) {
+      var sec = document.getElementById(id); if (!sec) return;
+      var box = sec.querySelector('.hl-grid');
+      var esc = function (t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      var cap = String(r.caption || '').trim();
+      box.innerHTML = '<div class="hl-media" role="button" tabindex="0" aria-label="Play the reel">'
+        + (r.poster ? '<img src="' + esc(r.poster) + '" alt="">' : '')
+        + (r.mediaUrl ? '<video muted loop playsinline webkit-playsinline preload="metadata"></video>' : '')
+        + '<span class="hl-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>'
+        + '<div class="hl-text"><div class="hl-k">On film</div><h3 class="hl-t">The shirts, on film</h3>'
+        + '<p class="hl-p">Close-ups of the details a photograph flattens: the weave, the flock printing, the wear. A different reel every time you visit.</p>'
+        + (cap ? '<p class="hl-q">' + esc(cap.length > 220 ? cap.slice(0, 217) + '…' : cap) + '</p>' : '')
+        + '<div class="hl-links"><button type="button" class="sx-btn hl-watch" style="border:0;cursor:pointer">Watch big</button>'
+        + '<a class="sx-link" style="margin:0" href="' + esc(r.permalink || 'https://www.instagram.com/shirtsociete/') + '" target="_blank" rel="noopener">View on Instagram &rarr;</a></div></div>';
+      sec.style.display = '';
+      var media = box.querySelector('.hl-media'), v = media.querySelector('video');
+      var open = function () { if (window.ssOpenReel) window.ssOpenReel(r); };
+      media.addEventListener('click', open);
+      media.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+      box.querySelector('.hl-watch').addEventListener('click', open);
+      if (v) {
+        v.src = r.mediaUrl + (String(r.mediaUrl).indexOf('#') === -1 ? '#t=0.05' : '');
+        v.muted = true;
+        v.addEventListener('playing', function () { v.classList.add('on'); });
+        v.addEventListener('loadeddata', function () { v.classList.add('on'); });
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver(function (en) { en.forEach(function (e) {
+            if (e.isIntersecting && !window.ssReelLbOpen) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); } else v.pause();
+          }); }, { threshold: 0.4 }).observe(media);
+        }
+      }
+    });
+  }
+  function ssNewsRender() {
+    fetch('/journal/', { cache: 'force-cache' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (html) {
+      if (!html) return;
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var cards = [].slice.call(doc.querySelectorAll('a.jcard')).slice(0, 4);
+      if (!cards.length) return;
+      var out = cards.map(function (c) {
+        var img = c.querySelector('img'), tag = c.querySelector('.jtag'), t = c.querySelector('.jt');
+        var href = c.getAttribute('href') || '/blog.html';
+        return '<a class="news-card" href="' + href + '">' + (img ? '<img src="' + img.getAttribute('src') + '" alt="" loading="lazy">' : '')
+          + '<div class="news-tag">' + (tag ? tag.textContent : 'Journal') + '</div><div class="news-t">' + (t ? t.textContent : '') + '</div></a>';
+      }).join('');
+      ['d-news', 'm-news'].forEach(function (id) {
+        var sec = document.getElementById(id); if (!sec) return;
+        sec.querySelector('.news-grid').innerHTML = out; sec.style.display = '';
+      });
+    }).catch(function () {});
+  }
+  setTimeout(ssNewsRender, 600);
+
   // ── MOBILE HOME ──
   function renderMobileHome() {
     const featured = allShirts.filter(s => s.featured);
@@ -6098,6 +6246,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
 
       function mkBtn(dir) {
         var b = document.createElement('div');
+        b.className = 'row-edge-arrow';
         b.textContent = dir < 0 ? '\u2039' : '\u203A';
         b.style.cssText = 'position:absolute;top:calc(50% - 20px);' + (dir < 0 ? 'left:6px' : 'right:6px') +
           ';transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(10,9,5,.9);' +
@@ -11086,7 +11235,7 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
     lbVideo.muted = true; lbVideo.setAttribute('muted', ''); lbSound.innerHTML = SND_OFF;
     lbSound.style.display = post.mediaUrl ? '' : 'none';
     lbVideo.style.display = post.mediaUrl ? '' : 'none';
-    lbEl.classList.add('open'); lbOpen = true;
+    lbEl.classList.add('open'); lbOpen = true; window.ssReelLbOpen = true;
     document.body.style.overflow = 'hidden';
     document.querySelectorAll('.ss-reel video').forEach(function (v) { v.pause(); });
     if (post.mediaUrl) {
@@ -11098,7 +11247,7 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
   }
   function closeReel() {
     if (!lbEl) return;
-    lbOpen = false;
+    lbOpen = false; window.ssReelLbOpen = false;
     lbEl.classList.remove('open');
     try { lbVideo.pause(); lbVideo.removeAttribute('src'); lbVideo.load(); } catch (e) {}
     document.body.style.overflow = '';
@@ -11222,6 +11371,8 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
     paintFollowers(norm.followers);
     if (first && norm.reels && norm.reels.length) {
       var reels = norm.reels.slice(0, 8);
+      window.ssReelsData = reels; window.ssOpenReel = openReel;
+      try { ssHlRender(); } catch (e) {}
       renderReels('d-reels-row', reels);
       renderReels('m-reels-row', reels);
     }
