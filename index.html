@@ -5465,8 +5465,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
     var reels = window.ssReelsData;
     if (reels && reels.some(function (x) { return x.mediaUrl; })) reels = reels.filter(function (x) { return x.mediaUrl; });
     if (!reels || !reels.length) return;
-    reels = reels.slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });   // newest first; stable, so Behold's own order stays when there is no date
-    var r = reels[0];
+    var r = reels[0];   // the first reel of "The shirts, on film" below, so both always agree
     ['d-highlights', 'm-highlights'].forEach(function (id) {
       var sec = document.getElementById(id); if (!sec) return;
       var box = sec.querySelector('.hl-grid');
