@@ -1975,12 +1975,12 @@
       #screen-about > div { display: flex; flex-direction: column; }
       #screen-about > div > .detail-back    { order: 0; }
       #screen-about > div > .page-head      { order: 1; }
-      #screen-about > div > div:last-child  { order: 2; }   /* fairs + contact */
-      #screen-about > div > .story-figures  { order: 3; }
-      #screen-about > div > .story-label    { order: 4; }
-      #screen-about > div > h2              { order: 5; }
-      #screen-about > div > p               { order: 6; }
-      #screen-about > div > .story-purpose  { order: 7; }
+      #screen-about > div > div:last-child  { order: 7; }   /* fairs + contact */
+      #screen-about > div > .story-figures  { order: 4; }
+      #screen-about > div > .story-label    { order: 1; }
+      #screen-about > div > h2              { order: 2; }
+      #screen-about > div > p               { order: 3; }
+      #screen-about > div > .story-purpose  { order: 5; }
       #screen-about > div > div             { order: 8; }   /* anything else */
       #screen-about > div > a               { order: 9; }
 
@@ -2260,7 +2260,7 @@
     }
     .ss-next-fair { position: relative; border: 1px solid rgba(200,169,80,.55); border-radius: 4px; padding: 12px 16px 12px; margin: 4px 0 18px; text-align: left;
       background: linear-gradient(160deg, rgba(200,169,80,.16) 0%, rgba(200,169,80,.04) 55%, transparent 100%), #0a0905; color: #f5f0e8; overflow: hidden; }
-    #screen-about > div > .ss-next-fair { order: 1; }
+    #screen-about > div > .ss-next-fair { order: 6; }
     .ss-next-fair .nf-eyebrow { display: flex; align-items: center; gap: 9px; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; color: #c8a950; margin-bottom: 10px; }
     .ss-next-fair .nf-eyebrow i { width: 9px; height: 9px; border-radius: 50%; background: #c8a950; box-shadow: 0 0 0 0 rgba(200,169,80,.6); animation: nfPulse 1.8s infinite; }
     @keyframes nfPulse { 70% { box-shadow: 0 0 0 10px rgba(200,169,80,0); } 100% { box-shadow: 0 0 0 0 rgba(200,169,80,0); } }
@@ -2890,8 +2890,8 @@
       #screen-about > div { position: relative; padding-top: 0 !important; }
       #screen-about > div > .pg-hero { order: -1; margin: 0 -20px; min-height: 52vh; }
       #screen-about > div > .detail-back { position: absolute; top: 14px; left: 0; z-index: 5; padding: 0; color: #f5f0e8; }
-      #screen-about > div > .ss-next-fair { order: 0; margin-top: 22px; }
-      #screen-about > div > .story-purpose { order: 7; background: var(--pg-alt); margin: 0 -20px !important; padding: 28px 20px !important;
+      #screen-about > div > .ss-next-fair { order: 6; margin-top: 34px; }
+      #screen-about > div > .story-purpose { order: 5; background: var(--pg-alt); margin: 0 -20px !important; padding: 28px 20px !important;
         border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
       #screen-about > div > div:last-child { background: var(--pg-alt); margin: 26px -20px 0 !important; padding: 28px 20px 8px !important;
         border-top: 1px solid var(--line) !important; border-bottom: 1px solid var(--line); }
@@ -2933,6 +2933,18 @@
       #d-screen-shop .shirt-card:hover .shirt-card-title { text-decoration: underline; text-underline-offset: 3px; }
       .d-pg-section { padding: 56px 52px; }
       .d-pg-alt { background: var(--pg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+      /* Our Story on a laptop: banner, who we are, numbers, mission and vision, then the fairs, contact and Instagram.
+         The blocks take turns in background colour and share one width, like the shop and the archive. */
+      #d-screen-about.active { display: flex; flex-direction: column; }
+      #d-screen-about > .pg-hero { order: 0; }
+      #d-screen-about > .story-band { order: 1; }
+      #d-screen-about > [data-ev-show="next"] { order: 2; max-width: none !important; padding: 56px 52px 0 !important; }
+      #d-screen-about > .anim-about.fade-in { order: 3; padding: 28px 52px 64px !important; border-top: 0 !important; }
+      #d-screen-about > .contact-band { order: 4; background: var(--pg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      #d-screen-about > div[style*="max-width:1100px"] { order: 5; }
+      #d-screen-about > .anim-about.scale-in { order: 6; }
+      #d-screen-about > [data-ev-show="next"] > .ss-next-fair { margin: 0; max-width: 560px; }
       #d-screen-archive .d-arch-text { padding: 48px 52px 44px; text-align: center; border-bottom: 0; }
       #cin-featured > .d-home-block-alt { background: var(--pg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     }
