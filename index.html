@@ -3036,16 +3036,18 @@
     .sx-btn { display: inline-block; background: var(--gold); color: #14120b; font: 700 12px 'DM Sans', sans-serif; letter-spacing: 1.6px; text-transform: uppercase; text-decoration: none; padding: 14px 26px; border-radius: 3px; }
     .sx-btn:hover { filter: brightness(1.08); }
     /* highlights: a reel next to its text */
-    .hl-grid { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 48px; align-items: center; }
-    .hl-media { position: relative; aspect-ratio: 9 / 16; max-height: 680px; width: 100%; background: #14110b; border-radius: 4px; overflow: hidden; cursor: pointer; border: 1px solid var(--line); }
+    .hl-grid { display: grid; grid-template-columns: 250px max-content; gap: 44px; align-items: center; justify-content: center; }
+    #d-highlights .sx-head { justify-content: center; text-align: center; }
+    .hl-media { position: relative; aspect-ratio: 9 / 16; max-height: 444px; width: 100%; background: #14110b; border-radius: 4px; overflow: hidden; cursor: pointer; border: 1px solid var(--line); }
     .hl-media video, .hl-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .hl-media video { opacity: 0; transition: opacity .35s ease; }
     .hl-media video.on { opacity: 1; }
     .hl-play { position: absolute; right: 14px; bottom: 14px; width: 48px; height: 48px; border-radius: 50%; background: rgba(10,9,5,.6); color: #f5f0e8; display: flex; align-items: center; justify-content: center; }
     .hl-play svg { width: 20px; height: 20px; }
     .hl-k { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
-    .hl-t { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: clamp(26px, 3vw, 40px); line-height: 1.1; margin: 0 0 16px; color: var(--white); }
+    .hl-t { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: clamp(20px, 2.2vw, 28px); line-height: 1.25; margin: 0 0 22px; color: var(--white); }
     .hl-p { font-size: 15px; line-height: 1.8; color: var(--text-muted-2); margin: 0 0 24px; max-width: 520px; }
+    .hl-text { max-width: 340px; }
     .hl-q { font-size: 14px; line-height: 1.7; color: var(--white); border-left: 2px solid var(--gold); padding-left: 16px; margin: 0 0 26px; max-width: 520px; }
     .hl-links { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; }
     /* news */
@@ -3057,14 +3059,15 @@
     .news-card:hover .news-t { color: var(--gold); }
     @media (max-width: 767px) {
       .hl-grid { grid-template-columns: 1fr; gap: 20px; padding: 0 16px; }
-      .hl-media { max-height: 70vh; width: min(100%, 360px); margin: 0 auto; }
+      .hl-media { max-height: 60vh; width: min(100%, 250px); margin: 0 auto; }
+      .hl-text { text-align: center; } .hl-q, .hl-links { margin-left: auto; margin-right: auto; justify-content: center; }
       .m-hl { padding-bottom: 34px; }
       .news-grid { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 16px 8px; scrollbar-width: none; }
       .news-grid::-webkit-scrollbar { display: none; }
       .news-card { flex: 0 0 74%; scroll-snap-align: start; }
       .news-t { font-size: 15px; }
     }
-    @media (min-width: 768px) and (max-width: 1100px) { .sx-dark-grid { grid-template-columns: 1fr; gap: 28px; } .news-grid { grid-template-columns: repeat(2, 1fr); } .hl-grid { grid-template-columns: 300px 1fr; gap: 32px; } .sx { padding: 56px 32px; } }
+    @media (min-width: 768px) and (max-width: 1100px) { .sx-dark-grid { grid-template-columns: 1fr; gap: 28px; } .news-grid { grid-template-columns: repeat(2, 1fr); } .hl-grid { grid-template-columns: 240px minmax(0, 1fr); gap: 32px; } .sx { padding: 56px 32px; } }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
@@ -5458,8 +5461,8 @@ as a personal collection quickly grew into something bigger: a curated platform 
     var reels = window.ssReelsData;
     if (reels && reels.some(function (x) { return x.mediaUrl; })) reels = reels.filter(function (x) { return x.mediaUrl; });
     if (!reels || !reels.length) return;
-    if (!window.ssHlPick || window.ssHlPick.n !== reels.length) window.ssHlPick = { n: reels.length, i: Math.floor(Math.random() * reels.length) };
-    var r = reels[window.ssHlPick.i];
+    reels = reels.slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });   // newest first; stable, so Behold's own order stays when there is no date
+    var r = reels[0];
     ['d-highlights', 'm-highlights'].forEach(function (id) {
       var sec = document.getElementById(id); if (!sec) return;
       var box = sec.querySelector('.hl-grid');
@@ -5469,17 +5472,14 @@ as a personal collection quickly grew into something bigger: a curated platform 
         + (r.poster ? '<img src="' + esc(r.poster) + '" alt="">' : '')
         + (r.mediaUrl ? '<video muted loop playsinline webkit-playsinline preload="metadata"></video>' : '')
         + '<span class="hl-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>'
-        + '<div class="hl-text"><div class="hl-k">On film</div><h3 class="hl-t">The shirts, on film</h3>'
-        + '<p class="hl-p">Close-ups of the details a photograph flattens: the weave, the flock printing, the wear. A different reel every time you visit.</p>'
-        + (cap ? '<p class="hl-q">' + esc(cap.length > 220 ? cap.slice(0, 217) + '…' : cap) + '</p>' : '')
-        + '<div class="hl-links"><button type="button" class="sx-btn hl-watch" style="border:0;cursor:pointer">Watch big</button>'
-        + '<a class="sx-link" style="margin:0" href="' + esc(r.permalink || 'https://www.instagram.com/shirtsociete/') + '" target="_blank" rel="noopener">View on Instagram &rarr;</a></div></div>';
+        + '<div class="hl-text"><div class="hl-k">Latest reel</div>'
+        + (cap ? '<h3 class="hl-t">' + esc(cap.length > 120 ? cap.slice(0, 117) + '…' : cap) + '</h3>' : '<h3 class="hl-t">The shirts, on film</h3>')
+        + '<div class="hl-links"><a class="sx-link" style="margin:0" href="' + esc(r.permalink || 'https://www.instagram.com/shirtsociete/') + '" target="_blank" rel="noopener">View on Instagram &rarr;</a></div></div>';
       sec.style.display = '';
       var media = box.querySelector('.hl-media'), v = media.querySelector('video');
       var open = function () { if (window.ssOpenReel) window.ssOpenReel(r); };
       media.addEventListener('click', open);
       media.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
-      box.querySelector('.hl-watch').addEventListener('click', open);
       if (v) {
         v.src = r.mediaUrl + (String(r.mediaUrl).indexOf('#') === -1 ? '#t=0.05' : '');
         v.muted = true;
@@ -11372,7 +11372,8 @@ var SS_BEHOLD_JSON_FEED = '';   // optional fallback, leave empty if unused
           mediaUrl: p.mediaUrl,
           permalink: p.permalink,
           caption: p.prunedCaption || p.caption || '',
-          poster: thumbOf(p)
+          poster: thumbOf(p),
+          ts: Date.parse(p.timestamp || '') || 0
         };
       })
     };
