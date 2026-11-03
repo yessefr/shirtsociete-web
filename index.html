@@ -74,6 +74,10 @@
   <meta name="author" content="Shirt Société">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://shirtsociete.com/">
+  <!-- hreflang: the German landing page points back to this page (x-default), so the pair is reciprocal -->
+  <link rel="alternate" hreflang="en" href="https://shirtsociete.com/">
+  <link rel="alternate" hreflang="de" href="https://shirtsociete.com/de/vintage-fussballtrikots.html">
+  <link rel="alternate" hreflang="x-default" href="https://shirtsociete.com/">
 
   <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
   <meta property="og:type" content="website">
@@ -116,7 +120,12 @@
     "priceRange": "€€€",
     "currenciesAccepted": "EUR",
     "paymentAccepted": "iDEAL, Credit Card, Bancontact, Apple Pay",
-    "openingHours": "Mo-Su 00:00-23:59"
+    "email": "info@shirtsociete.com",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "email": "info@shirtsociete.com"
+    }
   }
   </script>
   <!-- Temporary favicon: the real logo file was on Cloudinary, which is
