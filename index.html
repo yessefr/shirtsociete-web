@@ -3052,6 +3052,20 @@
     html[data-theme="light"] #m-archive-about a { color: #5f4710 !important; }
     html[data-theme="light"] #d-screen-about [style*="color:#4caf7d"], html[data-theme="light"] #screen-about [style*="color:#4caf7d"] { color: #17653d !important; }
     html[data-theme="light"] #d-screen-about [style*="color:#c8a950"], html[data-theme="light"] #d-screen-about [style*="color: #c8a950"], html[data-theme="light"] #screen-about [style*="color:#c8a950"], html[data-theme="light"] #screen-about [style*="color: #c8a950"] { color: #6e5010 !important; }
+    /* highlights: a dark "TV room", the colours of the reel glow on the wall behind it (like Ambilight) */
+    .hl-tv { position: relative; overflow: hidden; background: #0a0905; border-top: 1px solid rgba(200,169,80,.3); border-bottom: 1px solid rgba(200,169,80,.3);
+      --white: #f5f0e8; --black: #0a0905; --gold: #c8a950; --gold-bg: #c8a950; --ink: #14120b; --text-muted: #8d8574; --text-muted-2: #b0a898; --line: #2a2820; --line-soft: #3a372f; --cream: #f5f0e8; }
+    .hl-tv .sx-head, .hl-tv .m-block-head { position: relative; z-index: 2; }
+    .hl-stage { position: relative; }
+    .hl-ambi { position: absolute; left: 50%; top: 50%; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+      transform: translate(-50%, -50%) scale(3.3, 2.6); filter: blur(52px) saturate(2) brightness(.85); opacity: .95;
+      -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent 100%); mask-image: radial-gradient(closest-side, #000 45%, transparent 100%); }
+    .hl-ambi video, .hl-ambi img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hl-ambi video { opacity: 0; transition: opacity .6s ease; } .hl-ambi video.on { opacity: 1; }
+    .hl-tv .hl-media { z-index: 1; border-color: rgba(245,240,232,.14); box-shadow: 0 18px 60px rgba(0,0,0,.55); }
+    .hl-tv .hl-text { position: relative; z-index: 2; }
+    @media (max-width: 767px) { .hl-ambi { transform: translate(-50%, -50%) scale(2.1); filter: blur(34px) saturate(1.8) brightness(.8); } }
+    @media (prefers-reduced-motion: reduce) { .hl-ambi video { display: none; } }
     /* highlights: a reel next to its text */
     .hl-grid { display: grid; grid-template-columns: 250px max-content; gap: 44px; align-items: center; justify-content: center; }
     #d-highlights .sx-head { justify-content: center; text-align: center; }
@@ -3461,7 +3475,7 @@
        Two dark bands in the same shape as the fairs block above them: a flag,
        a short bold heading, two lines of text, one link. Fixed dark/gold
        colours, so they read the same in either theme. -->
-  <section class="m-block m-hl" id="m-highlights" style="display:none">
+  <section class="m-block m-hl hl-tv" id="m-highlights" style="display:none">
     <div class="m-block-head"><div><div class="m-block-eyebrow">Highlights</div><h2 class="m-block-title">This week</h2></div></div>
     <div class="hl-grid"></div>
   </section>
@@ -4078,7 +4092,7 @@
   </section>
 
   <!-- highlights: one reel (a different one on every visit) next to its story -->
-  <section class="sx" id="d-highlights" style="display:none">
+  <section class="sx hl-tv" id="d-highlights" style="display:none">
     <div class="sx-head"><div><div class="sx-eyebrow">Highlights</div><h2 class="sx-title">This week at Shirt Soci&eacute;t&eacute;</h2></div></div>
     <div class="hl-grid"></div>
   </section>
@@ -5476,23 +5490,26 @@ as a personal collection quickly grew into something bigger: a curated platform 
   }
   function ssHlRender() {
     var reels = window.ssReelsData;
-    if (reels && reels.some(function (x) { return x.mediaUrl; })) reels = reels.filter(function (x) { return x.mediaUrl; });
     if (!reels || !reels.length) return;
-    var r = reels[0];   // the first reel of "The shirts, on film" below, so both always agree
+    var r = reels[0];   // the first reel of "The shirts, on film" below = the newest one on Instagram
+    var calm = false; try { calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
     ['d-highlights', 'm-highlights'].forEach(function (id) {
       var sec = document.getElementById(id); if (!sec) return;
       var box = sec.querySelector('.hl-grid');
       var esc = function (t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
       var cap = String(r.caption || '').trim();
-      box.innerHTML = '<div class="hl-media" role="button" tabindex="0" aria-label="Play the reel">'
+      box.innerHTML = '<div class="hl-stage"><div class="hl-ambi" aria-hidden="true">'
+        + (r.poster ? '<img src="' + esc(r.poster) + '" alt="">' : '')
+        + (r.mediaUrl && !calm ? '<video muted loop playsinline webkit-playsinline preload="metadata" tabindex="-1"></video>' : '') + '</div>'
+        + '<div class="hl-media" role="button" tabindex="0" aria-label="Play the reel">'
         + (r.poster ? '<img src="' + esc(r.poster) + '" alt="">' : '')
         + (r.mediaUrl ? '<video muted loop playsinline webkit-playsinline preload="metadata"></video>' : '')
-        + '<span class="hl-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>'
+        + '<span class="hl-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div></div>'
         + '<div class="hl-text"><div class="hl-k">Latest reel</div>'
         + (cap ? '<h3 class="hl-t">' + esc(cap.length > 120 ? cap.slice(0, 117) + '…' : cap) + '</h3>' : '<h3 class="hl-t">The shirts, on film</h3>')
         + '<div class="hl-links"><a class="sx-link" style="margin:0" href="' + esc(r.permalink || 'https://www.instagram.com/shirtsociete/') + '" target="_blank" rel="noopener">View on Instagram &rarr;</a></div></div>';
       sec.style.display = '';
-      var media = box.querySelector('.hl-media'), v = media.querySelector('video');
+      var media = box.querySelector('.hl-media'), v = media.querySelector('video'), a = box.querySelector('.hl-ambi video');
       var open = function () { if (window.ssOpenReel) window.ssOpenReel(r); };
       media.addEventListener('click', open);
       media.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
@@ -5501,9 +5518,18 @@ as a personal collection quickly grew into something bigger: a curated platform 
         v.muted = true;
         v.addEventListener('playing', function () { v.classList.add('on'); });
         v.addEventListener('loadeddata', function () { v.classList.add('on'); });
+        if (a) {
+          // the glow is the same reel, blurred and enlarged: it follows every colour change of the picture
+          a.src = v.src; a.muted = true;
+          a.addEventListener('loadeddata', function () { a.classList.add('on'); });
+          v.addEventListener('timeupdate', function () { if (Math.abs(a.currentTime - v.currentTime) > 0.35) { try { a.currentTime = v.currentTime; } catch (e) {} } });
+        }
+        var go = function (on) {
+          [v, a].forEach(function (x) { if (!x) return; if (on) { var pr = x.play(); if (pr && pr.catch) pr.catch(function () {}); } else x.pause(); });
+        };
         if ('IntersectionObserver' in window) {
           new IntersectionObserver(function (en) { en.forEach(function (e) {
-            if (e.isIntersecting && !window.ssReelLbOpen) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); } else v.pause();
+            go(e.isIntersecting && !window.ssReelLbOpen);
           }); }, { threshold: 0.4 }).observe(media);
         }
       }
