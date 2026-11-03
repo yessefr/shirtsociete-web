@@ -212,6 +212,12 @@
       --line-soft: #b8a06a;
       --photo-dim: 0.62;
     }
+
+    /* the logo and the hero sit on dark photography: they keep the dark-mode colours in light mode too */
+    html[data-theme="light"] #d-topbar .topbar-main, html[data-theme="light"] .mobile-header, html[data-theme="light"] #cin-s1, html[data-theme="light"] .m-hero {
+      --gold: #c8a950; --gold-dim: #9a7e3a; --gold-light: #e8c96a; --gold-bg: #c8a950; --white: #f5f0e8; --white-rgb: 245,240,232; --cream: #f5f0e8; --black: #0a0905; --ink: #0a0905; --text-muted: #b0a898; --text-muted-2: #d8d0c0; }
+    html[data-theme="light"] #cin-s1 { background: #0a0905; }
+    html[data-theme="light"] .topbar-logo .ss-wordmark, html[data-theme="light"] .mobile-logo .ss-wordmark { color: #c8a950; }
     /* ── customer account card (My Wardrobe page) ── */
     .ss-acct-wrap { max-width: 880px; margin: 0 auto; padding: 4px 20px 8px; }
     @media (min-width: 768px) { .ss-acct-wrap { padding: 36px 48px 0; margin: 0; } }
@@ -3050,7 +3056,12 @@
     /* legibility: small text on tinted backgrounds, light and dark */
     .sx-dark .shirt-card-size, .sx-dark .shirt-card-sm .shirt-card-club { color: #cfc7b6; }
     html[data-theme="light"] #m-archive-about a { color: #5f4710 !important; }
-    html[data-theme="light"] #d-screen-about [style*="color:#4caf7d"], html[data-theme="light"] #screen-about [style*="color:#4caf7d"] { color: #17653d !important; }
+    /* Our Story timeline: dark cards with white city names in light and dark mode */
+    .ev-card { background: linear-gradient(180deg,#1b1810,#14120b); border: 1px solid rgba(200,169,80,.18); border-radius: 4px; padding: 24px 16px; transition: border-color .2s, transform .2s, box-shadow .2s; }
+    .ev-card.ev-m { padding: 14px 16px; }
+    .ev-card [style*="color:var(--text-muted)"], .ev-card [style*="color:var(--text-muted);"] { color: rgba(245,240,232,.72) !important; }
+    .ev-link { cursor: pointer; }
+    .ev-link:hover, .ev-link:focus-visible { border-color: rgba(200,169,80,.7); transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0,0,0,.28); outline: none; }
     html[data-theme="light"] #d-screen-about [style*="color:#c8a950"], html[data-theme="light"] #d-screen-about [style*="color: #c8a950"], html[data-theme="light"] #screen-about [style*="color:#c8a950"], html[data-theme="light"] #screen-about [style*="color: #c8a950"] { color: #6e5010 !important; }
     /* highlights: a dark "TV room", the colours of the reel glow on the wall behind it (like Ambilight) */
     .hl-tv { position: relative; overflow: hidden; background: #0a0905; border-top: 1px solid rgba(200,169,80,.3); border-bottom: 1px solid rgba(200,169,80,.3);
@@ -3064,6 +3075,15 @@
     .hl-ambi video { opacity: 0; transition: opacity .6s ease; } .hl-ambi video.on { opacity: 1; }
     .hl-tv .hl-media { z-index: 1; border-color: rgba(245,240,232,.14); box-shadow: 0 18px 60px rgba(0,0,0,.55); }
     .hl-tv .hl-text { position: relative; z-index: 2; }
+    /* the band melts into the next block instead of ending on a hard line */
+    .hl-tv { --hl-fade: clamp(90px, 14vw, 170px); border-bottom: 0; padding-bottom: calc(var(--hl-fade) + 10px) !important; }
+    .hl-tv + .sx, .hl-tv + .m-block, .hl-tv + section { border-top: 0 !important; }
+    .hl-tv::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: var(--hl-fade); z-index: 1; pointer-events: none;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, color-mix(in srgb, var(--pg-alt) 35%, transparent) 45%, var(--pg-alt) 100%); }
+    /* a newest reel without a video file: the still breathes slowly instead of sitting dead */
+    .hl-still > img { animation: hlBreath 14s ease-in-out infinite alternate; transform-origin: 50% 40%; }
+    @keyframes hlBreath { from { transform: scale(1); } to { transform: scale(1.07); } }
+    @media (prefers-reduced-motion: reduce) { .hl-still > img { animation: none; } }
     @media (max-width: 767px) { .hl-ambi { transform: translate(-50%, -50%) scale(2.1); filter: blur(34px) saturate(1.8) brightness(.8); } }
     @media (prefers-reduced-motion: reduce) { .hl-ambi video { display: none; } }
     /* highlights: a reel next to its text */
@@ -3957,7 +3977,7 @@
   <!-- atmospheric embers / dust drifting over the hero -->
   <!-- slide dots (centered, enlarged, clickable) -->
   <div id="cin-hero-dots" style="position:absolute;bottom:30px;left:0;right:0;z-index:3;display:flex;gap:14px;justify-content:center"></div>
-  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,9,5,.38) 0%,rgba(10,9,5,.06) 22%,rgba(10,9,5,.06) 62%,rgba(10,9,5,.5) 100%)"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 62% 56% at 50% 52%,rgba(10,9,5,.5) 0%,rgba(10,9,5,0) 100%),linear-gradient(180deg,rgba(10,9,5,.5) 0%,rgba(10,9,5,.12) 24%,rgba(10,9,5,.22) 60%,rgba(10,9,5,.78) 100%)"></div>
   <div id="cin-hero-text" style="position:relative;z-index:6;width:100%;max-width:860px;margin:0 auto;text-align:center">
    <div id="cin-hero-inner">
     <div id="cin-ew" style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:26px;display:flex;align-items:center;justify-content:center;gap:14px;opacity:0;transform:translateY(16px)">
@@ -3968,11 +3988,11 @@
     <h1 id="cin-h1" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(52px,6vw,88px);line-height:.88;letter-spacing:-2px;margin-bottom:24px;opacity:0;color:var(--on-photo)">
       <span class="cin-line"><span>Vintage</span></span>
       <span class="cin-line"><span>football</span></span>
-      <span class="cin-line"><span id="cin-h1-gold" style="color:transparent;-webkit-text-stroke:1.5px rgba(200,169,80,.5)">history.</span></span>
+      <span class="cin-line"><span id="cin-h1-gold" style="color:transparent;-webkit-text-stroke:1.5px rgba(214,184,96,.85)">history.</span></span>
     </h1>
     <div id="cin-sub-wrap" style="margin:30px auto 38px;max-width:430px;opacity:0;transform:translateY(14px)">
       <span id="cin-sub-rule" style="display:block;width:0;height:1px;margin:0 auto 22px;background:rgba(200,169,80,.45)"></span>
-      <p id="cin-sub" style="font-size:15px;font-weight:300;color:rgba(var(--on-photo-rgb),.5);line-height:1.9;margin:0">
+      <p id="cin-sub" style="font-size:15px;font-weight:300;color:rgba(var(--on-photo-rgb),.82);line-height:1.85;margin:0;text-shadow:0 1px 14px rgba(0,0,0,.6)">
         Authenticity. Heritage. Curated Vintage &amp; Match Worn Football Shirts
       </p>
     </div>
@@ -4597,70 +4617,68 @@
         <div style="overflow-x:auto;padding-bottom:8px">
           <div style="min-width:900px">
             <!-- Horizontal line -->
-            <div style="height:3px;background:linear-gradient(to right,#4caf7d 78%,rgba(74,70,64,0.3) 100%);border-radius:2px;margin:0 12px 0"></div>
+            <div style="height:3px;background:linear-gradient(to right,#c8a950 78%,rgba(200,169,80,.18) 100%);border-radius:2px;margin:0 12px 0"></div>
 
             <!-- Events row -->
             <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:0;padding:0 4px">
 
               <!-- Hamburg -->
               <div style="text-align:center">
-                <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:var(--surf-2);border:1px solid var(--line);border-radius:3px;padding:24px 16px">
+                <div style="width:14px;height:14px;border-radius:50%;background:#c8a950;border:2px solid #14120b;margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
+                <div class="ev-card" style="margin-top:12px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">04.02 · 🇩🇪</div>
-                  <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Hamburg</div>
+                  <div style="font-size:28px;font-weight:900;color:#f5f0e8;margin-bottom:6px">Hamburg</div>
                   <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
                 </div>
               </div>
 
               <!-- Cologne -->
               <div style="text-align:center">
-                <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:var(--surf-2);border:1px solid var(--line);border-radius:3px;padding:24px 16px">
+                <div style="width:14px;height:14px;border-radius:50%;background:#c8a950;border:2px solid #14120b;margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
+                <div class="ev-card" style="margin-top:12px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">31.05 · 🇩🇪</div>
-                  <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Cologne</div>
+                  <div style="font-size:28px;font-weight:900;color:#f5f0e8;margin-bottom:6px">Cologne</div>
                   <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
                 </div>
               </div>
 
               <!-- Düsseldorf -->
               <div style="text-align:center">
-                <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:var(--surf-2);border:1px solid var(--line);border-radius:3px;padding:24px 16px">
+                <div style="width:14px;height:14px;border-radius:50%;background:#c8a950;border:2px solid #14120b;margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
+                <div class="ev-card" style="margin-top:12px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">13.06 · 🇩🇪</div>
-                  <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Düsseldorf</div>
+                  <div style="font-size:28px;font-weight:900;color:#f5f0e8;margin-bottom:6px">Düsseldorf</div>
                   <div style="font-size:13px;color:var(--text-muted)">Pop-up event</div>
                 </div>
               </div>
 
               <!-- Frankfurt -->
               <div style="text-align:center">
-                <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
-                <div style="margin-top:12px;background:var(--surf-2);border:1px solid var(--line);border-radius:3px;padding:24px 16px">
+                <div style="width:14px;height:14px;border-radius:50%;background:#c8a950;border:2px solid #14120b;margin:0 auto;margin-top:-8px;position:relative;z-index:2"></div>
+                <div class="ev-card" style="margin-top:12px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">04.07 · 🇩🇪</div>
-                  <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Frankfurt</div>
+                  <div style="font-size:28px;font-weight:900;color:#f5f0e8;margin-bottom:6px">Frankfurt</div>
                   <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
                 </div>
               </div>
 
               <!-- Hamburg STANDS -->
               <div style="text-align:center">
-                <div style="width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-8px;position:relative;z-index:1"></div>
-                <div style="margin-top:12px;background:var(--surf-2);border:1px solid var(--line);border-radius:3px;padding:24px 16px">
+                <div style="width:14px;height:14px;border-radius:50%;background:#c8a950;border:2px solid #14120b;margin:0 auto;margin-top:-8px;position:relative;z-index:1"></div>
+                <div class="ev-card ev-link" role="button" tabindex="0" onclick="openEventGallery('stands')" style="margin-top:12px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">26.09 · 🇩🇪</div>
-                  <div style="font-size:24px;font-weight:900;color:#4caf7d;margin-bottom:6px">STANDS</div>
+                  <div style="font-size:24px;font-weight:900;color:#f5f0e8;margin-bottom:6px">STANDS</div>
                   <div style="font-size:13px;color:var(--text-muted)">Hamburg · St. Pauli</div>
-                  <a href="#" onclick="event.preventDefault();openEventGallery('stands')" style="display:inline-block;margin-top:10px;font-size:11px;font-style:italic;letter-spacing:1px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.4);padding-bottom:2px">view impressions →</a>
                 </div>
               </div>
 
               <!-- Leipzig -->
               <div style="text-align:center">
-                <div style="width:12px;height:12px;border-radius:50%;background:#4caf7d;border:2px solid var(--black);margin:0 auto;margin-top:-7px;position:relative;z-index:2"></div>
-                <div style="margin-top:13px;background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:24px 16px">
+                <div style="width:12px;height:12px;border-radius:50%;background:#c8a950;border:2px solid #14120b;margin:0 auto;margin-top:-7px;position:relative;z-index:2"></div>
+                <div class="ev-card ev-link" role="button" tabindex="0" onclick="openEventGallery('leipzig')" style="margin-top:13px">
                   <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.5px">04.10 · 🇩🇪</div>
-                  <div style="font-size:28px;font-weight:900;color:#4caf7d;margin-bottom:6px">Leipzig</div>
+                  <div style="font-size:28px;font-weight:900;color:#f5f0e8;margin-bottom:6px">Leipzig</div>
                   <div style="font-size:13px;color:var(--text-muted)">Vintage Fußballbörse</div>
-                  <a href="#" style="display:inline-block;margin-top:10px;font-size:11px;font-style:italic;letter-spacing:1px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.4);padding-bottom:2px" onmouseover="this.style.color='#e0c56a'" onmouseout="this.style.color='var(--gold)'" onclick="event.preventDefault();openEventGallery('leipzig')">view impressions →</a>
                 </div>
               </div>
 
@@ -5029,41 +5047,39 @@ as a personal collection quickly grew into something bigger: a curated platform 
       <!-- timeline -->
       <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">The Journey</div>
       <div style="display:flex;flex-direction:column;gap:10px">
-        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px">
+        <div class="ev-card ev-m">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">04.02.2026 · 🇩🇪</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white)">Hamburg</div>
+          <div style="font-size:17px;font-weight:700;color:#f5f0e8">Hamburg</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
         </div>
-        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px">
+        <div class="ev-card ev-m">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">31.05.2026 · 🇩🇪</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white)">Cologne</div>
+          <div style="font-size:17px;font-weight:700;color:#f5f0e8">Cologne</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
         </div>
-        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px">
+        <div class="ev-card ev-m">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">13.06.2026 · 🇩🇪</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white)">Düsseldorf</div>
+          <div style="font-size:17px;font-weight:700;color:#f5f0e8">Düsseldorf</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
         </div>
-        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px">
+        <div class="ev-card ev-m">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">04.07.2026 · 🇩🇪</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white)">Frankfurt</div>
+          <div style="font-size:17px;font-weight:700;color:#f5f0e8">Frankfurt</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
         </div>
-        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px">
+        <div class="ev-card ev-m ev-link" role="button" tabindex="0" onclick="openEventGallery('stands')">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">26.09.2026 · 🇩🇪</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white)">Hamburg STANDS</div>
+          <div style="font-size:17px;font-weight:700;color:#f5f0e8">Hamburg STANDS</div>
           <div style="font-size:12px;color:var(--text-muted)">Millerntor-Stadion, St. Pauli</div>
-          <a href="#" onclick="event.preventDefault();openEventGallery('stands')" style="display:inline-block;margin-top:8px;font-size:11px;font-style:italic;letter-spacing:1px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.4);padding-bottom:2px">view impressions →</a>
         </div>
-        <div style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px">
+        <div class="ev-card ev-m ev-link" role="button" tabindex="0" onclick="openEventGallery('leipzig')">
           <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">04.10.2026 · 🇩🇪</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white)">Leipzig</div>
+          <div style="font-size:17px;font-weight:700;color:#f5f0e8">Leipzig</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
-          <a href="https://www.instagram.com/p/Da-wkVJjOm1/?img_index=1" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-size:11px;font-style:italic;letter-spacing:1px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,80,.4);padding-bottom:2px">view impressions →</a>
         </div>
         <div data-ev-until="2026-11-14" style="background:var(--surf-1);border:1px solid var(--surf-2);border-radius:3px;padding:14px 16px;border:2px solid #c8a950;background:linear-gradient(160deg,rgba(200,169,80,.2),rgba(200,169,80,.05))">
           <div style="font-size:11px;color:#c8a950;font-weight:700;margin-bottom:3px">14.11.2026 · 🇩🇪 · NEXT FAIR</div>
-          <div style="font-size:17px;font-weight:700;color:var(--white)">Essen</div>
+          <div style="font-size:17px;font-weight:700;color:#f5f0e8">Essen</div>
           <div style="font-size:12px;color:var(--text-muted)">Vintage Fußballbörse</div>
         </div>
       </div>
@@ -5500,10 +5516,10 @@ as a personal collection quickly grew into something bigger: a curated platform 
       var cap = String(r.caption || '').trim();
       box.innerHTML = '<div class="hl-stage"><div class="hl-ambi" aria-hidden="true">'
         + (r.poster ? '<img src="' + esc(r.poster) + '" alt="">' : '')
-        + (r.mediaUrl && !calm ? '<video muted loop playsinline webkit-playsinline preload="metadata" tabindex="-1"></video>' : '') + '</div>'
-        + '<div class="hl-media" role="button" tabindex="0" aria-label="Play the reel">'
+        + (r.mediaUrl && !calm ? '<video muted loop playsinline webkit-playsinline preload="auto" tabindex="-1"></video>' : '') + '</div>'
+        + '<div class="hl-media' + (r.mediaUrl ? '' : ' hl-still') + '" role="button" tabindex="0" aria-label="Play the reel">'
         + (r.poster ? '<img src="' + esc(r.poster) + '" alt="">' : '')
-        + (r.mediaUrl ? '<video muted loop playsinline webkit-playsinline preload="metadata"></video>' : '')
+        + (r.mediaUrl ? '<video muted loop playsinline webkit-playsinline preload="auto"></video>' : '')
         + '<span class="hl-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div></div>'
         + '<div class="hl-text"><div class="hl-k">Latest reel</div>'
         + (cap ? '<h3 class="hl-t">' + esc(cap.length > 120 ? cap.slice(0, 117) + '…' : cap) + '</h3>' : '<h3 class="hl-t">The shirts, on film</h3>')
@@ -5514,24 +5530,31 @@ as a personal collection quickly grew into something bigger: a curated platform 
       media.addEventListener('click', open);
       media.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
       if (v) {
-        v.src = r.mediaUrl + (String(r.mediaUrl).indexOf('#') === -1 ? '#t=0.05' : '');
-        v.muted = true;
-        v.addEventListener('playing', function () { v.classList.add('on'); });
-        v.addEventListener('loadeddata', function () { v.classList.add('on'); });
-        if (a) {
-          // the glow is the same reel, blurred and enlarged: it follows every colour change of the picture
-          a.src = v.src; a.muted = true;
-          a.addEventListener('loadeddata', function () { a.classList.add('on'); });
-          v.addEventListener('timeupdate', function () { if (Math.abs(a.currentTime - v.currentTime) > 0.35) { try { a.currentTime = v.currentTime; } catch (e) {} } });
-        }
+        var src = r.mediaUrl + (String(r.mediaUrl).indexOf('#') === -1 ? '#t=0.05' : '');
+        var vis = false, tries = 0;
         var go = function (on) {
           [v, a].forEach(function (x) { if (!x) return; if (on) { var pr = x.play(); if (pr && pr.catch) pr.catch(function () {}); } else x.pause(); });
         };
+        var load = function () {
+          v.muted = true; v.setAttribute('muted', ''); v.src = src; try { v.load(); } catch (e) {}
+          if (a) { a.muted = true; a.setAttribute('muted', ''); a.src = src; try { a.load(); } catch (e) {} }
+        };
+        v.addEventListener('playing', function () { v.classList.add('on'); if (a) { a.classList.add('on'); go(true); } });
+        v.addEventListener('loadeddata', function () { v.classList.add('on'); });
+        v.addEventListener('canplay', function () { if (vis && !window.ssReelLbOpen) go(true); });
+        // a flaky connection: try again a couple of times, then keep the poster
+        v.addEventListener('error', function () { if (tries++ < 2) setTimeout(load, 900 * tries); });
+        v.addEventListener('stalled', function () { if (tries++ < 2) setTimeout(load, 1200); });
+        if (a) {
+          // the glow is the same reel, blurred and enlarged: it follows every colour change of the picture
+          v.addEventListener('timeupdate', function () { if (Math.abs(a.currentTime - v.currentTime) > 0.35) { try { a.currentTime = v.currentTime; } catch (e) {} } });
+        }
+        load();
         if ('IntersectionObserver' in window) {
           new IntersectionObserver(function (en) { en.forEach(function (e) {
-            go(e.isIntersecting && !window.ssReelLbOpen);
-          }); }, { threshold: 0.4 }).observe(media);
-        }
+            vis = e.isIntersecting; go(vis && !window.ssReelLbOpen);
+          }); }, { threshold: 0.25 }).observe(media);
+        } else { vis = true; go(true); }
       }
     });
   }
