@@ -158,6 +158,60 @@
         <p class="blog-sub">Guides, event recaps and insights from the world of vintage and match worn football shirts.</p>
       </div>
       <div class="posts-grid" id="posts-grid">
+      <a class="post-card no-image" href="/journal/match-worn-vs-match-issued/">
+        <div class="post-body-text">
+          <div class="post-tag">Guide</div>
+          <div class="post-title">Match Worn, Match Issued, Player Issue and Replica: What Each Term Means</div>
+          <div class="post-excerpt">Four labels that sound alike and are not. What each one claims, what evidence supports it, and how to read a listing without being misled.</div>
+          <div class="post-meta">November 2026 &middot; 6 min read</div>
+          <div class="read-more">Read more &rarr;</div>
+        </div>
+      </a>
+      <a class="post-card no-image" href="/journal/photo-matching-explained/">
+        <div class="post-body-text">
+          <div class="post-tag">Guide</div>
+          <div class="post-title">Photo-Matching: How a Match Worn Shirt Is Verified</div>
+          <div class="post-excerpt">Sponsors, patches, creases, stitching and numbers. How collectors compare a shirt to match photos, and what a convincing match looks like.</div>
+          <div class="post-meta">November 2026 &middot; 6 min read</div>
+          <div class="read-more">Read more &rarr;</div>
+        </div>
+      </a>
+      <a class="post-card no-image" href="/journal/reading-a-shirt-label/">
+        <div class="post-body-text">
+          <div class="post-tag">Guide</div>
+          <div class="post-title">How to Read a Football Shirt Label: Tags, Product Codes and Dates</div>
+          <div class="post-excerpt">The label sewn into a shirt carries more information than most buyers read. A practical guide to size tags, product codes, wash symbols and what they do and do not prove.</div>
+          <div class="post-meta">November 2026 &middot; 6 min read</div>
+          <div class="read-more">Read more &rarr;</div>
+        </div>
+      </a>
+      <a class="post-card no-image" href="/journal/flock-flex-heat-pressed-printing/">
+        <div class="post-body-text">
+          <div class="post-tag">Guide</div>
+          <div class="post-title">Flock, Flex and Heat Transfer: How Names and Numbers Were Printed</div>
+          <div class="post-excerpt">The print on a shirt changed with the decades, and it is one of the best clues to date and authenticity. A look at the main methods and how they age.</div>
+          <div class="post-meta">November 2026 &middot; 6 min read</div>
+          <div class="read-more">Read more &rarr;</div>
+        </div>
+      </a>
+      <a class="post-card no-image" href="/journal/buying-vintage-shirts-online-safely/">
+        <div class="post-body-text">
+          <div class="post-tag">Guide</div>
+          <div class="post-title">How to Buy Vintage Football Shirts Online Safely</div>
+          <div class="post-excerpt">A practical checklist: what to ask a seller, which photos you need, how to judge a price and how to pay in a way that protects you.</div>
+          <div class="post-meta">November 2026 &middot; 6 min read</div>
+          <div class="read-more">Read more &rarr;</div>
+        </div>
+      </a>
+      <a class="post-card no-image" href="/journal/fair-season-2026/">
+        <div class="post-body-text">
+          <div class="post-tag">Events</div>
+          <div class="post-title">Fair Season 2026: Hamburg, Leipzig and Essen</div>
+          <div class="post-excerpt">From the retro shirt market at the St. Pauli stadium to Leipzig, and on to Essen on 14 November. Where we have been this year and where we are going next.</div>
+          <div class="post-meta">November 2026 &middot; 4 min read</div>
+          <div class="read-more">Read more &rarr;</div>
+        </div>
+      </a>
       <a class="post-card" href="/journal/netherlands-88/">
         <div class="post-img wide"><img src="https://res.cloudinary.com/dinpfdojh/image/upload/v1784837872/WhatsApp_Image_2026-07-23_at_22.12.02_xjkvnz.jpg" alt="Collector's Club" loading="lazy"></div>
         <div class="post-body-text">
@@ -357,8 +411,21 @@
     .then(function (rows) {
       rows.forEach(function (r) {
         var id = String(r.slug).replace(/^journal-/, '');
-        var img = document.querySelector('a.post-card[href="/journal/' + id + '/"] .post-img img');
-        if (img && r.urls && r.urls[0]) img.src = r.urls[0];
+        var card = document.querySelector('a.post-card[href="/journal/' + id + '/"]');
+        if (!card || !r.urls || !r.urls[0]) return;
+        var img = card.querySelector('.post-img img');
+        if (!img) {
+          // cards without a photo get one as soon as a photo is uploaded in the admin
+          var wrap = document.createElement('div');
+          wrap.className = 'post-img portrait';
+          img = document.createElement('img');
+          img.alt = (card.querySelector('.post-title') || {}).textContent || '';
+          img.loading = 'lazy';
+          wrap.appendChild(img);
+          card.insertBefore(wrap, card.firstChild);
+          card.classList.remove('no-image');
+        }
+        img.src = r.urls[0];
       });
     }).catch(function () {});
 })();
