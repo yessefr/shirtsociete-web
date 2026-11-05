@@ -1,0 +1,74 @@
+# Automatische site-controle: draait scripts/audit.js (statisch) en scripts/rls-probe.js
+# (zijn privacygevoelige Supabase-tabellen dicht?). Schrijft nooit naar main.
+#
+#  - Bij elke pull request en push naar main: faalt alleen bij kapotte scripts, ongelijke
+#    <div>-aantallen, ongeldige JSON-LD of een gevonden geheim (zelfde regels als AGENTS.md).
+#    De rest verschijnt als overzicht in het tabblad "Summary" van de run.
+#  - Elke nacht: houdt EEN issue "Site-audit (automatisch)" bij met de actuele stand,
+#    zodat er geen losse dagelijkse issues meer nodig zijn.
+name: Site-controle
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '43 4 * * *'          # elke nacht, ongeveer 06:43 Nederlandse tijd
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: site-controle-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  controle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Audit (poortwachter)
+        run: node scripts/audit.js --fail-on=Code,Beveiliging
+
+      - name: Audit (volledig overzicht)
+        if: always()
+        run: |
+          node scripts/audit.js > audit.txt || true
+          node scripts/audit.js --json > audit.json || true
+          { echo '## Site-audit'; echo '```'; cat audit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Beveiliging (Supabase RLS)
+        id: rls
+        if: always()
+        run: |
+          set +e
+          node scripts/rls-probe.js | tee rls.txt
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+          { echo '## Supabase-tabellen zonder inloggen'; echo '```'; cat rls.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Issue bijwerken (alleen nachtelijke run)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Site-audit (automatisch)"
+          {
+            echo "Stand van $(date -u +%F), automatisch bijgewerkt door .github/workflows/controle.yml. Alleen onderzoek, niets gewijzigd."
+            echo
+            if [ "${{ steps.rls.outputs.code }}" != "0" ]; then echo "**LET OP: er zijn Supabase-tabellen leesbaar zonder inloggen.** Zie sql/beveiliging-rls-orders-en-aanmeldingen.sql."; echo; fi
+            echo '```'; cat audit.txt | head -c 55000; echo '```'
+            echo; echo '```'; cat rls.txt; echo '```'
+          } > body.md
+          NUM=$(gh issue list --state open --search "\"$TITLE\" in:title" --json number --jq '.[0].number')
+          if [ -n "$NUM" ]; then gh issue edit "$NUM" --body-file body.md; else gh issue create --title "$TITLE" --body-file body.md; fi
+
+      - name: RLS-controle laten falen bij gelekte tabel
+        if: steps.rls.outputs.code != '0' && steps.rls.outputs.code != ''
+        run: exit 1
