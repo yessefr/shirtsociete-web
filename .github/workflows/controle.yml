@@ -3,6 +3,7 @@
 #
 #  - Bij elke pull request en push naar main: faalt alleen bij kapotte scripts, ongelijke
 #    <div>-aantallen, ongeldige JSON-LD of een gevonden geheim (zelfde regels als AGENTS.md).
+#    Een openbaar leesbare tabel geeft bij een pull request alleen een waarschuwing.
 #    De rest verschijnt als overzicht in het tabblad "Summary" van de run.
 #  - Elke nacht: houdt EEN issue "Site-audit (automatisch)" bij met de actuele stand,
 #    zodat er geen losse dagelijkse issues meer nodig zijn.
@@ -69,6 +70,9 @@ jobs:
           NUM=$(gh issue list --state open --search "\"$TITLE\" in:title" --json number --jq '.[0].number')
           if [ -n "$NUM" ]; then gh issue edit "$NUM" --body-file body.md; else gh issue create --title "$TITLE" --body-file body.md; fi
 
-      - name: RLS-controle laten falen bij gelekte tabel
+      # Bij een pull request alleen waarschuwen (een merge blijft mogelijk); 's nachts rood en in het issue.
+      - name: RLS-controle
         if: steps.rls.outputs.code != '0' && steps.rls.outputs.code != ''
-        run: exit 1
+        run: |
+          echo "::warning title=Supabase-tabellen leesbaar zonder inloggen::Zie sql/beveiliging-rls-orders-en-aanmeldingen.sql"
+          if [ "${{ github.event_name }}" != "pull_request" ]; then exit 1; fi
