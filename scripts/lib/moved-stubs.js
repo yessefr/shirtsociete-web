@@ -57,9 +57,12 @@ function planStubs(root, files) {
       const canon = /<link[^>]+rel="canonical"[^>]+href="https:\/\/shirtsociete\.com(\/products\/archive\/[^"]+)"/.exec(old);
       target = (id && idToPage[id]) || (canon && fresh.has(canon[1].slice(1)) ? canon[1] : '/sold-football-shirts/');
     } else {
+      // Er bestaat geen /clubs/ of /national-teams/ overzichtspagina; de verzamelpagina's staan onder /collections/.
+      const hub = { clubs: '/collections/vintage-club-shirts/', 'national-teams': '/collections/national-team-shirts/', collections: '/collections/' };
       const m = /^([^/]+)\/\1\/(.*)$/.exec(rel);            // clubs/clubs/ajax/index.html → clubs/ajax/index.html
       if (m && fresh.has(m[1] + '/' + m[2])) target = '/' + (m[2].endsWith('index.html') ? m[1] + '/' + m[2].slice(0, -'index.html'.length) : m[1] + '/' + m[2]);
-      else if (m) target = '/' + m[1] + '/';
+      else if (m) target = hub[m[1]];
+      else if (/^[^/]+\/[^/]+\/index\.html$/.test(rel)) target = hub[rel.split('/')[0]];   // club/land zonder shirts te koop
     }
     if (!target) continue;                                    // onbekend: niet aanraken
     const html = stub(target);
