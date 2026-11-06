@@ -57,6 +57,7 @@ const stats = { pages: htmlFiles.length, generated: 0, inlineKB: {}, cloudinary:
 for (const f of htmlFiles) {
   const html = read(f);
   const name = rel(f);
+  if (html.includes('<!-- ss-moved -->')) { stats.movedStubs = (stats.movedStubs || 0) + 1; continue; }   // doorverwijzing, geen echte pagina
   const generated = /^(products|collections|clubs|national-teams|journal|sold-football-shirts)\//.test(name);
   if (generated) stats.generated++;
   const headHtml = (html.match(/<head[\s\S]*?<\/head>/i) || [html.slice(0, 6000)])[0];
@@ -93,7 +94,7 @@ for (const f of htmlFiles) {
   }
 
   // JSON-LD moet parsen
-  for (const m of html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+  for (const m of (name === 'admin.html' ? [] : html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi))) {
     try { JSON.parse(m[1]); } catch (e) { add('FOUT', 'SEO', name, 'ongeldige JSON-LD: ' + e.message.slice(0, 60)); }
   }
 
