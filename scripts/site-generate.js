@@ -15,13 +15,14 @@
  *   node scripts/site-generate.js --fixture f.json   test zonder netwerk
  *
  * Veiligheid: bij een fout of een verdacht klein resultaat wordt er NIETS geschreven.
- * Er worden nooit bestanden verwijderd.
+ * Er worden nooit bestanden verwijderd; verouderde pagina's worden een doorverwijzing (scripts/lib/moved-stubs.js).
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
+const { planStubs } = require('./lib/moved-stubs');
 const DB_HOST = process.env.SS_DB_HOST || 'https://hzwmjbsfmdkmaoikezoc.supabase.co';
 // Publieke "anon"-sleutel (alleen lezen). Dezelfde staat ook in index.html. Geen geheim.
 const DB_KEY = process.env.SS_DB_KEY ||
@@ -136,6 +137,11 @@ async function main() {
     if (existed) changed++; else created++;
     if (!DRY) { fs.mkdirSync(path.dirname(abs), { recursive: true }); fs.writeFileSync(abs, content); }
   });
+  // Verouderde pagina's (oude naam, verwijderd shirt, oude kopie in clubs/clubs/) worden een
+  // doorverwijzing naar de actuele pagina in plaats van door te blijven staan met oude foto's.
+  const stubs = planStubs(ROOT, files);
+  Object.keys(stubs).forEach(rel => { if (!DRY) fs.writeFileSync(path.join(ROOT, rel), stubs[rel]); });
+  if (Object.keys(stubs).length) console.log((DRY ? '[dry run] ' : '') + Object.keys(stubs).length + ' verouderde pagina(\'s) vervangen door een doorverwijzing');
   console.log((DRY ? '[dry run] ' : '') + 'Nieuw: ' + created + ', gewijzigd: ' + changed + ', ongewijzigd: ' + same);
 }
 

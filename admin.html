@@ -2866,8 +2866,6 @@
     // Query-string shop states are deliberately left out: /collections/... now
     // covers the same ground as a real crawlable URL, so listing both would put
     // two competing copies of the same listing in the index (audit §4, §8).
-    addUrl(base + '/?p=archive', 'weekly', '0.8');
-    addUrl(base + '/?p=about', 'monthly', '0.6');
     addUrl(base + '/blog.html', 'weekly', '0.7');
 
     // Individual journal articles. These used to be listed as
@@ -2882,6 +2880,7 @@
       addUrl(base + '/journal/' + slug + '/', 'monthly', '0.6');
     });
     addUrl(base + '/faq.html', 'monthly', '0.5');
+    addUrl(base + '/contact.html', 'yearly', '0.4');
     addUrl(base + '/shipping.html', 'yearly', '0.3');
     addUrl(base + '/refund.html', 'yearly', '0.3');
     addUrl(base + '/privacy.html', 'yearly', '0.3');
