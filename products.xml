@@ -3594,7 +3594,7 @@
       <g:additional_image_link>https://hzwmjbsfmdkmaoikezoc.supabase.co/storage/v1/object/public/shirt-photos/shirts/202610/mv5nuh0g8jyrej.jpg</g:additional_image_link>
       <g:additional_image_link>https://hzwmjbsfmdkmaoikezoc.supabase.co/storage/v1/object/public/shirt-photos/shirts/202610/mv5nuhjrqtetmi.jpg</g:additional_image_link>
       <g:availability>in_stock</g:availability>
-      <g:price>150.00 EUR</g:price>
+      <g:price>130.00 EUR</g:price>
       <g:condition>used</g:condition>
       <g:brand>Brazil</g:brand>
       <g:identifier_exists>no</g:identifier_exists>
@@ -3606,67 +3606,67 @@
       <g:shipping>
         <g:country>NL</g:country>
         <g:service>Tracked letterbox parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>4.45 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>BE</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>10.90 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>DE</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>12.15 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>LU</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>12.15 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>FR</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>12.15 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>IT</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>12.15 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>ES</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>12.15 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>AT</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>14.65 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>DK</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>14.65 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>PL</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>14.65 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>PT</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>14.65 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>SE</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>19.70 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>FI</g:country>
         <g:service>Tracked parcel</g:service>
-        <g:price>0.00 EUR</g:price>
+        <g:price>19.70 EUR</g:price>
       </g:shipping>
       <g:shipping>
         <g:country>CH</g:country>
@@ -3690,7 +3690,7 @@
       <g:custom_label_0>vintage</g:custom_label_0>
       <g:custom_label_1>Brazil</g:custom_label_1>
       <g:custom_label_2>1990s</g:custom_label_2>
-      <g:custom_label_3>mid</g:custom_label_3>
+      <g:custom_label_3>entry</g:custom_label_3>
       <g:size>L</g:size>
     </item>
     <item>
