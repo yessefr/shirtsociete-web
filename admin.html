@@ -4108,7 +4108,7 @@
       + '<meta property="og:title" content="' + htmlEscape(opts.title) + '">\n'
       + '<meta property="og:description" content="' + htmlEscape(opts.desc) + '">\n'
       + '<meta property="og:url" content="' + opts.url + '">\n'
-      + (opts.image ? '<meta property="og:image" content="' + htmlEscape(opts.image) + '">\n' : '')
+      + '<meta property="og:image" content="' + htmlEscape(opts.image || 'https://shirtsociete.com/admin-icons/icon-512.png') + '">\n'
       + '<meta name="twitter:card" content="summary_large_image">\n'
       + (opts.image ? '<meta name="twitter:image" content="' + htmlEscape(opts.image) + '">\n' : '')
       + (opts.schema ? '<script type="application/ld+json">' + JSON.stringify(opts.schema) + '<\/script>\n' : '')
@@ -4580,7 +4580,7 @@
             + (p.tag ? '<div class="eyebrow">' + htmlEscape(p.tag) + '</div>' : '')
             + '<h1>' + htmlEscape(p.title) + '</h1>'
             + '<div class="art-meta">' + htmlEscape([p.date, p.read].filter(Boolean).join(' &middot; ')).replace(/&amp;middot;/g, '&middot;') + '</div>'
-            + (img ? '<div class="art-hero"><img src="' + htmlEscape(img) + '" alt="' + htmlEscape(p.title) + '"></div>' : '')
+            + (img ? '<div class="art-hero"><img src="' + htmlEscape(img) + '" alt="' + htmlEscape(p.title) + '" width="1000" height="667"></div>' : '')
             + '<article class="art-body">' + p.body + '</article>'
             + '<div class="art-cta">'
             +   '<a class="cta-alt" href="/collections/vintage-football-shirts/">Browse the collection</a>'
@@ -4624,7 +4624,7 @@
               var im = p.image && p.image.indexOf('/upload/') !== -1
                 ? p.image.replace('/upload/', '/upload/f_auto,q_auto,w_500/') : p.image;
               return '<a class="jcard" href="/journal/' + p.id + '/">'
-                + (im ? '<img src="' + htmlEscape(im) + '" alt="' + htmlEscape(p.title) + '" loading="lazy">' : '')
+                + (im ? '<img src="' + htmlEscape(im) + '" alt="' + htmlEscape(p.title) + '" loading="lazy" width="500" height="667">' : '')
                 + '<div class="jtag">' + htmlEscape(p.tag) + '</div>'
                 + '<div class="jt">' + htmlEscape(p.title) + '</div>'
                 + '<div class="jx">' + htmlEscape(p.excerpt) + '</div>'
@@ -5062,7 +5062,7 @@
       var sold = (!isArchive && s.available === false);
       var seasonTxt = s.season ? String(s.season).replace(/^season\s+/i, '') : '';
       return '<a class="c" href="' + url + '">'
-        + (img ? '<img src="' + htmlEscape(img) + '" alt="' + htmlEscape(s.title || '') + '" loading="lazy">' : '')
+        + (img ? '<img src="' + htmlEscape(img) + '" alt="' + htmlEscape(s.title || '') + '" loading="lazy" width="500" height="667">' : '')
         + '<span class="t">' + htmlEscape(s.title || '') + '</span>'
         + '<span class="m">' + htmlEscape(s.club || '') + (seasonTxt ? ' &middot; ' + htmlEscape(seasonTxt) : '') + '</span>'
         + '<span class="p">' + (sold ? 'Sold' : price) + '</span>'
@@ -5358,7 +5358,7 @@
         var oImg = (o.images && o.images[0]) ? o.images[0] : '';
         var oPrice = (o.price != null) ? parseFloat(o.price).toFixed(2) : '';
         return '<a class="related-card" href="/products/' + oSlug + '.html">'
-          + (oImg ? '<img src="' + htmlEscape(oImg) + '" alt="' + htmlEscape(o.title || '') + '" loading="lazy">' : '')
+          + (oImg ? '<img src="' + htmlEscape(oImg) + '" alt="' + htmlEscape(o.title || '') + '" loading="lazy" width="400" height="533">' : '')
           + '<div class="rc-title">' + htmlEscape(o.title || '') + '</div>'
           + (oPrice ? '<div class="rc-price">&euro;' + oPrice + '</div>' : '')
           + '</a>';
@@ -5557,6 +5557,8 @@
       +   '.cta-alt{display:inline-block;background:transparent;color:var(--gold);border:1px solid var(--gold);padding:15px 32px;border-radius:2px;text-decoration:none;font-weight:600;letter-spacing:1px;text-transform:uppercase;font-size:12px;margin:8px 0}'
       +   '.soldbox{display:inline-block;background:var(--surf-2);color:var(--muted);padding:15px 32px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;font-size:12px;margin:8px 0}'
       +   '.shipbox{margin-top:26px;border-top:1px solid var(--line);padding-top:20px}'
+      +   '.pinsave{display:inline-flex;align-items:center;gap:8px;margin:2px 0 6px;font-size:12px;letter-spacing:.5px;color:var(--muted);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}'
+      +   '.pinsave:hover{color:var(--gold);border-color:var(--gold)}'
       +   '.shipline{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:12px}'
       +   '.shipline strong{color:var(--gold);text-transform:uppercase;font-size:10px;letter-spacing:1px;display:block;margin-bottom:2px}'
       +   '.note{font-size:12px;color:var(--muted);margin-top:28px}'
@@ -5651,6 +5653,7 @@
       +   '<div class="shipline"><strong>Returns</strong> 14-day returns on unworn shirts. Email us first so we can confirm the return address.</div>'
       +   '<div class="shipline"><strong>Authenticity</strong> Every shirt is checked on labels, stitching, badges and wash tags. Any flaws are photographed and shown.</div>'
       + '      </div>\n'
+      + (img ? '      <a class="pinsave" rel="noopener" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=' + encodeURIComponent(url) + '&amp;media=' + encodeURIComponent(img) + '&amp;description=' + encodeURIComponent(s.title || '') + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg> Save to Pinterest</a>\n' : '')
       + provHtml + meas
       + '      <p class="note">This is a single, unique shirt. Once sold it will not return. Questions? Email <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a>.</p>\n'
       + '    </div>\n'

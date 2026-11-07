@@ -5,6 +5,7 @@
  *   collections/, clubs/, national-teams/, sold-football-shirts/
  *   sitemap.xml
  *   products.xml (Google Merchant feed)
+ *   pinterest.xml (productfeed voor Pinterest, zelfde items met UTM-doorverwijzing)
  *
  * Het gebruikt de ECHTE generators uit admin.html (dezelfde knoppen die jij nu indrukt),
  * in een headless browser. Er is dus geen tweede kopie van de logica die uit de pas kan lopen.
@@ -51,6 +52,18 @@ const JSZIP_STUB = `
   window.JSZip.prototype.file = function (n, c) { this._s[this._p + n] = c; return this; };
   window.JSZip.prototype.generateAsync = function () { window.__captured.push(this._s); return Promise.resolve(new Blob([])); };
 `;
+
+// Pinterest leest hetzelfde RSS/g:-formaat als Google Merchant. Verschil: elk item krijgt een
+// g:ads_redirect met UTM-tags, zodat bezoek van Pinterest in GA4 herkenbaar is, terwijl g:link
+// de schone productpagina blijft. Verkochte shirts, concepten en shirts zonder foto of prijs
+// zitten al niet in de feed (zie buildMerchantFeed in admin.html).
+function pinterestFeed(xml) {
+  return xml
+    .replace('<description>Vintage and match worn football shirts</description>',
+             '<description>Vintage and match worn football shirts: one of one, original, checked.</description>')
+    .replace(/(<g:link>)([^<]+)(<\/g:link>)/g, (m, a, url, c) =>
+      a + url + c + '\n      <g:ads_redirect>' + url + '?utm_source=pinterest&amp;utm_medium=feed&amp;utm_campaign=shirt-catalog</g:ads_redirect>');
+}
 
 function sameIgnoringLastmod(a, b) {
   const n = s => s.replace(/<lastmod>[^<]*<\/lastmod>/g, '').trim();
@@ -114,6 +127,7 @@ async function main() {
   [].concat(out.products, out.collections).forEach(store => Object.keys(store).forEach(p => { files[p] = store[p]; }));
   files['sitemap.xml'] = out.sitemap;
   files['products.xml'] = out.feed;
+  files['pinterest.xml'] = pinterestFeed(out.feed);
 
   const productPages = Object.keys(files).filter(p => /^products\/[^/]+\.html$/.test(p) && p !== 'products/index.html').length;
   const urls = (out.sitemap.match(/<loc>/g) || []).length;
