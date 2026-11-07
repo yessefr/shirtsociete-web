@@ -1,0 +1,55 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Friendly redirects so functions can be called via /api/...
+[[redirects]]
+  from = "/api/create-payment"
+  to = "/.netlify/functions/create-payment"
+  status = 200
+
+[[redirects]]
+  from = "/api/mollie-webhook"
+  to = "/.netlify/functions/mollie-webhook"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin-shirts"
+  to = "/.netlify/functions/admin-shirts"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin-orders"
+  to = "/.netlify/functions/admin-orders"
+  status = 200
+
+[[redirects]]
+  from = "/api/customer-orders"
+  to = "/.netlify/functions/customer-orders"
+  status = 200
+
+[[redirects]]
+  from = "/api/drop-signup"
+  to = "/.netlify/functions/drop-signup"
+  status = 200
+
+[[redirects]]
+  from = "/api/drop-notify"
+  to = "/.netlify/functions/drop-notify"
+  status = 200
+
+[[redirects]]
+  from = "/api/contact"
+  to = "/.netlify/functions/contact"
+  status = 200
+
+# CORS headers for API calls from the webshop
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "https://shirtsociete.com"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
