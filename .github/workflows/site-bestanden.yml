@@ -47,7 +47,7 @@ jobs:
       - name: Controle op wijzigingen
         id: diff
         run: |
-          git add -A sitemap.xml products.xml products collections clubs national-teams sold-football-shirts 2>/dev/null || true
+          git add -A sitemap.xml products.xml pinterest.xml products collections clubs national-teams sold-football-shirts 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "Geen wijzigingen."
@@ -69,7 +69,7 @@ jobs:
           git commit -m "Ververs site-bestanden ($(date -u +%F))" -m "Automatisch gegenereerd met scripts/site-generate.js uit de generators in admin.html."
           git push --force origin "$BRANCH"
 
-          BODY="Automatisch ververste site-bestanden: productpagina's, collecties, sitemap.xml en products.xml (Merchant-feed).
+          BODY="Automatisch ververste site-bestanden: productpagina's, collecties, sitemap.xml, products.xml (Merchant-feed) en pinterest.xml (Pinterest-feed).
 
           Gemaakt met scripts/site-generate.js. Dat draait de echte generators uit admin.html op de actuele shirts uit Supabase.
           Er worden nooit bestanden verwijderd. Controle: de Action schrijft niets bij een fout of verdacht klein resultaat.
