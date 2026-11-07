@@ -2622,6 +2622,11 @@
       font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
       color: var(--gold); margin-bottom: 10px; font-weight: 500;
     }
+    .skip-link { position: absolute; left: 12px; top: -60px; z-index: 10000; background: #c8a950; color: #14120b; padding: 10px 16px; border-radius: 4px; font: 600 13px/1 'DM Sans', sans-serif; text-decoration: none; transition: top .15s; }
+    .skip-link:focus { top: 12px; }
+    @media (max-width: 767px) { .skip-link { display: none; } }
+    :where(h2[data-h1]) { font-size: 2em; font-weight: 700; margin-block: .67em; }
+    .page-head h2[data-h1],
     .page-head h1 {
       font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
       font-size: clamp(32px,4vw,52px); line-height: 1.05; margin: 0 0 14px;
@@ -2633,7 +2638,7 @@
     }
     @media (max-width: 767px) {
       .page-head { padding: 30px 20px 22px; }
-      .page-head h1 { font-size: 28px; }
+      .page-head h1, .page-head h2[data-h1] { font-size: 28px; }
       .page-head .ph-eyebrow { font-size: 9px; letter-spacing: 2.5px; }
     }
     .prof-section { max-width: 1100px; margin: 0 auto; padding: 48px; }
@@ -3205,6 +3210,7 @@
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 
 <!-- ═══ FAIR DAY TAKEOVER ═══
      On the two dates below, the whole site is replaced by this one page
@@ -3644,7 +3650,7 @@
     <div class="m-shop-hero-bg" id="m-shop-hero-bg"></div>
     <div class="m-shop-hero-in">
       <div class="m-shop-hero-eyebrow" id="m-shop-hero-eyebrow">The shop</div>
-      <h1 class="m-shop-hero-title" id="m-shop-hero-title">All shirts</h1>
+      <h2 data-h1 class="m-shop-hero-title" id="m-shop-hero-title">All shirts</h2>
       <p class="m-shop-hero-sub" id="m-shop-hero-sub">Vintage and match worn football shirts. Every shirt is a single piece.</p>
     </div>
   </section>
@@ -3761,7 +3767,7 @@
   <!-- My Wardrobe (mobile) -->
   <div class="page-head" style="margin-bottom:8px">
     <div class="ph-eyebrow">Your Collection</div>
-    <h1>My Wardrobe</h1>
+    <h2 data-h1>My Wardrobe</h2>
   </div>
   <div id="ss-acct-m" class="ss-acct-wrap"></div>
   <div id="m-wardrobe-row" style="display:flex;gap:14px;overflow-x:auto;padding:8px 20px 20px;scrollbar-width:none"></div>
@@ -3816,7 +3822,7 @@
       <div class="pg-hero-bg" data-banner="archive"></div>
       <div class="pg-hero-in">
         <div class="pg-hero-eyebrow">Private Collection</div>
-        <h1 class="pg-hero-title">The Shirt Soci&eacute;t&eacute; Archive</h1>
+        <h2 data-h1 class="pg-hero-title">The Shirt Soci&eacute;t&eacute; Archive</h2>
         <p class="pg-hero-sub">Pieces we keep. A record of the shirts that stay with us.</p>
       </div>
     </div>
@@ -4020,7 +4026,7 @@
   </script>
 
   <!-- Desktop Main -->
-  <main class="desktop-main">
+  <main class="desktop-main" id="main-content" tabindex="-1">
 
     <!-- HOME -->
     <div class="dscreen active" id="d-screen-home">
@@ -4262,7 +4268,7 @@
         <div class="pg-hero-bg" id="d-shop-hero-bg" data-banner="shop"></div>
         <div class="pg-hero-in">
           <div class="pg-hero-eyebrow" id="d-shop-hero-eyebrow">The shop</div>
-          <h1 class="pg-hero-title" id="d-shop-hero-title">All shirts</h1>
+          <h2 data-h1 class="pg-hero-title" id="d-shop-hero-title">All shirts</h2>
           <p class="pg-hero-sub" id="d-shop-hero-sub">Timeless, original, rare. Every shirt is a single piece.</p>
         </div>
       </section>
@@ -4396,7 +4402,7 @@
     <div class="dscreen" id="d-screen-cart">
       <section class="page-head">
         <div class="ph-eyebrow">Shirt Société &middot; Checkout</div>
-        <h1>My Cart</h1>
+        <h2 data-h1>My Cart</h2>
       </section>
       <div class="cart-wrap">
         <div id="d-cart-content"></div>
@@ -4433,7 +4439,7 @@
     <div class="dscreen" id="d-screen-wishlist">
       <section class="page-head">
         <div class="ph-eyebrow">Shirt Société &middot; Your Selection</div>
-        <h1>Saved</h1>
+        <h2 data-h1>Saved</h2>
       </section>
       <div style="padding:40px 48px;max-width:900px">
         <p style="font-size:14px;color:var(--text-muted);margin-bottom:32px">Shirts you've liked. Sold items are marked automatically.</p>
@@ -4446,7 +4452,7 @@
       <!-- Banner -->
       <section class="page-head">
         <div class="ph-eyebrow">Shirt Société &middot; Your Collection</div>
-        <h1>My Wardrobe</h1>
+        <h2 data-h1>My Wardrobe</h2>
       </section>
       <div id="ss-acct-d" class="ss-acct-wrap"></div>
 
@@ -4511,7 +4517,7 @@
         <div class="pg-hero-bg" data-banner="archive"></div>
         <div class="pg-hero-in">
           <div class="pg-hero-eyebrow">Private Collection</div>
-          <h1 class="pg-hero-title">The Shirt Soci&eacute;t&eacute; Archive</h1>
+          <h2 data-h1 class="pg-hero-title">The Shirt Soci&eacute;t&eacute; Archive</h2>
           <p class="pg-hero-sub">Pieces we keep. A record of the shirts that stay with us.</p>
         </div>
       </section>
@@ -4556,7 +4562,7 @@
         <div class="pg-hero-bg" data-banner="story"></div>
         <div class="pg-hero-in">
           <div class="pg-hero-eyebrow">Est. 2025 &middot; Harderwijk</div>
-          <h1 class="pg-hero-title">Our Story</h1>
+          <h2 data-h1 class="pg-hero-title">Our Story</h2>
           <p class="pg-hero-sub">Curated vintage &amp; match worn shirts, sourced across Europe by a true football collector.</p>
         </div>
       </section>
@@ -4984,7 +4990,7 @@
       <div class="pg-hero-bg" data-banner="story"></div>
       <div class="pg-hero-in">
         <div class="pg-hero-eyebrow">Est. 2025 &middot; Harderwijk</div>
-        <h1 class="pg-hero-title">Our Story</h1>
+        <h2 data-h1 class="pg-hero-title">Our Story</h2>
         <p class="pg-hero-sub">Curated vintage &amp; match worn shirts, sourced across Europe by a true football collector.</p>
       </div>
     </div>
@@ -5866,7 +5872,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
         +   (sold ? '<div class="sold-overlay">Sold</div>' : '')
         +   '<img src="' + getThumb(s, 900) + '" alt="' + String(s.title || '').replace(/"/g, '&quot;') + '" loading="lazy" decoding="async">'
         +   (catLabel(s) ? '<div class="shirt-cat-badge">' + catLabel(s) + '</div>' : '')
-        +   '<button class="like-btn ' + (isLiked ? 'liked' : '') + '" onclick="event.stopPropagation();toggleLike(\'' + s.id + '\')" style="top:10px;right:10px;width:32px;height:32px;z-index:3">'
+        +   '<button type="button" class="like-btn ' + (isLiked ? 'liked' : '') + '" aria-label="' + (isLiked ? 'Remove from saved' : 'Save this shirt') + '" aria-pressed="' + (isLiked ? 'true' : 'false') + '" onclick="event.stopPropagation();toggleLike(\'' + s.id + '\')" style="top:10px;right:10px;width:32px;height:32px;z-index:3">'
         +     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="' + (isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)') + '" stroke="' + (isLiked ? 'var(--gold)' : 'var(--on-photo)') + '" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>'
         +   '</button>'
         + '</div>'
@@ -6499,7 +6505,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
           <img class="img-main" src="${getThumb(s, 700)}" alt="${s.title}" loading="lazy">
           ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
           ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
-          <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:8px;right:8px;width:28px;height:28px;z-index:3">
+          <button type="button" class="like-btn ${isLiked ? 'liked' : ''}" aria-label="${isLiked ? 'Remove from saved' : 'Save this shirt'}" aria-pressed="${isLiked ? 'true' : 'false'}" onclick="event.stopPropagation();toggleLike('${s.id}')" style="top:8px;right:8px;width:28px;height:28px;z-index:3">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--on-photo)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
           </button>
         </div>
@@ -6943,7 +6949,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
             <img class="img-main" src="${getThumb(s, 700)}" alt="${s.title}" loading="lazy">
             ${img2 ? `<img class="img-hover" src="${img2}" alt="${s.title}" loading="lazy">` : ''}
             ${catLabel(s) ? `<div class="shirt-cat-badge">${catLabel(s)}</div>` : ''}
-            <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${s.id}')" title="Save shirt" style="top:8px;right:8px;width:30px;height:30px;z-index:3">
+            <button type="button" class="like-btn ${isLiked ? 'liked' : ''}" aria-label="${isLiked ? 'Remove from saved' : 'Save this shirt'}" aria-pressed="${isLiked ? 'true' : 'false'}" onclick="event.stopPropagation();toggleLike('${s.id}')" title="Save shirt" style="top:8px;right:8px;width:30px;height:30px;z-index:3">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isLiked ? 'var(--gold)' : 'rgba(var(--on-photo-rgb),.9)'}" stroke="${isLiked ? 'var(--gold)' : 'var(--on-photo)'}" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
             </button>
           </div>
