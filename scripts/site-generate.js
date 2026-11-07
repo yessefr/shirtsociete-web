@@ -110,7 +110,16 @@ async function main() {
   await page.waitForFunction(() => typeof buildProductPagesZip === 'function' && typeof ssBuildCollections === 'function'
     && typeof generateSitemapRun === 'function' && typeof buildMerchantFeed === 'function', null, { timeout: 30000 });
 
-  const out = await page.evaluate(async ({ shirts, archive }) => {
+  // Eigen introteksten per club (content/club-intros.json). Ontbreekt een club, dan gebruikt de generator de standaardtekst.
+  let clubIntros = {};
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'club-intros.json'), 'utf8'));
+    Object.keys(raw).filter((k) => !k.startsWith('_') && typeof raw[k] === 'string' && raw[k].trim()).forEach((k) => { clubIntros[k] = raw[k].trim(); });
+  } catch (e) { /* geen bestand: standaardteksten */ }
+  if (Object.keys(clubIntros).length) console.log('Eigen clubteksten: ' + Object.keys(clubIntros).length);
+
+  const out = await page.evaluate(async ({ shirts, archive, clubIntros }) => {
+    window.SS_CLUB_INTROS = clubIntros;
     allShirts = shirts; allArchive = archive;
     const wait = ms => new Promise(r => setTimeout(r, ms));
     const result = {};
@@ -120,7 +129,7 @@ async function main() {
     generateSitemapRun();              result.sitemap = document.getElementById('sitemap-output').value;
     buildMerchantFeed();               result.feed = _merchantFeedXml;
     return result;
-  }, { shirts, archive });
+  }, { shirts, archive, clubIntros });
   await browser.close();
 
   const files = {};

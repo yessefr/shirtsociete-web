@@ -4354,8 +4354,11 @@
         }
         related = related.concat(guides.filter(function(g) { return !related.some(function(j) { return j.slug === g.slug; }); }));
 
-        var intro = 'Vintage and match worn ' + name + ' shirts, each one a single piece with its own '
-          + 'documented history. Every shirt is checked on labels, stitching and badges before it is listed.';
+        // Own intro per club comes from content/club-intros.json (injected by scripts/site-generate.js);
+        // without one the generic sentence is used, so a club never has an empty intro.
+        var customIntro = (typeof window !== 'undefined' && window.SS_CLUB_INTROS && window.SS_CLUB_INTROS[name]) || '';
+        var intro = String(customIntro).trim() || ('Vintage and match worn ' + name + ' shirts, each one a single piece with its own '
+          + 'documented history. Every shirt is checked on labels, stitching and badges before it is listed.');
 
         var body = '<div class="crumb"><a href="/">Home</a> / <a href="/?p=shop">Shop</a> / ' + htmlEscape(name) + '</div>'
           + '<div class="eyebrow">' + label + '</div>'
