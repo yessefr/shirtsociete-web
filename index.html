@@ -3459,7 +3459,7 @@
     <button type="button" class="m-menu-close" onclick="mCloseMenu()" aria-label="Close menu">&times;</button>
   </div>
   <nav class="m-menu-main">
-    <a href="/?p=shop" onclick="mMenuGo(function(){mGoTo('shop')});return false;">Shop</a>
+    <a href="/?p=shop" onclick="mMenuGo(mShopAll);return false;">Shop</a>
     <a href="/?p=shop&sort=new" onclick="mMenuGo(mShopNewest);return false;">New arrivals</a>
     <div class="m-menu-row"><a href="/?p=shop&cat=clubs" onclick="mMenuGo(function(){mShopCategory('clubs')});return false;">Clubs</a><button type="button" class="m-menu-tog" id="m-menu-tog-clubs" aria-label="Choose a league or club" onclick="mMenuToggle('clubs')"></button></div>
     <div class="m-menu-list" id="m-menu-list-clubs"></div>
@@ -3549,7 +3549,7 @@
     <div class="m-hero-rule"></div>
     <p class="m-hero-sub">Authenticity. Heritage. Curated Vintage &amp; Match Worn Football Shirts</p>
     <div class="m-hero-btns">
-      <button class="btn-primary" onclick="mGoTo('shop')">
+      <button class="btn-primary" onclick="mShopAll()">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         Shop the collection
       </button>
@@ -3810,12 +3810,12 @@
       </svg>
     </div>
     <p style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:16px">Your wardrobe is empty. The rail is waiting. Every shirt you collect will hang here.</p>
-    <button onclick="mGoTo('shop')" style="background: var(--gold-bg, var(--gold));color:var(--ink);border:none;border-radius:2px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Browse the collection</button>
+    <button onclick="mShopAll()" style="background: var(--gold-bg, var(--gold));color:var(--ink);border:none;border-radius:2px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Browse the collection</button>
   </div>
 
   <div style="padding:8px 20px 0">
     <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;padding-bottom:12px;border-top:1px solid var(--surf-2);padding-top:20px">Explore</div>
-    <div class="profile-item" onclick="mGoTo('shop')">
+    <div class="profile-item" onclick="mShopAll()">
       <span>Shop the Collection</span>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </div>
@@ -8222,6 +8222,10 @@ as a personal collection quickly grew into something bigger: a curated platform 
       if (btn) { document.querySelectorAll('.m-filter-btn').forEach(function(b){ b.classList.remove('active'); }); btn.classList.add('active'); }
     }, 30);
   }
+  // The menu and the home page promise "Shop" = everything and "New arrivals" = New in. Both always reset
+  // the filter, so they never open on whatever tab was used last.
+  function mShopAll() { mShopCategory('all'); }
+  function mShopNewest() { mShopNew(); }
   function mShopNew() {
     mGoTo('shop');
     setTimeout(function(){
