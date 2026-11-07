@@ -44,10 +44,13 @@ jobs:
       - name: Bestanden genereren
         run: node scripts/site-generate.js
 
+      - name: Pinterest-pins (concepten) genereren
+        run: node scripts/pinterest-pins.js
+
       - name: Controle op wijzigingen
         id: diff
         run: |
-          git add -A sitemap.xml products.xml pinterest.xml products collections clubs national-teams sold-football-shirts 2>/dev/null || true
+          git add -A sitemap.xml products.xml pinterest.xml social/pinterest-pins.csv products collections clubs national-teams sold-football-shirts 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "Geen wijzigingen."
