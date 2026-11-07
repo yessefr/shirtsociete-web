@@ -2622,6 +2622,35 @@
       font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
       color: var(--gold); margin-bottom: 10px; font-weight: 500;
     }
+    /* ═══ PHONE CART + CHECKOUT: same look as the home page and shop ═══ */
+    #m-cart-content { padding: 0 20px; }
+    #screen-cart .cart-item { gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: flex-start; }
+    #screen-cart .cart-item img { width: 92px; height: auto; aspect-ratio: 4 / 5; border-radius: 14px; object-fit: cover; object-position: center 38%;
+      background: radial-gradient(120% 100% at 50% 0%, #efe9dc 0%, #d9d1c0 100%); }
+    html:not([data-theme="light"]) #screen-cart .cart-item img { background: radial-gradient(120% 100% at 50% 0%, #34302a 0%, #1d1a15 100%); }
+    #screen-cart .cart-item-info { min-width: 0; padding-top: 2px; }
+    #screen-cart .cart-item-title { font-size: 15.5px; font-weight: 700; line-height: 1.28; color: var(--white); margin-bottom: 5px; }
+    #screen-cart .cart-item-sub { font-size: 13px; margin-bottom: 10px; }
+    #screen-cart .cart-item-price { font-size: 18px; font-weight: 700; color: var(--white); }
+    #screen-cart .remove-btn { width: 40px; height: 40px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: -4px; }
+    #screen-cart .cart-footer { padding: 22px 0 36px; }
+    #screen-cart .cart-shipping-note { font-size: 13px; line-height: 1.5; }
+    #screen-cart .cart-total-row { align-items: baseline; gap: 12px; margin-bottom: 20px; }
+    #screen-cart .cart-total-label { font-size: 14px; }
+    #screen-cart .cart-total-amount { font-size: 28px; font-weight: 700; color: var(--white); letter-spacing: -.3px; white-space: nowrap; }
+    #screen-cart .cart-checkout-btn, #screen-checkout .pay-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; box-sizing: border-box; padding: 17px 20px; border-radius: 999px;
+      background: linear-gradient(135deg, #d6b960, #b8923a); color: #14120b; border: 0; font-size: 13px; font-weight: 700; letter-spacing: 1.2px;
+      box-shadow: 0 6px 22px rgba(184,146,58,.28); }
+    #screen-checkout > div { padding: 20px 20px 44px; }
+    .mco-title { margin: 0 0 4px; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; font-size: 28px; color: var(--white); }
+    .mco-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 22px; }
+    #screen-checkout .form-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin-bottom: 0; }
+    #screen-checkout .form-group { min-width: 0; margin-bottom: 14px; }
+    #screen-checkout .form-group input, #screen-checkout .form-group select, #screen-checkout .form-group textarea {
+      width: 100%; min-width: 0; box-sizing: border-box; border-radius: 12px; padding: 13px 14px; font-size: 16px; }
+    .mco-summary { background: var(--surf-1); border: 1px solid var(--line); border-radius: 18px; padding: 18px; margin: 20px 0; }
+    #screen-checkout .payment-method { border-radius: 999px; padding: 7px 13px; border: 1px solid var(--line); background: transparent; }
     .skip-link { position: absolute; left: 12px; top: -60px; z-index: 10000; background: #c8a950; color: #14120b; padding: 10px 16px; border-radius: 4px; font: 600 13px/1 'DM Sans', sans-serif; text-decoration: none; transition: top .15s; }
     .skip-link:focus { top: 12px; }
     @media (max-width: 767px) { .skip-link { display: none; } }
@@ -3734,7 +3763,7 @@
 
 <!-- MOBILE CART -->
 <div id="screen-cart" class="screen">
-  <div style="padding:24px 20px 16px;font-size:20px;font-weight:500">Your Cart</div>
+  <div class="m-saved-head"><h2>Your cart</h2><span id="m-cart-count"></span></div>
   <div id="m-cart-content"></div>
 </div>
 
@@ -3745,10 +3774,10 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
       Back to cart
     </div>
-    <div style="font-size:20px;font-weight:500;margin-bottom:4px">Shipping Details</div>
-    <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Enter your address to continue</div>
+    <h2 class="mco-title">Shipping details</h2>
+    <div class="mco-sub">Enter your address to continue</div>
     <div id="m-checkout-form"></div>
-    <div id="m-checkout-summary" style="background:var(--grey);border-radius:2px;padding:16px;margin:16px 0"></div>
+    <div id="m-checkout-summary" class="mco-summary"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
       <span class="payment-method">iDEAL</span>
       <span class="payment-method">Bancontact</span>
@@ -7908,9 +7937,9 @@ as a personal collection quickly grew into something bigger: a curated platform 
           <div class="cart-item-info">
             <div class="cart-item-title">${item.title}</div>
             <div class="cart-item-sub">${item.club||''} ${item.size ? '· '+item.size : ''}</div>
-            <div class="cart-item-price">€${parseFloat(item.price).toFixed(2)}</div>
+            <div class="cart-item-price">${prefix === 'm' ? mPriceFmt(item.price) : '€' + parseFloat(item.price).toFixed(2)}</div>
           </div>
-          <button class="remove-btn" onclick="removeFromCart('${item.id}')">
+          <button type="button" class="remove-btn" aria-label="Remove from cart" onclick="removeFromCart('${item.id}')">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
           </button>
         </div>
@@ -7923,13 +7952,17 @@ as a personal collection quickly grew into something bigger: a curated platform 
           <div>
             <div class="cart-total-label">Total ${ship > 0 ? '(incl. &euro;'+ship.toFixed(2)+' shipping)' : '(free shipping)'}</div>
           </div>
-          <div class="cart-total-amount">€${total.toFixed(2)}</div>
+          <div class="cart-total-amount">${prefix === 'm' ? mPriceFmt(total) : '€' + total.toFixed(2)}</div>
         </div>
         <button class="cart-checkout-btn" onclick="${prefix}GoTo('checkout');buildCheckoutForms()">Continue to Checkout →</button>
       </div>`;
   }
 
-  function renderMobileCart() { document.getElementById('m-cart-content').innerHTML = buildCartHTML('m'); }
+  function renderMobileCart() {
+    document.getElementById('m-cart-content').innerHTML = buildCartHTML('m');
+    var cc = document.getElementById('m-cart-count');
+    if (cc) cc.textContent = cart.length ? cart.length + (cart.length === 1 ? ' shirt' : ' shirts') : '';
+  }
   function renderDesktopCart() { document.getElementById('d-cart-content').innerHTML = buildCartHTML('d'); }
 
   // ── CHECKOUT ──
