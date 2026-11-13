@@ -3291,19 +3291,24 @@
 })();
 </script>
 
-<div id="ss-fairday-takeover" style="display:none;position:fixed;inset:0;z-index:99999;background:#0a0905;color:#f5f0e8;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;font-family:'DM Sans',sans-serif">
+<div id="ss-fairday-takeover" role="dialog" aria-modal="true" aria-labelledby="ss-fairday-title" style="display:none;position:fixed;inset:0;z-index:99999;background:radial-gradient(ellipse at 50% 0%,#1c170a 0%,#0a0905 62%);color:#f5f0e8;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 24px;font-family:'DM Sans',sans-serif;overflow-y:auto;-webkit-overflow-scrolling:touch">
+  <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:20px;color:#c8a950;margin-bottom:34px;letter-spacing:.3px">Shirt Soci&eacute;t&eacute;</div>
   <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c8a950;font-weight:600;margin-bottom:18px" id="ss-fairday-eyebrow"></div>
   <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(30px,8vw,46px);line-height:1.08;max-width:640px;margin-bottom:18px" id="ss-fairday-title"></div>
-  <p style="font-size:14.5px;line-height:1.8;color:rgba(245,240,232,.72);max-width:440px;margin-bottom:26px" id="ss-fairday-body"></p>
-  <div id="ss-fairday-closed" style="font-size:11px;letter-spacing:.5px;color:rgba(245,240,232,.5);margin-bottom:22px"></div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:16px">
-    <button type="button" onclick="ssFairDayOpen('about')" style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:#c8a950;padding:11px 20px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Read Our Story</button>
-    <button type="button" onclick="ssFairDayOpen('archive')" style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:#c8a950;padding:11px 20px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">See the Archive</button>
+  <p style="font-size:14.5px;line-height:1.8;color:rgba(245,240,232,.72);max-width:440px;margin-bottom:22px" id="ss-fairday-body"></p>
+  <div style="width:40px;height:1px;background:rgba(200,169,80,.5);margin-bottom:22px"></div>
+  <div id="ss-fairday-closed" style="font-size:12px;line-height:1.6;letter-spacing:.3px;color:rgba(245,240,232,.6);max-width:420px;margin-bottom:24px"></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:14px">
+    <a id="ss-fairday-event" href="https://www.instagram.com/vintagefussball/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#c8a950;border:1px solid #c8a950;color:#0a0905;padding:12px 22px;border-radius:100px;font-size:12px;font-weight:700;text-decoration:none;font-family:inherit">About the fair &middot; @vintagefussball</a>
+    <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,169,80,.1);border:1px solid rgba(200,169,80,.4);color:#c8a950;padding:12px 22px;border-radius:100px;font-size:12px;font-weight:600;text-decoration:none;font-family:inherit">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      @shirtsociete on Instagram
+    </a>
   </div>
-  <a href="https://www.instagram.com/shirtsociete/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;color:rgba(245,240,232,.6);padding:8px 14px;font-size:12px;font-weight:600;text-decoration:none">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-    @shirtsociete on Instagram
-  </a>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
+    <button type="button" onclick="ssFairDayOpen('about')" style="background:none;border:none;color:rgba(245,240,232,.6);padding:8px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:underline;text-underline-offset:3px">Read Our Story</button>
+    <button type="button" onclick="ssFairDayOpen('archive')" style="background:none;border:none;color:rgba(245,240,232,.6);padding:8px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:underline;text-underline-offset:3px">See the Archive</button>
+  </div>
 </div>
 <!-- Small, non-blocking reminder shown on top of Our Story and the Archive
      on a fair day, so those two pages stay reachable but a visitor still
@@ -3367,7 +3372,7 @@
     document.getElementById('ss-fairday-eyebrow').textContent = todayEvent.eyebrow;
     document.getElementById('ss-fairday-title').innerHTML = todayEvent.title;
     document.getElementById('ss-fairday-body').textContent = todayEvent.body;
-    document.getElementById('ss-fairday-closed').textContent = 'The shop is closed for the day \u2014 back online tomorrow. You can still read our story or browse the archive.';
+    document.getElementById('ss-fairday-closed').textContent = 'The webshop is closed for the whole day \u2014 back online tomorrow. Orders and payments are paused until then. You can still read our story or browse the archive.';
     document.getElementById('ss-fairday-banner-text').textContent = todayEvent.title.replace(/<[^>]+>/g, '') + ' — the shop is closed today.';
   }
 
