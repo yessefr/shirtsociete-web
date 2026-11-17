@@ -2686,10 +2686,10 @@
 
       EDIT THESE FOUR LINES and both mails follow:                       */
   var SS_DROP = {
-    count:   19,                                   // hoeveel shirts er live gaan
-    vintage: 17,                                   // waarvan vintage
-    worn:    2,                                    // waarvan match worn of issued
-    when:    'Saturday 17 October, 7 PM (19:00 CEST)'     // wanneer ze online komen
+    count:   12,                                   // hoeveel shirts er live gaan
+    vintage: 0,                                    // niet meer gebruikt (geen aantallen meer in de mail)
+    worn:    0,                                    // niet meer gebruikt
+    when:    'tonight, Tuesday 17 November, 10 PM (22:00 CET)'     // wanneer ze online komen
   };
 
   // The explainer text next to the buttons used to be a separate hand-typed
@@ -2706,20 +2706,16 @@
   function announcementPayload() {
     return {
       secret: 'ss-drop-2026',
-      subject: SS_DROP.count + ' shirts, ' + SS_DROP.when,
+      subject: SS_DROP.count + ' new shirts online tonight at 22:00',
       eyebrow: 'Drop announcement',
-      heading: SS_DROP.count + ' new shirts<br>go live on<br>' + SS_DROP.when,
+      heading: SS_DROP.count + ' new shirts<br>go live tonight<br>at 22:00',
       lines: [
-        'The next collection goes online on ' + SS_DROP.when + '. '
+        'A new collection goes online ' + SS_DROP.when + '. '
           + SS_DROP.count + ' shirts, each one a single piece in a single size.',
-        SS_DROP.vintage + ' vintage originals and ' + SS_DROP.worn
-          + ' match worn or issued pieces, from 1988 to 2016.',
-        'Leading the collection: a Bayern M\u00fcnchen match worn shirt attributed to J\u00e9r\u00f4me Boateng, '
-          + 'next to a Germany match issued shirt from 2016. Alongside them AC Milan, Celtic, Brazil and the Netherlands.',
-        'Doors open at 19:00 Central European Summer Time (CEST). That is 18:00 in London and 13:00 (1 PM) in New York.',
-        'The rest stays quiet until it is online.'
+        'Vintage club and national shirts, some with a player name and number on the back. We keep the rest quiet until they are online.',
+        'Doors open at 22:00 Central European Time (CET). That is 21:00 in London and 16:00 (4 PM) in New York.'
       ],
-      highlight: 'This time is only on the Collector List. Instagram finds out when the shirts are already online, so you have the first look at all of them.',
+      highlight: 'You are on the Collector List, so you hear about this before it goes online.',
       ctaText: 'Visit the shop',
       ctaUrl: 'https://shirtsociete.com'
     };
@@ -2731,14 +2727,11 @@
   function liveDropPayload() {
     return {
       secret: 'ss-drop-2026',
-      subject: SS_DROP.count + ' shirts, live now',
+      subject: SS_DROP.count + ' new shirts, live now',
       eyebrow: 'The Collector List',
-      heading: SS_DROP.count + ' shirts<br>are online now',
+      heading: SS_DROP.count + ' new shirts<br>are online now',
       lines: [
-        'The new collection is live in the shop. You knew the time; Instagram is finding out now.',
-        SS_DROP.vintage + ' vintage originals and ' + SS_DROP.worn
-          + ' match worn or issued pieces. Every one is a single shirt in a single size.',
-        'Leading the collection: a Bayern M\u00fcnchen match worn shirt attributed to J\u00e9r\u00f4me Boateng and a Germany match issued shirt from 2016.'
+        'The new collection is live in the shop. Every one is a single shirt in a single size.'
       ],
       highlight: '',
       ctaText: 'See the new shirts',
