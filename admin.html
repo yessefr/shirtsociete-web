@@ -4194,7 +4194,7 @@
       + '<meta property="og:url" content="' + opts.url + '">\n'
       + '<meta property="og:image" content="' + htmlEscape(opts.image || 'https://shirtsociete.com/og-image.png') + '">\n'
       + '<meta name="twitter:card" content="summary_large_image">\n'
-      + (opts.image ? '<meta name="twitter:image" content="' + htmlEscape(opts.image) + '">\n' : '')
+      + '<meta name="twitter:image" content="' + htmlEscape(opts.image || 'https://shirtsociete.com/og-image.png') + '">\n'
       + (opts.schema ? '<script type="application/ld+json">' + JSON.stringify(opts.schema) + '<\/script>\n' : '')
       + '<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 64 64\'%3E%3Crect width=\'64\' height=\'64\' rx=\'10\' fill=\'%230a0905\'/%3E%3Ctext x=\'32\' y=\'45\' font-family=\'Georgia,serif\' font-style=\'italic\' font-weight=\'700\' font-size=\'38\' fill=\'%23c8a950\' text-anchor=\'middle\'%3ES%3C/text%3E%3C/svg%3E">\n'
       + '<link rel="apple-touch-icon" sizes="180x180" href="/admin-icons/icon-180.png">\n'

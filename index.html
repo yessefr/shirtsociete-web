@@ -121,7 +121,7 @@
     ],
     "priceRange": "€€€",
     "currenciesAccepted": "EUR",
-    "paymentAccepted": "iDEAL, Credit Card, Bancontact, Apple Pay",
+    "paymentAccepted": "iDEAL, Credit Card, Apple Pay, Google Pay",
     "email": "info@shirtsociete.com",
     "contactPoint": {
       "@type": "ContactPoint",
@@ -3787,9 +3787,9 @@
     <div id="m-checkout-summary" class="mco-summary"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
       <span class="payment-method">iDEAL</span>
-      <span class="payment-method">Bancontact</span>
       <span class="payment-method">Credit Card</span>
       <span class="payment-method">Apple Pay</span>
+      <span class="payment-method">Google Pay</span>
     </div>
     <button class="pay-btn" id="m-pay-btn" onclick="submitPayment('m')">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
@@ -4458,9 +4458,9 @@
             <div class="order-summary" id="d-order-summary"></div>
             <div class="payment-methods" style="margin-top:16px">
               <span class="payment-method">iDEAL</span>
-              <span class="payment-method">Bancontact</span>
               <span class="payment-method">Credit Card</span>
               <span class="payment-method">Apple Pay</span>
+              <span class="payment-method">Google Pay</span>
             </div>
             <button class="pay-btn" id="d-pay-btn" onclick="submitPayment('d')">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
@@ -4997,13 +4997,11 @@
         <span class="foot-pay-label">We accept</span>
         <div class="foot-pay-icons">
           <span class="pay-chip">iDEAL</span>
-          <span class="pay-chip">Bancontact</span>
           <span class="pay-chip">VISA</span>
           <span class="pay-chip">Mastercard</span>
           <span class="pay-chip">Maestro</span>
-          <span class="pay-chip">PayPal</span>
-          <span class="pay-chip">Klarna</span>
           <span class="pay-chip">Apple&nbsp;Pay</span>
+          <span class="pay-chip">Google&nbsp;Pay</span>
         </div>
       </div>
 
@@ -7930,7 +7928,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
   function getShipping() {
     const country = getSelectedCountry();
     const subtotal = getCartTotal();
-    if (!country) return subtotal >= EU_FREE_AT ? 0 : 7.95; // estimate before country is picked
+    if (!country) return subtotal >= EU_FREE_AT ? 0 : 5.95; // lowest rate (NL) until a country is picked
     return getShippingForCountry(country, subtotal).cost;
   }
 
@@ -7957,7 +7955,7 @@ as a personal collection quickly grew into something bigger: a curated platform 
           : 'Free shipping on EU orders over &euro;150 &middot; Select country at checkout for exact shipping cost'}</div>
         <div class="cart-total-row">
           <div>
-            <div class="cart-total-label">Total ${ship > 0 ? '(incl. &euro;'+ship.toFixed(2)+' shipping)' : '(free shipping)'}</div>
+            <div class="cart-total-label">Total ${ship > 0 ? (getSelectedCountry() ? '(incl. &euro;'+ship.toFixed(2)+' shipping)' : '(incl. shipping from &euro;'+ship.toFixed(2)+')') : '(free shipping)'}</div>
           </div>
           <div class="cart-total-amount">${prefix === 'm' ? mPriceFmt(total) : '€' + total.toFixed(2)}</div>
         </div>
