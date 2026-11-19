@@ -2895,6 +2895,39 @@
     .m-hero-social .m-hero-tt { position: static !important; }
     @media (min-width: 768px) { .m-hero-social { display: none; } }
 
+    /* ═══ HERO: zelfde taal als de rest van de site (nov 2026) ═══
+       Gouden Playfair-cursief zonder omlijning, eyebrow zoals 'JUST IN',
+       linksuitgelijnd op de paginamarge (52px), twee gelijke knoppen en
+       dunne streepjes i.p.v. bolletjes. Alleen CSS; de animaties blijven. */
+    .m-hero-title .m-gold, #cin-h1-gold {
+      color: var(--gold-bg, var(--gold)) !important; -webkit-text-stroke: 0 !important;
+      background-image: none !important; -webkit-background-clip: border-box !important; background-clip: border-box !important;
+    }
+    .m-hero-eyebrow i, .cin-ew-rule { display: none !important; }
+    .m-hero-eyebrow, #cin-ew { font-size: 10px !important; letter-spacing: 3px !important; font-weight: 600 !important; }
+    #cin-btns a:nth-child(2), .m-hero-alt {
+      border: 1px solid rgba(var(--on-photo-rgb), .4) !important; border-radius: 2px;
+      padding: 13px 24px !important; font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+    }
+    #cin-hero-dots > div { width: 26px !important; height: 2px !important; border-radius: 0 !important; }
+    #cin-hero-dots { gap: 8px !important; }
+    @media (min-width: 1024px) {
+      #cin-hero-text { max-width: none !important; margin: 0 !important; text-align: left !important; align-self: center; }
+      #cin-ew, #cin-btns { justify-content: flex-start !important; }
+      #cin-sub-wrap { margin-left: 0 !important; margin-right: 0 !important; max-width: 560px !important; }
+      #cin-sub-rule { margin-left: 0 !important; }
+      #cin-hero-dots { justify-content: flex-start !important; padding-left: 52px; }
+    }
+    @media (max-width: 767px) {
+      .m-hero:not(.has-video) { text-align: left; align-items: flex-start; }
+      .m-hero:not(.has-video) .m-hero-eyebrow { justify-content: flex-start; }
+      .m-hero:not(.has-video) .m-hero-rule { margin-left: 0; }
+      .m-hero:not(.has-video) .m-hero-sub { margin-left: 0; margin-right: 0; max-width: 300px; }
+      .m-hero:not(.has-video) .m-hero-btns { align-items: stretch; width: 100%; max-width: 320px; }
+      .m-hero:not(.has-video) .m-hero-btns .btn-primary,
+      .m-hero:not(.has-video) .m-hero-alt { justify-content: center; text-align: center; width: 100%; }
+    }
+
     /* ═══ SHOP PAGE (phone): tabs, banner, title with count, era chips, big cards ═══ */
     #screen-shop .m-filters {
       position: sticky; top: calc(66px + env(safe-area-inset-top)); z-index: 30;
