@@ -2314,8 +2314,99 @@
         </div>
       </div>
       ${o.notes ? `<div style="margin-top:16px;padding:12px;background:var(--grey-mid);border-radius:4px;font-size:13px;color:var(--text-muted)"><strong style="color:var(--white)">Notes:</strong> ${o.notes}</div>` : ''}
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--grey-light)">
+        <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Mail customer</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">Sent from info@shirtsociete.com to ${esc(o.customer_email)}. You get a copy (bcc).</div>
+        <div class="form-group">
+          <label class="form-label">Template</label>
+          <select class="form-select" id="order-mail-template" onchange="fillOrderMail()">
+            <option value="">Write my own</option>
+            <option value="unpaid" ${o.status==='cancelled'||o.status==='pending'?'selected':''}>Payment not completed</option>
+            <option value="shipped">Order shipped</option>
+            <option value="thanks">Order received</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input type="text" class="form-input" id="order-mail-subject">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-input" id="order-mail-body" rows="9" style="resize:vertical"></textarea>
+        </div>
+        <button type="button" class="btn btn-secondary" id="order-mail-btn" onclick="sendOrderMail()">Send email</button>
+      </div>
     `;
     document.getElementById('order-modal').classList.add('open');
+    fillOrderMail();
+  }
+
+  // Templates for the customer mail. Everything is filled in from the order; edit before sending.
+  function orderMailTemplate(o, kind) {
+    var first = o.customer_first_name || 'there';
+    var item = (o.items || [])[0] || {};
+    var shirt = (typeof allShirts !== 'undefined') ? allShirts.find(function (s) { return s.id === item.id; }) : null;
+    var link = shirt ? 'https://shirtsociete.com/products/' + ssShirtSlug(shirt) + '.html' : 'https://shirtsociete.com/?p=shop';
+    var titles = (o.items || []).map(function (i) { return i.title; }).join(', ') || 'your order';
+    if (kind === 'unpaid') {
+      return {
+        subject: 'Your Shirt Soci\u00e9t\u00e9 order ' + o.order_ref + ' \u2014 payment not completed',
+        message: 'Hello ' + first + ',\n\nThank you for your order ' + o.order_ref + ' (' + titles + '). The payment was not completed, so the order was cancelled automatically and nothing has been charged.'
+          + (shirt && shirt.available && !shirt.is_draft ? '\n\nThe shirt is still available. You can place the order again here:\n' + link : '')
+          + '\n\nIf something went wrong during checkout, just reply to this email and tell us what happened. We are happy to help you complete the order another way.\n\nKind regards,\nYesse\nShirt Soci\u00e9t\u00e9'
+      };
+    }
+    if (kind === 'shipped') {
+      return {
+        subject: 'Your order ' + o.order_ref + ' has been shipped',
+        message: 'Hello ' + first + ',\n\nYour order ' + o.order_ref + ' (' + titles + ') is on its way.'
+          + (o.tracking_code ? '\n\nTrack & trace code: ' + o.tracking_code : '')
+          + '\n\nKind regards,\nYesse\nShirt Soci\u00e9t\u00e9'
+      };
+    }
+    if (kind === 'thanks') {
+      return {
+        subject: 'We received your order ' + o.order_ref,
+        message: 'Hello ' + first + ',\n\nThank you for your order ' + o.order_ref + ' (' + titles + '). We are preparing it and will let you know as soon as it ships.\n\nKind regards,\nYesse\nShirt Soci\u00e9t\u00e9'
+      };
+    }
+    return { subject: '', message: '' };
+  }
+
+  function fillOrderMail() {
+    var o = allOrders.find(function (x) { return x.id === editingOrderId; });
+    var sel = document.getElementById('order-mail-template');
+    if (!o || !sel) return;
+    var tpl = orderMailTemplate(o, sel.value);
+    document.getElementById('order-mail-subject').value = tpl.subject;
+    document.getElementById('order-mail-body').value = tpl.message;
+  }
+
+  async function sendOrderMail() {
+    var o = allOrders.find(function (x) { return x.id === editingOrderId; });
+    if (!o) return;
+    var subject = document.getElementById('order-mail-subject').value.trim();
+    var message = document.getElementById('order-mail-body').value.trim();
+    if (!subject || !message) { showToast('Fill in subject and message', 'error'); return; }
+    if (!confirm('Send this email to ' + o.customer_email + ' from info@shirtsociete.com?\n\nSubject: ' + subject)) return;
+    var btn = document.getElementById('order-mail-btn');
+    btn.disabled = true; btn.textContent = 'Sending...';
+    try {
+      var res = await fetch('https://shirtsociete.netlify.app/.netlify/functions/admin-mail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ order_id: o.id, subject: subject, message: message })
+      });
+      var data = {};
+      try { data = await res.json(); } catch (e) {}
+      if (res.status === 401) { handleAuthExpired(); throw new Error('Your login expired. Log in again.'); }
+      if (!res.ok || data.error) throw new Error(data.error || ('HTTP ' + res.status));
+      showToast('Email sent to ' + data.to, 'success');
+    } catch (err) {
+      showToast('Email not sent: ' + err.message, 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Send email';
+    }
   }
 
   function closeOrderModal() { document.getElementById('order-modal').classList.remove('open'); }
