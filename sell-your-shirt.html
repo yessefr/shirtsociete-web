@@ -155,11 +155,11 @@
 <p class="note">No photos to hand? Send the form anyway and reply to our email with pictures. You can also email us directly at <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a>.</p>
 
 <script>
-// Photos go straight to Cloudinary with an unsigned preset scoped to one
-// folder, so no server of our own touches the files. Cloudinary assigns a
-// random public_id, which keeps the folder from being enumerable by guessing.
-var SS_CLOUD = 'dinpfdojh';
-var SS_PRESET = 'shirt_submissions';   // create this unsigned preset in Cloudinary
+// Photos go straight to our Supabase storage (bucket shirt-photos, folder
+// submissions/). The public key can only add files to that folder; it cannot
+// list, read back or delete them (see sql/sell-your-shirt-uploads.sql).
+var SS_SB = 'https://hzwmjbsfmdkmaoikezoc.supabase.co';
+var SS_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6d21qYnNmbWRrbWFvaWtlem9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTczNDIsImV4cCI6MjA5MzEzMzM0Mn0.5-ToRrtP3bhkN_qmSMmLM5YXQgE5kWoE0wVpsksqIMs';
 var SS_MAX_FILES = 8;
 var SS_MAX_MB = 10;
 
@@ -197,14 +197,16 @@ async function ssUploadPhotos(show){
   for (var i = 0; i < files.length; i++){
     state[i].state = 'uploading...'; ssRenderFileList(state);
     try{
-      var fd = new FormData();
-      fd.append('file', files[i]);
-      fd.append('upload_preset', SS_PRESET);
-      fd.append('folder', 'shirt-submissions');
-      var r = await fetch('https://api.cloudinary.com/v1_1/' + SS_CLOUD + '/image/upload', { method: 'POST', body: fd });
-      var d = await r.json();
-      if (d && d.secure_url){
-        urls.push(d.secure_url);
+      var ext = (files[i].name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,5) || 'jpg';
+      var rnd = Array.prototype.map.call(crypto.getRandomValues(new Uint8Array(12)), function(x){ return ('0'+x.toString(16)).slice(-2); }).join('');
+      var path = 'submissions/' + Date.now() + '-' + rnd + '.' + ext;
+      var r = await fetch(SS_SB + '/storage/v1/object/shirt-photos/' + path, {
+        method: 'POST',
+        headers: { apikey: SS_KEY, Authorization: 'Bearer ' + SS_KEY, 'Content-Type': files[i].type || 'image/jpeg', 'x-upsert': 'false' },
+        body: files[i]
+      });
+      if (r.ok){
+        urls.push(SS_SB + '/storage/v1/object/public/shirt-photos/' + path);
         state[i].state = 'uploaded'; state[i].cls = 'ok';
       } else {
         failed++; state[i].state = 'failed'; state[i].cls = 'bad';
