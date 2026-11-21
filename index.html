@@ -2928,6 +2928,45 @@
       .m-hero:not(.has-video) .m-hero-alt { justify-content: center; text-align: center; width: 100%; }
     }
 
+    /* ═══ COLLECTOR LIST POP-UP (zelfde taal als de rest van de site) ═══ */
+    .da-overlay { position: fixed; inset: 0; z-index: 9600; display: none; align-items: center; justify-content: center;
+      background: rgba(6,5,4,.78); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 24px; overflow-y: auto; }
+    .da-card { position: relative; display: grid; grid-template-columns: 5fr 6fr; width: 100%; max-width: 780px;
+      background: var(--surf-1); border: 1px solid rgba(200,169,80,.25); border-radius: 2px; box-shadow: 0 24px 70px rgba(0,0,0,.6); overflow: hidden; }
+    .da-photo { position: relative; min-height: 420px; background: radial-gradient(ellipse at 50% 38%, var(--surf-2) 0%, rgba(0,0,0,.25) 100%), var(--surf-2); display: flex; align-items: center; justify-content: center; }
+    .da-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 22px; opacity: 0; transition: opacity .5s; }
+    .da-photo img.on { opacity: 1; }
+    .da-photo-tag { position: absolute; left: 14px; top: 14px; background: var(--ink); color: var(--gold); font: 600 9.5px/1 'DM Sans', sans-serif; letter-spacing: 2.4px; text-transform: uppercase; padding: 7px 10px; }
+    .da-body { padding: 48px 40px 30px; display: flex; flex-direction: column; justify-content: center; text-align: left; }
+    .da-eyebrow { font: 600 10px/1 'DM Sans', sans-serif; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .da-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900; font-size: 34px; line-height: 1.08; color: var(--cream); margin: 0; }
+    .da-rule { width: 40px; height: 1px; background: rgba(200,169,80,.55); margin: 20px 0 16px; }
+    .da-lead { font-size: 13.5px; line-height: 1.65; color: rgba(var(--white-rgb), .75); margin: 0 0 24px; }
+    .da-input { width: 100%; box-sizing: border-box; background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 12px 2px; color: var(--cream); font: 400 15px 'DM Sans', sans-serif; outline: none; transition: border-color .2s; }
+    .da-input:focus { border-bottom-color: var(--gold); }
+    .da-input-sm { font-size: 13px; margin-top: 12px; }
+    .da-btn { width: 100%; margin-top: 18px; background: var(--gold-bg, var(--gold)); color: var(--ink); border: 0; border-radius: 2px; padding: 15px 24px; font: 700 11px 'DM Sans', sans-serif; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: filter .2s; }
+    .da-btn:hover { filter: brightness(1.08); }
+    .da-btn:disabled { opacity: .6; cursor: default; }
+    .da-toggle { margin-top: 16px; font-size: 12px; color: rgba(var(--white-rgb), .72); cursor: pointer; letter-spacing: .3px; }
+    .da-toggle span { opacity: .7; }
+    .da-toggle:hover { color: var(--gold); }
+    .da-panel { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .da-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .da-confirm { font: 400 15px/1.6 'DM Sans', sans-serif; color: var(--gold); padding: 6px 0 4px; }
+    .da-fine { font-size: 10.5px; color: rgba(var(--white-rgb), .6); margin: 22px 0 0; line-height: 1.6; }
+    .da-close { position: absolute; top: 10px; right: 10px; z-index: 3; width: 34px; height: 34px; border: 0; background: transparent; color: rgba(var(--white-rgb), .8); font-size: 24px; line-height: 1; cursor: pointer; }
+    .da-close:hover { color: var(--gold); }
+    @media (max-width: 720px) {
+      .da-overlay { align-items: flex-end; padding: 0; }
+      .da-card { grid-template-columns: 1fr; max-width: none; border-radius: 12px 12px 0 0; border-left: 0; border-right: 0; border-bottom: 0; max-height: 92vh; overflow-y: auto; }
+      .da-photo { display: none; }
+      .da-body { padding: 26px 24px calc(22px + env(safe-area-inset-bottom)); }
+      .da-title { font-size: 28px; }
+      .da-lead { margin-bottom: 18px; }
+      .da-close { background: rgba(0,0,0,.45); color: #f5f0e8; border-radius: 50%; top: 10px; right: 10px; }
+    }
+
     /* ═══ SHOP PAGE (phone): tabs, banner, title with count, era chips, big cards ═══ */
     #screen-shop .m-filters {
       position: sticky; top: calc(66px + env(safe-area-inset-top)); z-index: 30;
@@ -10535,37 +10574,39 @@ as a personal collection quickly grew into something bigger: a curated platform 
         </div>
       </div>
 
-<div id="drop-alert-modal" style="position:fixed;inset:0;z-index:9600;display:none;align-items:center;justify-content:center;background:rgba(6,5,4,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:24px;overflow-y:auto">
-  <div style="position:relative;width:100%;max-width:420px;background:var(--surf-1);border:1px solid rgba(200,169,80,.25);border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.7);padding:44px 38px 34px;text-align:center">
+<div id="drop-alert-modal" class="da-overlay" role="dialog" aria-modal="true" aria-labelledby="da-title">
+  <div class="da-card">
+    <button type="button" class="da-close" onclick="closeDropAlertModal()" aria-label="Close">&times;</button>
 
-    <div onclick="closeDropAlertModal()" title="Close" style="position:absolute;top:12px;right:16px;cursor:pointer;font-size:22px;line-height:1;color:rgba(var(--white-rgb),.72);padding:4px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(var(--white-rgb),.4)'">&times;</div>
-
-    <div style="font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px">The Collector List</div>
-
-    <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:30px;line-height:1.12;color:var(--cream)">First look at<br>every new shirt</div>
-
-    <div style="width:46px;height:1px;background:rgba(200,169,80,.45);margin:20px auto 18px"></div>
-
-    <p style="font-size:13px;color:rgba(var(--white-rgb),.72);line-height:1.65;margin:0 0 24px">One of one. Members see each new collection an hour before Instagram.</p>
-
-    <div id="da-form">
-      <input id="da-email" type="email" placeholder="your@email.com" style="width:100%;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:14px 15px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;text-align:center;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'" onkeydown="if(event.key==='Enter')submitDropAlertEmail()">
-
-      <button id="da-btn" onclick="submitDropAlertEmail()" style="width:100%;margin-top:10px;background: var(--gold-bg, var(--gold));color:var(--ink);border:none;border-radius:2px;padding:14px 24px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Join the list</button>
-
-      <!-- Knowing what someone collects turns a mailing list into a matching list,
-           so the chips stay — but folded away, so the first view is just one field. -->
-      <div id="da-tags-toggle" onclick="ssToggleTagPanel()" style="margin-top:16px;font-size:11.5px;color:rgba(var(--white-rgb),.72);cursor:pointer;letter-spacing:.4px;transition:color .2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(var(--white-rgb),.4)'">Tell us what you collect <span style="opacity:.7">(optional)</span></div>
-
-      <div id="da-tags-panel" style="display:none;margin-top:14px;padding-top:16px;border-top:1px solid var(--line)">
-        <div id="da-tags" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center"></div>
-        <input id="da-other" type="text" placeholder="Anything else &mdash; club, country, era, size" style="width:100%;margin-top:10px;background:var(--surf-2);border:1px solid var(--line);border-radius:2px;padding:11px 14px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:13px;text-align:center;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(200,169,80,.5)'" onblur="this.style.borderColor='var(--line)'">
-      </div>
+    <div class="da-photo" id="da-photo" aria-hidden="true">
+      <img id="da-img" alt="" decoding="async">
+      <span class="da-photo-tag">Just in</span>
     </div>
 
-    <div id="da-confirm" style="display:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gold);line-height:1.6;padding:8px 0">You&rsquo;re on the list. You&rsquo;ll see the next collection first.</div>
+    <div class="da-body">
+      <div class="da-eyebrow">The Collector List</div>
+      <h2 id="da-title" class="da-title">First look at<br>every new shirt</h2>
+      <div class="da-rule"></div>
+      <p class="da-lead">One of one. Members see each new collection an hour before Instagram.</p>
 
-    <p style="font-size:10.5px;color:rgba(var(--white-rgb),.72);margin:20px 0 0;line-height:1.6">Only when a new collection goes live. No discounts.</p>
+      <div id="da-form">
+        <input id="da-email" class="da-input" type="email" inputmode="email" autocomplete="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')submitDropAlertEmail()">
+        <button id="da-btn" class="da-btn" onclick="submitDropAlertEmail()">Join the list</button>
+
+        <!-- Knowing what someone collects turns a mailing list into a matching list,
+             so the chips stay, but folded away: the first view is just one field. -->
+        <div id="da-tags-toggle" class="da-toggle" onclick="ssToggleTagPanel()">Tell us what you collect <span>(optional)</span></div>
+
+        <div id="da-tags-panel" class="da-panel" style="display:none">
+          <div id="da-tags" class="da-tags"></div>
+          <input id="da-other" class="da-input da-input-sm" type="text" placeholder="Anything else &mdash; club, country, era, size">
+        </div>
+      </div>
+
+      <div id="da-confirm" class="da-confirm" style="display:none">You&rsquo;re on the list. You&rsquo;ll see the next collection first.</div>
+
+      <p class="da-fine">Only when a new collection goes live. No discounts.</p>
+    </div>
   </div>
 </div>
 
@@ -10749,9 +10790,25 @@ as a personal collection quickly grew into something bigger: a curated platform 
   });
 
   // ── DROP ALERT MODAL (footer button + mobile floating button) ──
+  // The newest available shirt goes in the pop-up as its photo, so it shows
+  // what the list is for. No photo (data not loaded yet) = the panel stays a
+  // plain dark spotlight; nothing breaks.
+  function ssFillDropPhoto() {
+    try {
+      var img = document.getElementById('da-img');
+      if (!img || img.getAttribute('src') || typeof allShirts === 'undefined') return;
+      var s = allShirts.filter(function (x) { return x.available && !x.is_draft && !x.sold_at && x.images && x.images.length; })
+        .sort(function (a, b) { return String(b.created_at).localeCompare(String(a.created_at)); })[0];
+      if (!s) return;
+      var u = s.images[0]; u = typeof u === 'string' ? u : (u && u.url);
+      if (!u) return;
+      img.onload = function () { img.classList.add('on'); };
+      img.src = u;
+    } catch (e) {}
+  }
   function openDropAlertModal() {
     var m = document.getElementById('drop-alert-modal');
-    if (m) { m.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+    if (m) { ssFillDropPhoto(); m.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
   }
   function closeDropAlertModal() {
     var m = document.getElementById('drop-alert-modal');
@@ -10764,21 +10821,23 @@ as a personal collection quickly grew into something bigger: a curated platform 
     var m = document.getElementById('drop-alert-modal');
     if (m) m.addEventListener('click', function(e) { if (e.target === m) closeDropAlertModal(); });
   })();
-  // Show the drop signup once when someone arrives on the site. sessionStorage
-  // (not localStorage) means it stays gone for the rest of the browser session,
-  // including refreshes, but a genuinely new visit can see it again.
-  // Skipped entirely if they already signed up, and never on top of checkout.
+  // The automatic pop-up appears ONCE per visitor, ever: localStorage keeps it
+  // gone on later visits, refreshes and new sessions (closing it, signing up or
+  // just letting it show all count as seen). The footer button and the mobile
+  // button still open it whenever someone wants. Never on top of checkout.
   function ssMaybeAutoDropPopup() {
     try {
-      if (sessionStorage.getItem('ss-drop-popup-seen')) return;
+      var seen = false;
+      try { seen = !!localStorage.getItem('ss-drop-popup-seen'); } catch (e) { seen = !!sessionStorage.getItem('ss-drop-popup-seen'); }
+      if (seen) return;
       if (localStorage.getItem('ss-drop-signed-up')) return;
       var p = new URLSearchParams(window.location.search).get('p');
       if (p && p !== 'home') return;             // only on the homepage
       if (window.location.search.indexOf('shirt=') !== -1) return;  // not on a shared product link
-      sessionStorage.setItem('ss-drop-popup-seen', '1');
       setTimeout(function() {
         var anyOpen = document.querySelector('#contact-modal[style*="flex"], #shirt-inquiry-modal[style*="flex"], #zoom-lightbox.open');
         if (anyOpen) return;
+        try { localStorage.setItem('ss-drop-popup-seen', '1'); } catch (e) { try { sessionStorage.setItem('ss-drop-popup-seen', '1'); } catch (e2) {} }
         openDropAlertModal();
       }, 4000);
     } catch (e) {}
