@@ -4983,6 +4983,27 @@
     ssWithShirts('Generate Merchant feed', buildMerchantFeed);
   }
 
+  // Colours for the feed ("Shirts & tops" wants g:color). We only state a colour
+  // when the shirt's own text names it, in order of appearance, max 3 and
+  // separated by '/', which is the format Merchant Center expects. No text
+  // that names a colour = no g:color at all, never a guess.
+  var SS_FEED_COLORS = [
+    ['white', /\bwhite\b/i], ['black', /\bblack\b/i], ['red', /\bred\b/i],
+    ['blue', /\b(?:blue|navy|royal blue|sky blue)\b/i], ['green', /\bgreen\b/i],
+    ['yellow', /\byellow\b/i], ['orange', /\borange\b/i], ['grey', /\b(?:grey|gray)\b/i],
+    ['purple', /\b(?:purple|violet)\b/i], ['pink', /\bpink\b/i], ['brown', /\bbrown\b/i],
+    ['gold', /\bgold(?:en)?\b/i]
+  ];
+  function ssFeedColor(text) {
+    var s = String(text || '');
+    var hits = [];
+    SS_FEED_COLORS.forEach(function(c) {
+      var m = c[1].exec(s);
+      if (m) hits.push({ name: c[0], at: m.index });
+    });
+    hits.sort(function(x, y) { return x.at - y.at; });
+    return hits.slice(0, 3).map(function(h) { return h.name; }).join('/');
+  }
   function buildMerchantFeed() {
     var base = 'https://shirtsociete.com';
     var lines = [];
@@ -5078,6 +5099,9 @@
       lines.push(tag('g:custom_label_3',
         priceNum >= 300 ? 'premium' : (priceNum >= 150 ? 'mid' : 'entry')));
       if (s.size) lines.push(tag('g:size', s.size));
+      if (s.size) lines.push(tag('g:size_type', 'regular'));
+      var feedColor = ssFeedColor(s.title + ' ' + (s.description || ''));
+      if (feedColor) lines.push(tag('g:color', feedColor));
       lines.push('    </item>');
       included++;
     });
