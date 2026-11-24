@@ -114,6 +114,8 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>premium</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>red/black</g:color>
     </item>
     <item>
       <g:id>d3e7c3ae-7083-4cd1-9638-a612b56061e9</g:id>
@@ -222,6 +224,8 @@
       <g:custom_label_1>Al-Ahli</g:custom_label_1>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>white/green</g:color>
     </item>
     <item>
       <g:id>a5996e82-214c-49ab-9688-d38a084d3d9a</g:id>
@@ -334,6 +338,8 @@
       <g:custom_label_2>1980s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>white/green/grey</g:color>
     </item>
     <item>
       <g:id>7a5c22fc-e5d7-474f-a958-03638f1382d6</g:id>
@@ -444,6 +450,8 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>red/white</g:color>
     </item>
     <item>
       <g:id>ee7ad407-9dcb-42ad-9e6a-05622106643c</g:id>
@@ -553,6 +561,8 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>green</g:color>
     </item>
     <item>
       <g:id>5d9a5d25-9f64-49eb-ae37-235d4840cfd3</g:id>
@@ -664,6 +674,8 @@
       <g:custom_label_2>2000s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>white/blue/gold</g:color>
     </item>
     <item>
       <g:id>540a9486-ed95-4ed6-b89d-a67f3ba782fe</g:id>
@@ -775,6 +787,8 @@
       <g:custom_label_2>2000s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>red/green/yellow</g:color>
     </item>
     <item>
       <g:id>57be6d0f-a656-4349-98d5-b25a69d79804</g:id>
@@ -887,6 +901,8 @@
       <g:custom_label_2>2010s</g:custom_label_2>
       <g:custom_label_3>premium</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>white/orange</g:color>
     </item>
     <item>
       <g:id>8533482c-a91d-42cc-b569-b27119ac98ef</g:id>
@@ -997,6 +1013,8 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>blue/red/white</g:color>
     </item>
     <item>
       <g:id>0faa55ab-88df-4596-9ca8-1388e668fc17</g:id>
@@ -1107,6 +1125,8 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>blue/white/gold</g:color>
     </item>
     <item>
       <g:id>f67e0dfb-1f73-420a-9379-11174c1dbf9d</g:id>
@@ -1216,6 +1236,8 @@
       <g:custom_label_1>Real Madrid</g:custom_label_1>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>white/blue/gold</g:color>
     </item>
     <item>
       <g:id>0af6a7a7-6b5a-49e6-af50-9810a7c784d6</g:id>
@@ -1326,6 +1348,8 @@
       <g:custom_label_2>1970s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>white/green/red</g:color>
     </item>
     <item>
       <g:id>b49b0187-3591-4e7d-b7da-6e68ded4e3a5</g:id>
@@ -1437,6 +1461,7 @@
       <g:custom_label_2>2000s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>42ea8ecd-ac3a-4717-b152-fe156b6ec9de</g:id>
@@ -1552,6 +1577,7 @@
       <g:custom_label_2>2010s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>74c9cc4a-700e-456c-b671-592349ccfe51</g:id>
@@ -1662,6 +1688,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>c045088f-e24e-41d4-a871-25d9f0aeac4c</g:id>
@@ -1773,6 +1800,7 @@
       <g:custom_label_2>2000s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>9dfd4cce-d782-40e2-b147-c49f308016bc</g:id>
@@ -1882,6 +1910,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>8a129ac1-5f25-45e3-8d02-573bf6b6cacb</g:id>
@@ -1992,6 +2021,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>2eb9a3bc-4bb7-4f83-b96b-cae194bbbee6</g:id>
@@ -2102,6 +2132,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>bc311f18-f1b2-4546-888c-d040b2134348</g:id>
@@ -2212,6 +2243,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>d241554a-af7a-464e-be06-8a565f84feba</g:id>
@@ -2325,6 +2357,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>1b8b6faf-62a5-481a-a231-fa81ab93c7c1</g:id>
@@ -2433,6 +2466,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>35fa0874-14ea-418f-940f-2c2d9119e4f0</g:id>
@@ -2544,6 +2578,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>S</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>d23f0855-c5b9-4981-b7dc-00d5975458e5</g:id>
@@ -2660,6 +2695,7 @@
       <g:custom_label_2>2010s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>3ac4335c-b866-416a-976c-9d65bcbac40c</g:id>
@@ -2768,6 +2804,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>36bc7024-2ca2-43ae-87fa-4afcc7131978</g:id>
@@ -2884,6 +2921,7 @@
       <g:custom_label_2>2000s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>8f7f5452-f3bc-4c6d-bb44-a08ae35831bc</g:id>
@@ -3001,6 +3039,7 @@
       <g:custom_label_2>2010s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>c4d14448-e4cb-439b-9169-d987a1c46180</g:id>
@@ -3118,6 +3157,7 @@
       <g:custom_label_2>2000s</g:custom_label_2>
       <g:custom_label_3>premium</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>7bd0844f-bef4-47fb-83aa-d06ad663006e</g:id>
@@ -3228,6 +3268,7 @@
       <g:custom_label_2>2000s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>cb3b3ebb-3bb8-48a3-97fa-aeb2242ad3d7</g:id>
@@ -3345,6 +3386,7 @@
       <g:custom_label_2>2010s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>54ab96a3-f64b-4661-b3c6-17c90d2d4f2d</g:id>
@@ -3463,6 +3505,7 @@
       <g:custom_label_2>2020s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>c1584193-5b93-48ce-8fe5-3acb14b9bab3</g:id>
@@ -3580,6 +3623,7 @@
       <g:custom_label_2>2000s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>46bfe528-df8e-451e-94f1-3da4605f4b03</g:id>
@@ -3698,6 +3742,7 @@
       <g:custom_label_2>2010s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>ef6113d6-bc03-4363-999d-409a5856fe97</g:id>
@@ -3807,6 +3852,7 @@
       <g:custom_label_2>2010s</g:custom_label_2>
       <g:custom_label_3>premium</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>f59228e9-f702-4867-9166-f64ef25803fc</g:id>
@@ -3925,6 +3971,7 @@
       <g:custom_label_2>2010s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>cbbdeb7f-91aa-46d0-ac4f-25832b1154d3</g:id>
@@ -4036,6 +4083,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>a1c82079-2bae-4f8f-8a7f-acea63a20e9a</g:id>
@@ -4155,6 +4203,7 @@
       <g:custom_label_2>2020s</g:custom_label_2>
       <g:custom_label_3>premium</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>b9cd4f6c-ec37-4c8b-9157-2f2dc61cf871</g:id>
@@ -4269,6 +4318,8 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>red</g:color>
     </item>
     <item>
       <g:id>80ff3e0e-1901-4b5b-9094-9c49d69d36cd</g:id>
@@ -4381,6 +4432,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>2dae7a7b-9abc-4591-a185-731f3014a851</g:id>
@@ -4497,6 +4549,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>71c2409d-74ad-40fc-84e3-eeead9eef1bf</g:id>
@@ -4611,6 +4664,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>8e4f9316-3653-4b41-86d3-8dda588f4c00</g:id>
@@ -4727,6 +4781,7 @@
       <g:custom_label_2>2000s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>6d709fd6-e686-4b38-9698-9880535e89e1</g:id>
@@ -4845,6 +4900,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>94ff3258-6540-47b1-bf8b-73531f6d49f5</g:id>
@@ -4958,6 +5014,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>entry</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>8b1286d0-569f-4363-810f-9ff5212ed2c3</g:id>
@@ -5077,6 +5134,7 @@
       <g:custom_label_2>2020s</g:custom_label_2>
       <g:custom_label_3>premium</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>b7d89fa6-c28a-4717-af67-272ecec05ab1</g:id>
@@ -5196,6 +5254,7 @@
       <g:custom_label_2>2020s</g:custom_label_2>
       <g:custom_label_3>premium</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>7bd8939a-5240-4743-a3d0-c97a5f5615c9</g:id>
@@ -5307,6 +5366,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>274853ff-0875-4e52-85ee-de4c3cebee96</g:id>
@@ -5424,6 +5484,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>feb4f2e7-a58c-4256-a4a6-769cdb37e3c3</g:id>
@@ -5541,6 +5602,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>c5fc781b-4c5c-4a04-9cc8-78542d35f806</g:id>
@@ -5658,6 +5720,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>e8507490-8b53-43a0-a646-5a1d61166d90</g:id>
@@ -5777,6 +5840,7 @@
       <g:custom_label_2>2020s</g:custom_label_2>
       <g:custom_label_3>premium</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
     <item>
       <g:id>2b061b96-2580-4b01-8ebb-8bbb92c81545</g:id>
@@ -5888,6 +5952,8 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>XL</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>red/black</g:color>
     </item>
     <item>
       <g:id>0d04c27d-587c-4317-bc36-e26c253c5cfe</g:id>
@@ -5996,6 +6062,8 @@
       <g:custom_label_2>2000s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>yellow/green</g:color>
     </item>
     <item>
       <g:id>784f380c-0e6d-489e-9bd5-05ae2cfdc522</g:id>
@@ -6108,6 +6176,8 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>L</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>red/white</g:color>
     </item>
     <item>
       <g:id>2e45cdd5-9cb4-410e-b591-ad206b1da593</g:id>
@@ -6220,6 +6290,8 @@
       <g:custom_label_2>1980s</g:custom_label_2>
       <g:custom_label_3>mid</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
+      <g:color>green/white</g:color>
     </item>
     <item>
       <g:id>d218d0f9-0c9c-4b29-9df8-f8d567277c05</g:id>
@@ -6331,6 +6403,7 @@
       <g:custom_label_2>1990s</g:custom_label_2>
       <g:custom_label_3>premium</g:custom_label_3>
       <g:size>M</g:size>
+      <g:size_type>regular</g:size_type>
     </item>
   </channel>
 </rss>
