@@ -8,6 +8,7 @@ const { Resend } = require('resend');
 
 const supabase = createClient(process.env.DB_URL, process.env.DB_SECRET);
 const resend = new Resend(process.env.RESEND_API_KEY);
+const crypto = require('crypto');
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -16,7 +17,14 @@ const CORS = {
   'Content-Type': 'application/json'
 };
 
-const SEND_SECRET = process.env.DROP_SECRET || 'ss-drop-2026';
+// DROP_SECRET must be set in Netlify (Environment variables). There is no default on purpose:
+// a default in the repo would let anyone send mail to the whole list.
+const SEND_SECRET = process.env.DROP_SECRET;
+
+function unsubUrl(email) {
+  const t = crypto.createHmac('sha256', SEND_SECRET || '').update(String(email).trim().toLowerCase()).digest('hex').slice(0, 32);
+  return 'https://shirtsociete.netlify.app/.netlify/functions/drop-unsubscribe?e=' + encodeURIComponent(String(email).trim().toLowerCase()) + '&t=' + t;
+}
 
 // Email in the same style as the signup confirmation
 function buildEmail(o) {
@@ -30,7 +38,7 @@ function buildEmail(o) {
     <a href="${o.ctaUrl}" style="display:inline-block;background:#c8a950;color:#0a0905;text-decoration:none;padding:13px 26px;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;border-radius:2px;margin-top:10px">${o.ctaText}</a>
     <p style="color:#b8b0a0;font-size:12px;margin-top:34px;border-top:1px solid #1e1c17;padding-top:16px;line-height:1.6">
       Shirt Societe &middot; Harderwijk, Netherlands &middot; <a href="https://shirtsociete.com" style="color:#b8b0a0">shirtsociete.com</a><br>
-      You receive this because you signed up for drop alerts.
+      You receive this because you signed up for drop alerts. <a href="${o.unsubUrl}" style="color:#b8b0a0">Unsubscribe</a>
     </p>
   </div>`;
 }
@@ -43,7 +51,7 @@ exports.handler = async (event) => {
 
   try {
     const p = JSON.parse(event.body || '{}');
-    if (p.secret !== SEND_SECRET) {
+    if (!SEND_SECRET || p.secret !== SEND_SECRET) {
       return { statusCode: 401, headers: CORS, body: JSON.stringify({ error: 'Not authorised' }) };
     }
 
@@ -56,16 +64,15 @@ exports.handler = async (event) => {
       ctaText:   p.ctaText   || 'Visit the shop',
       ctaUrl:    p.ctaUrl    || 'https://shirtsociete.com'
     };
-    const html = buildEmail(content);
 
     // Test mode: send only to the given address
     let emails;
     if (p.testEmail) {
       emails = [String(p.testEmail).trim()];
     } else {
-      const { data: signups, error } = await supabase.from('drop_signups').select('email');
-      if (error) throw error;
-      emails = (signups || []).map(s => (s.email || '').trim()).filter(e => e && e.includes('@'));
+      const { data: signups, error } = await supabase.from('drop_signups').select('email, unsubscribed_at');
+      if (error) throw error; // run sql/drop-afmelden.sql first if the column is missing
+      emails = (signups || []).filter(s => !s.unsubscribed_at).map(s => (s.email || '').trim()).filter(e => e && e.includes('@'));
     }
 
     if (!emails.length) {
@@ -83,7 +90,8 @@ exports.handler = async (event) => {
           from: 'Shirt Societe <info@shirtsociete.com>',
           to: to,
           subject: subject,
-          html: html
+          html: buildEmail(Object.assign({}, content, { unsubUrl: unsubUrl(to) })),
+          headers: { 'List-Unsubscribe': '<' + unsubUrl(to) + '>' }
         });
         sent++;
       } catch (e) {
