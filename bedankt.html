@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,follow">
+<title>Thank you | Shirt Société</title>
+<link rel="icon" href="/admin-icons/icon-180.png">
+<script>(function(){try{if(localStorage.getItem("ss-theme")==="light")document.documentElement.setAttribute("data-theme","light");}catch(e){}})();</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3FKJWGECXN"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-3FKJWGECXN');
+// Same behaviour as the homepage return flow: report the purchase once, from the cart snapshot saved before the Mollie redirect.
+(function(){try{
+  var raw=localStorage.getItem('ss_last_order');if(!raw)return;
+  var items=JSON.parse(raw)||[];if(!items.length){localStorage.removeItem('ss_last_order');return;}
+  var ref=new URLSearchParams(location.search).get('ref')||('ss-'+Date.now());
+  var value=items.reduce(function(t,c){return t+(parseFloat(c.price)||0);},0);
+  gtag('event','purchase',{transaction_id:ref,currency:'EUR',value:value,items:items.map(function(c){return{item_id:String(c.id),item_name:c.title||'',price:parseFloat(c.price)||0,quantity:1};})});
+  localStorage.removeItem('ss_last_order');
+}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#c8a950;--bg:#0a0905;--ink:#f5f0e8;--muted:#a39a88;--line:#2a2720;--card:#15130f}
+html[data-theme="light"]{--gold:#a1791f;--bg:#efe1c4;--ink:#241d12;--muted:#6b5f47;--line:#d6c59f;--card:#e6d6b1}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px;text-align:center}
+.logo{font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:26px;color:var(--gold);text-decoration:none;margin-bottom:40px}
+.eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+h1{font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(30px,6vw,44px);margin-bottom:16px}
+p{color:var(--muted);line-height:1.7;max-width:480px;margin:0 auto 12px;font-size:15px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px 24px;margin:26px auto;min-width:min(320px,100%)}
+.box small{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.box b{font-size:20px;letter-spacing:1px;color:var(--gold)}
+.btn{display:inline-block;margin-top:14px;padding:13px 28px;border-radius:100px;background:var(--gold);color:#0a0905;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none}
+.small{margin-top:30px;font-size:13px}
+a{color:var(--gold)}
+</style>
+</head>
+<body>
+<a class="logo" href="/">Shirt Soci&eacute;t&eacute;</a>
+<div class="eyebrow">Thank you</div>
+<h1>We have your order</h1>
+<p>Once your payment is confirmed by our payment provider, you will receive a confirmation email. Every shirt is packed with care and shipped with tracking.</p>
+<div class="box" id="refbox" hidden><small>Order reference</small><b id="ref"></b></div>
+<p>Cancelled or did not finish paying? Nothing is charged, and the shirt stays available as long as nobody else has bought it.</p>
+<a class="btn" href="/?p=shop&amp;sort=new">Continue shopping</a>
+<p class="small">Questions? <a href="mailto:info@shirtsociete.com">info@shirtsociete.com</a> &middot; <a href="/shipping.html">Shipping</a> &middot; <a href="/refund.html">Returns</a></p>
+<script>
+(function(){var r=new URLSearchParams(location.search).get('ref');if(r&&/^[A-Za-z0-9-]{3,30}$/.test(r)){document.getElementById('ref').textContent=r;document.getElementById('refbox').hidden=false;document.title='Order '+r+' | Shirt Société';}})();
+</script>
+</body>
+</html>
