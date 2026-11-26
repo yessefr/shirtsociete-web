@@ -1471,7 +1471,7 @@
           <div class="action-btns">
             <button class="btn btn-sm btn-secondary" onclick="editShirt('${s.id}')">Edit</button>
             <button class="btn btn-sm btn-danger" onclick="deleteShirt('${s.id}')">Delete</button>
-            ${s.is_draft ? `<button class="btn btn-sm btn-primary" onclick="publishShirt('${s.id}')">Publish</button>` : (s.available ? `<button class="btn btn-sm btn-secondary" onclick="markSold('${s.id}')">Mark Sold</button>` : '')}
+            ${s.is_draft ? `<button class="btn btn-sm btn-primary" onclick="publishShirt('${s.id}')">Publish</button>` : (s.available ? `<button class="btn btn-sm btn-secondary" onclick="markSold('${s.id}')">Mark Sold</button><button class="btn btn-sm btn-secondary" onclick="draftShirt('${s.id}')">Concept</button>` : '')}
           </div>
         </td>
       </tr>
@@ -2202,6 +2202,22 @@
   }
 
   // Publish a concept shirt: make it visible and for sale in the shop
+  // Move a live shirt back to concept: hidden from the shop, nothing is deleted.
+  async function draftShirt(id) {
+    if (!confirm('Move this shirt back to concept? It disappears from the shop (nothing is deleted).')) return;
+    try {
+      const r = await fetch(`${SUPABASE.url}/rest/v1/shirts?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { 'apikey': SUPABASE.key, 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+        body: JSON.stringify({ is_draft: true })
+      });
+      if (!r.ok) { const e = await r.text(); throw new Error(e); }
+      showToast('Shirt moved to concept. Regenerate the site files so its page disappears', 'success');
+      await loadShirts();
+      updateDashboard();
+    } catch (err) { showToast('Error moving shirt to concept', 'error'); }
+  }
+
   async function publishShirt(id) {
     if (!confirm('Publish this shirt to the shop? It becomes visible to everyone.')) return;
     try {
